@@ -1,0 +1,79 @@
+*.py[cod]
+
+runonce_osx.sh
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+nightwatch.xml
+
+*.log
+
+tests/reports/nightwatch/*
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+*.ropeproject
+
+# Complexity
+output/*.html
+output/*/index.html
+
+# Sphinx
+docs/_build
+
+.webassets-cache
+
+# Virtualenvs
+env
+env*
+venv
+
+# intellij
+.idea/
+*.ipr
+*.iml
+*.iws
+
+.DS_Store
+.cache/
+.bash_history
+app.log
+debug.log
+
+# node
+node_modules/
+
+.sass-cache/
+
+laalaa/settings/local.py
+laalaa/static/
+test-reports/
+htmlcov/
