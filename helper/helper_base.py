@@ -19,7 +19,7 @@ class HelperFunc(object):
     def close(self):
         self._driver.quit()
         
-    # Helper functions that are used to identify the web locators in Selenium Python tutorial  
+    # Helper functions to find web elements, possibly will be in a different place 
  
     def find_by_xpath(self, xpath):
         return self._driver_wait.until(EC.visibility_of_element_located((By.XPATH, xpath)))
