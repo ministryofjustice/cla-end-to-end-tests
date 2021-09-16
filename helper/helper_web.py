@@ -4,6 +4,4 @@ from helper.helper_base import HelperFunc
  
 def get_browser(browser):
     if browser == "chrome":
-        options = webdriver.ChromeOptions()
-        options.add_argument('headless')
         return HelperFunc(webdriver.Remote("http://127.0.0.1:4444", DesiredCapabilities.CHROME))
