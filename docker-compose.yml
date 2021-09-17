@@ -8,6 +8,8 @@ networks:
 services:
   cla-end-to-end:
     build: .
+    volumes:
+      - .:/behave
     networks:
       - web
     ports:
@@ -22,6 +24,9 @@ services:
     hostname: chrome
     networks:
       - web
+    ports:
+      - "5900:5900"
+      - "4444:4444"
     privileged: true
     shm_size: 2g
 

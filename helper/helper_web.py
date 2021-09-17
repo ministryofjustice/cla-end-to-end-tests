@@ -4,4 +4,4 @@ from helper.helper_base import HelperFunc
  
 def get_browser(browser):
     if browser == "chrome":
-        return HelperFunc(webdriver.Remote("http://127.0.0.1:4444", DesiredCapabilities.CHROME))
+        return HelperFunc(webdriver.Remote("http://seleniumchrome:4444/wd/hub", DesiredCapabilities.CHROME))
