@@ -1,0 +1,76 @@
+version: '3.8'
+
+networks:
+    web:
+      external: true
+      driver:  bridge
+
+services:
+  cla-end-to-end:
+    build: .
+    networks:
+      - web
+    ports:
+      - "8002:80"
+    links:
+      - clabackend
+      - clafrontend
+      - seleniumchrome
+
+  seleniumchrome:
+    image: selenium/standalone-chrome:latest
+    hostname: chrome
+    networks:
+      - web
+    privileged: true
+    shm_size: 2g
+
+  clafrontend:
+    build: https://github.com/ministryofjustice/cla_frontend.git#master
+    networks:
+      - web
+    ports:
+      - "8001:80"
+    links:
+      - clabackend
+    environment:
+      ENV: local
+      DEBUG: "True"
+      SECRET_KEY: CHANGE_ME
+      BACKEND_BASE_URI: http://clafrontend
+      CALL_CENTRE_CLIENT_ID: b4b9220ffcb11ebfdab1
+      CALL_CENTRE_SECRET_ID: 2df71313bdd38a2e1b815015e1b14387e7681d41
+      CLA_PROVIDER_CLIENT_ID: 59657ed22d980251cdd3
+      CALL_PROVIDER_SECRET_ID: 0494287c65bdf61d29f0eeed467ec8e090f0d80f
+      SOCKETIO_SERVER_URL: /socket.io
+
+  db:
+    image: postgres
+    networks:
+      - web
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cla_backend
+
+  clabackend:
+    build: https://github.com/ministryofjustice/cla_backend.git#master
+    networks:
+      - web
+    ports:
+      - "8000:80"
+    links:
+      - db
+    environment:
+      ENV: local
+      DEBUG: "True"
+      SECRET_KEY: CHANGE_ME
+      DB_NAME: cla_backend
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: db
+      DB_PORT: 5432
+      BACKEND_ENABLED: "True"
+      LOAD_TEST_DATA: "True"
+      ADMIN_PASSWORD: cla_admin
+      ALLOWED_HOSTS: "*"
