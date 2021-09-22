@@ -8,7 +8,7 @@ services:
       - .:/behave
     ports:
       - "8002:80"
-    links:
+    depends_on:
       - clabackend
       - clafrontend
       - seleniumchrome
@@ -25,7 +25,7 @@ services:
     build: https://github.com/ministryofjustice/cla_frontend.git#master
     ports:
       - "8001:80"
-    links:
+    depends_on:
       - clabackend
     environment:
       ENV: local
@@ -49,7 +49,7 @@ services:
     build: https://github.com/ministryofjustice/cla_backend.git#master
     ports:
       - "8000:80"
-    links:
+    depends_on:
       - db
     environment:
       ENV: local
