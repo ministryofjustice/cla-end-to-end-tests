@@ -1,17 +1,11 @@
 version: '3.8'
 
-networks:
-    web:
-      external: true
-      driver:  bridge
 
 services:
   cla-end-to-end:
     build: .
     volumes:
       - .:/behave
-    networks:
-      - web
     ports:
       - "8002:80"
     links:
@@ -22,8 +16,6 @@ services:
   seleniumchrome:
     image: selenium/standalone-chrome:latest
     hostname: chrome
-    networks:
-      - web
     ports:
       - "5900:5900"
       - "4444:4444"
@@ -32,8 +24,6 @@ services:
 
   clafrontend:
     build: https://github.com/ministryofjustice/cla_frontend.git#master
-    networks:
-      - web
     ports:
       - "8001:80"
     links:
@@ -51,8 +41,6 @@ services:
 
   db:
     image: postgres
-    networks:
-      - web
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -60,8 +48,6 @@ services:
 
   clabackend:
     build: https://github.com/ministryofjustice/cla_backend.git#master
-    networks:
-      - web
     ports:
       - "8000:80"
     links:
