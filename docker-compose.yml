@@ -19,7 +19,6 @@ services:
     ports:
       - "5900:5900"
       - "4444:4444"
-    privileged: true
     shm_size: 2g
 
   clafrontend:
