@@ -1,8 +1,7 @@
 from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from helper.helper_base import HelperFunc
  
 def get_browser(browser):
     if browser == "chrome":
-        options = webdriver.ChromeOptions()
-        options.add_argument('headless')
-        return HelperFunc(webdriver.Chrome(chrome_options = options))
+        return HelperFunc(webdriver.Remote("http://seleniumchrome:4444/wd/hub", DesiredCapabilities.CHROME))

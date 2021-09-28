@@ -1,4 +1,6 @@
 *.py[cod]
+*.pyc
+
 
 runonce_osx.sh
 
@@ -72,8 +74,3 @@ debug.log
 node_modules/
 
 .sass-cache/
-
-laalaa/settings/local.py
-laalaa/static/
-test-reports/
-htmlcov/

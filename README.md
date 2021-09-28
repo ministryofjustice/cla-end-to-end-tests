@@ -2,20 +2,12 @@
 This is the behave end to end tests which cover the CLA applications for the laa-cla-fala team.
 
 ## Current state of affairs
-This currently works locally in a python venv:
+This now works within two docker containers locally.
 
-`python3 -m venv env`
+The end to end tests use the Dockerfile for running the tests, and a standalone-chrome docker container done by selenium here [selenium-docker](https://github.com/SeleniumHQ/docker-selenium)
 
-then
+The commands to get this running are:
 
-`source env/bin/activate`
+`docker-compose up -d --build`
 
-Install packages from requirements.txt
-
-You will need to install the chromedriver from here:
-
-[chromedriver link](http://chromedriver.chromium.org/downloads)
-
-Once thats done you should just be able to run the tests using the command:
-
-`behave`
+`docker-compose up cla-end-to-end`
