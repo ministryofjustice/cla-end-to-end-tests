@@ -17,7 +17,7 @@ RUN apk add --no-cache \
       python3-dev && \
     pip3 install -U setuptools pip==18.1 wheel
 
-COPY /features/steps/requirements.txt requirements.txt
+COPY requirements.txt requirements.txt
 RUN pip3 install -r ./requirements.txt
 
 COPY ./wrapper.sh wrapper.sh
