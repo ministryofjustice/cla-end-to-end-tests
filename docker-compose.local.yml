@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  clafrontend:
+    build: https://github.com/ministryofjustice/cla_frontend.git#master
+  clabackend:
+    build: https://github.com/ministryofjustice/cla_backend.git#master

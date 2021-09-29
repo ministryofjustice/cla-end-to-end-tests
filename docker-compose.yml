@@ -22,7 +22,7 @@ services:
     shm_size: 2g
 
   clafrontend:
-    build: https://github.com/ministryofjustice/cla_frontend.git#master
+    image: ${CLA_FRONTEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend:master}
     ports:
       - "8001:80"
     depends_on:
@@ -46,7 +46,7 @@ services:
       POSTGRES_DB: cla_backend
 
   clabackend:
-    build: https://github.com/ministryofjustice/cla_backend.git#master
+    image: ${CLA_BACKEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:master}
     ports:
       - "8000:80"
     depends_on:
