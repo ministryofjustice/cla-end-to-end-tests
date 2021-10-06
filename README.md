@@ -6,8 +6,8 @@ This now works within two docker containers locally.
 
 The end to end tests use the Dockerfile for running the tests, and a standalone-chrome docker container done by selenium here [selenium-docker](https://github.com/SeleniumHQ/docker-selenium)
 
-The commands to get this running are:
+The commands to get this running locally are:
 
-`docker-compose up -d --build`
+`docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d --build`
 
 `docker-compose up cla-end-to-end`

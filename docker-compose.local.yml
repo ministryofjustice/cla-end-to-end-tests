@@ -1,6 +1,9 @@
 version: '3.8'
 
 services:
+  cla-end-to-end:
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
   clafrontend:
     build: https://github.com/ministryofjustice/cla_frontend.git#master
   clabackend:
