@@ -11,3 +11,5 @@ The commands to get this running locally are:
 `docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d --build`
 
 `docker-compose up cla-end-to-end`
+
+`docker-compose run --entrypoint /bin/bash cla-end-to-end`
