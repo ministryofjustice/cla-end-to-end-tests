@@ -2,6 +2,20 @@ version: '3.4'
 
 
 services:
+  start_applications:
+    image: jwilder/dockerize
+    command: >
+      -wait tcp://clafrontend:8000
+      -wait tcp://clasocketserver:8005
+      -wait tcp://clabackend:8000
+      -wait tcp://seleniumchrome:4444
+      -wait-retry-interval 2s
+      -timeout 180s
+    depends_on:
+      - clafrontend
+      - clabackend
+      - seleniumchrome
+
   cla-end-to-end:
     build: .
     volumes:
@@ -33,6 +47,7 @@ services:
       - "8001:80"
     depends_on:
       - clabackend
+      - clasocketserver
     environment:
       ENV: local
       DEBUG: "True"

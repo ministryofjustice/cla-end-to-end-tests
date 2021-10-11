@@ -17,6 +17,14 @@ jobs:
           command: |
             docker-compose pull
             docker-compose build
+      - run:
+          name: Check services are up
+          command: |
+            docker-compose run start_applications
+      - run:
+          name: Run behave tests
+          command: |
+            docker-compose run cla-end-to-end
 workflows:
   version: 2
   run-tests:
