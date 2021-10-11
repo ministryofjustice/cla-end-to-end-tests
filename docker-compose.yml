@@ -9,7 +9,7 @@ services:
       -wait tcp://clasocketserver:8005
       -wait tcp://clabackend:8000
       -wait tcp://seleniumchrome:4444
-      -wait-retry-interval 2s
+      -wait-retry-interval 10s
       -timeout 180s
     depends_on:
       - clafrontend
