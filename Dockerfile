@@ -1,5 +1,7 @@
 FROM alpine:3.9
 
+ARG local
+
 RUN apk add --no-cache \
       bash \
       py3-pip \
@@ -19,6 +21,9 @@ RUN apk add --no-cache \
 
 COPY requirements.txt requirements.txt
 RUN pip3 install -r ./requirements.txt
+
+RUN mkdir /behave
+COPY . /behave
 
 COPY ./wrapper.sh wrapper.sh
 

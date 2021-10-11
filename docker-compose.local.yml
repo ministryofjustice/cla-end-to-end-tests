@@ -1,7 +1,9 @@
-version: '3.8'
+version: '3.4'
 
 services:
   cla-end-to-end:
+    volumes:
+      - .:/behave_local2
     stdin_open: true # docker run -i
     tty: true        # docker run -t
   clafrontend:

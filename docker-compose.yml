@@ -19,7 +19,7 @@ services:
   cla-end-to-end:
     build: .
     volumes:
-      - .:/behave
+      - .:/behave_local
     ports:
       - "8002:80"
     depends_on:
