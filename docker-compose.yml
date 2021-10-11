@@ -64,7 +64,9 @@ services:
       STATIC_FILES_BACKEND: local
 
   db:
-    image: postgres
+    image: postgres:9.4-alpine
+    ports:
+      - '5432:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
