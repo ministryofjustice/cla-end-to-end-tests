@@ -1,6 +1,4 @@
-import pdb
 import requests
-from pdb import Pdb
 
 from behave import *
     
@@ -10,11 +8,18 @@ def step_impl(context):
     context.response = requests.get('http://clabackend:8000/status/')
 
 
-@then(u'I am shown that the service is ready')
+@given(u'I go to the cla frontend status endpoint')
+def step_impl(context):
+    context.response_ready = requests.get('http://clafrontend:8000/status/ready')
+    context.response_live = requests.get('http://clafrontend:8000/status/live')
+    
+
+@then(u'I am shown that the cla backend service is ready')
 def step_impl(context):
     assert context.response.json()['db']['ready'] == True
 
-@given(u'I go to the cla frontend status endpoint')
+
+@then(u'I am shown that the cla frontend service is ready')
 def step_impl(context):
-    pdb.set_trace()
-    context.response = requests.get('http://clafrontend:8000/status/status.json')
+    assert context.response_ready.status_code == 200
+    assert context.response_live.status_code == 200

@@ -5,8 +5,8 @@ Feature: Smoke test
 
   Scenario: Cla backend check
     Given I go to the cla backend status endpoint
-    Then I am shown that the service is ready
+    Then I am shown that the cla backend service is ready
 
   Scenario: Cla frontend check
     Given I go to the cla frontend status endpoint
-    Then I am shown that the service is ready
+    Then I am shown that the cla frontend service is ready
