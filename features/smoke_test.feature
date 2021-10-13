@@ -4,9 +4,13 @@ Feature: Smoke test
   So that I know I can run tests on them.
 
   Scenario: Cla backend check
-    Given I go to the cla backend status endpoint
-    Then I am shown that the cla backend service is ready
+    Given I go to the "cla backend" status endpoint
+    Then I am shown that the "cla backend" service is ready
 
   Scenario: Cla frontend check
-    Given I go to the cla frontend status endpoint
-    Then I am shown that the cla frontend service is ready
+    Given I go to the "cla frontend" status endpoint
+    Then I am shown that the "cla frontend" service is ready
+
+  Scenario: Cla public check
+    Given I go to the "cla public" status endpoint
+    Then I am shown that the "cla public" service is ready
