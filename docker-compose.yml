@@ -67,7 +67,8 @@ services:
       STATIC_FILES_BACKEND: local
 
   db:
-    image: postgres:9.4-alpine
+    image: postgres
+    # :9.4-alpine
     ports:
       - '5432:5432'
     environment:
@@ -96,7 +97,9 @@ services:
       ALLOWED_HOSTS: "*"
 
   clapublic:
-    image: ${CLA_PUBLIC_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_public:master}
+    # image: ${CLA_PUBLIC_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_public:master}
+    build:
+      context: https://github.com/ministryofjustice/cla_public.git#master
     ports:
       - target: 80
         published: 5000
