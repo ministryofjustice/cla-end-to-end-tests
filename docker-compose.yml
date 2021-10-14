@@ -97,9 +97,7 @@ services:
       ALLOWED_HOSTS: "*"
 
   clapublic:
-    # image: ${CLA_PUBLIC_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_public:master}
-    build:
-      context: https://github.com/ministryofjustice/cla_public.git#master
+    image: ${CLA_PUBLIC_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_public:master}
     ports:
       - target: 80
         published: 5000
