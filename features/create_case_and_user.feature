@@ -12,8 +12,11 @@ Feature: Case and user creation.
      - media code
      - source
 
+Background: Login
+    Given that I am logged in
+
 Scenario: Create a Case and new User.
-    Given that I am on the call centre dashboard page.
+    Given that I am on the 'call centre dashboard' page.
     When I select to 'Create a case'.
     Then I am taken to the 'case details' page.
     And I select 'Create new user'.
