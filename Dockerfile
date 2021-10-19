@@ -1,7 +1,5 @@
 FROM alpine:3.9
 
-ARG local
-
 RUN apk add --no-cache \
       bash \
       py3-pip \
