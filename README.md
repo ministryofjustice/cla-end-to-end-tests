@@ -2,12 +2,18 @@
 This is the behave end to end tests which cover the CLA applications for the laa-cla-fala team.
 
 ## Current state of affairs
-This now works within two docker containers locally.
+The commands to get this running locally are:
 
-The end to end tests use the Dockerfile for running the tests, and a standalone-chrome docker container done by selenium here [selenium-docker](https://github.com/SeleniumHQ/docker-selenium)
+To run the tests locally just run this script:
 
-The commands to get this running are:
+`./run_test_local.sh`
 
-`docker-compose up -d --build`
+If you want a more manual approach:
 
-`docker-compose up cla-end-to-end`
+`export DOCKER_BUILDKIT=0`
+
+to build locally:
+`docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d --build`
+
+bash into the container and run them from there:
+`docker-compose run --entrypoint /bin/bash cla-end-to-end`

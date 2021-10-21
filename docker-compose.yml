@@ -1,16 +1,33 @@
-version: '3.8'
+version: '3.4'
 
 
 services:
+  start_applications:
+    image: jwilder/dockerize
+    command: >
+      -wait tcp://clafrontend:8000
+      -wait tcp://clasocketserver:8005
+      -wait tcp://clabackend:8000
+      -wait tcp://clapublic:8000
+      -wait tcp://seleniumchrome:4444
+      -wait-retry-interval 10s
+      -timeout 180s
+    depends_on:
+      - clapublic
+      - clafrontend
+      - clabackend
+      - seleniumchrome
+
   cla-end-to-end:
     build: .
     volumes:
-      - .:/behave
+      - .:/behave_local
     ports:
       - "8002:80"
     depends_on:
       - clabackend
       - clafrontend
+      - clapublic
       - seleniumchrome
 
   seleniumchrome:
@@ -21,32 +38,45 @@ services:
       - "4444:4444"
     shm_size: 2g
 
+  clasocketserver:
+    build:
+      context: https://github.com/ministryofjustice/cla_frontend.git#master:cla_socketserver
+    environment:
+      SITE_HOSTNAME: clasocketserver
+
   clafrontend:
-    build: https://github.com/ministryofjustice/cla_frontend.git#master
+    image: ${CLA_FRONTEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend:master}
     ports:
       - "8001:80"
     depends_on:
       - clabackend
+      - clasocketserver
     environment:
       ENV: local
       DEBUG: "True"
       SECRET_KEY: CHANGE_ME
-      BACKEND_BASE_URI: http://clafrontend
+      BACKEND_BASE_URI: http://clabackend:8000
       CALL_CENTRE_CLIENT_ID: b4b9220ffcb11ebfdab1
       CALL_CENTRE_SECRET_ID: 2df71313bdd38a2e1b815015e1b14387e7681d41
       CLA_PROVIDER_CLIENT_ID: 59657ed22d980251cdd3
       CALL_PROVIDER_SECRET_ID: 0494287c65bdf61d29f0eeed467ec8e090f0d80f
-      SOCKETIO_SERVER_URL: /socket.io
+      SOCKETIO_SERVER_URL: http://clasocketserver:8005/socket.io
+      SOCKETIO_SERVICE_URL: clasocketserver:8005/socket.io/
+      OS_PLACES_API_KEY: ${OS_PLACES_API_KEY:-CHANGE_ME}
+      SITE_HOSTNAME: clasocketserver
+      STATIC_FILES_BACKEND: local
 
   db:
-    image: postgres
+    image: postgres:9.4-alpine
+    ports:
+      - '5432:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: cla_backend
 
   clabackend:
-    build: https://github.com/ministryofjustice/cla_backend.git#master
+    image: ${CLA_BACKEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:master}
     ports:
       - "8000:80"
     depends_on:
@@ -64,3 +94,31 @@ services:
       LOAD_TEST_DATA: "True"
       ADMIN_PASSWORD: cla_admin
       ALLOWED_HOSTS: "*"
+
+  clapublic:
+    image: ${CLA_PUBLIC_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_public:master}
+    ports:
+      - target: 80
+        published: 5000
+        protocol: tcp
+        mode: host
+    environment:
+      HOST_NAME: "clapublic"
+      SECRET_KEY: CHANGE_ME
+      BACKEND_BASE_URI: http://clabackend:8000
+      CLA_ENV: dev
+      ZENDESK_API_USERNAME: ""
+      ZENDESK_API_TOKEN: ""
+      SMTP_HOST: ""
+      SMTP_USER: ""
+      SMTP_PASSWORD: ""
+      RAVEN_CONFIG_DSN: ""
+      RAVEN_CONFIG_SITE: ""
+      SENTRY_DSN: ${SENTRY_DSN:-CHANGE_ME}
+      LAALAA_API_HOST: https://laa-legal-adviser-api-staging.apps.live-1.cloud-platform.service.justice.gov.uk
+      MOJ_GA_ID: "UA-XXXXXXXX-X1"
+      GDS_GA_ID: "UA-XXXXXXXX-X2"
+      GOOGLE_MAPS_API_KEY: AIzaSyBVsZmfkiRFNNMJnPraN_8sBW3Dj-BFFNs
+      OS_PLACES_API_KEY: ${OS_PLACES_API_KEY:-CHANGE_ME}
+    depends_on:
+      - clabackend

@@ -20,6 +20,9 @@ RUN apk add --no-cache \
 COPY requirements.txt requirements.txt
 RUN pip3 install -r ./requirements.txt
 
+RUN mkdir /behave
+COPY . /behave
+
 COPY ./wrapper.sh wrapper.sh
 
 ENTRYPOINT ["./wrapper.sh"]
