@@ -3,14 +3,20 @@ from behave import *
 
 @given(u'that I am logged in')
 def step_impl(context):
-    page = context.helperfunc.open('https://training.cases.civillegaladvice.service.gov.uk/call_centre/')
-    form = page.find_by_name('login_frm')
-    # raise NotImplementedError(u'STEP: Given that I am logged in')
+    login_url = f"{context.config.userdata['cla_frontend_url']}/auth/login/"
+    context.helperfunc.open(login_url)
+    form = context.helperfunc.find_by_name('login_frm')
+    form.find_element_by_name("username").send_keys("test")
+    form.find_element_by_name("password").send_keys("test")
+    form.find_element_by_name("login-submit").click()
+    element = context.helperfunc.find_by_xpath("//html[@ng-app='cla.operatorApp']")
+    assert element is not None
 
 
 @given(u'that I am on the \'call centre dashboard\' page.')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Given that I am on the \'call centre dashboard\' page.')
+    current_path = context.helperfunc.get_current_path()
+    assert current_path == "/call_centre/"
 
 
 @when(u'I select to \'Create a case\'.')
