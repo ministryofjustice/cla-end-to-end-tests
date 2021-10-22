@@ -22,8 +22,6 @@ services:
     build: .
     volumes:
       - .:/behave_local
-    ports:
-      - "8002:80"
 
   seleniumchrome:
     image: selenium/standalone-chrome:latest
@@ -42,7 +40,7 @@ services:
   clafrontend:
     image: ${CLA_FRONTEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend:master}
     ports:
-      - "8001:80"
+      - "8001:8001"
     depends_on:
       - clabackend
       - clasocketserver
@@ -73,7 +71,7 @@ services:
   clabackend:
     image: ${CLA_BACKEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:master}
     ports:
-      - "8000:80"
+      - "8000:8000"
     depends_on:
       - db
     environment:
