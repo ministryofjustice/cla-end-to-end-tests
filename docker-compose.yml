@@ -24,11 +24,6 @@ services:
       - .:/behave_local
     ports:
       - "8002:80"
-    depends_on:
-      - clabackend
-      - clafrontend
-      - clapublic
-      - seleniumchrome
 
   seleniumchrome:
     image: selenium/standalone-chrome:latest
