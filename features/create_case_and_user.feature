@@ -15,7 +15,7 @@ Feature: Case and user creation.
 Background: Login
     Given that I am logged in
 
-@frontend.createuser
+@createuser
 Scenario: Create a Case and new User.
     Given that I am on the 'call centre dashboard' page.
     When I select to 'Create a case'.

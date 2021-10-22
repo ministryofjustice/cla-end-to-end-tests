@@ -3,12 +3,15 @@ from behave import *
 
 @given(u'that I am logged in')
 def step_impl(context):
-    login_url = f"{context.config.userdata['cla_frontend_url']}/auth/login/"
+
+    config = context.config.userdata
+    login_url = f"{config['cla_frontend_url']}/auth/login/"
     context.helperfunc.open(login_url)
     form = context.helperfunc.find_by_name('login_frm')
-    form.find_element_by_name("username").send_keys("test")
-    form.find_element_by_name("password").send_keys("test")
+    form.find_element_by_name("username").send_keys(config["cla_frontend_operator_username"])
+    form.find_element_by_name("password").send_keys(config["cla_frontend_operator_password"])
     form.find_element_by_name("login-submit").click()
+
     element = context.helperfunc.find_by_xpath("//html[@ng-app='cla.operatorApp']")
     assert element is not None
 
