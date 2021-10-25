@@ -1,4 +1,6 @@
 import re
+from features.constants import CLA_FRONTEND_PERSONAL_DETAILS_FORM
+from selenium.webdriver.support.ui import Select
 from behave import *
 
 
@@ -47,13 +49,22 @@ def step_impl(context):
 
 @then(u'enter the client\'s personal details.')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Then enter the client\'s personal details.')
+    personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM
+
+    for name, value in personal_details_form.items():
+        element = context.helperfunc.find_by_name(name)
+        if element.tag_name == 'select':
+            select_element = Select(element)
+            select_element.select_by_value(value)
+        else:
+            element.send_keys(value)
 
 
 @then(u'I click the save button on the screen.')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Then I click the save button on the screen.')
-
+    btn = context.helperfunc.find_by_name("save-personal-details")
+    assert btn is not None
+    btn.click()
 
 @then(u'I will see the users details.')
 def step_impl(context):
