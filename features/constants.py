@@ -8,7 +8,7 @@ CLA_FRONTEND_PERSONAL_DETAILS_FORM = {
     "dob_month": "1",
     "dob_year": "1990",
     "ni_number": "KB902094B",
-    "adaptations": "string:no_adaptations_required",
-    "media_code": "DK", # Don't Know,
-    "source": "PHONE"
+    "adaptations": "No adaptations required",
+    "media_code": "Don't Know",
+    "source": "Phone"
 }

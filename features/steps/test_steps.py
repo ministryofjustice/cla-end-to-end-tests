@@ -1,4 +1,5 @@
 import re
+import time
 from features.constants import CLA_FRONTEND_PERSONAL_DETAILS_FORM
 from selenium.webdriver.support.ui import Select
 from behave import *
@@ -6,7 +7,6 @@ from behave import *
 
 @given(u'that I am logged in')
 def step_impl(context):
-
     config = context.config.userdata
     login_url = f"{config['cla_frontend_url']}/auth/login/"
     context.helperfunc.open(login_url)
@@ -50,22 +50,29 @@ def step_impl(context):
 @then(u'enter the client\'s personal details.')
 def step_impl(context):
     personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM
-
     for name, value in personal_details_form.items():
         element = context.helperfunc.find_by_name(name)
+        assert element is not None
         if element.tag_name == 'select':
             select_element = Select(element)
-            select_element.select_by_value(value)
+            select_element.select_by_visible_text(value)
         else:
             element.send_keys(value)
 
 
 @then(u'I click the save button on the screen.')
 def step_impl(context):
+    form = context.helperfunc.find_by_name("personaldetails_frm")
     btn = context.helperfunc.find_by_name("save-personal-details")
     assert btn is not None
     btn.click()
+    time.sleep(2)
+    assert not form.is_displayed()
+
 
 @then(u'I will see the users details.')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Then I will see the users details.')
+    personal_details = context.helperfunc.find_by_id("personal_details").text
+    personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM
+    for name, value in personal_details_form.items():
+        assert value in personal_details
