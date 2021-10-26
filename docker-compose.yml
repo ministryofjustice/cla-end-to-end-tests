@@ -22,13 +22,6 @@ services:
     build: .
     volumes:
       - .:/behave_local
-    ports:
-      - "8002:80"
-    depends_on:
-      - clabackend
-      - clafrontend
-      - clapublic
-      - seleniumchrome
 
   seleniumchrome:
     image: selenium/standalone-chrome:latest
@@ -47,7 +40,7 @@ services:
   clafrontend:
     image: ${CLA_FRONTEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend:master}
     ports:
-      - "8001:80"
+      - "8011:8000"
     depends_on:
       - clabackend
       - clasocketserver
@@ -59,12 +52,14 @@ services:
       CALL_CENTRE_CLIENT_ID: b4b9220ffcb11ebfdab1
       CALL_CENTRE_SECRET_ID: 2df71313bdd38a2e1b815015e1b14387e7681d41
       CLA_PROVIDER_CLIENT_ID: 59657ed22d980251cdd3
-      CALL_PROVIDER_SECRET_ID: 0494287c65bdf61d29f0eeed467ec8e090f0d80f
+      CLA_PROVIDER_SECRET_ID: 0494287c65bdf61d29f0eeed467ec8e090f0d80f
       SOCKETIO_SERVER_URL: http://clasocketserver:8005/socket.io
       SOCKETIO_SERVICE_URL: clasocketserver:8005/socket.io/
       OS_PLACES_API_KEY: ${OS_PLACES_API_KEY:-CHANGE_ME}
       SITE_HOSTNAME: clasocketserver
       STATIC_FILES_BACKEND: local
+      ALLOWED_HOSTS: "*"
+      SESSION_COOKIE_SECURE: "False"
 
   db:
     image: postgres:9.4-alpine
@@ -78,7 +73,7 @@ services:
   clabackend:
     image: ${CLA_BACKEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:master}
     ports:
-      - "8000:80"
+      - "8010:8000"
     depends_on:
       - db
     environment:
@@ -92,6 +87,7 @@ services:
       DB_PORT: 5432
       BACKEND_ENABLED: "True"
       LOAD_TEST_DATA: "True"
+      ADMIN_USER: cla_admin
       ADMIN_PASSWORD: cla_admin
       ALLOWED_HOSTS: "*"
 

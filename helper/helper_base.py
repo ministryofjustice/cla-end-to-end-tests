@@ -1,7 +1,9 @@
+from urllib.parse import urlparse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
- 
+
+
 class HelperFunc(object):
     __TIMEOUT = 10
  
@@ -31,4 +33,7 @@ class HelperFunc(object):
         return self._driver_wait.until(EC.visibility_of_element_located((By.ID, id)))
 
     def find_by_partial_link_text(self, text):
-        return self._driver_wait.until(EC.visibility_of_element_located((By.PARTIAL_LINK_TEXT, text))) 
+        return self._driver_wait.until(EC.visibility_of_element_located((By.PARTIAL_LINK_TEXT, text)))
+
+    def get_current_path(self):
+        return urlparse(self._driver.current_url).path

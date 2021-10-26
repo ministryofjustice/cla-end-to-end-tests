@@ -13,6 +13,7 @@ def step_impl(context, service):
     elif service == "cla public":
         context.response = requests.get('http://clapublic:8000/ping.json')
 
+
 @then(u'I am shown that the "{service}" service is ready')
 def step_impl(context, service):
     if service == "cla backend":
