@@ -8,9 +8,8 @@ Background: Login
 
 Scenario: Given an INSCOPE decision when selecting discrimination at work
     Given I am on the 'case details' page
-    And a user has been created
     When I select ‘Create Scope Diagnosis'￼
-    And I select the categories Discrimination, Direct Discrimination, Disability, Work￼
+    And I select the categories Discrimination, Direct Discrimination, Disability, Work
     Then I get an INSCOPE decision￼
     And select 'Create financial assessment'￼
     Then I am taken to the Finances tab with the ‘Details’ sub-tab preselected
