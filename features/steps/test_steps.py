@@ -20,25 +20,25 @@ def step_impl(context):
     assert element is not None
 
 
-@given(u'that I am on the \'call centre dashboard\' page.')
+@given(u'that I am on the \'call centre dashboard\' page')
 def step_impl(context):
     current_path = context.helperfunc.get_current_path()
     assert current_path == "/call_centre/"
 
 
-@when(u'I select to \'Create a case\'.')
+@step(u'I select to \'Create a case\'')
 def step_impl(context):
     context.helperfunc.find_by_id("create_case").click()
 
 
-@then(u'I am taken to the \'case details\' page.')
+@then(u'I am taken to the \'case details\' page')
 def step_impl(context):
     assert context.helperfunc.find_by_xpath("//header/h1").text == "Case details"
     current_path = context.helperfunc.get_current_path()
     assert re.match(r"^/call_centre/\w{2}-\d{4}-\d{4}/diagnosis/$", current_path)
 
 
-@then(u'I select \'Create new user\'.')
+@then(u'I select \'Create new user\'')
 def step_impl(context):
     btn = context.helperfunc.find_by_name("create-newuser")
     assert btn is not None
@@ -47,7 +47,7 @@ def step_impl(context):
     assert form.is_displayed()
 
 
-@then(u'enter the client\'s personal details.')
+@then(u'enter the client\'s personal details')
 def step_impl(context):
     personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM
     for name, value in personal_details_form.items():
@@ -60,7 +60,7 @@ def step_impl(context):
             element.send_keys(value)
 
 
-@then(u'I click the save button on the screen.')
+@then(u'I click the save button on the screen')
 def step_impl(context):
     form = context.helperfunc.find_by_name("personaldetails_frm")
     btn = context.helperfunc.find_by_name("save-personal-details")
@@ -70,7 +70,7 @@ def step_impl(context):
     assert not form.is_displayed()
 
 
-@then(u'I will see the users details.')
+@then(u'I will see the users details')
 def step_impl(context):
     personal_details = context.helperfunc.find_by_id("personal_details").text
     personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM

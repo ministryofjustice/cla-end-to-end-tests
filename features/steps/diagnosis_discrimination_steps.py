@@ -2,15 +2,7 @@ from behave import *
 import re
 
 
-@given(u'I am on the \'case details\' page')
-def step_impl(context):
-    context.helperfunc.find_by_id("create_case").click()
-    assert context.helperfunc.find_by_xpath("//header/h1").text == "Case details"
-    current_path = context.helperfunc.get_current_path()
-    assert re.match(r"^/call_centre/\w{2}-\d{4}-\d{4}/diagnosis/$", current_path)
-
-
-@when(u'I select ‘Create Scope Diagnosis\'￼')
+@when(u'I select ‘Create Scope Diagnosis\'')
 def step_impl(context):
     context.helperfunc.find_by_name("diagnosis-new").click()
 
@@ -44,13 +36,13 @@ def step_impl(context):
     assert context.helperfunc.find_by_partial_link_text('Create financial assessment').is_displayed()
 
 
-@then(u'I get an INSCOPE decision￼')
+@then(u'I get an INSCOPE decision')
 def step_impl(context):
     text = context.helperfunc.find_by_name('diagnosis-form').text
     assert "INSCOPE" in text
 
 
-@then(u'select \'Create financial assessment\'￼')
+@then(u'select \'Create financial assessment\'')
 def step_impl(context):
     context.helperfunc.find_by_partial_link_text('Create financial assessment').click()
 
