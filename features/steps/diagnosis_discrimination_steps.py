@@ -1,5 +1,4 @@
 from behave import *
-import re
 
 
 @when(u'I select ‘Create Scope Diagnosis\'')
