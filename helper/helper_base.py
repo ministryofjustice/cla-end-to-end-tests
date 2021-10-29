@@ -25,12 +25,18 @@ class HelperFunc(object):
  
     def find_by_xpath(self, xpath):
         return self._driver_wait.until(EC.visibility_of_element_located((By.XPATH, xpath)))
+
+    def find_by_css_selector(self, css):
+        return self._driver_wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, css)))
  
     def find_by_name(self, name):
         return self._driver_wait.until(EC.visibility_of_element_located((By.NAME, name)))
  
     def find_by_id(self, id):
         return self._driver_wait.until(EC.visibility_of_element_located((By.ID, id)))
+
+    def find_by_class(self, class_name):
+        return self._driver_wait.until(EC.visibility_of_element_located((By.CLASS_NAME, class_name)))
 
     def find_by_partial_link_text(self, text):
         return self._driver_wait.until(EC.visibility_of_element_located((By.PARTIAL_LINK_TEXT, text)))
