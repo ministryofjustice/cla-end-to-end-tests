@@ -20,7 +20,12 @@ def step_impl(context):
 
 @given(u'I have created a valid discrimination scope')
 def step_impl(context):
-    create_valid_discrimination_scope(context)
+    context.execute_steps(u'''
+        When I select ‘Create Scope Diagnosis'
+        And I select the categories Discrimination, Direct Discrimination, Disability, Work
+        Then I get an INSCOPE decision
+        And select 'Create financial assessment'
+    ''')
 
 
 @given(u'I am on the Diversity tab')
