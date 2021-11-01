@@ -20,18 +20,25 @@ def step_impl(context):
 
 @when(u'I do not have a partner')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: When I do not have a partner')
+    radio_input = context.helperfunc.find_by_css_selector("input[name='your_details-has_partner'][value='false']")
+    assert radio_input is not None
+    radio_input.click()
+    assert radio_input.get_attribute("checked") == "true"
 
 
 @when(u'I am not aged 60 or over')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: When I am not aged 60 or over')
-
+    radio_input = context.helperfunc.find_by_css_selector("input[name='your_details-older_than_sixty'][value='false']")
+    assert radio_input is not None
+    radio_input.click()
+    assert radio_input.get_attribute("checked") == "true"
 
 @when(u'I am on universal credit benefits')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: When I am on universal credit benefits')
-
+    radio_input = context.helperfunc.find_by_css_selector("input[name='your_details-specific_benefits-universal_credit'][value='false']")
+    assert radio_input is not None
+    radio_input.click()
+    assert radio_input.get_attribute("checked") == "true"
 
 @when(u'I move onto Finances tab')
 def step_impl(context):
