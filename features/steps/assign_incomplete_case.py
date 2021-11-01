@@ -1,5 +1,4 @@
 from behave import *
-from create_scope_helper import create_valid_discrimination_scope
 from create_eligible_finances import create_eligible_finance
 
 
