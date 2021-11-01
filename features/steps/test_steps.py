@@ -38,7 +38,7 @@ def step_impl(context):
     assert re.match(r"^/call_centre/\w{2}-\d{4}-\d{4}/diagnosis/$", current_path)
 
 
-@then(u'I select \'Create new user\'')
+@step(u'I select \'Create new user\'')
 def step_impl(context):
     btn = context.helperfunc.find_by_name("create-newuser")
     assert btn is not None
@@ -47,7 +47,7 @@ def step_impl(context):
     assert form.is_displayed()
 
 
-@then(u'enter the client\'s personal details')
+@step(u'enter the client\'s personal details')
 def step_impl(context):
     personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM
     for name, value in personal_details_form.items():
@@ -60,7 +60,7 @@ def step_impl(context):
             element.send_keys(value)
 
 
-@then(u'I click the save button on the screen')
+@step(u'I click the save button on the screen')
 def step_impl(context):
     form = context.helperfunc.find_by_name("personaldetails_frm")
     btn = context.helperfunc.find_by_name("save-personal-details")
