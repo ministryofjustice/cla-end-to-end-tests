@@ -1,4 +1,5 @@
 from behave import *
+from selenium.webdriver.common.action_chains import ActionChains
 import re
 
 
@@ -40,30 +41,46 @@ def step_impl(context):
     radio_input.click()
     assert radio_input.get_attribute("checked") == "true"
 
-@when(u'I move onto Finances tab')
+@when(u'I move onto Finances inner-tab')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: When I move onto Finances tab')
+    page = context.helperfunc
+    finance_inner_tab = page.find_by_xpath("//*[@id='pills-section-list']/li[2]")
+    assert 'Finances' in finance_inner_tab.text
+    actions = ActionChains(page.driver())
+    actions.move_to_element(finance_inner_tab).perform()
+    finance_inner_tab.click()
+    finances_outer_tab = context.helperfunc.find_by_class("Pills-pill.is-active")
+    assert "Finances" in finances_outer_tab.text
 
 
 @when(u'I have no savings in the bank')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: When I have no savings in the bank')
+    label = "How much was in your bank account/building society before your last payment went in? "
+    input = context.helperfunc.find_by_xpath(f"//span[text()='{label}']/../input")
+    assert input is not None
+    input.send_keys('0')
 
 
 @when(u'I have no investments, shares or ISAs')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: When I have no investments, shares or ISAs')
-
+    label = "Do you have any investments, shares or ISAs? "
+    input = context.helperfunc.find_by_xpath(f"//span[text()='{label}']/../input")
+    assert input is not None
+    input.send_keys('0')
 
 @when(u'I have no valuable items worth over £500 each')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: When I have no valuable items worth over £500 each')
-
+    label = "Do you have any valuable items worth over £500 each? "
+    input = context.helperfunc.find_by_xpath(f"//span[text()='{label}']/../input")
+    assert input is not None
+    input.send_keys('0')
 
 @when(u'I have no money owed to me')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: When I have no money owed to me')
-
+    label = "Do you have any money owed to you? "
+    input = context.helperfunc.find_by_xpath(f"//span[text()='{label}']/../input")
+    assert input is not None
+    input.send_keys('0')
 
 @when(u'I select Save assessment')
 def step_impl(context):
