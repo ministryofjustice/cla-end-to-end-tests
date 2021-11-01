@@ -9,6 +9,8 @@ Background: Login
 Scenario: Attempt to assign an incomplete case
     Given I select to 'Create a case'
     And case notes are empty
+    And I have created a user
+    And I have created a valid discrimination scope
     And I am on the Diversity tab
     When I select 'Prefer not say' for all diversity questions
     And select the Assign tab
