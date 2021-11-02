@@ -1,3 +1,5 @@
+import time
+
 from behave import *
 from selenium.webdriver.common.action_chains import ActionChains
 import re
@@ -84,12 +86,18 @@ def step_impl(context):
 
 @when(u'I select Save assessment')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: When I select Save assessment')
+    button = context.helperfunc.find_by_name("save-means-test")
+    assert button is not None
+    button.click()
 
 
 @then(u'I am given a message \'The means test has been saved. The current result is eligible for Legal Aid\'')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Then I am given a message \'The means test has been saved. The current result is eligible for Legal Aid\'')
+    time.sleep(2)
+    element = context.helperfunc.find_by_css_selector(".Notice.Notice--closeable.success")
+    assert element is not None
+    message = 'The means test has been saved. The current result is eligible for Legal Aid'
+    assert element.text == message
 
 
 @then(u'the \'Diversity\' and \'Assign\' tabs become available')

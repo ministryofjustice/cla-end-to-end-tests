@@ -21,7 +21,7 @@ Scenario: Successful means test assessment resulting in user being eligible for 
     When I do not have a partner
     And I am not aged 60 or over
     And I am on universal credit benefits
-    And I move onto Finances sub-tab
+    And I move onto Finances inner-tab
     And I have no savings in the bank
     And I have no investments, shares or ISAs
     And I have no valuable items worth over £500 each
