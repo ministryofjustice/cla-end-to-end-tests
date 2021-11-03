@@ -2,7 +2,7 @@ import time
 
 from behave import *
 from selenium.webdriver.common.action_chains import ActionChains
-import re
+from finance_form_helpers import set_input_field_by_label
 
 
 @given(u'that I am on the case details page')
@@ -34,6 +34,7 @@ def step_impl(context):
     radio_input.click()
     assert radio_input.get_attribute("checked") == "true"
 
+
 @when(u'I am on universal credit benefits')
 def step_impl(context):
     radio_input = context.helperfunc.find_by_css_selector("input[name='your_details-specific_benefits-universal_credit'][value='true']")
@@ -55,27 +56,26 @@ def step_impl(context):
 @when(u'I have no savings in the bank')
 def step_impl(context):
     label = "How much was in your bank account/building society before your last payment went in? "
-    input = context.helperfunc.find_by_xpath(f"//span[text()='{label}']/../input")
-    input.send_keys('0')
+    set_input_field_by_label(context, label, '0')
 
 
 @when(u'I have no investments, shares or ISAs')
 def step_impl(context):
     label = "Do you have any investments, shares or ISAs? "
-    input = context.helperfunc.find_by_xpath(f"//span[text()='{label}']/../input")
-    input.send_keys('0')
+    set_input_field_by_label(context, label, '0')
+
 
 @when(u'I have no valuable items worth over £500 each')
 def step_impl(context):
     label = "Do you have any valuable items worth over £500 each? "
-    input = context.helperfunc.find_by_xpath(f"//span[text()='{label}']/../input")
-    input.send_keys('0')
+    set_input_field_by_label(context, label, '0')
+
 
 @when(u'I have no money owed to me')
 def step_impl(context):
     label = "Do you have any money owed to you? "
-    input = context.helperfunc.find_by_xpath(f"//span[text()='{label}']/../input")
-    input.send_keys('0')
+    set_input_field_by_label(context, label, '0')
+
 
 @when(u'I select Save assessment')
 def step_impl(context):
@@ -86,8 +86,7 @@ def step_impl(context):
 @then(u'I am given a message \'The means test has been saved. The current result is eligible for Legal Aid\'')
 def step_impl(context):
     element = context.helperfunc.find_by_css_selector(".Notice.Notice--closeable.success")
-    message = 'The means test has been saved. The current result is eligible for Legal Aid'
-    assert element.text == message
+    assert element.text == 'The means test has been saved. The current result is eligible for Legal Aid'
 
 
 @then(u'the \'Diversity\' and \'Assign\' tabs become available')
