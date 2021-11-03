@@ -51,8 +51,8 @@ def step_impl(context):
     actions = ActionChains(page.driver())
     actions.move_to_element(finance_inner_tab).perform()
     finance_inner_tab.click()
-    finances_outer_tab = context.helperfunc.find_by_class("Pills-pill.is-active")
-    assert "Finances" in finances_outer_tab.text
+    active_inner_tab = context.helperfunc.find_by_class("Pills-pill.is-active") # Confirm finance inner tab is active
+    assert "Finances" in active_inner_tab.text
 
 
 @when(u'I have no savings in the bank')
