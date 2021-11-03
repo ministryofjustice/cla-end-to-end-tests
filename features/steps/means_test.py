@@ -24,7 +24,6 @@ def step_impl(context):
 @when(u'I do not have a partner')
 def step_impl(context):
     radio_input = context.helperfunc.find_by_css_selector("input[name='your_details-has_partner'][value='false']")
-    assert radio_input is not None
     radio_input.click()
     assert radio_input.get_attribute("checked") == "true"
 
@@ -32,14 +31,12 @@ def step_impl(context):
 @when(u'I am not aged 60 or over')
 def step_impl(context):
     radio_input = context.helperfunc.find_by_css_selector("input[name='your_details-older_than_sixty'][value='false']")
-    assert radio_input is not None
     radio_input.click()
     assert radio_input.get_attribute("checked") == "true"
 
 @when(u'I am on universal credit benefits')
 def step_impl(context):
     radio_input = context.helperfunc.find_by_css_selector("input[name='your_details-specific_benefits-universal_credit'][value='true']")
-    assert radio_input is not None
     radio_input.click()
     assert radio_input.get_attribute("checked") == "true"
 
@@ -59,7 +56,6 @@ def step_impl(context):
 def step_impl(context):
     label = "How much was in your bank account/building society before your last payment went in? "
     input = context.helperfunc.find_by_xpath(f"//span[text()='{label}']/../input")
-    assert input is not None
     input.send_keys('0')
 
 
@@ -67,34 +63,29 @@ def step_impl(context):
 def step_impl(context):
     label = "Do you have any investments, shares or ISAs? "
     input = context.helperfunc.find_by_xpath(f"//span[text()='{label}']/../input")
-    assert input is not None
     input.send_keys('0')
 
 @when(u'I have no valuable items worth over £500 each')
 def step_impl(context):
     label = "Do you have any valuable items worth over £500 each? "
     input = context.helperfunc.find_by_xpath(f"//span[text()='{label}']/../input")
-    assert input is not None
     input.send_keys('0')
 
 @when(u'I have no money owed to me')
 def step_impl(context):
     label = "Do you have any money owed to you? "
     input = context.helperfunc.find_by_xpath(f"//span[text()='{label}']/../input")
-    assert input is not None
     input.send_keys('0')
 
 @when(u'I select Save assessment')
 def step_impl(context):
     button = context.helperfunc.find_by_name("save-means-test")
-    assert button is not None
     button.click()
 
 
 @then(u'I am given a message \'The means test has been saved. The current result is eligible for Legal Aid\'')
 def step_impl(context):
     element = context.helperfunc.find_by_css_selector(".Notice.Notice--closeable.success")
-    assert element is not None
     message = 'The means test has been saved. The current result is eligible for Legal Aid'
     assert element.text == message
 
