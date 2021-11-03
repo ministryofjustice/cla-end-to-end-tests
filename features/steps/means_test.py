@@ -93,7 +93,6 @@ def step_impl(context):
 
 @then(u'I am given a message \'The means test has been saved. The current result is eligible for Legal Aid\'')
 def step_impl(context):
-    time.sleep(2)
     element = context.helperfunc.find_by_css_selector(".Notice.Notice--closeable.success")
     assert element is not None
     message = 'The means test has been saved. The current result is eligible for Legal Aid'
@@ -102,4 +101,11 @@ def step_impl(context):
 
 @then(u'the \'Diversity\' and \'Assign\' tabs become available')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Then the \'Diversity\' and \'Assign\' tabs become available')
+    # Get the parent element of diversity tab
+    # Since it's an <a> tag and sits in a li element which is what gets enabled
+    diversity_tab = context.helperfunc.find_by_xpath(f"//a[text()='Diversity']/..")
+    assert 'is-disabled' not in diversity_tab.get_attribute("class")
+    # Get the parent element of assign tab
+    # Since it's an <a> tag and sits in a li element which is what gets enabled
+    assign_tab = context.helperfunc.find_by_xpath(f"//a[text()='Assign']/..")
+    assert 'is-disabled' not in assign_tab.get_attribute("class")
