@@ -38,7 +38,7 @@ def step_impl(context):
 
 @when(u'I am on universal credit benefits')
 def step_impl(context):
-    radio_input = context.helperfunc.find_by_css_selector("input[name='your_details-specific_benefits-universal_credit'][value='false']")
+    radio_input = context.helperfunc.find_by_css_selector("input[name='your_details-specific_benefits-universal_credit'][value='true']")
     assert radio_input is not None
     radio_input.click()
     assert radio_input.get_attribute("checked") == "true"
