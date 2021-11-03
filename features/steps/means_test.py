@@ -1,5 +1,3 @@
-import time
-
 from behave import *
 from selenium.webdriver.common.action_chains import ActionChains
 from finance_form_helpers import set_input_field_by_label
@@ -11,6 +9,7 @@ def step_impl(context):
         Given I select to 'Create a case'
     ''')
 
+
 @step(u'I am on the Finances tab with the ‘Details’ sub-tab preselected')
 def step_impl(context):
     context.execute_steps(u'''
@@ -20,6 +19,7 @@ def step_impl(context):
         And select 'Create financial assessment'
         Then I am taken to the Finances tab with the ‘Details’ sub-tab preselected
     ''')
+
 
 @when(u'I do not have a partner')
 def step_impl(context):
@@ -40,6 +40,7 @@ def step_impl(context):
     radio_input = context.helperfunc.find_by_css_selector("input[name='your_details-specific_benefits-universal_credit'][value='true']")
     radio_input.click()
     assert radio_input.get_attribute("checked") == "true"
+
 
 @when(u'I move onto Finances inner-tab')
 def step_impl(context):
@@ -91,11 +92,8 @@ def step_impl(context):
 
 @then(u'the \'Diversity\' and \'Assign\' tabs become available')
 def step_impl(context):
-    # Get the parent element of diversity tab
-    # Since it's an <a> tag and sits in a li element which is what gets enabled
-    diversity_tab = context.helperfunc.find_by_xpath(f"//a[text()='Diversity']/..")
+    page = context.helperfunc
+    diversity_tab = page.find_by_partial_link_text("Diversity")
     assert 'is-disabled' not in diversity_tab.get_attribute("class")
-    # Get the parent element of assign tab
-    # Since it's an <a> tag and sits in a li element which is what gets enabled
-    assign_tab = context.helperfunc.find_by_xpath(f"//a[text()='Assign']/..")
+    assign_tab = page.find_by_partial_link_text("Assign")
     assert 'is-disabled' not in assign_tab.get_attribute("class")

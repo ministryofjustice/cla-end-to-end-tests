@@ -9,7 +9,7 @@ Feature: Means test assessment - universal credit
     - Has no valuable items worth over £500 each
     - Has no money owed to them
 
-    That they are eligble for legal aid
+    That they are eligble for legal aid and can be assigned a provider
 
 Background: Login
     Given that I am logged in
