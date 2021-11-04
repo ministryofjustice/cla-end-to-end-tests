@@ -12,3 +12,6 @@ CLA_FRONTEND_PERSONAL_DETAILS_FORM = {
     "media_code": "Don't Know",
     "source": "Phone"
 }
+
+MATTER_TYPE_1 = "QEMP - Employment"
+MATTER_TYPE_2 = "QDIS - Disability"
