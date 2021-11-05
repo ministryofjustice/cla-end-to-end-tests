@@ -1,3 +1,8 @@
+import os
+CLA_BACKEND_URL = os.environ.get("CLA_E2E_BACKEND_URL")
+CLA_FRONTEND_URL = os.environ.get("CLA_E2E_FRONTEND_URL")
+SELENIUM_WEB_DRIVER_URL = os.environ.get("CLA_E2E_SELENIUM_WEB_DRIVER_URL")
+
 CLA_FRONTEND_PERSONAL_DETAILS_FORM = {
     "full_name": "Bob Merchandise",
     "postcode": "SW1H 9AJ",

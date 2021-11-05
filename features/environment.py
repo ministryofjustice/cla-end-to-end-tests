@@ -1,7 +1,8 @@
 import os
 from configparser import ConfigParser
 from helper.helper_web import get_browser
- 
+
+
 def before_all(context):
     config = ConfigParser()
     print((os.path.join(os.getcwd(), 'setup.cfg')))

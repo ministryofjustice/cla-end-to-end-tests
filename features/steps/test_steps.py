@@ -1,6 +1,6 @@
 import re
 import time
-from features.constants import CLA_FRONTEND_PERSONAL_DETAILS_FORM
+from features.constants import CLA_FRONTEND_PERSONAL_DETAILS_FORM, CLA_FRONTEND_URL
 from selenium.webdriver.support.ui import Select
 from behave import *
 
@@ -8,7 +8,7 @@ from behave import *
 @given(u'that I am logged in')
 def step_impl(context):
     config = context.config.userdata
-    login_url = f"{config['cla_frontend_url']}/auth/login/"
+    login_url = f"{CLA_FRONTEND_URL}/auth/login/"
     context.helperfunc.open(login_url)
     form = context.helperfunc.find_by_name('login_frm')
     assert form is not None
