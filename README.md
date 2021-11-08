@@ -27,10 +27,11 @@ pip install -r requirements.txt
 chromedriver # take note of the port listed. Will stay running in the foreground
 ```
 
-Export the following environment variables in your host machine
+### Running the tests
 ```
-export CLA_E2E_BACKEND_URL=http://localhost:8010
-export CLA_E2E_FRONTEND_URL=http://localhost:8011
-export CLA_E2E_SELENIUM_WEB_DRIVER_URL=http://localhost:9515
+# Run all the tests
+./run_test_local_chrome_driver.sh
+
+# Run tests with the "createuser" tag
+./run_test_local_chrome_driver.sh -t "createuser"
 ```
-Finally run the tests in your host running `behave` in your host terminal
