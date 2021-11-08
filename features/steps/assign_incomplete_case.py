@@ -32,6 +32,8 @@ def step_impl(context):
 def step_impl(context):
     create_eligible_finance(context)
     context.helperfunc.find_by_partial_link_text("Diversity").click()
+    # Todo: Remove when heather has added the retrying failing tests work in
+    import time;time.sleep(3)
     assert "Gender" in context.helperfunc.find_by_css_selector("h2[class='FormBlock-label ng-binding']").text
 
 
