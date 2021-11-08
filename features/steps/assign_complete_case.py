@@ -43,4 +43,15 @@ def step_impl_one_provider(context):
     # Find matter type 2 wrapper and focus on it
     form = context.helperfunc.find_by_name('assign_provider_form')
     headings = form.find_elements_by_css_selector("h2.ContactBlock-heading")
+    context.provider_selected = headings[0].text
     assert len(headings) == 1
+
+@when(u'I select \'Assign Provider\'')
+def step_impl_assign_provider(context):
+    context.case_id = context.helperfunc.find_by_css_selector('.CaseBar-caseNum a').text
+    context.helperfunc.find_by_name("assign-provider").click()
+
+@then(u'the case is assigned to the Specialist Provider')
+def step_impl_case_assigned(context):
+    element = context.helperfunc.find_by_css_selector(".NoticeContainer--fixed li.Notice")
+    assert element.text == f'Case {context.case_id} assigned to {context.provider_selected}'
