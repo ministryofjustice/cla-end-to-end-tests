@@ -14,7 +14,6 @@ def step_impl(context):
 def step_impl(context):
     context.execute_steps(u'''
         Given I have created a valid discrimination scope
-        And select 'Create financial assessment'
         Then I am taken to the Finances tab with the ‘Details’ sub-tab preselected
     ''')
 
