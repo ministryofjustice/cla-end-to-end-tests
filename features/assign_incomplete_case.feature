@@ -5,7 +5,7 @@ Feature: Assign incomplete case.
 
 Background: Login
     Given that I am logged in
-@wip
+
 Scenario: Attempt to assign an incomplete case
     Given I select to 'Create a case'
     And case notes are empty
