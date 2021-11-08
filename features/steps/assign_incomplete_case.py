@@ -18,7 +18,7 @@ def step_impl(context):
     ''')
 
 
-@given(u'I have created a valid discrimination scope')
+@step(u'I have created a valid discrimination scope')
 def step_impl(context):
     context.execute_steps(u'''
         When I select ‘Create Scope Diagnosis'

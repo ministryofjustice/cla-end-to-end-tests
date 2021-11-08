@@ -13,9 +13,7 @@ def step_impl(context):
 @step(u'I am on the Finances tab with the ‘Details’ sub-tab preselected')
 def step_impl(context):
     context.execute_steps(u'''
-        When I select ‘Create Scope Diagnosis'
-        And I select the categories Discrimination, Direct Discrimination, Disability, Work
-        Then I get an INSCOPE decision
+        Given I have created a valid discrimination scope
         And select 'Create financial assessment'
         Then I am taken to the Finances tab with the ‘Details’ sub-tab preselected
     ''')

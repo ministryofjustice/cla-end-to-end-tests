@@ -41,7 +41,7 @@ def step_impl(context):
     assert "INSCOPE" in text
 
 
-@then(u'select \'Create financial assessment\'')
+@step(u'select \'Create financial assessment\'')
 def step_impl(context):
     context.helperfunc.find_by_partial_link_text('Create financial assessment').click()
 
