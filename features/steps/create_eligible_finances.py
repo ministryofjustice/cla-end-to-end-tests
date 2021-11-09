@@ -23,11 +23,10 @@ def create_eligible_finance(context):
     # click no to employment support
     page.find_by_css_selector("input[name='your_details-specific_benefits-employment_support'][value='false']").click()
 
-    # This clicks to the 'finance' tab ... in the finance tab. 
-    actions = ActionChains(page.driver())
-    finance_tab = page.find_by_xpath("//*[@id='pills-section-list']/li[2]")
-    actions.move_to_element(finance_tab).perform()
-    finance_tab.click()
+    context.helperfunc.scroll_to_top()
+    # This clicks to the 'finance' tab ... in the finance tab.
+    tabs = page.find_by_css_selector(".Toolbar #pills-section-list")
+    tabs.find_element_by_link_text("Finances").click()
 
     page.find_by_css_selector("input[ng-model='eligibility_check.you.savings.bank_balance']").send_keys('0')
 
