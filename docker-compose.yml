@@ -60,6 +60,8 @@ services:
       SOCKETIO_SERVER_URL: http://clasocketserver:8005/socket.io
       SOCKETIO_SERVICE_URL: clasocketserver:8005/socket.io/
       OS_PLACES_API_KEY: ${OS_PLACES_API_KEY:-CHANGE_ME}
+      GA_ID: ${GA_ID:-CHANGE_ME}
+      GA_DOMAIN:  ${GA_DOMAIN:-localhost}
       SITE_HOSTNAME: clasocketserver
       STATIC_FILES_BACKEND: local
       ALLOWED_HOSTS: "*"
