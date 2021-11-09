@@ -14,11 +14,6 @@ def step_impl_case_notes(context, case_notes_text):
 
 @when(u'I select a category from Matter Type 1')
 def step_impl_matter_type1(context):
-    # Todo: Remove - Only used to aid in the writing of this test whilst some base tests are being developed by others
-    # Created a dummy case with all the prerequisites required to assign a case
-    # login_url = f"{CLA_FRONTEND_URL}/call_centre/RY-6964-7113/assign/"
-    # context.helperfunc.open(login_url)
-
     # Find matter type 1 wrapper and focus on it
     element = context.helperfunc.find_by_css_selector('#s2id_matter_type1')
     element.click()
@@ -62,12 +57,12 @@ def step_impl_case_assigned(context):
     wait.until(wait_until_case_is_assigned)
 
 @then(u'I am taken to the call centre dashboard')
-def step_impl(context):
+def step_impl_taken_to_call_centre_dashboard(context):
     current_path = context.helperfunc.get_current_path()
     assert current_path == "/call_centre/"
 
 @then(u'the case does not show up on the call centre dashboard')
-def step_impl(context):
+def step_impl_case_removed_from_list(context):
     dashboard_url = f"{CLA_FRONTEND_URL}/call_centre/?ordering=-modified&page=1"
     context.helperfunc.open(dashboard_url)
     table = context.helperfunc.find_by_css_selector(".ListTable")
