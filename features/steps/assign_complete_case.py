@@ -1,4 +1,5 @@
 from behave import *
+from selenium.webdriver.support.ui import WebDriverWait
 from features.constants import MATTER_TYPE_1, MATTER_TYPE_2, CLA_FRONTEND_URL
 
 
@@ -53,5 +54,22 @@ def step_impl_assign_provider(context):
 
 @then(u'the case is assigned to the Specialist Provider')
 def step_impl_case_assigned(context):
-    element = context.helperfunc.find_by_css_selector(".NoticeContainer--fixed li.Notice")
-    assert element.text == f'Case {context.case_id} assigned to {context.provider_selected}'
+
+    def wait_until_case_is_assigned(*args):
+        element = context.helperfunc.find_by_css_selector(".NoticeContainer--fixed li.Notice")
+        return element is not None and element.text == f'Case {context.case_id} assigned to {context.provider_selected}'
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_until_case_is_assigned)
+
+@then(u'I am taken to the call centre dashboard')
+def step_impl(context):
+    current_path = context.helperfunc.get_current_path()
+    assert current_path == "/call_centre/"
+
+@then(u'the case does not show up on the call centre dashboard')
+def step_impl(context):
+    dashboard_url = f"{CLA_FRONTEND_URL}/call_centre/?ordering=-modified&page=1"
+    context.helperfunc.open(dashboard_url)
+    table = context.helperfunc.find_by_css_selector(".ListTable")
+    assert context.case_id not in table.text
+

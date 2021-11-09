@@ -12,11 +12,10 @@ Scenario: Attempt to assign an incomplete case
     And I am on the Diversity tab
     When I select 'Prefer not say' for all diversity questions
     And select the Assign tab
-
     When I select a category from Matter Type 1
     And I select a category from Matter Type 2
     And there is only one provider
     And I select 'Assign Provider'
     Then the case is assigned to the Specialist Provider
-#    And I am taken to the call centre dashboard
-#    And the case does not show up on the call centre dashboard
+    And I am taken to the call centre dashboard
+    And the case does not show up on the call centre dashboard
