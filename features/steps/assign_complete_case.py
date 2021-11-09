@@ -65,6 +65,12 @@ def step_impl_taken_to_call_centre_dashboard(context):
 def step_impl_case_removed_from_list(context):
     dashboard_url = f"{CLA_FRONTEND_URL}/call_centre/?ordering=-modified&page=1"
     context.helperfunc.open(dashboard_url)
-    table = context.helperfunc.find_by_css_selector(".ListTable")
-    assert context.case_id not in table.text
 
+    def wait_until_dashboard_page_is_loaded(*args):
+        try:
+            table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
+            return context.case_id not in table.text
+        except Exception:
+            return False
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_until_dashboard_page_is_loaded)
