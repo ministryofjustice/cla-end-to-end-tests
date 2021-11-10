@@ -46,3 +46,6 @@ class HelperFunc(object):
 
     def get_current_path(self):
         return urlparse(self._driver.current_url).path
+
+    def scroll_to_top(self):
+        self._driver.execute_script("window.scrollTo(0, 0);")

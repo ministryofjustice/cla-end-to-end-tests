@@ -1,6 +1,7 @@
 from behave import *
 from selenium.webdriver.common.action_chains import ActionChains
 from create_eligible_finances import create_eligible_finance
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 @given(u'case notes are empty')
@@ -42,27 +43,31 @@ def step_impl(context):
     radio.click()
     page.find_by_name("diversity-next").click()
 
-    assert "Ethnic origin" in page.find_by_css_selector("h2[class='FormBlock-label ng-binding']").text
     radio = page.find_by_css_selector("input[name='ethnicity'][value='Prefer not to say']")
+    assert "Ethnic origin" in page.find_by_css_selector("h2[class='FormBlock-label ng-binding']").text
     radio.click()
     page.find_by_name("diversity-next").click()
-
-    assert "Disabilities" in page.find_by_css_selector("h2[class='FormBlock-label ng-binding']").text
+    # We need o either locate a new element that is not currently on the page
+    # OR do an explicit wait, gone with find a new element that wasn't previously on the page
     radio = page.find_by_css_selector("input[name='disability'][value='PNS - Prefer not to say']")
+    assert "Disabilities" in page.find_by_css_selector("h2[class='FormBlock-label ng-binding']").text
     radio.click()
     page.find_by_name("diversity-next").click()
 
-    assert "Religion / belief" in page.find_by_css_selector("h2[class='FormBlock-label ng-binding']").text
     radio = page.find_by_css_selector("input[name='religion'][value='Prefer not to say']")
+    assert "Religion / belief" in page.find_by_css_selector("h2[class='FormBlock-label ng-binding']").text
     radio.click()
     page.find_by_name("diversity-next").click()
 
-    assert "Sexual orientation" in page.find_by_css_selector("h2[class='FormBlock-label ng-binding']").text
     radio = page.find_by_css_selector("input[name='sexual_orientation'][value='Prefer Not To Say']")
+    assert "Sexual orientation" in page.find_by_css_selector("h2[class='FormBlock-label ng-binding']").text
     radio.click()
     page.find_by_name("diversity-save").click()
 
-    assert "The client has completed diversity monitoring." in page.find_by_class("SummaryBlock-content").text
+    def wait_until_diversity_is_complete(*args):
+        return "The client has completed diversity monitoring." in page.find_by_class("SummaryBlock-content").text
+    wait = WebDriverWait(page.driver(), 10)
+    wait.until(wait_until_diversity_is_complete)
 
 
 @when(u'select the Assign tab')
