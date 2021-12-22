@@ -30,6 +30,6 @@ commands:
 jobs:
   behave:
     docker:
-      - image: circleci/python:2.7-jessie
+      - image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:${CLA_E2E_IMAGE_VERSION:-latest}"
     steps:
       - behave
