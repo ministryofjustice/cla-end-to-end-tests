@@ -1,32 +1,10 @@
 version: 2.1
-jobs:
-  build:
-    docker:
-      - image: circleci/python:2.7-jessie
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Install awscli
-          command: |
-            sudo pip install awscli
-            login="$(aws ecr get-login --region eu-west-2 --no-include-email)"
-            ${login}
-      - run:
-          name: Build / pull Docker images
-          command: |
-            docker-compose pull
-            docker-compose build
-      - run:
-          name: Check services are up
-          command: |
-            docker-compose run start_applications
-            docker-compose exec clabackend bin/create_db.sh
-      - run:
-          name: Run behave tests
-          command: |
-            docker-compose run cla-end-to-end
+orbs:
+  aws-ecr: circleci/aws-ecr@7.3.0
+
 workflows:
-  version: 2
-  run-tests:
-    jobs: [build]
+  build:
+    jobs:
+      - aws-ecr/build-and-push-image:
+          repo: "${AWS_RESOURCE_NAME_PREFIX}"
+          tag: "${CIRCLE_SHA1}"
