@@ -7,9 +7,8 @@ commands:
       steps:
         - setup_remote_docker
         - run:
-            name: Install awscli
+            name: Authenticate with awscli
             command: |
-              pip install awscli
               login="$(aws ecr get-login --region eu-west-2 --no-include-email)"
               ${login}
         - run:
