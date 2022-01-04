@@ -21,16 +21,19 @@ jobs:
         - run:
             name: Build / pull Docker images
             command: |
+              cd behave
               docker-compose pull
               docker-compose build
         - run:
             name: Check services are up
             command: |
+              cd behave
               docker-compose run start_applications
               docker-compose exec clabackend bin/create_db.sh
         - run:
             name: Run behave tests
             command: |
+              cd behave
               docker-compose run cla-end-to-end
 
 workflows:
