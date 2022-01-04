@@ -9,7 +9,7 @@ commands:
         - run:
             name: Install awscli
             command: |
-              sudo pip install awscli
+              pip install awscli
               login="$(aws ecr get-login --region eu-west-2 --no-include-email)"
               ${login}
         - run:
