@@ -47,8 +47,8 @@ workflows:
           name: Build and push latest tag
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: "latest"
-          # filters:
-            # branches:
-              # only:
-                # - main
+          filters:
+            branches:
+              only:
+                - main
       - behave
