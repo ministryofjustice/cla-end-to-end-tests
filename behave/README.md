@@ -1,6 +1,10 @@
 # cla-end-to-end-tests
 This is the behave end to end tests which cover the CLA applications for the laa-cla-fala team.
 
+This readme assumes that the working directory is that of this document, which is no longer the
+root of this repository: the root of this repository now provides a means to deliver and use the
+functionality in this directory.
+
 ## Current state of affairs
 The commands to get this running locally are:
 
