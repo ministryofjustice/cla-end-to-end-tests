@@ -9,6 +9,14 @@ The orb is defined as a single `orb.yml` file and is currently published manuall
 Once we have credentials from the Operations Engineering team, we will be able to publish production
 releases of the orb, which we will do from Circle CI.
 
+### Publishing the orb
+To publish the dev orb, you need to have the `CircleCI CLI` installed and set up, and to be a member
+of the `ministryofjustice` organisation, which you should be from github.
+```
+circleci orb publish orb.yml ministryofjustice/cla-end-to-end-tests@dev:first
+```
+To incorporate orb publishing into the CI pipeline in future, we may want to use the `circleci/orb-tools` orb
+
 ### Job and command
 The orb exposes a `behave` job and a `behave` command. The command should not need to be used directly:
 the job simply runs this command on a suitable executor (using the docker image built from this repo).
