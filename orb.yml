@@ -1,0 +1,34 @@
+version: 2.1
+description: The end-to-end test suite for use in CLA app pipelines
+
+commands:
+  behave:
+    description: Run the CLA apps in a docker cluster and run the Behave test suite against them
+    steps:
+      - setup_remote_docker
+      - run:
+          name: Authenticate with awscli
+          command: |
+            login="$(aws ecr get-login --region eu-west-2 --no-include-email)"
+            ${login}
+      - run:
+          name: Build / pull Docker images
+          command: |
+            docker-compose pull
+            docker-compose build
+      - run:
+          name: Check services are up
+          command: |
+            docker-compose run start_applications
+            docker-compose exec clabackend bin/create_db.sh
+      - run:
+          name: Run behave tests
+          command: |
+            docker-compose run cla-end-to-end
+
+jobs:
+  behave:
+    docker:
+      - image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/laa-cla-end-to-end-tests-ecr:${CLA_E2E_IMAGE_VERSION:-latest}"
+    steps:
+      - behave

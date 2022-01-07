@@ -1,37 +1,58 @@
 # cla-end-to-end-tests
-This is the behave end to end tests which cover the CLA applications for the laa-cla-fala team.
+This is the behave end to end test suite which covers the CLA applications for the laa-cla-fala team.
+This repository defines a Circlei CI orb and a docker image alongside the `behave` test suite itself,
+allowing portability to the CI pipelines of the other applications.
 
-## Current state of affairs
-The commands to get this running locally are:
 
-To run the tests locally just run this script:
+## CircleCI Orb
+The orb is defined as a single `orb.yml` file and is currently published manually and to a dev tag.
+Once we have credentials from the Operations Engineering team, we will be able to publish production
+releases of the orb, which we will do from Circle CI.
 
-`./run_test_local.sh`
-
-If you want a more manual approach:
-
-`export DOCKER_BUILDKIT=0`
-
-to build locally:
-`docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d --build`
-
-bash into the container and run them from there:
-`docker-compose run --entrypoint /bin/bash cla-end-to-end`
-
-## Using your local chrome browser [optional]
-If you want to see the tests running in your hosts machines chrome browser and still have the applications 
-running in their containers then do the following.
+### Publishing the orb
+To publish the dev orb, you need to have the `CircleCI CLI` installed and set up, and to be a member
+of the `ministryofjustice` organisation, which you should be from github.
 ```
-brew install chromedriver
-pip install -r requirements.txt
-chromedriver # take note of the port listed. Will stay running in the foreground
+circleci orb publish orb.yml ministryofjustice/cla-end-to-end-tests@dev:first
 ```
+To incorporate orb publishing into the CI pipeline in future, we may want to use the `circleci/orb-tools` orb
 
-### Running the tests
-```
-# Run all the tests
-./run_test_local_chrome_driver.sh
+### Job and command
+The orb exposes a `behave` job and a `behave` command. The command should not need to be used directly:
+the job simply runs this command on a suitable executor (using the docker image built from this repo).
 
-# Run tests with the "createuser" tag
-./run_test_local_chrome_driver.sh -t "createuser"
+### Example usage
+The `config.yml` of an application using the orb may look something like this:
 ```
+version: 2.1
+orbs:
+  cla-end-to-end-tests: ministryofjustice/cla-end-to-end-tests@dev:first
+
+  workflows:
+    version: 2
+    build_and_test:
+      jobs:
+        - test
+        - build:
+            requires:
+              - test
+        - cla-end-to-end-tests/behave:
+            requires:
+              - build
+            pre-steps:
+              - checkout:
+                  path: cla_backend
+              - run:
+                  command: |
+                    cd cla_backend
+                    source .circleci/define_build_environment_variables testing
+                    echo "export CLA_BACKEND_IMAGE=$ECR_DEPLOY_IMAGE" >> $BASH_ENV
+                    echo "Setting CLA Backend image $ECR_DEPLOY_IMAGE"
+```
+In this example, a command is run in the `pre-steps` stage in order to set an env var in the `$BASH_ENV`,
+allowing the pipeline to specify that the test suite uses the newly-built application image rather than
+the default.
+
+## Docker image
+This repository builds a docker image that is then used as the executor for the `behave` Circle CI job.
+You are unlikely to need to use the image directly elsewhere.

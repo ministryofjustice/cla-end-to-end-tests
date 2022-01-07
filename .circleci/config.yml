@@ -1,32 +1,54 @@
 version: 2.1
+orbs:
+  aws-ecr: circleci/aws-ecr@7.3.0
+
 jobs:
-  build:
+  behave:
     docker:
-      - image: circleci/python:2.7-jessie
+      - image: cimg/python:3.10.1
     steps:
       - checkout
       - setup_remote_docker
       - run:
-          name: Install awscli
+          name: Install compatible docker-compose
+          command: pip install docker-compose==1.27.4
+      - run:
+          name: Authenticate with awscli
           command: |
-            sudo pip install awscli
+            pip install awscli
             login="$(aws ecr get-login --region eu-west-2 --no-include-email)"
             ${login}
       - run:
           name: Build / pull Docker images
           command: |
+            cd behave
             docker-compose pull
             docker-compose build
       - run:
           name: Check services are up
           command: |
+            cd behave
             docker-compose run start_applications
             docker-compose exec clabackend bin/create_db.sh
       - run:
           name: Run behave tests
           command: |
+            cd behave
             docker-compose run cla-end-to-end
+
 workflows:
-  version: 2
-  run-tests:
-    jobs: [build]
+  build:
+    jobs:
+      - aws-ecr/build-and-push-image:
+          name: Build and push
+          repo: "${AWS_RESOURCE_NAME_PREFIX}"
+          tag: "${CIRCLE_SHA1}"
+      - aws-ecr/build-and-push-image:
+          name: Build and push latest tag
+          repo: "${AWS_RESOURCE_NAME_PREFIX}"
+          tag: "latest"
+          filters:
+            branches:
+              only:
+                - main
+      - behave
