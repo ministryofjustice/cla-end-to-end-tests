@@ -116,7 +116,7 @@ services:
       SMTP_PASSWORD: ""
       RAVEN_CONFIG_DSN: ""
       RAVEN_CONFIG_SITE: ""
-      SENTRY_DSN: ${SENTRY_DSN:-CHANGE_ME}
+      SENTRY_DSN: ${SENTRY_DSN:-}
       LAALAA_API_HOST: https://laa-legal-adviser-api-staging.apps.live-1.cloud-platform.service.justice.gov.uk
       MOJ_GA_ID: "UA-XXXXXXXX-X1"
       GDS_GA_ID: "UA-XXXXXXXX-X2"
