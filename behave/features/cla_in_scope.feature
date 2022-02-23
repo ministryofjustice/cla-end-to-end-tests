@@ -5,6 +5,7 @@ Background: Start page
 
 @cla-in-scope
 Scenario: Select the in scope special education needs category
-#  GIVEN THAT I am on the scope diagnosis page
-#  WHEN I select categories Education -> Special Education needs
-#  THEN I am taken to the Legal aid is available for this type of problem page that is located on /legal-aid-available
+    Given I am on the scope diagnosis page
+    When I select the category Education
+    And the category Special Educational needs
+    Then I am taken to the Legal aid is available for this type of problem page
