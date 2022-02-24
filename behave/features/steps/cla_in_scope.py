@@ -26,7 +26,6 @@ def step_start_page(context):
 @given(u'I am on the scope diagnosis page')
 def step_scope_page(context):
     wait_until_page_is_loaded("/scope/diagnosis/", context)
-    assert context.helperfunc.get_current_path() == "/scope/diagnosis/"
     assert_header_on_page("Choose the area you most need help with", context)
     
 @when(u'I select the category Education')
