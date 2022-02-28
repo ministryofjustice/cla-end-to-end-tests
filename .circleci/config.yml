@@ -81,4 +81,8 @@ workflows:
             - publish_dev_orb
           context:
             - test_create_orb
+          filters:
+            branches:
+              only:
+                - main
       - behave
