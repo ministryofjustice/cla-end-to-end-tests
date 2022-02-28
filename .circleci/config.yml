@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@7.3.0
+  orb-tools: circleci/orb-tools@10.0
 
 jobs:
   behave:
@@ -60,4 +61,24 @@ workflows:
             branches:
               only:
                 - main
+      - orb-tools/publish-dev:
+          name: publish_dev_orb
+          attach-workspace: false
+          checkout: true
+          orb-name: ministryofjustice/cla-end-to-end-tests
+          orb-path: orb.yml
+          publish-token-variable: CLI_TOKEN_TEST
+          context:
+            - test_create_orb
+      - orb-tools/dev-promote-prod-from-commit-subject:
+          name: publish_production_orb
+          add-pr-comment: false
+          fail-if-semver-not-indicated: true
+          orb-name: ministryofjustice/cla-end-to-end-tests
+          publish-token-variable: CLI_TOKEN_TEST
+          publish-version-tag: false
+          requires:
+            - publish_dev_orb
+          context:
+            - test_create_orb
       - behave
