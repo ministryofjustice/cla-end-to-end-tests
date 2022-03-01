@@ -23,6 +23,7 @@ services:
     volumes:
       - .:/behave_local
     environment:
+      CLA_E2E_PUBLIC_URL: ${CLA_E2E_PUBLIC_URL:-http://clapublic:8000}
       CLA_E2E_BACKEND_URL: ${CLA_E2E_BACKEND_URL:-http://clabackend:8000}
       CLA_E2E_FRONTEND_URL: ${CLA_E2E_FRONTEND_URL:-http://clafrontend:8000}
       CLA_E2E_SELENIUM_WEB_DRIVER_URL: ${CLA_E2E_SELENIUM_WEB_DRIVER_URL:-http://seleniumchrome:4444/wd/hub}
