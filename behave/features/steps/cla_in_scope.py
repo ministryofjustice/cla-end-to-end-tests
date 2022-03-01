@@ -18,7 +18,15 @@ def wait_until_page_is_loaded(path, context):
 def step_check_page(context, page, header):
     wait_until_page_is_loaded(page, context)
     assert_header_on_page(header, context)
-    
+
+# this is a shared step   
+@step(u'I click continue')
+def step_click_continue(context):
+    # click on the continue button
+    continue_button = context.helperfunc.find_by_id("submit-button")
+    assert continue_button is not None
+    continue_button.click()
+        
 @given(u'I have selected the start now button on the start page')
 def step_start_page(context):
     start_page_url = f"{CLA_PUBLIC_URL}"
