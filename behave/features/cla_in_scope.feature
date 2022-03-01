@@ -10,3 +10,5 @@ Scenario: Select the in scope special education needs category
     When I select the category Education
     And the category Special Educational needs
     Then I am taken to the "Legal aid is available for this type of problem" page located on "/legal-aid-available"
+    And I click on the 'Check if you qualify financially' button 
+    
