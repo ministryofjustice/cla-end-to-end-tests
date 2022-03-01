@@ -5,7 +5,8 @@ Background: Start page
 
 @cla-in-scope
 Scenario: Select the in scope special education needs category
-    Given I am on the scope diagnosis page
+    # All steps that are just checking a page exists written in identical format so can reuse code
+    Given I am taken to the "Choose the area you most need help with" page located on "/scope/diagnosis/"
     When I select the category Education
     And the category Special Educational needs
-    Then I am taken to the Legal aid is available for this type of problem page
+    Then I am taken to the "Legal aid is available for this type of problem" page located on "/legal-aid-available"
