@@ -27,3 +27,5 @@ Scenario: Select the in scope special education needs category
     # All steps that are clicking continue written in identical format so can reuse code
     And I click continue
     And I am taken to the "Which benefits do you receive?" page located on "/benefits"
+    And I select 'Universal Credit' from the list of benefits
+    And I click continue 
