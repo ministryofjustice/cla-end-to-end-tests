@@ -28,11 +28,6 @@ def step_start_page(context):
     assert start_button is not None
     assert start_button.text == "Start now"
     start_button.click()
-
-# @given(u'I am on the scope diagnosis page')
-# def step_scope_page(context):
-#     wait_until_page_is_loaded("/scope/diagnosis/", context)
-#     assert_header_on_page("Choose the area you most need help with", context)
     
 @when(u'I select the category Education')
 def step_select_category_education(context):
@@ -49,7 +44,8 @@ def step_select_category_special_educational_needs(context):
     assert special_education_link is not None    
     special_education_link.click()
 
-# @then(u'I am taken to the Legal aid is available for this type of problem page')
-# def step_on_legal_aid_is_available_page(context):
-#     wait_until_page_is_loaded ("/legal-aid-available", context)
-#     assert_header_on_page("Legal aid is available for this type of problem", context)
+@then(u'I click on the \'Check if you qualify financially\' button') 
+def step_taken_to_about_page(context):
+    check_if_you_qualify_link = context.helperfunc.find_by_xpath('//a[@href="/about"]')
+    assert check_if_you_qualify_link is not None
+    check_if_you_qualify_link.click()    
