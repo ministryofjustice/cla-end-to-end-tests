@@ -12,7 +12,13 @@ def wait_until_page_is_loaded(path, context):
         return context.helperfunc.get_current_path() == path
     wait = WebDriverWait(context.helperfunc.driver(), 10)
     wait.until(do_test)
-     
+
+# this is a shared step
+@step(u'I am taken to the "{header}" page located on "{page}"')
+def step_check_page(context, page, header):
+    wait_until_page_is_loaded(page, context)
+    assert_header_on_page(header, context)
+
 @given(u'I have selected the start now button on the start page')
 def step_start_page(context):
     start_page_url = f"{CLA_PUBLIC_URL}"
@@ -23,10 +29,10 @@ def step_start_page(context):
     assert start_button.text == "Start now"
     start_button.click()
 
-@given(u'I am on the scope diagnosis page')
-def step_scope_page(context):
-    wait_until_page_is_loaded("/scope/diagnosis/", context)
-    assert_header_on_page("Choose the area you most need help with", context)
+# @given(u'I am on the scope diagnosis page')
+# def step_scope_page(context):
+#     wait_until_page_is_loaded("/scope/diagnosis/", context)
+#     assert_header_on_page("Choose the area you most need help with", context)
     
 @when(u'I select the category Education')
 def step_select_category_education(context):
@@ -43,7 +49,7 @@ def step_select_category_special_educational_needs(context):
     assert special_education_link is not None    
     special_education_link.click()
 
-@then(u'I am taken to the Legal aid is available for this type of problem page')
-def step_on_legal_aid_is_available_page(context):
-    wait_until_page_is_loaded ("/legal-aid-available", context)
-    assert_header_on_page("Legal aid is available for this type of problem", context)
+# @then(u'I am taken to the Legal aid is available for this type of problem page')
+# def step_on_legal_aid_is_available_page(context):
+#     wait_until_page_is_loaded ("/legal-aid-available", context)
+#     assert_header_on_page("Legal aid is available for this type of problem", context)
