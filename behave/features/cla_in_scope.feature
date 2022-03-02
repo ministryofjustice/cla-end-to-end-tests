@@ -24,3 +24,6 @@ Scenario: Select the in scope special education needs category
         | Are you or your partner (if you have one) aged 60 or over? | No     |
         | Do you have any savings or investments?                    | No     |
         | Do you have any valuable items worth over £500 each?       | No     |
+    # All steps that are clicking continue written in identical format so can reuse code
+    And I click continue
+    And I am taken to the "Which benefits do you receive?" page located on "/benefits"

@@ -13,6 +13,14 @@ def wait_until_page_is_loaded(path, context):
     wait = WebDriverWait(context.helperfunc.driver(), 10)
     wait.until(do_test)
 
+# this is a shared step   
+@step(u'I click continue')
+def step_click_continue(context):
+    # click on the continue button
+    continue_button = context.helperfunc.find_by_id("submit-button")
+    assert continue_button is not None
+    continue_button.click()
+
 # this is a shared step
 @step(u'I am taken to the "{header}" page located on "{page}"')
 def step_check_page(context, page, header):
