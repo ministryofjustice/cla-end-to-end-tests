@@ -29,3 +29,7 @@ Scenario: Select the in scope special education needs category
     And I am taken to the "Which benefits do you receive?" page located on "/benefits"
     And I select 'Universal Credit' from the list of benefits
     And I click continue 
+    And I am taken to the "Review your answers" page located on "/review"
+    # this is actually click confirm
+    And I click continue
+    Then I am taken to the "Contact Civil Legal Advice" page located on "/result/eligible"
