@@ -44,9 +44,3 @@ def step_select_category_special_educational_needs(context):
     special_education_link = context.helperfunc.find_by_xpath('//a[@title="Special educational needs"]')
     assert special_education_link is not None    
     special_education_link.click()
-    
-@then(u'I click on the \'Check if you qualify financially\' button') 
-def step_taken_to_about_page(context):
-    check_if_you_qualify_link = context.helperfunc.find_by_xpath('//a[@href="/about"]')
-    assert check_if_you_qualify_link is not None
-    check_if_you_qualify_link.click()    
