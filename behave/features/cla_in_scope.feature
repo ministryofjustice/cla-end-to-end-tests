@@ -11,15 +11,4 @@ Scenario: Select the in scope special education needs category
     And the category Special Educational needs
     Then I am taken to the "Legal aid is available for this type of problem" page located on "/legal-aid-available"
     And I click on the 'Check if you qualify financially' button 
-    And I <answer> the <question> 
-        | question                                                   | answer |
-        | Do you have a partner?                                     | No     |
-        | Do you receive any benefits (including Child Benefit)?     | Yes    |
-        | Do you have any children aged 15 or under?                 | No     |
-        | Do you have any dependants aged 16 or over?                | No     |
-        | Do you own any property?                                   | No     |
-        | Are you employed?                                          | No     |
-        | Are you self-employed?                                     | No     |
-        | Are you or your partner (if you have one) aged 60 or over? | No     |
-        | Do you have any savings or investments?                    | No     |
-        | Do you have any valuable items worth over £500 each?       | No     |
+    

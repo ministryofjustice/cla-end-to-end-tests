@@ -50,27 +50,3 @@ def step_taken_to_about_page(context):
     check_if_you_qualify_link = context.helperfunc.find_by_xpath('//a[@href="/about"]')
     assert check_if_you_qualify_link is not None
     check_if_you_qualify_link.click()    
-
-@then(u'I <answer> the <question>')
-def step_impl_means_test(context):
-    # answer tells me if I say yes or no
-    # question helps me find the radio buttons
-    for row in context.table:
-        value = row['question']
-        question_fieldset = context.helperfunc.find_by_xpath(f"//*[contains(text(),'{row['question']}')]")
-        question_field_id = question_fieldset.get_attribute("id")
-        question_radio_id_start = str(question_field_id).split('-')[2]
-        if row['answer'] == 'No': 
-            question_radio_id = question_radio_id_start + '-1'
-        elif row['answer'] == 'Yes':
-             question_radio_id = question_radio_id_start + '-0'
-        else:
-            raise ValueError(f"Can only process Yes or No answers. You entered {row['answer']}")
-        # Find the parent of the legend so can look at it's children
-        question_fieldset_parent = question_fieldset.find_element_by_xpath('..')
-        # Need to look for the label not the radio input as that is what is clicked
-        question_radio = context.helperfunc.driver().find_element_by_xpath(f"//input[@id='{question_radio_id}']")
-        assert question_radio is not None, f"Could not find: {value}"
-        question_radio.click()
-        # check that the input is selected
-        assert question_radio.get_attribute('checked') == 'true'
