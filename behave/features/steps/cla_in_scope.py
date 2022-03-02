@@ -82,13 +82,3 @@ def step_impl_means_test(context):
         question_radio.click()
         # check that the input is selected
         assert question_radio.get_attribute('checked') == 'true'
-        
-@then(u'I select \'Universal Credit\' from the list of benefits')
-def step_choose_universal_credit(context):
-    # check value of universal_credit checkbox
-    check_box_universal_credit = context.helperfunc.driver().find_element_by_id("benefits-4")
-    assert check_box_universal_credit is not None
-    # click on universal credit
-    check_box_universal_credit.click()
-    # now check universal credit is checked
-    assert check_box_universal_credit.get_attribute('checked') == 'true'
