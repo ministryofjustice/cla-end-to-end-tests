@@ -1,7 +1,7 @@
 from behave import *
 from selenium.webdriver.support.ui import WebDriverWait
 from features.constants import CLA_PUBLIC_URL
-# change to allow commit to reset main
+
 def assert_header_on_page(title, context):
     heading = context.helperfunc.find_by_xpath('//h1')
     assert heading is not None

@@ -2,7 +2,7 @@ Feature: In scope outcome
 
 Background: Start page
     Given I have selected the start now button on the start page
-# change to allow commit to reset main
+
 @cla-in-scope
 Scenario: Select the in scope special education needs category
     # All steps that are just checking a page exists written in identical format so can reuse code
