@@ -2,6 +2,8 @@ from urllib.parse import urlparse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from helper.backend import Backend
+from constants import CALL_CENTRE_ZONE
 
 
 class HelperFunc(object):
@@ -11,6 +13,8 @@ class HelperFunc(object):
         super(HelperFunc, self).__init__()
         self._driver_wait = WebDriverWait(driver, HelperFunc.__TIMEOUT)
         self._driver = driver
+        self.call_centre_backend = Backend("/call_centre/api/v1/")
+        self.call_centre_backend.authenticate(**CALL_CENTRE_ZONE)
 
     def driver(self):
         return self._driver
@@ -49,3 +53,9 @@ class HelperFunc(object):
 
     def scroll_to_top(self):
         self._driver.execute_script("window.scrollTo(0, 0);")
+
+    def get_case_from_backend(self, case_reference):
+        return self.call_centre_backend.get_case(case_reference)
+
+    def get_case_personal_details_from_backend(self, case_reference):
+        return self.call_centre_backend.get_case_personal_details(case_reference)
