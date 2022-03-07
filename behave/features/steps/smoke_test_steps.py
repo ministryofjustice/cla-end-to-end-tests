@@ -1,17 +1,17 @@
 import requests
-
 from behave import *
-    
+from features.constants import CLA_PUBLIC_URL, CLA_FRONTEND_URL
+
 
 @given(u'I go to the "{service}" status endpoint')
 def step_impl(context, service):
     if service == "cla backend":
         context.response = requests.get('http://clabackend:8000/status/')
     elif service == "cla frontend":
-        context.response_ready = requests.get('http://clafrontend:8000/status/ready')
-        context.response_live = requests.get('http://clafrontend:8000/status/live')
+        context.response_ready = requests.get(f'{CLA_FRONTEND_URL}/status/ready')
+        context.response_live = requests.get(f'{CLA_FRONTEND_URL}/status/live')
     elif service == "cla public":
-        context.response = requests.get('http://clapublic:8000/ping.json')
+        context.response = requests.get(f'{CLA_PUBLIC_URL}/ping.json')
 
 
 @then(u'I am shown that the "{service}" service is ready')
