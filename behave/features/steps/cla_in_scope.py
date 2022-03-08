@@ -1,6 +1,8 @@
+from hashlib import new
 from behave import *
 from selenium.webdriver.support.ui import WebDriverWait
 from features.constants import CLA_PUBLIC_URL
+from selenium.common.exceptions import TimeoutException
 
 def assert_header_on_page(title, context):
     heading = context.helperfunc.find_by_xpath('//h1')
@@ -17,9 +19,21 @@ def wait_until_page_is_loaded(path, context):
 @step(u'I click continue')
 def step_click_continue(context):
     # click on the continue button
+    # remember the current page
+    current_page = context.helperfunc.get_current_path()
     continue_button = context.helperfunc.find_by_id("submit-button")
     assert continue_button is not None
     continue_button.click()
+    # did the form get submitted correctly?
+    # check for 'there is a problem' but need to use wait_until as may take time to change page
+    try:
+        confirmation_text_element = context.helperfunc.find_by_css_selector(".govuk-error-summary")
+        if confirmation_text_element is not None:
+            assert confirmation_text_element.text.startswith("There is a problem")
+            raise ValueError(f"There is a problem with form")   
+    except TimeoutException as ex:
+        # this will error because we actually moved off the page which is actually what we want
+        assert current_page != context.helperfunc.get_current_path()
 
 # this is a shared step
 @step(u'I am taken to the "{header}" page located on "{page}"')
