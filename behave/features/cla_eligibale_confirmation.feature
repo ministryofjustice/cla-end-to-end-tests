@@ -2,10 +2,10 @@ Feature: Complete callback details after successful means test
 
 Background: Start page
     Given I have selected the start now button on the start page
-
+    
 @cla-in-scope--contact
 Scenario: Complete callback form
-  Given I am have passed the means test
+  Given I have passed the means test
 #  And I am on the financially eligible outcome page located at /result/eligible
   And I enter "John Smith" as my full name
   And I enter "test@civillegaladvice.service.gov.uk" as my email address

@@ -10,14 +10,38 @@ def assert_form_input_element(callback_form, element_id, value):
     assert element.get_attribute('value') == value
 
 
-@given(u'I am have passed the means test')
+@given(u'I have passed the means test')
 def step_means_test_page(context):
-    # Todo: This is a filler step so that I can write the rest of the feature steps instead of waiting for
-    #   Child 2: Means test pass ticket to be completed
-    #   This step should be removed when the Child 2: Means test pass ticket has been completed
-    url = f"{CLA_PUBLIC_URL}/contact"
-    context.helperfunc.open(url)
-    assert_header_on_page("Contact Civil Legal Advice", context)
+    # The next steps are from LGA-1820 which are the steps that pass the means test
+   context.execute_steps(u'''
+        Given I am taken to the "Choose the area you most need help with" page located on "/scope/diagnosis/"
+        When I select the category Education
+        And the category Special Educational needs
+        Then I am taken to the "Legal aid is available for this type of problem" page located on "/legal-aid-available"
+        And I click on the 'Check if you qualify financially' button 
+        And I am taken to the "About you" page located on "/about"
+        And I <answer> the <question> 
+            | question                                                   | answer |
+            | Do you have a partner?                                     | No     |
+            | Do you receive any benefits (including Child Benefit)?     | Yes    |
+            | Do you have any children aged 15 or under?                 | No     |
+            | Do you have any dependants aged 16 or over?                | No     |
+            | Do you own any property?                                   | No     |
+            | Are you employed?                                          | No     |
+            | Are you self-employed?                                     | No     |
+            | Are you or your partner (if you have one) aged 60 or over? | No     |
+            | Do you have any savings or investments?                    | No     |
+            | Do you have any valuable items worth over £500 each?       | No     |
+        # All steps that are clicking continue written in identical format so can reuse code
+        And I click continue
+        And I am taken to the "Which benefits do you receive?" page located on "/benefits"
+        And I select 'Universal Credit' from the list of benefits
+        And I click continue 
+        And I am taken to the "Review your answers" page located on "/review"
+        # this is actually click confirm
+        And I click continue
+        Then I am taken to the "Contact Civil Legal Advice" page located on "/result/eligible"
+        ''')
 
 
 @given(u'I enter "{full_name}" as my full name')
@@ -26,24 +50,20 @@ def step_enter_full_name(context, full_name):
     context.callback_form = context.helperfunc.find_by_xpath("//form")
     assert_form_input_element(context.callback_form, "full_name", full_name)
 
-
 @given(u'I enter "{email}" as my email address')
 def step_enter_email_address(context, email):
     context.form_values["email"] = email
     assert_form_input_element(context.callback_form, "email", email)
-
 
 @given(u'I enter "{postcode}" as my postcode')
 def step_enter_postcode(context, postcode):
     context.form_values["postcode"] = postcode
     assert_form_input_element(context.callback_form, "address-post_code", postcode)
 
-
 @given(u'I enter "{street_address}" street address')
 def step_enter_street_address(context, street_address):
     context.form_values["street"] = street_address
     assert_form_input_element(context.callback_form, "address-street_address", street_address)
-
 
 @given(u'I select the the callback option to callback CLA')
 def step_select_callback_cla(context):
@@ -52,26 +72,22 @@ def step_select_callback_cla(context):
     callback_element.click()
     assert callback_element.get_attribute("value") == "call"
 
-
 @given(u'click "Submit details"')
 def step_submit_form(context):
     element = context.callback_form.find_element_by_id("submit-button")
     assert element is not None
     element.click()
 
-
 @then(u'I should be taken to the "{title}" page')
 def step_confirmation_page(context, title):
     wait_until_page_is_loaded("/result/confirmation", context)
     assert_header_on_page(title, context)
-
 
 @then(u'I should shown the CLA number')
 def step_check_cla_number(context):
     confirmation_text_element = context.helperfunc.find_by_css_selector(".laa-confirmation-inset")
     assert confirmation_text_element is not None
     assert confirmation_text_element.text.startswith(f"You can now call CLA on {CLA_NUMBER}.")
-
 
 @then(u'I should see my reference number after the text "Your reference number is"')
 def step_impl(context):
