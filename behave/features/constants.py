@@ -27,5 +27,13 @@ CLA_FRONTEND_PERSONAL_DETAILS_FORM = {
     "source": "Phone"
 }
 
+CLA_MEANS_TEST_PERSONAL_DETAILS_FORM = {
+    "full_name": {"form_element_id": "full_name", "form_element_value":"John Smith" },
+    "postcode": {"form_element_id": "address-post_code", "form_element_value":"SW1H 9AJ" },
+    "street": {"form_element_id": "address-street_address", "form_element_value":"102 Petty France" },
+    "email": {"form_element_id": "email", "form_element_value":"test@digital.justice.gov.uk" },
+}
+
+
 MATTER_TYPE_1 = "QEMP - Employment"
 MATTER_TYPE_2 = "QDIS - Disability"

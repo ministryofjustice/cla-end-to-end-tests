@@ -1,5 +1,5 @@
 from behave import *
-from features.constants import CLA_PUBLIC_URL, CLA_NUMBER
+from features.constants import CLA_PUBLIC_URL, CLA_NUMBER, CLA_MEANS_TEST_PERSONAL_DETAILS_FORM
 from features.steps.cla_in_scope import assert_header_on_page, wait_until_page_is_loaded
 
 
@@ -12,7 +12,7 @@ def assert_form_input_element(callback_form, element_id, value):
 
 @given(u'I have passed the means test')
 def step_means_test_page(context):
-    # The next steps are from LGA-1820 which are the steps that pass the means test
+    # The next steps are the steps that pass the means test
    context.execute_steps(u'''
         Given I am taken to the "Choose the area you most need help with" page located on "/scope/diagnosis/"
         When I select the category Education
@@ -43,27 +43,14 @@ def step_means_test_page(context):
         Then I am taken to the "Contact Civil Legal Advice" page located on "/result/eligible"
         ''')
 
-
-@given(u'I enter "{full_name}" as my full name')
-def step_enter_full_name(context, full_name):
-    context.form_values = {"full_name": full_name}
+@given(u'I enter my personal details')
+def step_enter_personal_details(context):
+    personal_details_form = CLA_MEANS_TEST_PERSONAL_DETAILS_FORM
     context.callback_form = context.helperfunc.find_by_xpath("//form")
-    assert_form_input_element(context.callback_form, "full_name", full_name)
-
-@given(u'I enter "{email}" as my email address')
-def step_enter_email_address(context, email):
-    context.form_values["email"] = email
-    assert_form_input_element(context.callback_form, "email", email)
-
-@given(u'I enter "{postcode}" as my postcode')
-def step_enter_postcode(context, postcode):
-    context.form_values["postcode"] = postcode
-    assert_form_input_element(context.callback_form, "address-post_code", postcode)
-
-@given(u'I enter "{street_address}" street address')
-def step_enter_street_address(context, street_address):
-    context.form_values["street"] = street_address
-    assert_form_input_element(context.callback_form, "address-street_address", street_address)
+    context.form_values = {}
+    for name, value,  in personal_details_form.items():
+        context.form_values[name] = value['form_element_value']
+        assert_form_input_element(context.callback_form, value['form_element_id'], value['form_element_value'])
 
 @given(u'I select the the callback option to callback CLA')
 def step_select_callback_cla(context):
@@ -72,18 +59,7 @@ def step_select_callback_cla(context):
     callback_element.click()
     assert callback_element.get_attribute("value") == "call"
 
-@given(u'click "Submit details"')
-def step_submit_form(context):
-    element = context.callback_form.find_element_by_id("submit-button")
-    assert element is not None
-    element.click()
-
-@then(u'I should be taken to the "{title}" page')
-def step_confirmation_page(context, title):
-    wait_until_page_is_loaded("/result/confirmation", context)
-    assert_header_on_page(title, context)
-
-@then(u'I should shown the CLA number')
+@then(u'I should be shown the CLA number')
 def step_check_cla_number(context):
     confirmation_text_element = context.helperfunc.find_by_css_selector(".laa-confirmation-inset")
     assert confirmation_text_element is not None
