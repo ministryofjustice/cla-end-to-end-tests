@@ -59,3 +59,20 @@ def step_call_now_text_not_visible(context):
     except NoSuchElementException as ex:
         # the element can't be found and we are ok
         pass
+
+@then(u'The callback should have been created')
+def step_call_back_created(context):
+    case_callback = context.helperfunc.get_case_callback_details_from_backend(context.case_reference)
+    
+    if len(case_callback) > 0:
+        # look at latest callback
+        assert case_callback[0]["created_by"] == "web"
+        # check the code in the call_back log
+        # ok to assume this is the latest in the log?
+        assert case_callback[0]['code'] == 'CB1', "Callback not created"
+    else:
+        raise AssertionError ('No callbacks for this case')
+
+
+
+    
