@@ -32,16 +32,11 @@ def step_choose_available_day_and_time(context):
     assert choose_day is not None
     choose_time_in_day = Select(context.callback_form.find_element_by_xpath(f'//select[@id="callback-time-time_in_day"]'))
     assert choose_time_in_day is not None   
-    # 'data-day-time-choices' nested dictionary {'day'{'start_time':{'time range'}}
-    # TODO decide if want to check these in DB
     if len(choose_day.options) > 0:
         choose_day.select_by_index(0)
-        # remember the day you chose so can check in cla_backend case
-        # context.form_values["day"] = choose_day.first_selected_option.text
         # once you choose this it will re-populate times drop down now choose the first time
         if len(choose_time_in_day.options) > 0:
             choose_time_in_day.select_by_index(1)
-            # context.form_values["time"] = choose_time_in_day.first_selected_option.text
         else:
             raise AssertionError("No option to call me back at a chosen time")
     else:
