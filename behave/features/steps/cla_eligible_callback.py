@@ -1,5 +1,5 @@
-from behave import *
-from features.constants import CLA_PUBLIC_URL, CLA_NUMBER, CLA_MEANS_TEST_PERSONAL_DETAILS_FORM
+from behave import *  
+from features.constants import CLA_PUBLIC_URL, CLA_NUMBER, CLA_MEANS_TEST_PERSONAL_DETAILS_FORM, CLA_MEANS_TEST_CALL_BACK_NUMBER
 from features.steps.cla_in_scope import assert_header_on_page, wait_until_page_is_loaded
 from features.steps.cla_eligible_confirmation import assert_form_input_element
 from selenium.webdriver.support.ui import Select
@@ -14,11 +14,10 @@ def step_receive_callback_from_cla(context):
 
 @given(u'I enter my phone number for the callback')
 def step_enter_phone_number(context):
-    # personal_details_form = CLA_MEANS_TEST_PERSONAL_DETAILS_FORM
-    # TODO will just put phone number in for now and then put in constants later
-    # context.form_values and context.callback_form should already be created in previous step
-    context.form_values["mobile_phone"] = "020 1234 67890"
-    assert_form_input_element(context.callback_form, "callback-contact_number", "020 1234 67890")
+    # context.form_values should already be created in previous step
+    call_back_number = CLA_MEANS_TEST_CALL_BACK_NUMBER["mobile_phone"]
+    context.form_values["mobile_phone"] = call_back_number["form_element_value"]
+    assert_form_input_element(context.callback_form, call_back_number['form_element_id'], call_back_number['form_element_value'])
 
 @given(u'I select "Call on another day"')
 def step_choose_call_another_day(context):

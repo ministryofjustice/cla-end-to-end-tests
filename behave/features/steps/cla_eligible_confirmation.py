@@ -4,6 +4,8 @@ from features.steps.cla_in_scope import assert_header_on_page, wait_until_page_i
 
 
 def assert_form_input_element(callback_form, element_id, value):
+    # import pdb
+    # pdb.set_trace()
     element = callback_form.find_element_by_id(element_id)
     assert element is not None
     element.send_keys(value)
@@ -73,7 +75,6 @@ def step_impl(context):
     case_reference = confirmation_text_element.find_element_by_tag_name("strong").text
     assert case_reference is not None, "Could not find case reference number"
     context.case_reference = case_reference
-
 
 @then(u'A matching case should be created on the CHS')
 def step_matching_case_on_chs(context):
