@@ -4,8 +4,6 @@ from features.steps.cla_in_scope import assert_header_on_page, wait_until_page_i
 
 
 def assert_form_input_element(callback_form, element_id, value):
-    # import pdb
-    # pdb.set_trace()
     element = callback_form.find_element_by_id(element_id)
     assert element is not None
     element.send_keys(value)

@@ -54,7 +54,7 @@ def step_call_now_text_not_visible(context):
         # the element can't be found and we are ok
         pass
 
-@then(u'The callback should have been created')
+@then(u'The callback should have been created on the CHS')
 def step_call_back_created(context):
     case_callback = context.helperfunc.get_case_callback_details_from_backend(context.case_reference)
     
