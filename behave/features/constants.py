@@ -33,7 +33,8 @@ CLA_MEANS_TEST_PERSONAL_DETAILS_FORM = {
     "street": {"form_element_id": "address-street_address", "form_element_value":"102 Petty France" },
     "email": {"form_element_id": "email", "form_element_value":"test@digital.justice.gov.uk" },
 }
-
+CLA_MEANS_TEST_CALL_BACK_NUMBER = {   
+    "mobile_phone": {"form_element_id": "callback-contact_number", "form_element_value":"020 1234 67890"}}
 
 MATTER_TYPE_1 = "QEMP - Employment"
 MATTER_TYPE_2 = "QDIS - Disability"

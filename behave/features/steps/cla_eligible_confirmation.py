@@ -74,7 +74,6 @@ def step_impl(context):
     assert case_reference is not None, "Could not find case reference number"
     context.case_reference = case_reference
 
-
 @then(u'A matching case should be created on the CHS')
 def step_matching_case_on_chs(context):
     case = context.helperfunc.get_case_from_backend(context.case_reference)

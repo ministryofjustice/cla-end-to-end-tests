@@ -39,3 +39,8 @@ class Backend:
         response = requests.get(self.url(f"/case/{case_reference}/personal_details"), headers=self.headers)
         assert response.status_code == 200, f"Could not get personal details for case {case_reference}"
         return response.json()
+
+    def get_case_callback_details(self, case_reference):
+        response = requests.get(self.url(f"/case/{case_reference}/logs"), headers=self.headers)
+        assert response.status_code == 200, f"Could not get logs for case {case_reference}"
+        return response.json()

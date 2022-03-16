@@ -59,3 +59,6 @@ class HelperFunc(object):
 
     def get_case_personal_details_from_backend(self, case_reference):
         return self.call_centre_backend.get_case_personal_details(case_reference)
+    
+    def get_case_callback_details_from_backend(self, case_reference):
+        return self.call_centre_backend.get_case_callback_details(case_reference)
