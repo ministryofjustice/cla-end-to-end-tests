@@ -9,7 +9,7 @@ services:
   clafrontend:
     build: https://github.com/ministryofjustice/cla_frontend.git#master
   clabackend:
-    build: https://github.com/ministryofjustice/cla_backend.git#master
+    build: https://github.com/ministryofjustice/cla_backend.git#feature/LGA-1847-end-to-end-tests
   clapublic:
     build: https://github.com/ministryofjustice/cla_public.git#master
   db:
