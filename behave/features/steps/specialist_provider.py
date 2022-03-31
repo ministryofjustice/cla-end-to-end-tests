@@ -14,12 +14,12 @@ def step_logged_in(context):
     form.find_element_by_name("login-submit").click()
 
     
-@given(u'that I am on the specialist provider cases dashboard page')
+@step(u'that I am on the specialist provider cases dashboard page')
 def step_on_spec_providers_dashboard(context):
     element = context.helperfunc.find_by_xpath("//html[@ng-app='cla.providerApp']")
     assert element is not None
     
-@given(u'there is a case available')
+@step(u'there is a case available')
 def step_check_cases(context):
     # check there are cases available
     table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
@@ -27,7 +27,7 @@ def step_check_cases(context):
     # how many cases?
     assert len(cases) > 0
 
-@when(u'I select a case from the dashboard')
+@step(u'I select a case from the dashboard')
 def step_select_special_provider_case(context):
     table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
     cases = table.find_elements_by_xpath('//tr')
@@ -38,7 +38,7 @@ def step_select_special_provider_case(context):
     assert selected_case is not None
     selected_case.click()
 
-@then(u'I am taken to the case details page')
+@step(u'I am taken to the case details page')
 def step_on_case_details_page(context):
     # check the url of the page
     # will look like /provider/CASEID/diagnosis/
