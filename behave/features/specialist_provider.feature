@@ -1,0 +1,15 @@
+Feature: Specialist Provider Case Assignment
+# there is now a fixture which should create two cases so that these tests can run. It is loaded by running 
+# docker-compose exec clabackend python manage.py loaddata test_special_provider_case.json 
+# which is in run_test_local.sh
+
+Background: Log In Provider
+    Given I am logged in as a Specialist Provider
+ 
+@specialist-provider-select-case
+Scenario: Specialist Provider Selects a case
+  Given that I am on the specialist provider cases dashboard page
+  And there is a case available
+  When I select a case from the dashboard
+  Then I am taken to the case details page
+  
