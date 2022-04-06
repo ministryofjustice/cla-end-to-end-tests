@@ -34,7 +34,7 @@ def step_select_special_provider_case(context):
     # select the first case from the list
     # previous step checks that there is at least one
     selected_case = cases[0].find_element_by_xpath('//td//a')
-    context.selected_case_id = cases[0].find_element_by_xpath('//td//a').text
+    context.selected_case_ref = cases[0].find_element_by_xpath('//td//a').text
     assert selected_case is not None
     selected_case.click()
 
@@ -42,8 +42,41 @@ def step_select_special_provider_case(context):
 def step_on_case_details_page(context):
     # check the url of the page
     # will look like /provider/CASEID/diagnosis/
-    page = f"/provider/{context.selected_case_id}/diagnosis/"
+    page = f"/provider/{context.selected_case_ref}/diagnosis/"
     wait_until_page_is_loaded(page, context)
-    assert_header_on_page(context.selected_case_id, context)
+    assert_header_on_page(context.selected_case_ref, context)
     
+@given(u'I can view the client details')
+def step_impl(context):
+    # look for the client details on the left hand side of screen
+    client_section = context.helperfunc.find_by_id('personal_details')
+    assert client_section is not None
+    # check it is the right client
+    displayed_name = client_section.find_element_by_xpath(f'//h2[@title="Full name"]').text
+    backend_name = context.helperfunc.get_case_personal_details_from_backend(context.selected_case_ref)['full_name']
+    assert displayed_name == backend_name
 
+@given(u'I can view the case details and notes entered by the Operator')
+def step_impl(context):
+    # check there is a case history on the rhs
+    case_history = context.helperfunc.find_by_class("CaseHistory")
+    assert case_history is not None
+    # check that there are operator comments
+    operator_comments = context.helperfunc.find_by_class("CommentBlock").find_elements_by_xpath("./child::*")
+    # "operator said" is the second child and then there are case notes below that.
+    assert len(operator_comments) >= 3   
+
+    
+@when(u'I select Scope')
+def step_impl(context):
+    scope_link = context.helperfunc.find_by_xpath('//a[@ui-sref="case_detail.edit.diagnosis"]')
+    assert scope_link is not None
+    # click on the link
+    scope_link.click()
+    
+@then(u'I can view the scope assessment entered by the Operator')
+def step_impl(context):
+    # <section class="SummaryBlock SummaryBlock--compact ng-scope" ng-if="diagnosis.nodes">
+    # check that the scope assessment exists
+    scope_description = context.helperfunc.find_by_xpath('//section[@class="SummaryBlock SummaryBlock--compact ng-scope"]')
+    assert scope_description is not None

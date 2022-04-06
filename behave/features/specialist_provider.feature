@@ -19,7 +19,7 @@ Scenario: Specialist Provider Selects a case
   And there is a case available
   And I select a case from the dashboard
   And I am taken to the case details page
-  # And I can view the client details
-  # And I can view the case details and notes entered by the Operator
-  # When I select Scope
-  # Then I can view the scope assessment entered by the Operator
+  And I can view the client details
+  And I can view the case details and notes entered by the Operator
+  When I select Scope
+  Then I can view the scope assessment entered by the Operator
