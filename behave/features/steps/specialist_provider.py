@@ -1,5 +1,6 @@
 from features.constants import CLA_FRONTEND_URL, CLA_SPECIALIST_PROVIDERS_NAME
 from features.steps.cla_in_scope import wait_until_page_is_loaded, assert_header_on_page
+from helper.helper_base import HelperFunc
 from selenium.common.exceptions import TimeoutException
 
 @step(u'I am logged in as a Specialist Provider')
@@ -80,3 +81,13 @@ def step_impl(context):
     # check that the scope assessment exists
     scope_description = context.helperfunc.find_by_xpath('//section[@class="SummaryBlock SummaryBlock--compact ng-scope"]')
     assert scope_description is not None
+    # check that there is a category of law and that it is INSCOPE
+    scope_inscope = scope_description.find_elements_by_xpath(f'.//div/p[text()="INSCOPE"]')
+    assert scope_inscope is not None
+    # this would find all descriptors if needed
+    # scope_descriptors = scope_description.find_element_by_xpath(f'.//div/p')
+    scope_cat_of_law = scope_description.find_element_by_xpath(f'.//div/p[starts-with(.,"Category of law")]')
+    assert scope_cat_of_law is not None and len(scope_cat_of_law.text)>len("Category of law:")
+
+
+    
