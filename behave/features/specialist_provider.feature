@@ -6,10 +6,20 @@ Feature: Specialist Provider Case Assignment
 Background: Log In Provider
     Given I am logged in as a Specialist Provider
  
-@specialist-provider-select-case
+# @specialist-provider-select-case
+# Scenario: Specialist Provider Selects a case
+#   Given that I am on the specialist provider cases dashboard page
+#   And there is a case available
+#   When I select a case from the dashboard
+#   Then I am taken to the case details page
+  
+@specialist-provider-view-case-scope
 Scenario: Specialist Provider Selects a case
   Given that I am on the specialist provider cases dashboard page
   And there is a case available
-  When I select a case from the dashboard
-  Then I am taken to the case details page
-  
+  And I select a case from the dashboard
+  And I am taken to the case details page
+  And I can view the client details
+  And I can view the case details and notes entered by the Operator
+  When I select Scope
+  Then I can view the scope assessment entered by the Operator
