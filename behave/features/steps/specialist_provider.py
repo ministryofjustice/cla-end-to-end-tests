@@ -89,5 +89,41 @@ def step_impl(context):
     scope_cat_of_law = scope_description.find_element_by_xpath(f'.//div/p[starts-with(.,"Category of law")]')
     assert scope_cat_of_law is not None and len(scope_cat_of_law.text)>len("Category of law:")
 
+@given(u'I select \'Accept\'')
+def step_impl(context):
+    # find the accept button and click it
+    accept_button = context.helperfunc.find_by_xpath('//button[@name="accept-case"]')
+    assert accept_button is not None
+    accept_button.click()
+    
+@given(u'I can see a \'Case accepted successfully\' message')
+def step_impl(context):
+    # wait for the flash message to appear. 
+    flash_message = context.helperfunc.find_by_xpath('//*[text()="Case accepted successfully"]')
+    assert flash_message is not None 
+    
+@when(u'I return to the specialist provider cases dashboard page')
+def step_impl(context):
+# context.selected_case_ref
+    # click on the 'back to cases' link
+    back_to_cases = context.helperfunc.find_by_xpath('//a[@class="SubNav-link SubNav-link--back"]')
+    assert back_to_cases is not None
+    back_to_cases.click()   
+
+@when(u'I select the Accepted tab')
+def step_impl(context):
+    # click on the 'Accepted' tab
+    accepted_tab = context.helperfunc.find_by_xpath('//a[@class="Label Icon Icon--folderAccepted"]')
+    assert accepted_tab is not None
+    accepted_tab.click()  
+    
+    
+@then(u'I can see my accepted case reference number')
+def step_impl(context):
+    # context.selected_case_ref
+    # click on the 'back to cases' link
+    my_case = context.helperfunc.find_by_xpath(f"//*[text()='{context.selected_case_ref}']")
+    assert my_case is not None
+     
 
     
