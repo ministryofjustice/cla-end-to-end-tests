@@ -41,28 +41,28 @@ Scenario: Specialist Provider Accepts a case
   Given that I am viewing a case that I have accepted as a specialist provider
   And I select the Legal help form
   And The legal help form Your details section has the values
-  | field                                                    | value              | type                |                  |
-  | Full name                                                | Jo                 | input               |                  |
-  | Our ref                                                  | 3000001            | input               |                  |
-  | Date of Birth                                            | 1/1/2003           | input               |                  |
-  | Surname at Birth                                         |                    | input               |                  |
-  | Sex                                                      |                    | input               |                  |
-  | Current Address                                          | 11 electric avenue | textarea            |                  |
-  | N.I. Number                                              | NW117431B          | input               |                  |
-  | Client No                                                |                    | input               |                  |
-  | Post Code                                                | OX2 0LD            | input               |                  |
+  | field                                                    | value              | type                |
+  | Full name                                                | Jo                 | input               |
+  | Our ref                                                  | 3000001            | input               |
+  | Date of Birth                                            | 1/1/2003           | input               |
+  | Surname at Birth                                         |                    | input               |
+  | Sex                                                      |                    | input               |
+  | Current Address                                          | 11 electric avenue | textarea            |
+  | N.I. Number                                              | NW117431B          | input               |
+  | Client No                                                |                    | input               |
+  | Post Code                                                | OX2 0LD            | input               |
   And The legal help form Your Finances section has the values
-  | field                                                    | value              | type                |                  |
-  | Do you have a partner that you live with?                | No                 | input               |                  |
-  | Universal credit                                         | Yes                | input               |                  |
-  | Income Support                                           | No                 | input               |                  |
-  | Income-based Job Seekers Allowance                       | No                 | input               |                  |
-  | Guarantee State Pension Credit                           | No                 | input               |                  |
-  | Income-related Employment and Support Allowance          | No                 | input               |                  |
-  | Are you on National Asylum Support Service benefits?     | No                 | input               |                  |
-  | Do you own any property?                                 | No                 | input               |                  |
+  | field                                                    | value              | type                |
+  | Do you have a partner that you live with?                | No                 | input               |
+  | Universal credit                                         | Yes                | input               |
+  | Income Support                                           | No                 | input               |
+  | Income-based Job Seekers Allowance                       | No                 | input               |
+  | Guarantee State Pension Credit                           | No                 | input               |
+  | Income-related Employment and Support Allowance          | No                 | input               |
+  | Are you on National Asylum Support Service benefits?     | No                 | input               |
   And The legal help form Your Property section has the values
   | field                                                    | main property      | additional property | second property  |
+  | Do you own any property?                                 | No                 | N/A                 | N/A              |
   | Property Value                                           | £                  | £                   | £                |
   | Outstanding Mortage                                      | £                  | £                   | £                |
   | Percentage Share                                         | %                  | %                   | %                |
@@ -75,25 +75,25 @@ Scenario: Specialist Provider Accepts a case
   | Pensioner Capital Disregard                              | £0.00              | N/A                 | N/A              |
   | TOTAL CAPITAL for Assessment Purposes                    | £0.00              | N/A                 | N/A              |
   And The legal help form Your Income section has the values
-  | field                                                    | your               | partner             |                  |
-  | Wages                                                    | £0.00              | £0.00               |                  |
-  | Self Employed Drawings                                   | £0.00              | £0.00               |                  |
-  | Benefits                                                 | £0.00              | £0.00               |                  |
-  | Tax Credits                                              | £0.00              | £0.00               |                  |
-  | Child Benefit                                            | £0.00              | N/A                 |                  |
-  | Maintenance Received                                     | £0.00              | £0.00               |                  |
-  | Pension Income                                           | £0.00              | £0.00               |                  |
-  | Any Other Income                                         | £0.00              | £0.00               |                  |
-  | TOTAL INCOME                                             | £0.00              | £0.00               |                  |
+  | field                                                    | your               | partner             |
+  | Wages                                                    | £0.00              | £0.00               |
+  | Self Employed Drawings                                   | £0.00              | £0.00               |
+  | Benefits                                                 | £0.00              | £0.00               |
+  | Tax Credits                                              | £0.00              | £0.00               |
+  | Child Benefit                                            | £0.00              | N/A                 |
+  | Maintenance Received                                     | £0.00              | £0.00               |
+  | Pension Income                                           | £0.00              | £0.00               |
+  | Any Other Income                                         | £0.00              | £0.00               |
+  | TOTAL INCOME                                             | £0.00              | £0.00               |
   And The legal help form Your Income section (less Monthly allowances) has the values
-  | field                                                    | your               | partner             |                  |
-  | Tax                                                      | £0.00              | £0.00               |                  |
-  | National Insurance                                       | £0.00              | £0.00               |                  |
-  | Rent                                                     | £0.00              | £0.00               |                  |
-  | Maintenance Payments being made                          | £0.00              | £0.00               |                  |
-  | Childcare Costs due to Work                              | £0.00              | £0.00               |                  |
-  | Legal Aid payments for Criminal Defence                  | £0.00              | £0.00               |                  |
-  | Employment Expenses (standard £45 if employed)           | £                  | £                   |                  |
-  | Dependants Allowance (certain amount for each dependant) | £                  | N/A                 |                  |
-  | Partner Allowance                                        | £                  | N/A                 |                  |
-  | TOTAL MONTHLY DISPOSABLE INCOME                          | £                  | N/A                 |                  |
+  | field                                                    | your               | partner             |
+  | Tax                                                      | £0.00              | £0.00               |
+  | National Insurance                                       | £0.00              | £0.00               |
+  | Rent                                                     | £0.00              | £0.00               |
+  | Maintenance Payments being made                          | £0.00              | £0.00               |
+  | Childcare Costs due to Work                              | £0.00              | £0.00               |
+  | Legal Aid payments for Criminal Defence                  | £0.00              | £0.00               |
+  | Employment Expenses (standard £45 if employed)           | £                  | £                   |
+  | Dependants Allowance (certain amount for each dependant) | £                  | N/A                 |
+  | Partner Allowance                                        | £                  | N/A                 |
+  | TOTAL MONTHLY DISPOSABLE INCOME                          | £                  | N/A                 |

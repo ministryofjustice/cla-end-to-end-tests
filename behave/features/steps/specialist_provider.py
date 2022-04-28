@@ -153,10 +153,9 @@ def step_impl(context):
     legal_help_form_link.click()
 
 
-@given(u'The legal help form Your details section has the values')
-def step_impl(context):
-    for row in context.table:
-        label_element = context.helperfunc.driver().find_element_by_xpath(f"//*[text()='{row['field']}']")
+def assert_one_colum_table(table, root_element):
+    for row in table:
+        label_element = root_element.find_element_by_xpath(f".//*[text()='{row['field']}']")
         assert label_element is not None, f"Could not find question on legal help form: {row['field']}"
         parent_element = label_element.find_element_by_xpath(f"./..")
         value_element = parent_element.find_element_by_tag_name(row['type'])
@@ -169,48 +168,48 @@ def step_impl(context):
 
         assert actual_label == expected_label, f"Expected label: {expected_label} - Actual value:{actual_label}"
         assert actual_value == expected_value, f"Expected value: {expected_value} - Actual value:{actual_value}"
+
+
+def assert_three_colum_table(table, root_element, col1_key, col2_key, col3_key, col4_key):
+
+    def assert_cell(element, question, field_name, expected_value):
+        value = element.get_attribute("value")
+        assert value == expected_value, f"Question: {question}({field_name}) - Expected: {expected_value} - Actual: {value}"
+
+    for row in table:
+        label_element = root_element.find_element_by_xpath(f".//*[text()='{row[col1_key]}']")
+        assert label_element is not None, f"Could not find question on legal help form: {row[col1_key]}"
+        parent_element = label_element.find_element_by_xpath("./..//ancestor::tr")
+        elements = parent_element.find_elements_by_tag_name("td input")
+        assert_cell(elements[0], row[col1_key], col2_key, row[col2_key])
+        if row[col3_key].lower() != 'n/a':
+            assert_cell(elements[1], row[col1_key], col3_key, row[col3_key])
+        if col4_key is not None and row[col4_key].lower() != 'n/a':
+            assert_cell(elements[2], row[col1_key], col4_key, row[col4_key])
+
+
+@given(u'The legal help form Your details section has the values')
+def step_impl(context):
+    driver = context.helperfunc.driver()
+    heading_element = driver.find_element_by_xpath(f"//h2[text()='Your Details']")
+    wrapper_element = heading_element.find_element_by_xpath("./..")
+    assert_one_colum_table(context.table, wrapper_element)
 
 
 @given(u'The legal help form Your Finances section has the values')
 def step_impl(context):
-    for row in context.table:
-        label_element = context.helperfunc.driver().find_element_by_xpath(f"//*[text()='{row['field']}']")
-        assert label_element is not None, f"Could not find question on legal help form: {row['field']}"
-        parent_element = label_element.find_element_by_xpath(f"./..")
-        value_element = parent_element.find_element_by_tag_name(row['type'])
-        assert value_element is not None, f"Could not find value for question: {row['field']}"
-
-        expected_label = row['field'].upper()
-        expected_value = row['value'].upper()
-        actual_value = value_element.get_attribute('value').upper()
-        actual_label = label_element.text.upper()
-
-        assert actual_label == expected_label, f"Expected label: {expected_label} - Actual value:{actual_label}"
-        assert actual_value == expected_value, f"Expected value: {expected_value} - Actual value:{actual_value}"
+    driver = context.helperfunc.driver()
+    heading_element = driver.find_element_by_xpath(f"//h2[text()='Your Finances']")
+    wrapper_element = heading_element.find_element_by_xpath("./..")
+    assert_one_colum_table(context.table, wrapper_element)
 
 
 @given(u'The legal help form Your Property section has the values')
 def step_impl(context):
-    for row in context.table:
-        label_element = context.helperfunc.driver().find_element_by_xpath(f"//*[text()='{row['field']}']")
-        assert label_element is not None, f"Could not find question on legal help form: {row['field']}"
-        parent_element = label_element.find_element_by_xpath("./..")
-
-        elements = parent_element.find_elements_by_tag_name("td input")
-        main_property_element = elements[0]
-        additional_property_element = elements[1]
-        second_property_element = elements[2]
-
-        main_property_actual_value = main_property_element.get_attribute("value")
-        additional_property_actual_value = additional_property_element.get_attribute("value")
-        second_property_actual_value = second_property_element.get_attribute("value")
-        assert main_property_actual_value == row[
-            "main property"], f"Main property: Expected {row['main property']} - Actual {main_property_actual_value}"
-        assert additional_property_actual_value == row[
-            "additional property"], "First additional property value is not as expected"
-        assert second_property_actual_value == row[
-            "second property"], "Second additional property value is not as expected"
-
+    driver = context.helperfunc.driver()
+    heading_element = driver.find_element_by_xpath(f"//h2[text()='Your Property']")
+    wrapper_element = heading_element.find_element_by_xpath("./..")
+    assert_three_colum_table(context.table, wrapper_element, 'field', 'main property', 'additional property', 'second property')
 
 @given(u'The legal help form Your Capital section has the values')
 def step_impl(context):
@@ -228,66 +227,26 @@ def step_impl(context):
             """, element)
         except:
             pass
-    for row in context.table:
-        label_element = wrapper_element.find_element_by_xpath(f"//*[contains(text(),'{row['field']}')]")
-        assert label_element is not None, f"Could not find question on legal help form: {row['field']}"
-        parent_element = label_element.find_element_by_xpath("./..//ancestor::tr")
 
-        elements = parent_element.find_elements_by_tag_name("td input")
-        subject_matter_element = elements[0]
-        subject_matter_actual_value = subject_matter_element.get_attribute("value")
-        assert subject_matter_actual_value == row["subject matter"], "Subject matter is not as expected"
-
-        if row["your capital"].lower() != 'n/a':
-            your_capital_element = elements[1]
-            your_capital_actual_value = your_capital_element.get_attribute("value")
-            assert your_capital_actual_value == row["your capital"], "Your capital is not as expected"
-
-        if row["partners capital"].lower() != 'n/a':
-            partners_capital_element = elements[2]
-            partners_capital_actual_value = partners_capital_element.get_attribute("value")
-            assert partners_capital_actual_value == row["partners capital"], "Partners capital value is not as expected"
+    assert_three_colum_table(context.table, wrapper_element, 'field', 'subject matter', 'your capital', 'partners capital')
 
 
 @given(u'The legal help form Your Income section has the values')
 def step_impl(context):
+
     driver = context.helperfunc.driver()
     heading_element = driver.find_element_by_xpath(f"//h2[text()='Your Income']")
     wrapper_element = heading_element.find_element_by_xpath("./..")
-    for row in context.table:
-        label_element = wrapper_element.find_element_by_xpath(f"//*[contains(text(),'{row['field']}')]")
-        assert label_element is not None, f"Could not find question on legal help form: {row['field']}"
-        parent_element = label_element.find_element_by_xpath("./..//ancestor::tr")
-
-        elements = parent_element.find_elements_by_tag_name("td input")
-        your_income_element = elements[0]
-        your_income_actual_value = your_income_element.get_attribute("value")
-        assert your_income_actual_value == row["your"], "Your income is not as expected"
-
-        if row["partner"].lower() != 'n/a':
-            partner_income_element = elements[1]
-            partner_income_actual_value = partner_income_element.get_attribute("value")
-            assert partner_income_actual_value == row["partner"], "Your partners income is not as expected"
+    assert_three_colum_table(context.table, wrapper_element, 'field', 'your', 'partner', col4_key=None)
 
 
 @given(u'The legal help form Your Income section (less Monthly allowances) has the values')
 def step_impl(context):
+
     driver = context.helperfunc.driver()
     heading_element = driver.find_element_by_xpath(f"//h2[text()='Your Income']")
     wrapper_element = heading_element.find_element_by_xpath("./..")
     sub_heading_element = wrapper_element.find_element_by_xpath(".//*[text()='Less monthly allowances']")
     wrapper_element = sub_heading_element.find_element_by_xpath("./..//ancestor::table")
-    for row in context.table:
-        label_element = wrapper_element.find_element_by_xpath(f".//*[contains(text(),'{row['field']}')]")
-        assert label_element is not None, f"Could not find question on legal help form: {row['field']}"
-        parent_element = label_element.find_element_by_xpath("./..//ancestor::tr")
+    assert_three_colum_table(context.table, wrapper_element, 'field', 'your', 'partner', col4_key=None)
 
-        elements = parent_element.find_elements_by_tag_name("td input")
-        your_income_element = elements[0]
-        your_income_actual_value = your_income_element.get_attribute("value")
-        assert your_income_actual_value == row["your"], "Your income is not as expected"
-
-        if row["partner"].lower() != 'n/a':
-            partner_income_element = elements[1]
-            partner_income_actual_value = partner_income_element.get_attribute("value")
-            assert partner_income_actual_value == row["partner"], "Your partners income is not as expected"
