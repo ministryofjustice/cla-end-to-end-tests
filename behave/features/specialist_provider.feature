@@ -22,6 +22,8 @@ Scenario: Specialist Provider Selects a case
   And I can view the case details and notes entered by the Operator
   When I select Scope
   Then I can view the scope assessment entered by the Operator
+  When I select Finances
+  Then I can view the financial assessment entered by the Operator
 
 Scenario: Specialist Provider Accepts a case
   Given that I am on the specialist provider cases dashboard page
