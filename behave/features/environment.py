@@ -17,7 +17,7 @@ def before_all(context):
     context.helperfunc = helper_func
     
     # Dir to output test artifacts
-    context.artifacts_dir = '../behave_local'
+    context.artifacts_dir = config.get('Environment', 'artifacts_directory')
 
 @capture
 def after_scenario(context, scenario):
