@@ -174,23 +174,27 @@ def assert_your_details(table, root_element):
 
 
 def assert_four_column_table(table, root_element):
+    QUESTION_COL_KEY = 0
+    COL_TWO_KEY = 1
+    COL_THREE_KEY = 2
+    COL_FOUR_KEY = 3
 
     def assert_cell(element, question, expected_value):
         value = element.get_attribute("value")
         assert value == expected_value, f"Question: {question} - Expected: {expected_value} - Actual: {value}"
 
     for row in table:
-        question = row[0]
+        question = row[QUESTION_COL_KEY]
         label_element = root_element.find_element_by_xpath(f".//*[text()='{question}']")
         assert label_element is not None, f"Could not find question on legal help form: {question}"
         parent_element = label_element.find_element_by_xpath("./..//ancestor::tr")
         elements = parent_element.find_elements_by_tag_name("td input")
 
-        assert_cell(elements[0], question, row.cells[1])
-        if len(row) > 2 and row[2].lower() != 'n/a':
-            assert_cell(elements[1], question, row[2])
-        if len(row) > 3 and row[2].lower() != 'n/a':
-            assert_cell(elements[2], question, row[3])
+        assert_cell(elements[0], question, row[COL_TWO_KEY])
+        if len(row) > 2 and row[COL_THREE_KEY].lower() != 'n/a':
+            assert_cell(elements[1], question, row[COL_THREE_KEY])
+        if len(row) > 3 and row[COL_FOUR_KEY].lower() != 'n/a':
+            assert_cell(elements[2], question, row[COL_FOUR_KEY])
 
 
 @given(u'The legal help form Your details section has the values')

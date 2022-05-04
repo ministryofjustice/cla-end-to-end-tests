@@ -34,7 +34,6 @@ Scenario: Specialist Provider Accepts a case
   And I select the Accepted tab
   Then I can see my accepted case reference number
 
-@wip-said
 Scenario: Specialist Provider Accepts a case
   Given that I am viewing a case that I have accepted as a specialist provider
   And I select the Legal help form
