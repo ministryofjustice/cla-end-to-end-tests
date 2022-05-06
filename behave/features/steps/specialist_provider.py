@@ -1,7 +1,5 @@
 from features.constants import CLA_FRONTEND_URL, CLA_SPECIALIST_PROVIDERS_NAME, CLA_SPECIALIST_CASE_TO_ACCEPT
-from multiprocessing import context
 from features.steps.cla_in_scope import wait_until_page_is_loaded, assert_header_on_page
-from helper.helper_base import HelperFunc
 from selenium.common.exceptions import NoSuchElementException
 
 
