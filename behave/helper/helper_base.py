@@ -74,3 +74,7 @@ class HelperFunc(object):
 
     def update_case_callback_details(self, case_reference, case_json):
         return self.call_centre_backend.update_case_callback_details(case_reference, case_json)
+
+    def get_future_callbacks(self):
+        return self.call_centre_backend.get_future_callbacks()
+
