@@ -13,7 +13,8 @@ class Backend:
         }
 
     def url(self, endpoint):
-        return f"{CLA_BACKEND_URL}/{self.zone.strip('/')}/{endpoint.strip('/')}"
+        # url needs to have the / on the end , do not remove
+        return f"{CLA_BACKEND_URL}/{self.zone.strip('/')}/{endpoint.lstrip('/')}"
 
     def authenticate(self, client_id, client_secret, username, password, grant_type="password"):
         payload = {
