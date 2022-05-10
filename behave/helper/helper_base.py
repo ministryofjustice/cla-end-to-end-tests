@@ -27,7 +27,12 @@ class HelperFunc(object):
         
     def close(self):
         self._driver.quit()
-        
+
+    # Takes screenshot, specifically it grabs the entire the entire body of the page.
+    def take_screenshot(self, scenario_file_path):
+        element = self._driver.find_element_by_tag_name('body')
+        element.screenshot(scenario_file_path)
+
     # Helper functions to find web elements, possibly will be in a different place 
  
     def find_by_xpath(self, xpath):

@@ -1,6 +1,5 @@
 from features.constants import CLA_FRONTEND_URL, CLA_SPECIALIST_PROVIDERS_NAME, CLA_SPECIALIST_CASE_TO_ACCEPT
 from features.steps.cla_in_scope import wait_until_page_is_loaded, assert_header_on_page
-from helper.helper_base import HelperFunc
 from selenium.common.exceptions import NoSuchElementException
 
 
@@ -221,3 +220,23 @@ def step_impl(context):
     wrapper_element = sub_heading_element.find_element_by_xpath("./..//ancestor::table")
     assert_four_column_table(context.table, wrapper_element)
 
+     
+@when(u'I select Finances')
+def step_impl(context):
+    tabs = context.helperfunc.find_by_css_selector("ul.Tabs")
+    finance_tab_link = tabs.find_element_by_link_text("Finances")
+    assert finance_tab_link is not None
+
+    # click on the link
+    finance_tab_link.click()
+
+@then(u'I can view the financial assessment entered by the Operator')
+def step_impl(context):
+    tabs = context.helperfunc.find_by_css_selector("ul.Tabs")
+    finance_tab_link = tabs.find_element_by_link_text("Finances")
+    classes = finance_tab_link.get_attribute("class")
+    # Checking that the green tick is present for having the finance previously completed.
+    assert "Icon--solidTick" in classes and "Icon--green" in classes
+    # Checking that the overall form has loaded by checking one of the elements are there.
+    assert context.helperfunc.find_by_id("id_your_details-has_partner_1") is not None
+    

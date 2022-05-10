@@ -1,4 +1,8 @@
 import os
+
+BROWSER = os.environ.get("BROWSER")
+ARTIFACTS_DIRECTORY = os.environ.get("ARTIFACTS_DIRECTORY")
+
 CLA_BACKEND_URL = os.environ.get("CLA_E2E_BACKEND_URL")
 CLA_FRONTEND_URL = os.environ.get("CLA_E2E_FRONTEND_URL")
 CLA_PUBLIC_URL = os.environ.get("CLA_E2E_PUBLIC_URL")

@@ -23,6 +23,8 @@ services:
     volumes:
       - .:/behave_local
     environment:
+      BROWSER: chrome
+      ARTIFACTS_DIRECTORY: ../behave_local
       CLA_E2E_PUBLIC_URL: ${CLA_E2E_PUBLIC_URL:-http://clapublic:8000}
       CLA_E2E_BACKEND_URL: ${CLA_E2E_BACKEND_URL:-http://clabackend:8000}
       CLA_E2E_FRONTEND_URL: ${CLA_E2E_FRONTEND_URL:-http://clafrontend:8000}
