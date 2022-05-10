@@ -45,3 +45,15 @@ class Backend:
         response = requests.get(self.url(f"/case/{case_reference}/logs"), headers=self.headers)
         assert response.status_code == 200, f"Could not get logs for case {case_reference}"
         return response.json()
+
+    def update_case_callback_details(self, case_reference, call_back_json):
+        callback_url = self.url(f"/case/{case_reference}/call_me_back/")
+        response = requests.post(url=callback_url,
+                                 json=call_back_json,
+                                 headers=self.headers)
+        # if this fails then it might be because max no callbacks has been created
+        if response.status_code != 204:
+            return [response.status_code, f"{case_reference}, {response.json()}, {call_back_json}"]
+        else:
+            return [response.status_code]
+

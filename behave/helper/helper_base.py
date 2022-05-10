@@ -50,6 +50,10 @@ class HelperFunc(object):
     def find_by_class(self, class_name):
         return self._driver_wait.until(EC.visibility_of_element_located((By.CLASS_NAME, class_name)))
 
+    # added in so can check if there is more then one element on the page
+    def find_many_by_class(self, class_name):
+        return self._driver_wait.until(EC.visibility_of_all_elements_located((By.CLASS_NAME, class_name)))
+
     def find_by_partial_link_text(self, text):
         return self._driver_wait.until(EC.visibility_of_element_located((By.PARTIAL_LINK_TEXT, text)))
 
@@ -67,3 +71,6 @@ class HelperFunc(object):
     
     def get_case_callback_details_from_backend(self, case_reference):
         return self.call_centre_backend.get_case_callback_details(case_reference)
+
+    def update_case_callback_details(self, case_reference, case_json):
+        return self.call_centre_backend.update_case_callback_details(case_reference, case_json)
