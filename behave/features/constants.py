@@ -45,9 +45,10 @@ MATTER_TYPE_2 = "QDIS - Disability"
 
 CLA_SPECIALIST_PROVIDERS_NAME = "Howells"
 CLA_SPECIALIST_CASE_TO_ACCEPT = "JT-4272-9443"
-# WIP LGA-1825 DUMMY CASES WILL NEED REPLACING WITH THOSE FROM FIXTURE
-CLA_CALLBACK_CASES = ["VN-8911-9673",
-                      "EY-6927-6849",
-                      "FT-5332-4765",
-                      "YT-5838-7217",
-                      "HT-7591-1126"]
+# THESE ARE CASES FROM TEXT FIXTURE
+CLA_CALLBACK_CASES = ["TC-0001-0001",
+                      "TC-0001-0002",
+                      "TC-0001-0003",
+                      "TC-0001-0004",
+                      "TC-0001-0005"]
+
