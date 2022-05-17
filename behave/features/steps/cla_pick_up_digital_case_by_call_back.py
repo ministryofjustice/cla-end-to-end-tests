@@ -23,7 +23,8 @@ def step_impl(context):
     for day in available_days_from_common:
         available_slots = operator_hours.time_slots(day.date())
         all_available_slots.extend(available_slots)
-    slots_chosen = all_available_slots[4:]
+    # do every other slot as on the display they lump two slots together on website
+    slots_chosen = all_available_slots[:8:2]
     slots_chosen.append(all_available_slots[0])
     for index, case in enumerate(CLA_CALLBACK_CASES):
         # don't create a callback for the case if there is already one for this case
@@ -46,16 +47,16 @@ def step_impl(context):
             did_it_work = context.helperfunc.update_case_callback_details(case_reference, callback_json)
             if did_it_work["response_status_code"] != 204:
                 # try again?
-                # if are we in the first time-slot
-                # then need to update this and the last slot so have two in same slot
-                new_slot = random.choice(all_available_slots[-4:])
+                # if are we in the first time-slot update this and the last slot so have two in same slot
+                # also choose something other than the first 4 which we used above
+                new_slot = random.choice(all_available_slots[:-4])
                 if index == 0:
                     slots_chosen[-1] = new_slot
                 new_time_slot_start = new_slot.strftime("%d/%m/%Y %H:%M")
                 callback_json['datetime'] = new_time_slot_start
                 last_chance = context.helperfunc.update_case_callback_details(case_reference, callback_json)
                 message = f'Assertion error for case {last_chance["case_reference"]}, data {last_chance["call_back_json"]} returned {last_chance["response_json"]}'
-                assert last_chance["response_status_code"] != 204, message
+                assert last_chance["response_status_code"] == 204, message
 
 
 @given(u'that I am on cases callback page located at /call_centre/callbacks/')
