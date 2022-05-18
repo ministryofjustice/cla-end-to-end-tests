@@ -5,15 +5,7 @@ from features.steps.cla_in_scope import assert_header_on_page
 import random
 
 
-@given(u'that I have created cases with callbacks')
-# This is the background step that takes test cases and assigns a callback slot some time over the next few days
-def step_impl(context):
-    # format of the json that we need for the callback is
-    # {
-    #     "datetime": "05/05/2022 09:00",
-    #     "notes": "",
-    #     "priority_callback": false
-    # }
+def get_next_available_callback_slots():
     # Need to get available slots from cla_common.
     # Use OpeningHours class with correct setup so that it knows about bank holidays
     # Choose 6 days so can be sure that will not get three bank holidays/sunday etc
@@ -26,6 +18,13 @@ def step_impl(context):
     # do every other slot as on the display they lump two slots together on website
     slots_chosen = all_available_slots[:8:2]
     slots_chosen.append(all_available_slots[0])
+    return slots_chosen, all_available_slots
+
+
+@given(u'that I have created cases with callbacks')
+# This is the background step that takes test cases and assigns a callback slot some time over the next few days
+def step_impl(context):
+    slots_chosen, all_available_slots = get_next_available_callback_slots()
     for index, case in enumerate(CLA_CALLBACK_CASES):
         # don't create a callback for the case if there is already one for this case
         # this may not produce two in the same slot
@@ -38,6 +37,12 @@ def step_impl(context):
             time_slot_start = next_slot.strftime("%d/%m/%Y %H:%M")
             case_reference = case
             # create the json to pass to the api
+            # format of the json that we need for the callback is
+            # {
+            #     "datetime": "05/05/2022 09:00",
+            #     "notes": "",
+            #     "priority_callback": false
+            # }
             callback_json = {
                 'datetime': time_slot_start,
                 'notes': '',
@@ -59,7 +64,7 @@ def step_impl(context):
                 assert last_chance["response_status_code"] == 204, message
 
 
-@given(u'that I am on cases callback page located at /call_centre/callbacks/')
+@given(u'that I am on cases callback page')
 def step_impl(context):
     start_page_url = f"{CLA_FRONTEND_URL}/call_centre/callbacks/"
     context.helperfunc.open(start_page_url)
@@ -70,7 +75,7 @@ def step_impl(context):
 def step_impl(context):
     #  there will be at least one <a> element that shows callbacks are booked
     callbacks_exist = context.helperfunc.find_many_by_class("CallbackMatrix-slot")
-    assert len(callbacks_exist) > 1, f"Only {len(callbacks_exist)} callback, want more than one "
+    assert len(callbacks_exist) > 1, f"Found only {len(callbacks_exist)} callbacks, expected to have more than one."
 
 
 @when(u'I select a callback slot')

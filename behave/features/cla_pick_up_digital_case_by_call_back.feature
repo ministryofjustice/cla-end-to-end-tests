@@ -9,7 +9,7 @@ Background: Create Callbacks
 
 @check_callback_exists
 Scenario: Can see callbacks booked in different slots
-    Given that I am on cases callback page located at /call_centre/callbacks/
+    Given that I am on cases callback page
     And multiple cases with a callback exists
     When I select a callback slot
     Then I can see the cases where a callback is booked for that slot
