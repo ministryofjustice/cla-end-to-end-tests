@@ -1,5 +1,5 @@
 from features.constants import CLA_FRONTEND_URL, CLA_SPECIALIST_PROVIDERS_NAME, CLA_SPECIALIST_CASE_TO_ACCEPT
-from features.steps.cla_in_scope import wait_until_page_is_loaded, assert_header_on_page
+from features.steps.common_steps import wait_until_page_is_loaded, assert_header_on_page
 from selenium.common.exceptions import NoSuchElementException
 
 
@@ -51,7 +51,7 @@ def step_on_case_details_page(context):
     assert_header_on_page(context.selected_case_ref, context)
 
 
-@given(u'I can view the client details')
+@step(u'I can view the client details')
 def step_impl(context):
     # look for the client details on the left hand side of screen
     client_section = context.helperfunc.find_by_id('personal_details')
