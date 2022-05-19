@@ -29,9 +29,16 @@ def step_impl(context):
         # don't create a callback for the case if there is already one for this case
         # this may not produce two in the same slot
         try:
+            # this will return an assertion error if the case exists and no logs
+            # will return empty list if case doesn't exist
             callback_already_created = context.helperfunc.get_case_callback_details_from_backend(case)
-            # look for CB code in logs
-            assert callback_already_created[0]['code'] in ['CB1', 'CB2', 'CB3'], "Callback not created"
+            # look for CB code in logs, if no logs or if  no 'code' in logs then no callback
+            if len(callback_already_created) > 0:
+                assert 'code' in callback_already_created[0] and \
+                       callback_already_created[0]['code'] in ['CB1', 'CB2', 'CB3'], \
+                    "Callback not created"
+            else:
+                assert True, f"Case {case} does not exist"
         except AssertionError:
             next_slot = slots_chosen[index]
             time_slot_start = next_slot.strftime("%d/%m/%Y %H:%M")
@@ -52,16 +59,22 @@ def step_impl(context):
             did_it_work = context.helperfunc.update_case_callback_details(case_reference, callback_json)
             if did_it_work["response_status_code"] != 204:
                 # try again?
-                # if are we in the first time-slot update this and the last slot so have two in same slot
-                # also choose something other than the first 4 which we used above
-                new_slot = random.choice(all_available_slots[:-4])
-                if index == 0:
-                    slots_chosen[-1] = new_slot
-                new_time_slot_start = new_slot.strftime("%d/%m/%Y %H:%M")
-                callback_json['datetime'] = new_time_slot_start
-                last_chance = context.helperfunc.update_case_callback_details(case_reference, callback_json)
-                message = f'Assertion error for case {last_chance["case_reference"]}, data {last_chance["call_back_json"]} returned {last_chance["response_json"]}'
-                assert last_chance["response_status_code"] == 204, message
+                # only try again if this case exists, otherwise carry on for now
+                # check the error message
+                if did_it_work["response_json"] != "No data found":
+                    # if are we in the first time-slot update this and the last slot so have two in same slot
+                    # also choose something other than the first 4 which we used above
+                    new_slot = random.choice(all_available_slots[:-4])
+                    if index == 0:
+                        slots_chosen[-1] = new_slot
+                    new_time_slot_start = new_slot.strftime("%d/%m/%Y %H:%M")
+                    callback_json['datetime'] = new_time_slot_start
+                    last_chance = context.helperfunc.update_case_callback_details(case_reference, callback_json)
+                    message = f'Assertion error for case {last_chance["case_reference"]}, ' \
+                              f'data {last_chance["call_back_json"]} returned {last_chance["response_json"]}'
+                    # put this in here so carry on if are dealing with a case that does exist
+                    if last_chance["response_json"] != {'detail': 'Not found'}:
+                        assert last_chance["response_status_code"] == 204, message
 
 
 @given(u'that I am on cases callback page')
