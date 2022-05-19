@@ -1,5 +1,5 @@
 from features.constants import CLA_CALLBACK_CASES, CLA_FRONTEND_URL
-from features.steps.common_steps import assert_header_on_page, wait_until_page_is_loaded
+from features.steps.common_steps import assert_header_on_page, wait_until_page_is_loaded, compare_client_details_with_backend
 
 
 @given(u'I am viewing a callback slot')
@@ -23,6 +23,7 @@ def step_impl(context):
     assert cla_callback_case is not None, f"Cannot find any cases created on CLA Public in the chosen callback slot"
     # find the reference of the case associated with this icon and use it for next step
     context.callback_case_element_link = cla_callback_case
+    context.selected_case_ref = cla_callback_case.text
 
 
 @when(u'I select a case created on CLA Public from the callback slot')
@@ -32,14 +33,12 @@ def step_impl(context):
     context.callback_case_element_link.click()
 
 
-@step(u'I am taken to the call centre case details page')
+@step(u'I can view the client details of a case created on CLA Public')
 def step_on_case_details_page(context):
-    # check the url of the page
-    # will look like /call_centre/CASEID/diagnosis/
-    callback_case_ref = context.callback_case_element_link.text
-    page = f"/call_centre/{callback_case_ref}/diagnosis/"
-    wait_until_page_is_loaded(page, context)
-    assert_header_on_page(callback_case_ref, context)
+    case_id = context.selected_case_ref
+    client_section = context.helperfunc.find_by_id('personal_details')
+    compare_client_details_with_backend(context, case_id, client_section)
+    # and check that this shows the source is WEB
 
 
 

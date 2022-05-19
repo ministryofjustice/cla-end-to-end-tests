@@ -13,12 +13,15 @@ Background: Log In Provider
 #   When I select a case from the dashboard
 #   Then I am taken to the case details page
 
+@specialist-provider-select-case
 Scenario: Specialist Provider Selects a case
   Given that I am on the specialist provider cases dashboard page
   And there is a case available
   And I select a case from the dashboard
-  And I am taken to the case details page
+  And I am taken to the "specialist provider" case details page
   And I can view the client details
+  | details     |
+  | Full name   |
   And I can view the case details and notes entered by the Operator
   When I select Scope
   Then I can view the scope assessment entered by the Operator
