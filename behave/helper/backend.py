@@ -52,7 +52,7 @@ class Backend:
                                  json=call_back_json,
                                  headers=self.headers)
         # if this fails then it might be because max no callbacks has been created
-        # return a dict with details of the error
+        # return a dict with details of the response
         if response.status_code == 204:
             response_json = None
         else:
