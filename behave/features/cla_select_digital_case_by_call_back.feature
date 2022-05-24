@@ -4,6 +4,7 @@ Feature: Select Callbacks for Digital Cases
 #As a CHS Operator, I want to select a callback slot, so I can see the cases where a callback is booked for that slot.
 Background: Create Callbacks
     Given that I am logged in
+    And that I have created cases with callbacks
 
 @view_existing_callback
 Scenario: Can see details of selected callback
