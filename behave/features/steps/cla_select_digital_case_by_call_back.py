@@ -1,19 +1,13 @@
-from features.constants import CLA_CALLBACK_CASES, CLA_FRONTEND_URL
 from features.steps.common_steps import assert_header_on_page, wait_until_page_is_loaded, compare_client_details_with_backend
 
 
 @given(u'I am viewing a callback slot')
 def step_impl(context):
     # this is actually a composite of several of the steps in another scenario
-    # context.execute_steps(u'''
-    #     Given that I am on cases callback page
-    #     When I select a callback slot
-    # ''')
-    start_page_url = f"{CLA_FRONTEND_URL}/call_centre/callbacks/"
-    context.helperfunc.open(start_page_url)
-    assert_header_on_page("Cases", context)
-    callbacks = context.helperfunc.find_many_by_class("CallbackMatrix-slot")
-    callbacks[0].click()
+    context.execute_steps(u'''
+        Given that I am on cases callback page
+        When I select a callback slot
+    ''')
 
 
 @given(u'callback slot contains a case created on CLA Public')
@@ -39,7 +33,10 @@ def step_on_case_details_page(context):
     client_section = context.helperfunc.find_by_id('personal_details')
     compare_client_details_with_backend(context, case_id, client_section)
     # and check that this shows the source is WEB
-
+    element = "p"
+    title_value = "Case source"
+    xpath_string = f'//{element}[@title="{title_value}"]'
+    assert client_section.find_element_by_xpath(xpath_string).text == "Web", f"Case is not from WEB"
 
 
 
