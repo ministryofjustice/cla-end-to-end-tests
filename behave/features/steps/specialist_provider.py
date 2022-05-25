@@ -35,13 +35,6 @@ def step_impl(context):
     case_id = context.selected_case_ref
     client_section = context.helperfunc.find_by_id('personal_details')
     compare_client_details_with_backend(context, case_id, client_section)
-    # # look for the client details on the left hand side of screen
-    # client_section = context.helperfunc.find_by_id('personal_details')
-    # assert client_section is not None
-    # # check it is the right client
-    # displayed_name = client_section.find_element_by_xpath(f'//h2[@title="Full name"]').text
-    # backend_name = context.helperfunc.get_case_personal_details_from_backend(context.selected_case_ref)['full_name']
-    # assert displayed_name == backend_name
 
 
 @step(u'I select a case from the dashboard')
@@ -123,7 +116,6 @@ def step_impl(context):
 
 @then(u'I can see my accepted case reference number')
 def step_impl(context):
-    # context.selected_case_ref
     # click on the 'back to cases' link
     my_case = context.helperfunc.find_by_xpath(f"//*[text()='{context.selected_case_ref}']")
     assert my_case is not None
