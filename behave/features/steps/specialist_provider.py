@@ -1,5 +1,5 @@
 from features.constants import CLA_FRONTEND_URL, CLA_SPECIALIST_PROVIDERS_NAME, CLA_SPECIALIST_CASE_TO_ACCEPT
-from features.steps.cla_in_scope import wait_until_page_is_loaded, assert_header_on_page
+from features.steps.common_steps import wait_until_page_is_loaded, assert_header_on_page, compare_client_details_with_backend
 from selenium.common.exceptions import NoSuchElementException
 
 
@@ -30,6 +30,13 @@ def step_check_cases(context):
     assert len(cases) > 0
 
 
+@step(u'I can view the client details')
+def step_impl(context):
+    case_id = context.selected_case_ref
+    client_section = context.helperfunc.find_by_id('personal_details')
+    compare_client_details_with_backend(context, case_id, client_section)
+
+
 @step(u'I select a case from the dashboard')
 def step_select_special_provider_case(context):
     case_reference = CLA_SPECIALIST_CASE_TO_ACCEPT
@@ -40,27 +47,6 @@ def step_select_special_provider_case(context):
 
     context.selected_case_ref = case_reference
     link.click()
-
-
-@step(u'I am taken to the case details page')
-def step_on_case_details_page(context):
-    # check the url of the page
-    # will look like /provider/CASEID/diagnosis/
-    page = f"/provider/{context.selected_case_ref}/diagnosis/"
-    wait_until_page_is_loaded(page, context)
-    assert_header_on_page(context.selected_case_ref, context)
-
-
-@given(u'I can view the client details')
-def step_impl(context):
-    # look for the client details on the left hand side of screen
-    client_section = context.helperfunc.find_by_id('personal_details')
-    assert client_section is not None
-    # check it is the right client
-    displayed_name = client_section.find_element_by_xpath(f'//h2[@title="Full name"]').text
-    backend_name = context.helperfunc.get_case_personal_details_from_backend(context.selected_case_ref)['full_name']
-    assert displayed_name == backend_name
-
 
 @given(u'I can view the case details and notes entered by the Operator')
 def step_impl(context):
@@ -130,7 +116,6 @@ def step_impl(context):
 
 @then(u'I can see my accepted case reference number')
 def step_impl(context):
-    # context.selected_case_ref
     # click on the 'back to cases' link
     my_case = context.helperfunc.find_by_xpath(f"//*[text()='{context.selected_case_ref}']")
     assert my_case is not None

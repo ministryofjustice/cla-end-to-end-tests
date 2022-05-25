@@ -1,6 +1,5 @@
 from behave import *  
 from features.constants import CLA_PUBLIC_URL, CLA_NUMBER, CLA_MEANS_TEST_PERSONAL_DETAILS_FORM, CLA_MEANS_TEST_CALL_BACK_NUMBER
-from features.steps.cla_in_scope import assert_header_on_page, wait_until_page_is_loaded
 from features.steps.cla_eligible_confirmation import assert_form_input_element
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException

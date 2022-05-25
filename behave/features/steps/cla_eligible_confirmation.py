@@ -1,6 +1,5 @@
 from behave import *
 from features.constants import CLA_PUBLIC_URL, CLA_NUMBER, CLA_MEANS_TEST_PERSONAL_DETAILS_FORM
-from features.steps.cla_in_scope import assert_header_on_page, wait_until_page_is_loaded
 
 
 def assert_form_input_element(callback_form, element_id, value):
@@ -43,6 +42,7 @@ def step_means_test_page(context):
         Then I am taken to the "Contact Civil Legal Advice" page located on "/result/eligible"
         ''')
 
+
 @given(u'I enter my personal details')
 def step_enter_personal_details(context):
     personal_details_form = CLA_MEANS_TEST_PERSONAL_DETAILS_FORM
@@ -52,6 +52,7 @@ def step_enter_personal_details(context):
         context.form_values[name] = value['form_element_value']
         assert_form_input_element(context.callback_form, value['form_element_id'], value['form_element_value'])
 
+
 @given(u'I select the the callback option to callback CLA')
 def step_select_callback_cla(context):
     callback_element = context.callback_form.find_element_by_xpath(f'//input[@value="call"]')
@@ -59,11 +60,13 @@ def step_select_callback_cla(context):
     callback_element.click()
     assert callback_element.get_attribute("value") == "call"
 
+
 @then(u'I should be shown the CLA number')
 def step_check_cla_number(context):
     confirmation_text_element = context.helperfunc.find_by_css_selector(".laa-confirmation-inset")
     assert confirmation_text_element is not None
     assert confirmation_text_element.text.startswith(f"You can now call CLA on {CLA_NUMBER}.")
+
 
 @then(u'I should see my reference number after the text "Your reference number is"')
 def step_impl(context):
@@ -73,6 +76,7 @@ def step_impl(context):
     case_reference = confirmation_text_element.find_element_by_tag_name("strong").text
     assert case_reference is not None, "Could not find case reference number"
     context.case_reference = case_reference
+
 
 @then(u'A matching case should be created on the CHS')
 def step_matching_case_on_chs(context):

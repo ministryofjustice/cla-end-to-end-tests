@@ -5,38 +5,36 @@ Feature: Specialist Provider Case Assignment
 
 Background: Log In Provider
     Given I am logged in as a Specialist Provider
- 
-# @specialist-provider-select-case
-# Scenario: Specialist Provider Selects a case
-#   Given that I am on the specialist provider cases dashboard page
-#   And there is a case available
-#   When I select a case from the dashboard
-#   Then I am taken to the case details page
 
+@specialist-provider-select-case
 Scenario: Specialist Provider Selects a case
   Given that I am on the specialist provider cases dashboard page
   And there is a case available
   And I select a case from the dashboard
-  And I am taken to the case details page
+  And I am taken to the "specialist provider" case details page
   And I can view the client details
+  | details     |
+  | Full name   |
   And I can view the case details and notes entered by the Operator
   When I select Scope
   Then I can view the scope assessment entered by the Operator
   When I select Finances
   Then I can view the financial assessment entered by the Operator
 
+@specialist-provider-accept-case
 Scenario: Specialist Provider Accepts a case
   Given that I am on the specialist provider cases dashboard page
   And there is a case available
   And I select a case from the dashboard
-  And I am taken to the case details page
+  And I am taken to the "specialist provider" case details page
   And I select 'Accept'
   And I can see a 'Case accepted successfully' message
   When I return to the specialist provider cases dashboard page
   And I select the Accepted tab
   Then I can see my accepted case reference number
 
-Scenario: Specialist Provider Accepts a case
+@specialist-provider-select-legal-help-form
+Scenario: Specialist Provider Accepts a case and Selects Legal Help Form
   Given that I am viewing a case that I have accepted as a specialist provider
   And I select the Legal help form
   And The legal help form Your Details section has the values

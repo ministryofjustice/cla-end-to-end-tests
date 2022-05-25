@@ -1,43 +1,7 @@
-from hashlib import new
 from behave import *
-from selenium.webdriver.support.ui import WebDriverWait
 from features.constants import CLA_PUBLIC_URL
-from selenium.common.exceptions import NoSuchElementException
+from features.steps.common_steps import assert_header_on_page, wait_until_page_is_loaded
 
-def assert_header_on_page(title, context):
-    heading = context.helperfunc.find_by_xpath('//h1')
-    assert heading is not None
-    assert heading.text == title
-    
-def wait_until_page_is_loaded(path, context):
-    def do_test(*args):
-        return context.helperfunc.get_current_path() == path
-    wait = WebDriverWait(context.helperfunc.driver(), 10)
-    wait.until(do_test)
-
-# this is a shared step   
-@step(u'I click continue')
-def step_click_continue(context):
-    # click on the continue button
-    continue_button = context.helperfunc.find_by_id("submit-button")
-    assert continue_button is not None
-    continue_button.click()
-    # did the form get submitted correctly?
-    # check for 'there is a problem'
-    try:
-        confirmation_text_element = context.helperfunc.driver().find_element_by_css_selector(".govuk-error-summary")
-        if confirmation_text_element is not None:
-            assert confirmation_text_element.text.startswith("There is a problem")
-            raise AssertionError(f"There is a problem with submitting the form")   
-    except NoSuchElementException as ex:
-        # this will error because we actually moved off the page which is actually what we want
-        pass
-        
-# this is a shared step
-@step(u'I am taken to the "{header}" page located on "{page}"')
-def step_check_page(context, page, header):
-    wait_until_page_is_loaded(page, context)
-    assert_header_on_page(header, context)
 
 @given(u'I have selected the start now button on the start page')
 def step_start_page(context):
@@ -48,7 +12,8 @@ def step_start_page(context):
     assert start_button is not None
     assert start_button.text == "Start now"
     start_button.click()
-    
+
+
 @when(u'I select the category Education')
 def step_select_category_education(context):
     education_link = context.helperfunc.find_by_xpath('//a[@title="Education"]')
@@ -57,6 +22,7 @@ def step_select_category_education(context):
     education_link.click()    
     wait_until_page_is_loaded(next_page_path, context)
 
+
 @when(u'the category Special Educational needs')
 def step_select_category_special_educational_needs(context):
     assert_header_on_page("What is your education problem about?", context)
@@ -64,12 +30,14 @@ def step_select_category_special_educational_needs(context):
     assert special_education_link is not None    
     special_education_link.click()
 
+
 @then(u'I click on the \'Check if you qualify financially\' button') 
 def step_taken_to_about_page(context):
     check_if_you_qualify_link = context.helperfunc.find_by_xpath('//a[@href="/about"]')
     assert check_if_you_qualify_link is not None
     check_if_you_qualify_link.click()    
-    
+
+
 @then(u'I <answer> the <question>')
 def step_impl_means_test(context):
     # answer tells me if I say yes or no
@@ -93,6 +61,7 @@ def step_impl_means_test(context):
         question_radio.click()
         # check that the input is selected
         assert question_radio.get_attribute('checked') == 'true'
+
 
 @then(u'I select \'Universal Credit\' from the list of benefits')
 def step_choose_universal_credit(context):
