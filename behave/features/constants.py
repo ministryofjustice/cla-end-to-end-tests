@@ -45,3 +45,12 @@ MATTER_TYPE_2 = "QDIS - Disability"
 
 CLA_SPECIALIST_PROVIDERS_NAME = "Howells"
 CLA_SPECIALIST_CASE_TO_ACCEPT = "JT-4272-9443"
+# THESE ARE CASES FROM TEXT FIXTURE test_callbacks.json
+CLA_CALLBACK_CASES = ["TC-0001-0001",
+                      "TC-0001-0002",
+                      "TC-0001-0003",
+                      "TC-0001-0004",
+                      "TC-0001-0005"]
+
+
+

@@ -13,7 +13,8 @@ class Backend:
         }
 
     def url(self, endpoint):
-        return f"{CLA_BACKEND_URL}/{self.zone.strip('/')}/{endpoint.strip('/')}"
+        # url needs to have the / on the end , do not remove
+        return f"{CLA_BACKEND_URL}/{self.zone.strip('/')}/{endpoint.lstrip('/')}"
 
     def authenticate(self, client_id, client_secret, username, password, grant_type="password"):
         payload = {
@@ -44,3 +45,21 @@ class Backend:
         response = requests.get(self.url(f"/case/{case_reference}/logs"), headers=self.headers)
         assert response.status_code == 200, f"Could not get logs for case {case_reference}"
         return response.json()
+
+    def update_case_callback_details(self, case_reference, call_back_json):
+        callback_url = self.url(f"/case/{case_reference}/call_me_back/")
+        response = requests.post(url=callback_url,
+                                 json=call_back_json,
+                                 headers=self.headers)
+        # if this fails then it might be because max no callbacks has been created
+        # return a dict with details of the response
+        if response.status_code == 204:
+            response_json = None
+        else:
+            response_json = response.json()
+        return {"response_status_code": response.status_code,
+                "case_reference": case_reference,
+                "call_back_json": call_back_json,
+                "response_json": response_json}
+
+
