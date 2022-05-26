@@ -3,13 +3,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 from finance_form_helpers import set_input_field_by_label
 
 
-@given(u'that I am on the case details page')
-def step_impl(context):
-    context.execute_steps(u'''
-        Given I select to 'Create a case'
-    ''')
-
-
 @step(u'I am on the Finances tab with the ‘Details’ sub-tab preselected')
 def step_impl(context):
     context.execute_steps(u'''
