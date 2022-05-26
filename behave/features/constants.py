@@ -58,4 +58,6 @@ CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK = {
     "Telephone": {"form_element_type": "p", "form_element_title": "Phone number", "backend_id": "mobile_phone"},
 
 }
+# Used for P5 - first step checks to see if we can find cases for a particular test user
+CLA_EXISTING_USER = "Anakin Skywalker"
 
