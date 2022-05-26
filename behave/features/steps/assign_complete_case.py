@@ -42,10 +42,12 @@ def step_impl_one_provider(context):
     context.provider_selected = headings[0].text
     assert len(headings) == 1
 
+
 @when(u'I select \'Assign Provider\'')
 def step_impl_assign_provider(context):
     context.case_id = context.helperfunc.find_by_css_selector('.CaseBar-caseNum a').text
     context.helperfunc.find_by_name("assign-provider").click()
+
 
 @then(u'the case is assigned to the Specialist Provider')
 def step_impl_case_assigned(context):
@@ -56,10 +58,6 @@ def step_impl_case_assigned(context):
     wait = WebDriverWait(context.helperfunc.driver(), 10)
     wait.until(wait_until_case_is_assigned)
 
-@then(u'I am taken to the call centre dashboard')
-def step_impl_taken_to_call_centre_dashboard(context):
-    current_path = context.helperfunc.get_current_path()
-    assert current_path == "/call_centre/"
 
 @then(u'the case does not show up on the call centre dashboard')
 def step_impl_case_removed_from_list(context):

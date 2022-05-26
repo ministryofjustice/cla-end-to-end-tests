@@ -20,7 +20,7 @@ def step_impl(context):
     assert element is not None
 
 
-@given(u'that I am on the \'call centre dashboard\' page')
+@step(u'that I am on the \'call centre dashboard\' page')
 def step_impl(context):
     current_path = context.helperfunc.get_current_path()
     assert current_path == "/call_centre/"
