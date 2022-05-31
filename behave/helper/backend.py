@@ -62,4 +62,7 @@ class Backend:
                 "call_back_json": call_back_json,
                 "response_json": response_json}
 
+    def get_future_callbacks(self):
+        response = requests.get(self.url(f"/case/future_callbacks/"), headers=self.headers)
+        return response.json()
 

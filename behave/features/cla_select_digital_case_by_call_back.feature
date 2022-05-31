@@ -16,5 +16,10 @@ Scenario: Can see details of selected callback
     | details     |
     | Full name   |
     | Telephone   |
+    When I select "Start Call"
+    Then the call has started
+    And I remove the callback
+    Then this case is removed from callback list (calendar view)
+
 
 
