@@ -58,7 +58,10 @@ def step_check_page(context, page, header):
 @step(u'I am taken to the "{type_of_user}" case details page')
 def step_on_case_details_page(context, type_of_user):
     # get the case reference
-    case_id = context.selected_case_ref
+    if hasattr(context, 'selected_case_ref'):
+        case_id = context.selected_case_ref
+    else:
+        case_id = None
     # check the url of the page
     url_dir = None
     if type_of_user == "specialist provider":
@@ -68,9 +71,17 @@ def step_on_case_details_page(context, type_of_user):
     else:
         assert url_dir is None, f"Incorrect path given to step function"
     # will look like /url_dir/CASEID/diagnosis/
-    page = f"/{url_dir}/{context.selected_case_ref}/diagnosis/"
-    wait_until_page_is_loaded(page, context)
-    assert_header_on_page(case_id, context)
+    if case_id is not None:
+        page = f"/{url_dir}/{context.selected_case_ref}/diagnosis/"
+        wait_until_page_is_loaded(page, context)
+        assert_header_on_page(case_id, context)
+    else:
+        # can use the function with the regex on test_steps
+        # this will fail if this is for a specialist provider
+        context.execute_steps(u'''
+               Given I select to 'Create a case'
+           ''')
+
 
 
 
