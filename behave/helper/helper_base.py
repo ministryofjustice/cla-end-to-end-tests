@@ -38,6 +38,10 @@ class HelperFunc(object):
     def find_by_xpath(self, xpath):
         return self._driver_wait.until(EC.visibility_of_element_located((By.XPATH, xpath)))
 
+    # added in so can check if there is more then one element on the page
+    def find_many_by_xpath(self, xpath):
+        return self._driver_wait.until(EC.visibility_of_all_elements_located((By.XPATH, xpath)))
+
     def find_by_css_selector(self, css):
         return self._driver_wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, css)))
  
