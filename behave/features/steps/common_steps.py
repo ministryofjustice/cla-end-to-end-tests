@@ -1,7 +1,8 @@
 from behave import *
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
 from selenium.webdriver.support.wait import WebDriverWait
 from features.constants import CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK
+
 
 def assert_header_on_page(title, context):
     heading = context.helperfunc.find_by_xpath('//h1')
@@ -81,6 +82,32 @@ def step_on_case_details_page(context, type_of_user):
         context.execute_steps(u'''
                Given I select to 'Create a case'
            ''')
+
+
+@when(u'I select the diagnosis <category> and click next <number> times')
+def step_impl(context):
+    form = context.helperfunc.find_by_name('diagnosis-form')
+    assert form.is_displayed()
+    # work out which category to choose
+    # note that there is one category where have to click 'next' twice
+    for row in context.table:
+        category_text = row['category']
+        next_number = row["number"]
+        # find the radio input next to the text of the category
+        x_path = f".//p[contains(text(),'{category_text}')]//ancestor::label/input[@type='radio']"
+        # for some reason these seem to return stale element errors
+        try:
+            context.helperfunc.find_by_xpath(x_path).click()
+        except StaleElementReferenceException:
+            context.helperfunc.find_by_xpath(x_path).click()
+        # now click next the correct number of times (normally 1)
+        for _ in range(int(next_number)):
+            try:
+                context.helperfunc.find_by_name("diagnosis-next").click()
+            except StaleElementReferenceException:
+                context.helperfunc.find_by_name("diagnosis-next").click()
+    # Makes sure we at the end of the scope assessment
+    assert context.helperfunc.find_by_partial_link_text('Create financial assessment').is_displayed()
 
 
 
