@@ -76,3 +76,4 @@ debug.log
 node_modules/
 
 .sass-cache/
+behave/feature_errors
