@@ -43,8 +43,6 @@ def step_select_special_provider_case(context):
     table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
     # this will only return a link if the case hasn't already been accepted
     x_path = f".//tbody/tr[td/abbr[@title='Case status'][not(@class='Icon Icon--folderAccepted')]]/td/a[text()='{case_reference}']"
-    # import pdb
-    # pdb.set_trace()
     try:
         link = table.find_element_by_xpath(x_path)
         assert link is not None, f"Could not find unaccepted case {case_reference} on the dashboard"
