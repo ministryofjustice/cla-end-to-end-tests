@@ -27,3 +27,19 @@ def step_impl(context):
         CLA_EXISTING_USER in case_row.text, case_rows), f"No cases associated with user {CLA_EXISTING_USER}"
 
 
+@then(u'I select the name hyperlink for an existing case')
+def step_impl(context):
+    # use the name hyperlink in the first row, we know there are cases because of previous steps
+    x_path = f'//div/table[@class="ListTable"]/tbody/tr/td/span/a'
+    assert context.helperfunc.driver().find_elements_by_xpath(x_path) is not None
+    context.helperfunc.driver().find_elements_by_xpath(x_path)[0].click()
+
+
+@then(u'I select the button to create a case for the client originally searched for')
+def step_impl(context):
+    # this button has the same id as when it just says 'create a case' so can use the original step
+    context.execute_steps(u'''
+        Given I select to 'Create a case'
+    ''')
+
+

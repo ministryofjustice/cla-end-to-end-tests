@@ -11,5 +11,7 @@ Scenario: Create new case for existing user
     Given that I am on the 'call centre dashboard' page
     When I search for a client name with an existing case
     Then I am taken to search results that shows cases belonging to that client
-    And I select to 'Create a case'
+    And I select the name hyperlink for an existing case
+    And I select the button to create a case for the client originally searched for
+
 

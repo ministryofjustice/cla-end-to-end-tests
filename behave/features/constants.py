@@ -59,5 +59,5 @@ CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK = {
 
 }
 # Used for P5 - first step checks to see if we can find cases for a particular test user
-CLA_EXISTING_USER = "Anakin Skywalker"
+CLA_EXISTING_USER = "Obi Wan Kenobi"
 
