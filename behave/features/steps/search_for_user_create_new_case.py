@@ -1,6 +1,7 @@
 from features.constants import CLA_EXISTING_USER, CLA_FRONTEND_URL
 from features.steps.common_steps import wait_until_page_is_loaded, assert_header_on_page
 
+
 @when(u'I search for a client name with an existing case')
 def step_impl(context):
     # find the search box
@@ -20,8 +21,6 @@ def step_impl(context):
         Given that I am on the 'call centre dashboard' page
     ''')
     # now check and see if we have cases that are assigned to this user
-    # TODO why is this returning too many rows??? Used elsewhere so need to follow up
-    # table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
     case_rows = context.helperfunc.driver().find_elements_by_xpath(f'//div/table[@class="ListTable"]/tbody/tr')
     assert case_rows is not None and filter(
         lambda case_row:
