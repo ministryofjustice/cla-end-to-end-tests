@@ -2,7 +2,7 @@ from cla_common.call_centre_availability import OpeningHours
 from cla_common.constants import OPERATOR_HOURS
 from features.constants import CLA_CALLBACK_CASES, CLA_FRONTEND_URL
 from features.steps.cla_in_scope import assert_header_on_page
-import random
+import pytz
 
 
 def get_next_available_callback_slots():
@@ -17,13 +17,13 @@ def get_next_available_callback_slots():
     # do every other slot as on the display they lump two slots together on website
     slots_chosen = all_available_slots[:8:2]
     slots_chosen.append(all_available_slots[0])
-    return slots_chosen, all_available_slots
+    return slots_chosen
 
 
 @given(u'that I have created cases with callbacks')
 # This is the background step that takes test cases and assigns a callback slot some time over the next few days
 def step_impl(context):
-    slots_chosen, all_available_slots = get_next_available_callback_slots()
+    slots_chosen = get_next_available_callback_slots()
     for index, case in enumerate(CLA_CALLBACK_CASES):
         # don't create a callback for the case if there is already one for this case
         callback_check = context.helperfunc.get_case_callback_details_from_backend(case)
@@ -31,8 +31,10 @@ def step_impl(context):
         callback_already_created = next(
             (item for item in callback_check if item["code"] in ['CB1', 'CB2', 'CB3']), None)
         if callback_already_created is None:
-            next_slot = slots_chosen[index]
-            time_slot_start = next_slot.strftime("%d/%m/%Y %H:%M")
+            # slots passed to backend must be utc but times from cla_common are not timezone aware.
+            next_slot = pytz.timezone('Europe/London').localize(slots_chosen[index])
+            next_slot_utc = next_slot.astimezone(pytz.utc)
+            time_slot_start = next_slot_utc.strftime("%d/%m/%Y %H:%M")
             case_reference = case
             # create the json to pass to the api
             # format of the json that we need for the callback is
