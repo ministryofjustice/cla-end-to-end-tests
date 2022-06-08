@@ -1,7 +1,6 @@
 import re
-import time
 from features.constants import CLA_FRONTEND_PERSONAL_DETAILS_FORM, CLA_FRONTEND_URL
-from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.ui import Select, WebDriverWait
 from behave import *
 
 
@@ -29,6 +28,7 @@ def step_impl(context):
 @step(u'I select to \'Create a case\'')
 def step_impl(context):
     context.helperfunc.find_by_id("create_case").click()
+    context.case_reference = context.helperfunc.find_by_css_selector('h1.CaseBar-caseNum a').text
 
 
 @then(u'I am taken to the \'case details\' page')
@@ -49,8 +49,9 @@ def step_impl(context):
 
 @step(u'enter the client\'s personal details')
 def step_impl(context):
-    personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM
-    for name, value in personal_details_form.items():
+    if not hasattr(context, 'personal_details_form'):
+        context.personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM
+    for name, value in context.personal_details_form.items():
         element = context.helperfunc.find_by_name(name)
         assert element is not None
         if element.tag_name == 'select':
@@ -66,13 +67,15 @@ def step_impl(context):
     btn = context.helperfunc.find_by_name("save-personal-details")
     assert btn is not None
     btn.click()
-    time.sleep(2)
-    assert not form.is_displayed()
+
+    def wait_until_personal_details_are_saved(*args):
+        return not form.is_displayed()
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_until_personal_details_are_saved)
 
 
 @then(u'I will see the users details')
 def step_impl(context):
     personal_details = context.helperfunc.find_by_id("personal_details").text
-    personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM
-    for name, value in personal_details_form.items():
+    for name, value in context.personal_details_form.items():
         assert value in personal_details
