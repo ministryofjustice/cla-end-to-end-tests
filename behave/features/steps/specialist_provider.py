@@ -24,10 +24,10 @@ def step_on_spec_providers_dashboard(context):
 @step(u'there is a case available')
 def step_check_cases(context):
     # check there are cases available
-    table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
-    cases = table.find_elements_by_xpath('//tr')
-    # how many cases?
-    assert len(cases) > 0
+    # only carry on if there are cases that have not been accepted
+    x_path = f".//table[@class='ListTable']/tbody/tr/td/abbr[@title='Case status'][not(@class='Icon Icon--folderAccepted')]"
+    cases_not_accepted = context.helperfunc.driver().find_elements_by_xpath(x_path)
+    assert len(cases_not_accepted) > 0, f"No unaccepted cases"
 
 
 @step(u'I can view the client details')
@@ -41,12 +41,17 @@ def step_impl(context):
 def step_select_special_provider_case(context):
     case_reference = CLA_SPECIALIST_CASE_TO_ACCEPT
     table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
-    link = table.find_element_by_xpath(f"//tbody/tr/td/a[text()='{case_reference}']")
-    assert link is not None, f"Could not find case {case_reference} on the dashboard"
-    assert link.text == case_reference, f"Expected: {case_reference} - Found: {link.text}"
-
+    # this will only return a link if the case hasn't already been accepted
+    x_path = f".//tbody/tr[td/abbr[@title='Case status'][not(@class='Icon Icon--folderAccepted')]]/td/a[text()='{case_reference}']"
+    try:
+        link = table.find_element_by_xpath(x_path)
+        assert link is not None, f"Could not find unaccepted case {case_reference} on the dashboard"
+        assert link.text == case_reference, f"Expected: {case_reference} - Found: {link.text}"
+    except NoSuchElementException:
+        assert False, f"Could not find unaccepted case {case_reference} on the dashboard"
     context.selected_case_ref = case_reference
     link.click()
+
 
 @given(u'I can view the case details and notes entered by the Operator')
 def step_impl(context):
