@@ -9,7 +9,6 @@ Background: Login
 Scenario: Given an INSCOPE decision when selecting discrimination at work
     Given I select to 'Create a case'
     When I select ‘Create Scope Diagnosis'
-    #And I select the categories Discrimination, Direct Discrimination, Disability, Work
     And I select the diagnosis <category> and click next <number> times
     | category                                                | number |
     | Discrimination                                          | 2      |
