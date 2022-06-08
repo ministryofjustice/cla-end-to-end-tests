@@ -16,7 +16,7 @@ Background: Login
 
 @means_test
 Scenario: Successful means test assessment resulting in user being eligible for legal aid
-    Given that I am on the case details page
+    Given I select to 'Create a case'
     And I am on the Finances tab with the ‘Details’ sub-tab preselected
     When I do not have a partner
     And I am not aged 60 or over
