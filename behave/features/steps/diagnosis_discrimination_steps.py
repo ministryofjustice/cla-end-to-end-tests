@@ -35,11 +35,6 @@ def step_impl(context):
     assert context.helperfunc.find_by_partial_link_text('Create financial assessment').is_displayed()
 
 
-@then(u'I get an INSCOPE decision')
-def step_impl(context):
-    text = context.helperfunc.find_by_name('diagnosis-form').text
-    assert "INSCOPE" in text
-
 
 @step(u'select \'Create financial assessment\'')
 def step_impl(context):
