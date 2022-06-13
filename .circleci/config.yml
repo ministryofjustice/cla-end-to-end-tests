@@ -36,6 +36,9 @@ jobs:
           command: |
             cd behave
             docker-compose run cla-end-to-end
+      - run:
+          name: Copy artifacts
+          command: |
             docker cp cla_end_to_end/behave_local/feature_errors /home/circleci/behave_local/feature_errors
       - store_artifacts:
           path: /behave_local/feature_errors
