@@ -37,7 +37,7 @@ jobs:
             cd behave
             docker-compose run cla-end-to-end
       - store_artifacts:
-          path: behave_local/feature_errors
+          path: ../behave_local/feature_errors
 
 workflows:
   build:
