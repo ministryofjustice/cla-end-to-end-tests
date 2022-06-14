@@ -15,4 +15,4 @@ Scenario: Create user and out of scope case
     AND I select the diagnosis <category> and click next <number> times
     | category                                                | number |
     | Crime                                                   | 2      |
-    Then I get an OUTOFSCOPE decision
+    THEN I get an OUTOFSCOPE decision
