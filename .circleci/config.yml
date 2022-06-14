@@ -41,7 +41,7 @@ jobs:
           name: Copy artifacts
           command: |
             mkdir -p /tmp/behave_local/feature_errors
-            docker cp cla_end_to_end:/behave_local/feature_errors /tmp/behave_local/feature_errors
+            docker cp cla_end_to_end:behave/behave_local/feature_errors /tmp/behave_local/feature_errors
           when: always
       - store_artifacts:
           path: /tmp/behave_local/feature_errors
