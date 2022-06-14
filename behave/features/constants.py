@@ -1,5 +1,6 @@
 import os
 
+MAX_TRIES = 2
 BROWSER = os.environ.get("BROWSER")
 ARTIFACTS_DIRECTORY = os.environ.get("ARTIFACTS_DIRECTORY")
 
