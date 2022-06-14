@@ -1,3 +1,4 @@
+import time
 from behave import *
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
 from selenium.webdriver.support.wait import WebDriverWait
@@ -86,8 +87,13 @@ def step_on_case_details_page(context, type_of_user):
 
 @when(u'I select the diagnosis <category> and click next <number> times')
 def step_impl(context):
-    form = context.helperfunc.find_by_name('diagnosis-form')
-    assert form.is_displayed()
+
+    def wait_for_diagnosis_form(*args):
+        form = context.helperfunc.find_by_name("diagnosis-form")
+        return form is not None and form.is_displayed()
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_diagnosis_form)
+
     # work out which category to choose
     # note that there is one category where have to click 'next' twice
     for row in context.table:
@@ -106,9 +112,29 @@ def step_impl(context):
                 context.helperfunc.find_by_name("diagnosis-next").click()
             except StaleElementReferenceException:
                 context.helperfunc.find_by_name("diagnosis-next").click()
+            # This is required because the diagnosis-next button on the current page and next page have the same name
+            # Without this sleep it will just find the same button and click it again instead of waiting for new button
+            # to load
+            time.sleep(1)
+
     # Makes sure we at the end of the scope assessment
-    assert context.helperfunc.find_by_partial_link_text('Create financial assessment').is_displayed()
+    # We can't rely on Finance tab being active as the scope could be out of scope
+
+    def wait_for_diagnosis_delete_btn(*args):
+        diagnosis_btn = context.helperfunc.find_by_name("diagnosis-delete")
+        return diagnosis_btn is not None
+
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_diagnosis_delete_btn)
 
 
+@then(u'I get an INSCOPE decision')
+def step_impl(context):
+    text = context.helperfunc.find_by_name('diagnosis-form').text
+    assert "INSCOPE" in text
 
 
+@then(u'I get an OUTOFSCOPE decision')
+def step_impl(context):
+    text = context.helperfunc.find_by_name('diagnosis-form').text
+    assert "OUTOFSCOPE" in text

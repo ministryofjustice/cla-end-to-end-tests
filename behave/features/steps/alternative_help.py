@@ -21,7 +21,7 @@ def step_impl(context):
 @then(u'I go back to the previous case')
 def step_impl(context):
     assert context.case_reference, "Context is missing case reference"
-    url = f"{CLA_FRONTEND_URL}/call_centre/{context.case_reference}/"
+    url = f"{CLA_FRONTEND_URL}/call_centre/{context.case_reference}/diagnosis/"
     context.helperfunc.open(url)
 
 

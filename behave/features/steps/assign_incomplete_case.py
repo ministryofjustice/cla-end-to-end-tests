@@ -1,8 +1,7 @@
 from behave import *
-from selenium.webdriver.common.action_chains import ActionChains
 from create_eligible_finances import create_eligible_finance
 from selenium.webdriver.support.ui import WebDriverWait
-
+from selenium.common.exceptions import StaleElementReferenceException
 
 @given(u'case notes are empty')
 def step_impl(context):
@@ -65,7 +64,10 @@ def step_impl(context):
     page.find_by_name("diversity-save").click()
 
     def wait_until_diversity_is_complete(*args):
-        return "The client has completed diversity monitoring." in page.find_by_class("SummaryBlock-content").text
+        try:
+            return "The client has completed diversity monitoring." in page.find_by_class("SummaryBlock-content").text
+        except StaleElementReferenceException:
+            return False
     wait = WebDriverWait(page.driver(), 10)
     wait.until(wait_until_diversity_is_complete)
 
