@@ -5,7 +5,7 @@ This readme assumes that the working directory is that of this document, which i
 root of this repository: the root of this repository now provides a means to deliver and use the
 functionality in this directory.
 
-## Current state of affairs
+## Current state of affairs Intel users
 The commands to get this running locally are:
 
 To run the tests locally just run this script:
@@ -22,8 +22,32 @@ to build locally:
 bash into the container and run them from there:
 `docker-compose run --entrypoint /bin/bash cla-end-to-end`
 
-## Using your local chrome browser [optional]
-If you want to see the tests running in your hosts machines chrome browser and still have the applications 
+## Current state of affairs Apple Silicon (arm64) users
+
+Apples new line of computers (Apple Silicon) no longer use Intel processors. Instead, Apple has made their own, (at the time of writing) it isn't widely supported. 
+
+To run the tests locally just run this script for Apple Silicon users. 
+
+`./run_test_local_m1.sh`
+
+**What are the known problems for Apple Silicon users?**
+
+Currently, `phantom.js` is used for unit testing in cla_frontend and does not support `arm64` which causes `uwsgi` to fail to start.
+
+`events.js` within `cla_public`, throws an unhandled error 'qemu-i386', this is because '/lib/ld-linux.so.2' directory does not exist in `arm64` platforms.
+
+Selenium Chrome also does not support `arm64`. In order to get it to work use this docker image: `seleniarm/standalone-chromium:4.0.0-beta-1-20210215`
+[seleniarm](https://github.com/SeleniumHQ/docker-selenium#experimental-mult-arch-aarch64armhfamd64-images)
+
+Within `behave/docker-compose.m1.yml`, changes have been made to allow `cla_frontend` and `cla_public` to build correctly. If the required platform architecture values. e.g. `platform: linux/arm64` are not set, the build fails.
+This is because both `cla_frontend` and `cla_public` have dependencies that fail unless the platform architecture is specified.
+
+**Side notes**
+
+`cla_backend` does not require a platform architecture value change, as `cla_backend` builds and runs successfully on an `arm64` machine.
+
+## Using your local Chrome browser [optional]
+If you want to see the tests running in your hosts machines Chrome browser and still have the applications 
 running in their containers then do the following.
 ```
 brew install chromedriver
