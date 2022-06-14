@@ -2,8 +2,9 @@ from urllib.parse import urlparse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import StaleElementReferenceException
 from helper.backend import Backend
-from constants import CALL_CENTRE_ZONE
+from constants import CALL_CENTRE_ZONE, MAX_TRIES
 
 
 class HelperFunc(object):
@@ -81,4 +82,23 @@ class HelperFunc(object):
 
     def get_future_callbacks(self):
         return self.call_centre_backend.get_future_callbacks()
+
+    def click_button(self, selector_type, selector):
+        # broaden this so it uses other types of find as well, eg fnd by name
+        def retry_func(func):
+            for i in range(MAX_TRIES):
+                try:
+                    return func()
+                except Exception as e:
+                    if i >= MAX_TRIES - 1:
+                        raise e
+
+        def click_button_helper(chosen_selector_path_type, chosen_selector_path, delay=10):
+            WebDriverWait(self._driver, delay,
+                          ignored_exceptions=StaleElementReferenceException).until(
+                        EC.visibility_of_element_located((
+                            chosen_selector_path_type, chosen_selector_path))).click()
+
+        retry_func(lambda: click_button_helper(selector_type, selector))
+
 
