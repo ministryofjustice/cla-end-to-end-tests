@@ -29,7 +29,7 @@ class HelperFunc(object):
     def close(self):
         self._driver.quit()
 
-    # Takes screenshot, specifically it grabs the entire the entire body of the page.
+    # Takes screenshot, specifically it grabs the entire body of the page.
     def take_screenshot(self, scenario_file_path):
         element = self._driver.find_element_by_tag_name('body')
         element.screenshot(scenario_file_path)
@@ -84,7 +84,6 @@ class HelperFunc(object):
         return self.call_centre_backend.get_future_callbacks()
 
     def click_button(self, selector_type, selector):
-        # broaden this so it uses other types of find as well, eg fnd by name
         def retry_func(func):
             for i in range(MAX_TRIES):
                 try:

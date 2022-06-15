@@ -4,7 +4,7 @@ Background: Login
     Given that I am logged in
 
 @althelp
-Scenario: Create user and out of scope case
+Scenario: Assign alternative help for out of scope user with necessary details
     GIVEN that I am on the 'call centre dashboard' page
     WHEN I select to 'Create a case'
     THEN I complete the users details with 'Test Dummy User' details
@@ -16,3 +16,6 @@ Scenario: Create user and out of scope case
     | category                                                | number |
     | Crime                                                   | 2      |
     THEN I get an OUTOFSCOPE decision
+    WHEN I select 'Assign Alternative Help'
+    THEN I am taken to the "Alternative help" page for the case located at "/alternative_help/"
+
