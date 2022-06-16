@@ -19,6 +19,8 @@ services:
       - seleniumchrome
 
   cla-end-to-end:
+    container_name: cla-end-to-end
+    tty: true
     build: .
     volumes:
       - .:/behave_local

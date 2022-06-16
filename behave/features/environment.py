@@ -17,7 +17,7 @@ def before_all(context):
 @capture
 def after_scenario(context, scenario):
     if scenario.status == 'failed':
-        scenario_error_dir = os.path.join(context.artifacts_dir)
+        scenario_error_dir = os.path.join(context.artifacts_dir, 'feature_errors')
         make_dir(scenario_error_dir)
         scenario_file_path = os.path.join(scenario_error_dir, scenario.feature.name.replace(' ', '_')
                                           + '_' + time.strftime("%H%M%S_%d_%m_%Y")
