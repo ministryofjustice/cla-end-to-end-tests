@@ -15,6 +15,6 @@ Scenario: Given an INSCOPE decision when selecting discrimination at work
     | Direct discrimination                                   | 1      |
     | Disability                                              | 1      |
     | Work                                                    | 1      |
-    Then I get an INSCOPE decision
+    Then I get an "INSCOPE" decision
     And select 'Create financial assessment'
     Then I am taken to the Finances tab with the ‘Details’ sub-tab preselected

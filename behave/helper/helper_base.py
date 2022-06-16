@@ -84,20 +84,14 @@ class HelperFunc(object):
         return self.call_centre_backend.get_future_callbacks()
 
     def click_button(self, selector_type, selector):
-        def retry_func(func):
-            for i in range(MAX_TRIES):
-                try:
-                    return func()
-                except Exception as e:
-                    if i >= MAX_TRIES - 1:
-                        raise e
 
-        def click_button_helper(chosen_selector_path_type, chosen_selector_path, delay=10):
-            WebDriverWait(self._driver, delay,
-                          ignored_exceptions=StaleElementReferenceException).until(
-                        EC.visibility_of_element_located((
-                            chosen_selector_path_type, chosen_selector_path))).click()
+        def wait_until_button_is_clicked(*args):
+            try:
+                self._driver.find_element(selector_type, selector).click()
+                return True
+            except StaleElementReferenceException:
+                return False
 
-        retry_func(lambda: click_button_helper(selector_type, selector))
-
+        wait = WebDriverWait(self._driver, 10)
+        wait.until(wait_until_button_is_clicked)
 

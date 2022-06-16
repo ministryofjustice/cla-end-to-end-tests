@@ -71,10 +71,11 @@ def step_check_page(context, page, header):
 def step_impl(context, sub_page, header):
     # can't use the above step because there is a case reference in the url
     # find the first part of the url
+    # sub_page will already have / at start and possibly at end as required
     current_path = context.helperfunc.get_current_path()
-    path = re.compile(r"(^/call_centre/\w{2}-\d{4}-\d{4})")
-    match = path.search(current_path).group(1)
-    required_page = f"{match}{sub_page}"
+    reg_ex = re.compile(r"(\w{2}-\d{4}-\d{4})")
+    case_reference_id = reg_ex.search(current_path).group(1)
+    required_page = f"/call_centre/{case_reference_id}{sub_page}"
     wait_until_page_is_loaded(required_page, context)
     assert_header_on_page(header, context)
 
@@ -103,7 +104,7 @@ def step_on_case_details_page(context, type_of_user):
         # can use the function with the regex on test_steps
         # this will fail if this is for a specialist provider
         context.execute_steps(u'''
-               I am taken to the 'case details' page
+              Given I am taken to the 'case details' page
            ''')
 
 
@@ -144,13 +145,7 @@ def step_impl(context):
     wait.until(wait_for_diagnosis_delete_btn)
 
 
-@then(u'I get an INSCOPE decision')
-def step_impl(context):
+@step(u'I get an "{scope}" decision')
+def step_impl(context, scope):
     text = context.helperfunc.find_by_name('diagnosis-form').text
-    assert "INSCOPE" in text
-
-
-@then(u'I get an OUTOFSCOPE decision')
-def step_impl(context):
-    text = context.helperfunc.find_by_name('diagnosis-form').text
-    assert "OUTOFSCOPE" in text
+    assert scope in text

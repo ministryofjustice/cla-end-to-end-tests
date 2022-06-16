@@ -15,7 +15,7 @@ Scenario: Assign alternative help for out of scope user with necessary details
     AND I select the diagnosis <category> and click next <number> times
     | category                                                | number |
     | Crime                                                   | 2      |
-    THEN I get an OUTOFSCOPE decision
+    THEN I get an "OUTOFSCOPE" decision
     WHEN I select 'Assign Alternative Help'
     THEN I am taken to the "Alternative help" page for the case located at "/alternative_help/"
 
