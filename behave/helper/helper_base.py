@@ -4,7 +4,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException
 from helper.backend import Backend
-from constants import CALL_CENTRE_ZONE, MAX_TRIES
+from constants import CALL_CENTRE_ZONE
 
 
 class HelperFunc(object):
