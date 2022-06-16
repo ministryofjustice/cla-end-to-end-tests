@@ -3,7 +3,7 @@ import time
 from behave import *
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
-from features.constants import CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK, MAX_TRIES
+from features.constants import CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK
 from selenium.webdriver.common.by import By
 
 
