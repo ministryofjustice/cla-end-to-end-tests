@@ -10,7 +10,8 @@ def step_start_page(context):
     assert_header_on_page("Check if you can get legal aid", context)
     start_button = context.helperfunc.find_by_id('start')
     assert start_button is not None
-    assert start_button.text == "Start now"
+    # TODO remove before merge
+    assert start_button.text == "Spoon"
     start_button.click()
 
 

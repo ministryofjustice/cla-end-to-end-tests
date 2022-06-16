@@ -40,8 +40,8 @@ jobs:
           name: Copy artifacts
           command: |
             mkdir -p /tmp/feature_errors
-            docker cp cla-end-to-end:behave_local/feature_errors ../../../tmp/feature_errors
-          when: always
+            docker cp cla-end-to-end:behave_local ../../../tmp/feature_errors
+          when: on_failure
       - store_artifacts:
           path: /tmp/feature_errors
 
