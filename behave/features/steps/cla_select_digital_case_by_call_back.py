@@ -1,4 +1,4 @@
-from features.steps.common_steps import assert_header_on_page, wait_until_page_is_loaded, compare_client_details_with_backend
+from features.steps.common_steps import compare_client_details_with_backend
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import StaleElementReferenceException
 

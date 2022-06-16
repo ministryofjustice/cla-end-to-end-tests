@@ -23,7 +23,7 @@ def step_impl(context):
     context.execute_steps(u'''
         When I select ‘Create Scope Diagnosis'
         And I select the categories Discrimination, Direct Discrimination, Disability, Work
-        Then I get an INSCOPE decision
+        Then I get an "INSCOPE" decision
         And select 'Create financial assessment'
     ''')
 

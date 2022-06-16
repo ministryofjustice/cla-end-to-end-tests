@@ -1,5 +1,4 @@
-from features.constants import CLA_EXISTING_USER, CLA_FRONTEND_URL
-from features.steps.common_steps import wait_until_page_is_loaded, assert_header_on_page
+from features.constants import CLA_EXISTING_USER
 
 
 @when(u'I search for a client name with an existing case')

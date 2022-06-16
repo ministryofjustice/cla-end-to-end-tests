@@ -2,6 +2,7 @@ from urllib.parse import urlparse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import StaleElementReferenceException
 from helper.backend import Backend
 from constants import CALL_CENTRE_ZONE
 
@@ -28,7 +29,7 @@ class HelperFunc(object):
     def close(self):
         self._driver.quit()
 
-    # Takes screenshot, specifically it grabs the entire the entire body of the page.
+    # Takes screenshot, specifically it grabs the entire body of the page.
     def take_screenshot(self, scenario_file_path):
         element = self._driver.find_element_by_tag_name('body')
         element.screenshot(scenario_file_path)
@@ -81,4 +82,16 @@ class HelperFunc(object):
 
     def get_future_callbacks(self):
         return self.call_centre_backend.get_future_callbacks()
+
+    def click_button(self, selector_type, selector):
+
+        def wait_until_button_is_clicked(*args):
+            try:
+                self._driver.find_element(selector_type, selector).click()
+                return True
+            except StaleElementReferenceException:
+                return False
+
+        wait = WebDriverWait(self._driver, 10)
+        wait.until(wait_until_button_is_clicked)
 

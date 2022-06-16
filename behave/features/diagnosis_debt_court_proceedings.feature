@@ -9,7 +9,8 @@ Background: Login
 
 @in_scope_debt_court
 Scenario: Given an INSCOPE decision when selecting debt and court proceedings
-    Given I am taken to the "call centre" case details page
+    Given that I am on the 'call centre dashboard' page
+    And I select to 'Create a case'
     And a client with an existing case is added to it
     When I select ‘Create Scope Diagnosis'
     And I select the diagnosis <category> and click next <number> times
@@ -17,6 +18,6 @@ Scenario: Given an INSCOPE decision when selecting debt and court proceedings
         | Debt and housing - loss of home                         | 1      |
         | Homeless or at risk of becoming homeless within 56 days | 1      |
         | A court has issued possession proceedings               | 1      |
-    Then I get an INSCOPE decision
+    And I get an "INSCOPE" decision
     And select 'Create financial assessment'
     Then I am taken to the Finances tab with the ‘Details’ sub-tab preselected

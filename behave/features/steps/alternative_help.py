@@ -1,5 +1,6 @@
 from behave import *
 from features.constants import CLA_FRONTEND_URL, CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP
+from selenium.webdriver.common.by import By
 
 
 @then(u'I complete the users details with \'Test Dummy User\' details')
@@ -31,3 +32,12 @@ def step_impl(context):
     context.execute_steps(u'''
         Then I will see the users details
     ''')
+
+
+@when(u'I select \'Assign Alternative Help\'')
+def step_impl(context):
+    # for some reason these seem to return stale element errors
+    # use the wrapper function
+    x_path = f".//a[@title='Assign alternative help']"
+    context.helperfunc.click_button(By.XPATH, x_path)
+

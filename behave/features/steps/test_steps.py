@@ -2,6 +2,7 @@ import re
 from features.constants import CLA_FRONTEND_PERSONAL_DETAILS_FORM, CLA_FRONTEND_URL
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from behave import *
+from selenium.webdriver.common.by import By
 
 
 @given(u'that I am logged in')
@@ -27,11 +28,12 @@ def step_impl(context):
 
 @step(u'I select to \'Create a case\'')
 def step_impl(context):
-    context.helperfunc.find_by_id("create_case").click()
+    # wrap click() to avoid StaleElementException
+    context.helperfunc.click_button(By.ID, "create_case")
     context.case_reference = context.helperfunc.find_by_css_selector('h1.CaseBar-caseNum a').text
 
 
-@then(u'I am taken to the \'case details\' page')
+@step(u'I am taken to the \'case details\' page')
 def step_impl(context):
     assert context.helperfunc.find_by_xpath("//header/h1").text == "Case details"
     current_path = context.helperfunc.get_current_path()

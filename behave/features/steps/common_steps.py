@@ -1,14 +1,24 @@
+import re
 import time
 from behave import *
-from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
 from features.constants import CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK
+from selenium.webdriver.common.by import By
 
 
 def assert_header_on_page(title, context):
-    heading = context.helperfunc.find_by_xpath('//h1')
-    assert heading is not None
-    assert heading.text == title
+    # occasionally there could be more than one h1 on the page. In most cases we want the first one
+    # Go through the list to check all h1 elements
+    headings = context.helperfunc.find_many_by_xpath('//h1')
+    assert headings is not None
+    found_heading = False
+    # check each of the headings to see if we have a match
+    for heading in headings:
+        if heading.text == title:
+            found_heading = True
+    error_message = f"{heading.text} not found on {context.helperfunc.get_current_path()}"
+    assert found_heading, error_message
 
 
 def wait_until_page_is_loaded(path, context):
@@ -57,6 +67,19 @@ def step_check_page(context, page, header):
     assert_header_on_page(header, context)
 
 
+@step(u'I am taken to the "{header}" page for the case located at "{sub_page}"')
+def step_impl(context, sub_page, header):
+    # can't use the above step because there is a case reference in the url
+    # find the first part of the url
+    # sub_page will already have / at start and possibly at end as required
+    current_path = context.helperfunc.get_current_path()
+    reg_ex = re.compile(r"(\w{2}-\d{4}-\d{4})")
+    case_reference_id = reg_ex.search(current_path).group(1)
+    required_page = f"/call_centre/{case_reference_id}{sub_page}"
+    wait_until_page_is_loaded(required_page, context)
+    assert_header_on_page(header, context)
+
+
 @step(u'I am taken to the "{type_of_user}" case details page')
 def step_on_case_details_page(context, type_of_user):
     # get the case reference
@@ -81,7 +104,7 @@ def step_on_case_details_page(context, type_of_user):
         # can use the function with the regex on test_steps
         # this will fail if this is for a specialist provider
         context.execute_steps(u'''
-               Given I select to 'Create a case'
+              Given I am taken to the 'case details' page
            ''')
 
 
@@ -102,16 +125,10 @@ def step_impl(context):
         # find the radio input next to the text of the category
         x_path = f".//p[contains(text(),'{category_text}')]//ancestor::label/input[@type='radio']"
         # for some reason these seem to return stale element errors
-        try:
-            context.helperfunc.find_by_xpath(x_path).click()
-        except StaleElementReferenceException:
-            context.helperfunc.find_by_xpath(x_path).click()
+        context.helperfunc.click_button(By.XPATH, x_path)
         # now click next the correct number of times (normally 1)
         for _ in range(int(next_number)):
-            try:
-                context.helperfunc.find_by_name("diagnosis-next").click()
-            except StaleElementReferenceException:
-                context.helperfunc.find_by_name("diagnosis-next").click()
+            context.helperfunc.click_button(By.NAME, "diagnosis-next")
             # This is required because the diagnosis-next button on the current page and next page have the same name
             # Without this sleep it will just find the same button and click it again instead of waiting for new button
             # to load
@@ -128,13 +145,7 @@ def step_impl(context):
     wait.until(wait_for_diagnosis_delete_btn)
 
 
-@then(u'I get an INSCOPE decision')
-def step_impl(context):
+@step(u'I get an "{scope}" decision')
+def step_impl(context, scope):
     text = context.helperfunc.find_by_name('diagnosis-form').text
-    assert "INSCOPE" in text
-
-
-@then(u'I get an OUTOFSCOPE decision')
-def step_impl(context):
-    text = context.helperfunc.find_by_name('diagnosis-form').text
-    assert "OUTOFSCOPE" in text
+    assert scope in text
