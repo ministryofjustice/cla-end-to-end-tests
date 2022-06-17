@@ -75,4 +75,8 @@ CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK = {
 }
 # Used for P5 - first step checks to see if we can find cases for a particular test user
 CLA_EXISTING_USER = "Obi-Wan Kenobi"
+CLA_CASE_DETAILS_INNER_TAB = {"Details": 1,
+                              "Finances": 2,
+                              "Income": 3,
+                              "Expenses": 4}
 MINIMUM_SLEEP_SECONDS = 2
