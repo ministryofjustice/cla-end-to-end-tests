@@ -20,10 +20,15 @@ def step_impl(context):
     assert element is not None
 
 
-@step(u'that I am on the \'call centre dashboard\' page')
+@step(u'I am on the \'call centre dashboard\' page')
 def step_impl(context):
+    def wait_for_dashboard(*args):
+        return context.helperfunc.find_by_css_selector('body.v-Dashboard') is not None
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_dashboard, "Could not find dashboard")
+
     current_path = context.helperfunc.get_current_path()
-    assert current_path == "/call_centre/"
+    assert current_path == "/call_centre/", f"Current path is {current_path}. Expected /call_centre/"
 
 
 @step(u'I select to \'Create a case\'')

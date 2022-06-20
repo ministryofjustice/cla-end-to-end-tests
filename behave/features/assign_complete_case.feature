@@ -17,5 +17,5 @@ Scenario: Attempt to assign an incomplete case
     And there is only one provider
     And I select 'Assign Provider'
     Then the case is assigned to the Specialist Provider
-    And that I am on the 'call centre dashboard' page
+    And I am on the 'call centre dashboard' page
     And the case does not show up on the call centre dashboard
