@@ -9,7 +9,7 @@ Background: Login
 
 @in_scope_debt_court
 Scenario: Given an INSCOPE decision when selecting debt and court proceedings
-    Given that I am on the 'call centre dashboard' page
+    Given I am on the 'call centre dashboard' page
     And I select to 'Create a case'
     And a client with an existing case is added to it
     When I select ‘Create Scope Diagnosis'
@@ -21,3 +21,13 @@ Scenario: Given an INSCOPE decision when selecting debt and court proceedings
     And I get an "INSCOPE" decision
     And select 'Create financial assessment'
     Then I am taken to the Finances tab with the ‘Details’ sub-tab preselected
+    When I select 'Assign Alternative Help'
+    Then I am taken to the "Alternative help" page for the case located at "/alternative_help/"
+    Then I select the "Housing" knowledge base category
+    And I select the alternative help organisations "Housing Ombudsman - Housing Ombudsman"
+    And I select the alternative help organisations "Shelter Adviceline - Shelter Adviceline"
+    And I enter "This client needs housing help" in the Assignment comments box
+    And I select Assign alternative help
+    And I am shown the survey reminder
+    And select continue on the the survey reminder
+    And I am on the 'call centre dashboard' page
