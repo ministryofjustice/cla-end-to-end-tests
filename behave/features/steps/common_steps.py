@@ -174,7 +174,7 @@ def select_value_from_list(context, label, value, op='equals'):
 
     list_item = list_element.find_element_by_css_selector('.select2-highlighted')
     if op.lower() == 'startswith':
-        assert list_item.text.startswith(value), f"Could not value {value} in {label} list"
+        assert list_item.text.startswith(value), f"Could not find value {value} in {label} list"
     else:
-        assert value == list_item.text, f"Could not value {value} in {label} list"
+        assert value == list_item.text, f"Could not find value {value} in {label} list"
     list_item.click()
