@@ -1,5 +1,5 @@
 import time
-from features.constants import CLA_USER_TO_ASSIGN_CASES_TO
+from features.constants import CLA_USER_TO_ASSIGN_CASES_TO, MINIMUM_SLEEP_SECONDS
 from common_steps import select_value_from_list
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -16,7 +16,7 @@ def step_impl(context):
 def step_impl(context, category):
     select_value_from_list(context, label="Law category", value=category)
     # Need to wait for a bit for the ajax event to complete before continuing to the next step
-    time.sleep(2)
+    time.sleep(MINIMUM_SLEEP_SECONDS)
 
 
 @then(u'I select the alternative help organisations "{organisation}"')
@@ -28,7 +28,7 @@ def step_impl(context, organisation):
     submit = search_input.find_element_by_xpath('following-sibling::*')
     submit.click()
     # Need to wait for a bit for the ajax event to complete before continuing to the next step
-    time.sleep(1)
+    time.sleep(MINIMUM_SLEEP_SECONDS)
     search_results_form = context.helperfunc.find_by_xpath('//form[@name="alternative_help"]')
     # This will only find the first search result which is fine because we are searching for a specific organisation
     parent_wrapper = search_results_form.find_element_by_xpath('.//input[@name="selected_providers"]/ancestor::div[1]')
