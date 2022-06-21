@@ -5,7 +5,7 @@ Background: Login
 
 @althelp
 Scenario: Assign alternative help for out of scope user with necessary details
-    GIVEN that I am on the 'call centre dashboard' page
+    GIVEN I am on the 'call centre dashboard' page
     WHEN I select to 'Create a case'
     THEN I complete the users details with 'Test Dummy User' details
     THEN I navigate the call centre dashboard

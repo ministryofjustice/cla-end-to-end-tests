@@ -149,3 +149,32 @@ def step_impl(context):
 def step_impl(context, scope):
     text = context.helperfunc.find_by_name('diagnosis-form').text
     assert scope in text
+
+
+def select_value_from_list(context, label, value, op='equals'):
+    label_link = context.helperfunc.find_by_xpath(f"//span[text()='{label}']/..")
+    # Clicking this link will automatically focus the input for us to type into
+    label_link.click()
+    input_element = context.helperfunc.driver().switch_to.active_element
+    input_element.send_keys(value)
+
+    list_id = input_element.get_attribute("aria-owns")
+    # Get the list of possible items that match our value
+    list_element = context.helperfunc.find_by_id(list_id)
+
+    def wait_for_list_of_values(*args):
+        try:
+            list_element.find_element_by_css_selector('.select2-highlighted')
+            return True
+        except NoSuchElementException:
+            return False
+
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_list_of_values, message=f"Could not find any matches for {value} in {label} list")
+
+    list_item = list_element.find_element_by_css_selector('.select2-highlighted')
+    if op.lower() == 'startswith':
+        assert list_item.text.startswith(value), f"Could not find value {value} in {label} list"
+    else:
+        assert value == list_item.text, f"Could not find value {value} in {label} list"
+    list_item.click()
