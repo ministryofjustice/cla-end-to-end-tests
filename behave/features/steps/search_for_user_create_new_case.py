@@ -1,4 +1,5 @@
 from features.constants import CLA_EXISTING_USER
+from selenium.webdriver.common.by import By
 
 
 @when(u'I search for a client name with an existing case')
@@ -29,9 +30,10 @@ def step_impl(context):
 @then(u'I select the name hyperlink for an existing case')
 def step_impl(context):
     # use the name hyperlink in the first row, we know there are cases because of previous steps
+    # often fails with stale element exception
     x_path = f'//div/table[@class="ListTable"]/tbody/tr/td/span/a'
-    assert context.helperfunc.driver().find_elements_by_xpath(x_path) is not None
-    context.helperfunc.driver().find_elements_by_xpath(x_path)[0].click()
+    assert context.helperfunc.find_by_xpath(x_path) is not None
+    context.helperfunc.click_button(By.XPATH, x_path)
 
 
 @then(u'I select the button to create a case for the client originally searched for')

@@ -1,5 +1,4 @@
 import re
-import time
 from behave import *
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
@@ -23,9 +22,26 @@ def assert_header_on_page(title, context):
 
 def wait_until_page_is_loaded(path, context):
     def do_test(*args):
+        # import pdb
+        # pdb.set_trace()
         return context.helperfunc.get_current_path() == path
     wait = WebDriverWait(context.helperfunc.driver(), 10)
     wait.until(do_test)
+
+
+def click_on_hyperlink(context, hyperlink_text):
+    # this is a generic step to click on a hyperlink
+    assert context.helperfunc.find_by_link_text(hyperlink_text) is not None, f"Could not find link: {hyperlink_text}"
+    context.helperfunc.click_button(By.LINK_TEXT, hyperlink_text)
+    # return the href
+    return context.helperfunc.find_by_link_text(hyperlink_text).get_attribute("href")
+
+
+def switch_to_new_tab(context, new_tab_handle, hyperlink_selected):
+    context.helperfunc.driver().switch_to.window(new_tab_handle)
+    # check the url
+    error_string = f"Chosen link : {hyperlink_selected} is not the same as the tab url: {context.helperfunc.driver().current_url}"
+    assert hyperlink_selected == context.helperfunc.driver().current_url, error_string
 
 
 def compare_client_details_with_backend(context, case_id, client_section):
@@ -108,49 +124,6 @@ def step_on_case_details_page(context, type_of_user):
            ''')
 
 
-@when(u'I select the diagnosis <category> and click next <number> times')
-def step_impl(context):
-
-    def wait_for_diagnosis_form(*args):
-        form = context.helperfunc.find_by_name("diagnosis-form")
-        return form is not None and form.is_displayed()
-    wait = WebDriverWait(context.helperfunc.driver(), 10)
-    wait.until(wait_for_diagnosis_form)
-
-    # work out which category to choose
-    # note that there is one category where have to click 'next' twice
-    for row in context.table:
-        category_text = row['category']
-        next_number = row["number"]
-        # find the radio input next to the text of the category
-        x_path = f".//p[contains(text(),'{category_text}')]//ancestor::label/input[@type='radio']"
-        # for some reason these seem to return stale element errors
-        context.helperfunc.click_button(By.XPATH, x_path)
-        # now click next the correct number of times (normally 1)
-        for _ in range(int(next_number)):
-            context.helperfunc.click_button(By.NAME, "diagnosis-next")
-            # This is required because the diagnosis-next button on the current page and next page have the same name
-            # Without this sleep it will just find the same button and click it again instead of waiting for new button
-            # to load
-            time.sleep(1)
-
-    # Makes sure we at the end of the scope assessment
-    # We can't rely on Finance tab being active as the scope could be out of scope
-
-    def wait_for_diagnosis_delete_btn(*args):
-        diagnosis_btn = context.helperfunc.find_by_name("diagnosis-delete")
-        return diagnosis_btn is not None
-
-    wait = WebDriverWait(context.helperfunc.driver(), 10)
-    wait.until(wait_for_diagnosis_delete_btn)
-
-
-@step(u'I get an "{scope}" decision')
-def step_impl(context, scope):
-    text = context.helperfunc.find_by_name('diagnosis-form').text
-    assert scope in text
-
-
 def select_value_from_list(context, label, value, op='equals'):
     label_link = context.helperfunc.find_by_xpath(f"//span[text()='{label}']/..")
     # Clicking this link will automatically focus the input for us to type into
@@ -178,3 +151,4 @@ def select_value_from_list(context, label, value, op='equals'):
     else:
         assert value == list_item.text, f"Could not find value {value} in {label} list"
     list_item.click()
+

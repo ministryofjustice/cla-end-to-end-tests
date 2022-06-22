@@ -21,13 +21,29 @@ Scenario: Given an INSCOPE decision when selecting debt and court proceedings
     And I get an "INSCOPE" decision
     And select 'Create financial assessment'
     Then I am taken to the Finances tab with the ‘Details’ sub-tab preselected
+    #This is the icon in the top RH corner
     When I select 'Assign Alternative Help'
     Then I am taken to the "Alternative help" page for the case located at "/alternative_help/"
     Then I select the "Housing" knowledge base category
     And I select the alternative help organisations "Housing Ombudsman - Housing Ombudsman"
     And I select the alternative help organisations "Shelter Adviceline - Shelter Adviceline"
     And I enter "This client needs housing help" in the Assignment comments box
-    And I select Assign alternative help
+    #This is the button on the bottom of the page
+    And I click the Assign Alternative Help button
     And I am shown the survey reminder
     And select continue on the the survey reminder
     And I am on the 'call centre dashboard' page
+
+@inscope_discrim_disability
+Scenario: Given an INSCOPE decision when selecting discrimination at work
+    Given I select to 'Create a case'
+    When I select ‘Create Scope Diagnosis'
+    And I select the diagnosis <category> and click next <number> times
+    | category                                                | number |
+    | Discrimination                                          | 2      |
+    | Direct discrimination                                   | 1      |
+    | Disability                                              | 1      |
+    | Work                                                    | 1      |
+    Then I get an "INSCOPE" decision
+    And select 'Create financial assessment'
+    Then I am taken to the Finances tab with the ‘Details’ sub-tab preselected

@@ -1,15 +1,75 @@
-import time
-from features.constants import CLA_USER_TO_ASSIGN_CASES_TO, MINIMUM_SLEEP_SECONDS
 from common_steps import select_value_from_list
-from selenium.webdriver.support.ui import WebDriverWait
+from features.constants import CLA_EXISTING_USER, MINIMUM_SLEEP_SECONDS
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+import time
 
 
 @given(u'a client with an existing case is added to it')
 def step_impl(context):
-    select_value_from_list(context, label="Search for existing user", op="startswith", value=CLA_USER_TO_ASSIGN_CASES_TO)
+    select_value_from_list(context, label="Search for existing user", op="startswith", value=CLA_EXISTING_USER)
     # there will be an alert asking if you wish to continue
     assert context.helperfunc.driver().switch_to.alert is not None, "No alert confirming you want to add the user"
     context.helperfunc.driver().switch_to.alert.accept()
+
+
+@when(u'I select ‘Create Scope Diagnosis\'')
+def step_impl(context):
+    context.helperfunc.find_by_name("diagnosis-new").click()
+
+
+@when(u'I select the diagnosis <category> and click next <number> times')
+def step_impl(context):
+
+    def wait_for_diagnosis_form(*args):
+        form = context.helperfunc.find_by_name("diagnosis-form")
+        return form is not None and form.is_displayed()
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_diagnosis_form)
+
+    # work out which category to choose
+    # note that there is one category where have to click 'next' twice
+    for row in context.table:
+        category_text = row['category']
+        next_number = row["number"]
+        # find the radio input next to the text of the category
+        x_path = f".//p[contains(text(),'{category_text}')]//ancestor::label/input[@type='radio']"
+        # for some reason these seem to return stale element errors
+        context.helperfunc.click_button(By.XPATH, x_path)
+        # now click next the correct number of times (normally 1)
+        for _ in range(int(next_number)):
+            context.helperfunc.click_button(By.NAME, "diagnosis-next")
+            # This is required because the diagnosis-next button on the current page and next page have the same name
+            # Without this sleep it will just find the same button and click it again instead of waiting for new button
+            # to load
+            time.sleep(MINIMUM_SLEEP_SECONDS)
+
+    # Makes sure we at the end of the scope assessment
+    # We can't rely on Finance tab being active as the scope could be out of scope
+
+    def wait_for_diagnosis_delete_btn(*args):
+        diagnosis_btn = context.helperfunc.find_by_name("diagnosis-delete")
+        return diagnosis_btn is not None
+
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_diagnosis_delete_btn)
+
+
+@step(u'I get an "{scope}" decision')
+def step_impl(context, scope):
+    text = context.helperfunc.find_by_name('diagnosis-form').text
+    assert scope in text
+
+
+@step(u'select \'Create financial assessment\'')
+def step_impl(context):
+    context.helperfunc.find_by_partial_link_text('Create financial assessment').click()
+
+
+@then(u'I am taken to the Finances tab with the ‘Details’ sub-tab preselected')
+def step_impl(context):
+    selected_tab = context.helperfunc.find_by_css_selector("li[class='Tabs-tab is-active']")
+    assert 'Finances' in selected_tab.text
 
 
 @then(u'I select the "{category}" knowledge base category')
@@ -43,7 +103,7 @@ def step_impl(context, comment):
     assert text_area.get_attribute("value") == comment
 
 
-@then(u'I select Assign alternative help')
+@then(u'I click the Assign Alternative Help button')
 def step_impl(context):
     submit_btn = context.helperfunc.find_by_xpath('//button[@name="assign-alternative-help"]')
     submit_btn.click()

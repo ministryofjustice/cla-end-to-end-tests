@@ -59,6 +59,9 @@ class HelperFunc(object):
     def find_many_by_class(self, class_name):
         return self._driver_wait.until(EC.visibility_of_all_elements_located((By.CLASS_NAME, class_name)))
 
+    def find_by_link_text(self, text):
+        return self._driver_wait.until(EC.visibility_of_element_located((By.LINK_TEXT, text)))
+
     def find_by_partial_link_text(self, text):
         return self._driver_wait.until(EC.visibility_of_element_located((By.PARTIAL_LINK_TEXT, text)))
 
