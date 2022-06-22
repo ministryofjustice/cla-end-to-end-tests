@@ -35,9 +35,9 @@ def step_impl(context):
     ''')
 
 
-@step(u'I select \'Assign Alternative Help\'')
+@step(u'I click on the Assign Alternative Help icon')
 def step_impl(context):
-    # no hyperlink text as it is just a gif
+    # no hyperlink text as it is just an icon in top RH corner
     x_path = f".//a[@title='Assign alternative help']"
     context.helperfunc.click_button(By.XPATH, x_path)
 

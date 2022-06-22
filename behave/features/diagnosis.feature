@@ -22,7 +22,7 @@ Scenario: Given an INSCOPE decision when selecting debt and court proceedings
     And select 'Create financial assessment'
     Then I am taken to the Finances tab with the ‘Details’ sub-tab preselected
     #This is the icon in the top RH corner
-    When I select 'Assign Alternative Help'
+    When I click on the Assign Alternative Help icon
     Then I am taken to the "Alternative help" page for the case located at "/alternative_help/"
     Then I select the "Housing" knowledge base category
     And I select the alternative help organisations "Housing Ombudsman - Housing Ombudsman"

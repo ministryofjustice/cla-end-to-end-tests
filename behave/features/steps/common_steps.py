@@ -22,8 +22,6 @@ def assert_header_on_page(title, context):
 
 def wait_until_page_is_loaded(path, context):
     def do_test(*args):
-        # import pdb
-        # pdb.set_trace()
         return context.helperfunc.get_current_path() == path
     wait = WebDriverWait(context.helperfunc.driver(), 10)
     wait.until(do_test)

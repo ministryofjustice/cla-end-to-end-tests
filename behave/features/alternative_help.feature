@@ -17,7 +17,7 @@ Scenario: Assign alternative help for out of scope user with necessary details
     | Crime                                                   | 2      |
     AND I get an "OUTOFSCOPE" decision
     #This is the icon in the top RH corner
-    AND I select 'Assign Alternative Help'
+    AND I click on the Assign Alternative Help icon
     AND I am taken to the "Alternative help" page for the case located at "/alternative_help/"
     THEN I select "Face to Face" and I am taken to a new tab displaying FALA
 
