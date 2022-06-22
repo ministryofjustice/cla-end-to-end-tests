@@ -13,12 +13,12 @@ def step_impl(context):
     context.helperfunc.driver().switch_to.alert.accept()
 
 
-@when(u'I select ‘Create Scope Diagnosis\'')
+@step(u'I select ‘Create Scope Diagnosis\'')
 def step_impl(context):
     context.helperfunc.find_by_name("diagnosis-new").click()
 
 
-@when(u'I select the diagnosis <category> and click next <number> times')
+@step(u'I select the diagnosis <category> and click next <number> times')
 def step_impl(context):
 
     def wait_for_diagnosis_form(*args):
