@@ -61,35 +61,6 @@ CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP = {
     "source": "Phone"
     }
 }
-# CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP_FAILS = {
-#     "full_name": "Rey Skywalker incomplete details",
-#     "postcode": "",
-#     "street": "102 Petty France",
-#     "mobile_phone": "",
-#     "email": "102pettyfrance@digital.justice.gov.uk",
-#     "dob_day": "1",
-#     "dob_month": "1",
-#     "dob_year": "1990",
-#     "ni_number": "PA102030F",
-#     "adaptations": "No adaptations required",
-#     "media_code": "Don't Know",
-#     "source": "Phone"
-# }
-#
-# CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP_SUCCEEDS = {
-#     "full_name": "Test Dummy User",
-#     "postcode": "SW1H 9AJ",
-#     "street": "102 Petty France",
-#     "mobile_phone": "020 3334 3555",
-#     "email": "102pettyfrance@digital.justice.gov.uk",
-#     "dob_day": "1",
-#     "dob_month": "1",
-#     "dob_year": "1990",
-#     "ni_number": "PA102030F",
-#     "adaptations": "No adaptations required",
-#     "media_code": "Don't Know",
-#     "source": "Phone"
-# }
 
 CLA_MEANS_TEST_PERSONAL_DETAILS_FORM = {
     "full_name": {"form_element_id": "full_name", "form_element_value": "John Smith"},
