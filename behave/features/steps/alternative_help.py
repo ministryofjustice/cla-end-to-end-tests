@@ -64,7 +64,7 @@ def step_impl(context, face_to_face_text):
     assert last_hyperlink_selected == context.helperfunc.driver().current_url
 
 
-@then(u'a Missing Information validation message is displayed to the user')
+@step(u'a Missing Information validation message is displayed to the user')
 def step_impl(context):
     alert = context.helperfunc.find_by_css_selector("div[class='modal-dialog '")
     error_text = "You must collect at least a name and a postcode or phone number"
