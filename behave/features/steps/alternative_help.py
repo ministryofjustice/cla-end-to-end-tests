@@ -1,9 +1,10 @@
 from behave import *
 from features.constants import CLA_FRONTEND_URL, CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP
 from selenium.webdriver.common.by import By
+from common_steps import click_on_hyperlink, switch_to_new_tab
 
 
-@then(u'I complete the users details with \'Test Dummy User\' details')
+@step(u'I complete the users details with \'Test Dummy User\' details')
 def step_impl(context):
     context.personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP
     context.execute_steps(u'''
@@ -13,20 +14,20 @@ def step_impl(context):
     ''')
 
 
-@then(u'I navigate the call centre dashboard')
+@step(u'I navigate back to the call centre dashboard')
 def step_impl(context):
     url = f"{CLA_FRONTEND_URL}/call_centre/"
     context.helperfunc.open(url)
 
 
-@then(u'I go back to the previous case')
+@step(u'I go back to the previous case')
 def step_impl(context):
     assert context.case_reference, "Context is missing case reference"
     url = f"{CLA_FRONTEND_URL}/call_centre/{context.case_reference}/diagnosis/"
     context.helperfunc.open(url)
 
 
-@then(u'I should see the users previously entered details')
+@step(u'I see the users previously entered details')
 def step_impl(context):
     context.personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP
     context.execute_steps(u'''
@@ -34,10 +35,25 @@ def step_impl(context):
     ''')
 
 
-@when(u'I select \'Assign Alternative Help\'')
+@step(u'I click on the Assign Alternative Help icon')
 def step_impl(context):
-    # for some reason these seem to return stale element errors
-    # use the wrapper function
+    # no hyperlink text as it is just an icon in top RH corner
     x_path = f".//a[@title='Assign alternative help']"
     context.helperfunc.click_button(By.XPATH, x_path)
+
+
+@step(u'I select "{face_to_face_text}" and I am taken to a new tab displaying FALA')
+def step_impl(context, face_to_face_text):
+    context.old_tabs = context.helperfunc.driver().window_handles
+    last_hyperlink_selected = click_on_hyperlink(context, face_to_face_text)
+    new_tabs = context.helperfunc.driver().window_handles
+    for tab in new_tabs:
+        if tab in context.old_tabs:
+            pass
+        else:
+            new_tab = tab
+    switch_to_new_tab(context, new_tab, last_hyperlink_selected)
+    context.helperfunc.driver().switch_to.window(new_tab)
+    # check the url
+    assert last_hyperlink_selected == context.helperfunc.driver().current_url
 
