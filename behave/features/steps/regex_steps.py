@@ -44,3 +44,13 @@ def step_impl(context, optional):
     radio_input = context.helperfunc.find_by_xpath(f"//input[@name='your_details-older_than_sixty'][@value='{state}']")
     radio_input.click()
     assert radio_input.get_attribute("checked") == "true"
+
+
+@step(u'I am given a message \'The means test has been saved. The current result is (?P<optional>not )?eligible '
+      u'for Legal Aid\'')
+def step_impl(context, optional):
+    element = context.helperfunc.find_by_css_selector(".Notice.Notice--closeable.success")
+    if optional:
+        assert element.text == 'The means test has been saved. The current result is not eligible for Legal Aid'
+    else:
+        assert element.text == 'The means test has been saved. The current result is eligible for Legal Aid'
