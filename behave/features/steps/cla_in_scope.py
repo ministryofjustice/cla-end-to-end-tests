@@ -12,8 +12,6 @@ def step_means_test_page(context):
             | category                  |
             | Education                 |
             | Special educational needs |
-        # When I select the category Education
-        # And the category Special educational needs
         Then I am taken to the "Legal aid is available for this type of problem" page located on "/legal-aid-available"
         And I click on the 'Check if you qualify financially' button 
         And I am taken to the "About you" page located on "/about"
@@ -62,14 +60,6 @@ def step_select_category(context):
         next_page_path = category_link.get_attribute("pathname")
         assert category_link is not None
         category_link.click()
-
-
-# @when(u'the category Special Educational needs')
-# def step_select_category_special_educational_needs(context):
-#     assert_header_on_page("What is your education problem about?", context)
-#     special_education_link = context.helperfunc.find_by_xpath('//a[@title="Special educational needs"]')
-#     assert special_education_link is not None
-#     special_education_link.click()
 
 
 @then(u'I click on the \'Check if you qualify financially\' button') 
