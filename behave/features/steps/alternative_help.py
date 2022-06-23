@@ -1,12 +1,15 @@
 from behave import *
-from features.constants import CLA_FRONTEND_URL, CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP
+from features.constants import CLA_FRONTEND_URL, CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP, CLA_FRONTEND_PERSONAL_DETAILS_FORM
 from selenium.webdriver.common.by import By
 from common_steps import click_on_hyperlink, switch_to_new_tab
 
 
-@step(u'I complete the users details with \'Test Dummy User\' details')
-def step_impl(context):
-    context.personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP
+@step(u'I complete the users details with {user_choice:w} details')
+def step_impl(context, user_choice):
+    try:
+        context.personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP[user_choice]
+    except KeyError:
+        context.personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM
     context.execute_steps(u'''
         When I select 'Create new user'
         And enter the client's personal details
@@ -27,9 +30,12 @@ def step_impl(context):
     context.helperfunc.open(url)
 
 
-@step(u'I see the users previously entered details')
-def step_impl(context):
-    context.personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP
+@step(u'I see the users previously entered {user_choice:w} details')
+def step_impl(context, user_choice):
+    try:
+        context.personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP[user_choice]
+    except KeyError:
+        context.personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM
     context.execute_steps(u'''
         Then I will see the users details
     ''')
@@ -56,4 +62,11 @@ def step_impl(context, face_to_face_text):
     context.helperfunc.driver().switch_to.window(new_tab)
     # check the url
     assert last_hyperlink_selected == context.helperfunc.driver().current_url
+
+
+@then(u'a Missing Information validation message is displayed to the user')
+def step_impl(context):
+    alert = context.helperfunc.find_by_css_selector("div[class='modal-dialog '")
+    error_text = "You must collect at least a name and a postcode or phone number"
+    assert error_text in alert.text
 

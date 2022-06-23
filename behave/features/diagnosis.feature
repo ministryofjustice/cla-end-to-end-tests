@@ -1,8 +1,5 @@
-Feature: Correct decision on debt and court proceedings.
-    Confirms that when a case with the scope diagnosis of 'Debt and housing - loss of home,
-    Homeless or at risk of becoming homeless within 56 days, A court has issued possession proceedings' is selected that you
-    get an INSCOPE decision.
-    This scenario will reuse lots of the steps from the discrimination diagnosis P1 cases
+Feature: Give a decision for various diagnosis journeys
+Confirms that get INSCOPE or OUTOFSCOPE as required
 
 Background: Login
     Given that I am logged in
