@@ -1,6 +1,6 @@
 from behave import *
 from features.constants import CLA_FRONTEND_URL, CLA_SPECIALIST_PROVIDERS_NAME, CLA_SPECIALIST_CASE_TO_ACCEPT
-from features.steps.common_steps import compare_client_details_with_backend
+from features.steps.common_steps import compare_client_details_with_backend, select_case_from_caselist
 from selenium.common.exceptions import NoSuchElementException
 
 
@@ -41,17 +41,7 @@ def step_impl(context):
 @step(u'I select a case from the dashboard')
 def step_select_special_provider_case(context):
     case_reference = CLA_SPECIALIST_CASE_TO_ACCEPT
-    table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
-    # this will only return a link if the case hasn't already been accepted
-    x_path = f".//tbody/tr[td/abbr[@title='Case status'][not(@class='Icon Icon--folderAccepted')]]/td/a[text()='{case_reference}']"
-    try:
-        link = table.find_element_by_xpath(x_path)
-        assert link is not None, f"Could not find unaccepted case {case_reference} on the dashboard"
-        assert link.text == case_reference, f"Expected: {case_reference} - Found: {link.text}"
-    except NoSuchElementException:
-        assert False, f"Could not find unaccepted case {case_reference} on the dashboard"
-    context.selected_case_ref = case_reference
-    link.click()
+    select_case_from_caselist(context, case_reference)
 
 
 @given(u'I can view the case details and notes entered by the Operator')

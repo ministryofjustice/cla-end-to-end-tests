@@ -167,3 +167,21 @@ def select_value_from_list(context, label, value, op='equals'):
         assert value == list_item.text, f"Could not find value {value} in {label} list"
     list_item.click()
 
+
+def select_case_from_caselist(context, case_reference):
+    search_bar = context.helperfunc.driver().find_by_id("case-search")
+    search_bar.send_keys(case_reference)
+    search_submit = context.helperfunc.driver().find_by_class("CaseSearch-submit")
+    search_submit.click()
+
+    table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
+    # this will only return a link if the case hasn't already been accepted
+    x_path = f".//tbody/tr[td/abbr[@title='Case status'][not(@class='Icon Icon--folderAccepted')]]/td/a[text()='{case_reference}']"
+    try:
+        link = table.find_element_by_xpath(x_path)
+        assert link is not None, f"Could not find unaccepted case {case_reference} on the dashboard"
+        assert link.text == case_reference, f"Expected: {case_reference} - Found: {link.text}"
+    except NoSuchElementException:
+        assert False, f"Could not find unaccepted case {case_reference} on the dashboard"
+    context.selected_case_ref = case_reference
+    link.click()
