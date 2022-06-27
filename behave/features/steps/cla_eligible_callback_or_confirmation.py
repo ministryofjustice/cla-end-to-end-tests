@@ -21,8 +21,9 @@ def step_impl(context):
         assert_form_input_element(context.callback_form, value['form_element_id'], value['form_element_value'])
 
 
-@step(u'I select the the callback option to callback CLA')
+@step(u'I select the contact option \'I’ll call CLA\'')
 def step_impl(context):
+    context.callback_form = context.helperfunc.find_by_xpath("//form")
     callback_element = context.callback_form.find_element_by_xpath(f'//input[@value="call"]')
     assert callback_element is not None
     callback_element.click()

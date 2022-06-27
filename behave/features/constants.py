@@ -95,4 +95,5 @@ CLA_CASE_DETAILS_INNER_TAB = {"Details": 1,
                               "Finances": 2,
                               "Income": 3,
                               "Expenses": 4}
+ClA_CONTACT_US_USER = "Nathan Drake"
 MINIMUM_SLEEP_SECONDS = 2

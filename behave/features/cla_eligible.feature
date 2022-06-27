@@ -23,7 +23,7 @@ Scenario: Complete callback form asking for callback
 Scenario: Complete callback form
   Given I have passed the means test
   And I enter my personal details
-  And I select the the callback option to callback CLA
+  And I select the contact option 'I’ll call CLA'
   # All steps that are clicking continue written in identical format so can reuse code
   And I click continue
   Then I am taken to the "Your details have been submitted" page located on "/result/confirmation"

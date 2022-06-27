@@ -1,14 +1,14 @@
 from behave import *
-
+from features.constants import ClA_CONTACT_US_USER
 
 @step(u'I select \'Contact us\' from the banner')
-def step_select_contact_us(context):
+def step_impl(context):
     link = context.helperfunc.find_by_xpath("//span/a[text()='Contact us']")
     link.click()
 
 
 @step(u'I select <question> from the contact civil legal advice page')
-def step_impl_means_test(context):
+def step_impl(context):
     # Find the question by label
     # Find input and insert value from answer
     for row in context.table:
@@ -18,14 +18,24 @@ def step_impl_means_test(context):
 
 
 @step(u'I click \'continue to contact CLA\'')
-def step_click_submit(context):
+def step_impl(context):
     context.execute_steps(u'''
         Given I click continue
     ''')
 
 
-@step(u'I am taken to the \'contact civil legal advice\' page')
+@step(u'I select \'Submit details\'')
 def step_impl(context):
-    assert context.helperfunc.find_by_xpath("//h1[contains(text(),'Contact Civil Legal Advice')]")
-    current_path = context.helperfunc.get_current_path()
-    assert current_path == "/contact", f"Current path is {current_path}. Expected /contact"
+    context.execute_steps(u'''
+        Given I click continue
+    ''')
+
+
+@step(u'I enter a name in the \'Your full name\' field')
+def step_impl(context):
+    value = ClA_CONTACT_US_USER
+    full_name_input = context.helperfunc.find_by_xpath("//input[@id='full_name']")
+    full_name_input.send_keys(value)
+    assert full_name_input.get_attribute('value') == value
+
+
