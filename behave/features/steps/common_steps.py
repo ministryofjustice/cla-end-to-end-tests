@@ -57,6 +57,23 @@ def compare_client_details_with_backend(context, case_id, client_section):
             f"For {title_value}, value displayed is {displayed_value} but actual value is {backend_value}"
 
 
+def step_click_submit(context):
+    # click on the continue button
+    continue_button = context.helperfunc.find_by_id("submit-button")
+    assert continue_button is not None
+    continue_button.click()
+    # did the form get submitted correctly?
+    # check for 'there is a problem'
+    try:
+        confirmation_text_element = context.helperfunc.driver().find_element_by_css_selector(".govuk-error-summary")
+        if confirmation_text_element is not None:
+            assert confirmation_text_element.text.startswith("There is a problem")
+            raise AssertionError(f"There is a problem with submitting the form")
+    except NoSuchElementException as ex:
+        # this will error because we actually moved off the page which is actually what we want
+        pass
+
+
 @step(u'I click continue')
 def step_click_continue(context):
     # click on the continue button
