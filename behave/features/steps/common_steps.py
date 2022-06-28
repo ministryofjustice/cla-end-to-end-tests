@@ -16,7 +16,7 @@ def assert_header_on_page(title, context):
     for heading in headings:
         if heading.text == title:
             found_heading = True
-    error_message = f"{heading.text} not found on {context.helperfunc.get_current_path()}"
+    error_message = f"{title} not found on {context.helperfunc.get_current_path()}"
     assert found_heading, error_message
 
 
@@ -168,20 +168,12 @@ def select_value_from_list(context, label, value, op='equals'):
     list_item.click()
 
 
-def select_case_from_caselist(context, case_reference):
-    search_bar = context.helperfunc.driver().find_by_id("case-search")
-    search_bar.send_keys(case_reference)
-    search_submit = context.helperfunc.driver().find_by_class("CaseSearch-submit")
-    search_submit.click()
-
-    table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
-    # this will only return a link if the case hasn't already been accepted
-    x_path = f".//tbody/tr[td/abbr[@title='Case status'][not(@class='Icon Icon--folderAccepted')]]/td/a[text()='{case_reference}']"
-    try:
-        link = table.find_element_by_xpath(x_path)
-        assert link is not None, f"Could not find unaccepted case {case_reference} on the dashboard"
-        assert link.text == case_reference, f"Expected: {case_reference} - Found: {link.text}"
-    except NoSuchElementException:
-        assert False, f"Could not find unaccepted case {case_reference} on the dashboard"
+def search_and_select_case(context, case_reference):
+    # This method searches for and clicks on the case in the case list
+    # prevents not finding it if the list goes onto two pages.
     context.selected_case_ref = case_reference
-    link.click()
+    search_bar = context.helperfunc.find_by_id("case-search")
+    search_bar.send_keys(case_reference)
+    search_submit = context.helperfunc.find_by_class("CaseSearch-submit")
+    search_submit.click()
+    context.helperfunc.click_button(By.LINK_TEXT, case_reference)

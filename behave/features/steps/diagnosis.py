@@ -96,7 +96,7 @@ def step_impl(context, organisation):
     parent_wrapper.find_element_by_css_selector('label.FormRow-label').click()
 
 
-@then(u'I enter "{comment}" in the Assignment comments box')
+@step(u'I enter "{comment}" in the Assignment comments box')
 def step_impl(context, comment):
     text_area = context.helperfunc.find_by_xpath('//textarea[@name="assign-notes"][@placeholder="Assignment comments"]')
     text_area.send_keys(comment)
@@ -109,7 +109,7 @@ def step_impl(context):
     submit_btn.click()
 
 
-@then(u'I am shown the survey reminder')
+@step(u'I am shown the survey reminder')
 def step_impl(context):
     def wait_for_survey_reminder_dialog(*args):
         return context.helperfunc.find_by_css_selector('.modal-dialog') is not None
