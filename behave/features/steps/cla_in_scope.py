@@ -3,8 +3,8 @@ from features.constants import CLA_PUBLIC_URL
 from features.steps.common_steps import assert_header_on_page, wait_until_page_is_loaded
 
 
-@given(u'I have passed the means test')
-def step_means_test_page(context):
+@step(u'I have passed the means test')
+def step_impl(context):
     # The next steps are the steps that pass the means test
     context.execute_steps(u'''
         Given I am taken to the "Choose the area you most need help with" page located on "/scope/diagnosis/"
@@ -39,8 +39,8 @@ def step_means_test_page(context):
         ''')
 
 
-@given(u'I have selected the start now button on the start page')
-def step_start_page(context):
+@step(u'I have selected the start now button on the start page')
+def step_impl(context):
     start_page_url = f"{CLA_PUBLIC_URL}"
     context.helperfunc.open(start_page_url)
     assert_header_on_page("Check if you can get legal aid", context)
@@ -51,7 +51,7 @@ def step_start_page(context):
 
 
 @step(u'I select the category <category>')
-def step_select_category(context):
+def step_impl(context):
     next_page_path = None
     for row in context.table:
         if next_page_path is not None:
@@ -62,15 +62,15 @@ def step_select_category(context):
         category_link.click()
 
 
-@then(u'I click on the \'Check if you qualify financially\' button') 
-def step_taken_to_about_page(context):
+@step(u'I click on the \'Check if you qualify financially\' button')
+def step_impl(context):
     check_if_you_qualify_link = context.helperfunc.find_by_xpath('//a[@href="/about"]')
     assert check_if_you_qualify_link is not None
     check_if_you_qualify_link.click()    
 
 
-@then(u'I <answer> the <question>')
-def step_impl_means_test(context):
+@step(u'I <answer> the <question>')
+def step_impl(context):
     # answer tells me if I say yes or no
     # question helps me find the radio buttons
     for row in context.table:
@@ -92,8 +92,8 @@ def step_impl_means_test(context):
         assert question_radio.get_attribute('checked') == 'true'
 
 
-@then(u'I select \'Universal Credit\' from the list of benefits')
-def step_choose_universal_credit(context):
+@step(u'I select \'Universal Credit\' from the list of benefits')
+def step_impl(context):
     # check value of universal_credit checkbox
     check_box_universal_credit = context.helperfunc.driver().find_element_by_id("benefits-4")
     assert check_box_universal_credit is not None
