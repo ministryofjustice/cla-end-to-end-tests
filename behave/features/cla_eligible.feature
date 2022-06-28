@@ -1,4 +1,4 @@
-Feature: Complete callback or confirmation details after successful means test
+Feature: In scope means tests and some with callback or confirmation details after successful means test
 
 Background: Start page
     Given I have selected the start now button on the start page
@@ -30,4 +30,15 @@ Scenario: Complete callback form
   And I should be shown the CLA number
   And I should see my reference number after the text "Your reference number is"
   And A matching case should be created on the CHS
+
+#Journey P8 Test the Housing category in scope journey.
+@cla-in-scope-housing
+Scenario: Complete in scope housing check
+  Given I am taken to the "Choose the area you most need help with" page located on "/scope/diagnosis/"
+  When I select the category <category>
+     | category                              |
+     | Housing                               |
+     | You’re living in rented accommodation |
+     | Eviction                              |
+  Then I am taken to the "Legal aid is available for this type of problem" page located on "/legal-aid-available"
 
