@@ -31,7 +31,7 @@ Scenario: Complete callback form
   And I should see my reference number after the text "Your reference number is"
   And A matching case should be created on the CHS
 
-#Journey P8 Test the Housing category in scope journey.
+#Journey P8 Test the Housing category in scope journey. (LGA-1816)
 @cla-in-scope-housing
 Scenario: Complete in scope housing check
   Given I am taken to the "Choose the area you most need help with" page located on "/scope/diagnosis/"
