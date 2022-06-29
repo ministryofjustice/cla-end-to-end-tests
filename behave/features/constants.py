@@ -15,6 +15,30 @@ CALL_CENTRE_ZONE = {
     "username": os.environ.get("CALL_CENTRE_TEST_USER"),
     "password": os.environ.get("CALL_CENTRE_TEST_USER")
 }
+USER = {
+    "CHS": {"username": "test_operator",
+            "password": "test_operator",
+            "login_url": f"{CLA_FRONTEND_URL}/auth/login/",
+            "user_type": "OPERATOR",
+            "application": "FRONTEND"},
+    "SPECIALIST_PROVIDER": {"username": "test_howells",
+                            "password": "test_howells",
+                            "login_url": f"{CLA_FRONTEND_URL}/auth/login/",
+                            "user_type": "SPECIALIST_PROVIDER",
+                            "application": "FRONTEND"},
+    "FOX_ADMIN": {"username": "cla_admin",
+                  "password": "cla_admin",
+                  "login_url": f"{CLA_BACKEND_URL}/admin/login",
+                  "user_type": "OPERATOR",
+                  "application": "BACKEND"}}
+
+USER_HTML_TAGS = {
+    "FRONTEND":
+        {"form_identifier": "login_frm", "user_element_name": "username", "password_element_name": "password"},
+    "BACKEND":
+        {"form_identifier": "login-form", "user_element_name": "username", "password_element_name": "password"}
+
+}
 
 CLA_FRONTEND_PERSONAL_DETAILS_FORM = {
     "full_name": "Bob Merchandise",
@@ -102,3 +126,4 @@ ClA_CONTACT_US_USER = "Nathan Drake"
 CLA_CONTACT_US_USER_PERSON_TO_CALL = "Elena Fisher"
 
 MINIMUM_SLEEP_SECONDS = 2
+

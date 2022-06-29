@@ -1,8 +1,9 @@
+import pdb
 import re
 from behave import *
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
-from features.constants import CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK
+from features.constants import CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK, CLA_FRONTEND_URL, USER, USER_HTML_TAGS
 from selenium.webdriver.common.by import By
 
 
@@ -76,6 +77,36 @@ def step_click_submit(context):
     except NoSuchElementException as ex:
         # this will error because we actually moved off the page which is actually what we want
         pass
+
+
+@step(u'that I am logged in as "{user_type}"')
+def step_impl(context, user_type):
+    login_url = USER[user_type]["login_url"]
+    context.helperfunc.open(login_url)
+    user_element = USER_HTML_TAGS[USER[user_type]["application"]]["user_element_name"]
+    password_element = USER_HTML_TAGS[USER[user_type]["application"]]["password_element_name"]
+    if USER[user_type]["application"] == "FRONTEND":
+        form = context.helperfunc.find_by_name(USER_HTML_TAGS[USER[user_type]["application"]]["form_identifier"])
+        assert form is not None
+        submit_xpath = f"//button[@type='submit']"
+        # on CHS, there is a tag which indicates whether you are logged in as an operator or a provider
+        # does not exist on fox_admin
+        if USER[user_type]["user_type"] == "OPERATOR":
+            html_tag = "//html[@ng-app='cla.operatorApp']"
+        else:
+            html_tag = "//html[@ng-app='cla.providerApp']"
+    else:
+        form = context.helperfunc.find_by_id(USER_HTML_TAGS[USER[user_type]["application"]]["form_identifier"])
+        assert form is not None
+        submit_xpath = f"//input[@type='submit']"
+        html_tag = None
+
+    form.find_element_by_name(user_element).send_keys(USER[user_type]["username"])
+    form.find_element_by_name(password_element).send_keys(USER[user_type]["password"])
+    form.find_element_by_xpath(submit_xpath).click()
+    if html_tag is not None:
+        element = context.helperfunc.find_by_xpath(html_tag)
+        assert element is not None
 
 
 @step(u'I click continue')

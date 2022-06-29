@@ -5,21 +5,6 @@ from behave import *
 from selenium.webdriver.common.by import By
 
 
-@given(u'that I am logged in')
-def step_impl(context):
-    config = context.config.userdata
-    login_url = f"{CLA_FRONTEND_URL}/auth/login/"
-    context.helperfunc.open(login_url)
-    form = context.helperfunc.find_by_name('login_frm')
-    assert form is not None
-    form.find_element_by_name("username").send_keys(config["cla_frontend_operator_username"])
-    form.find_element_by_name("password").send_keys(config["cla_frontend_operator_password"])
-    form.find_element_by_name("login-submit").click()
-
-    element = context.helperfunc.find_by_xpath("//html[@ng-app='cla.operatorApp']")
-    assert element is not None
-
-
 @step(u'I am on the \'call centre dashboard\' page')
 def step_impl(context):
     def wait_for_dashboard(*args):
