@@ -5,7 +5,9 @@ from selenium.webdriver.common.by import By
 
 @step(u'that I am on the Alternative Help page')
 def step_impl(context):
-    search_and_select_case(context, "UC-0001-0001")
+    # The case used has been created for this test case.
+    # we select and then go through to alternative help
+    search_and_select_case(context, "AS-0001-0001")
     context.execute_steps(u'''
         When I click on the Assign Alternative Help icon
         Then I am taken to the "Alternative help" page for the case located at "/alternative_help/"
@@ -24,5 +26,6 @@ def step_impl(context):
 
 @step(u'I am taken to the call centre dashboard page')
 def step_impl(context):
+    # Make sure that we get redirected to the call centre dashboard
     wait_until_page_is_loaded("/call_centre/", context)
     assert_header_on_page("Cases", context)
