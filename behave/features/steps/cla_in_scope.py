@@ -1,6 +1,6 @@
 from behave import *
 from features.constants import CLA_PUBLIC_URL
-from features.steps.common_steps import assert_header_on_page, wait_until_page_is_loaded
+from features.steps.common_steps import assert_header_on_page, wait_until_page_is_loaded, remove_prefix
 
 
 @step(u'I have passed the means test')
@@ -77,19 +77,24 @@ def step_impl(context):
         value = row['question']
         question_fieldset = context.helperfunc.find_by_xpath(f"//*[contains(text(),'{row['question']}')]")
         question_field_id = question_fieldset.get_attribute("id")
-        question_radio_id_start = str(question_field_id).split('-')[2]
-        if row['answer'] == 'No': 
-            question_radio_id = question_radio_id_start + '-1'
-        elif row['answer'] == 'Yes':
-            question_radio_id = question_radio_id_start + '-0'
+        question_input_id_start = remove_prefix(question_field_id, "field-label-")
+        if row['answer'] == 'No' or row['answer'] == 'Yes':
+            if row['answer'] == 'No':
+                question_id = question_input_id_start + '-1'
+            else:
+                question_id = question_input_id_start + '-0'
+            question_radio = context.helperfunc.driver().find_element_by_xpath(f"//input[@id='{question_id}']")
+            assert question_radio is not None, f"Could not find: {value}"
+            question_radio.click()
+            # check that the input is selected
+            assert question_radio.get_attribute('checked') == 'true'
         else:
-            raise ValueError(f"Can only process Yes or No answers. You entered {row['answer']}")
-        # Need to look for the label not the radio input as that is what is clicked
-        question_radio = context.helperfunc.driver().find_element_by_xpath(f"//input[@id='{question_radio_id}']")
-        assert question_radio is not None, f"Could not find: {value}"
-        question_radio.click()
-        # check that the input is selected
-        assert question_radio.get_attribute('checked') == 'true'
+            # textbox answer rather than radio buttons
+            question_id = question_input_id_start
+            question_box = context.helperfunc.driver().find_element_by_xpath(f"//input[@id='{question_id}']")
+            assert question_box is not None, f"Could not find: {value}"
+            # type in the text
+            question_box.send_keys(row['answer'])
 
 
 @step(u'I select \'Universal Credit\' from the list of benefits')
@@ -101,3 +106,10 @@ def step_impl(context):
     check_box_universal_credit.click()
     # now check universal credit is checked
     assert check_box_universal_credit.get_attribute('checked') == 'true'
+
+
+@step(u'I click Confirm')
+def step_impl(context):
+    context.execute_steps(u'''
+        Given I click continue
+    ''')
