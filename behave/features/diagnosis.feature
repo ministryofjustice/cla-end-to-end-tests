@@ -28,7 +28,7 @@ Scenario: Given an INSCOPE decision when selecting debt and court proceedings
     #This is the button on the bottom of the page
     And I click the Assign Alternative Help button
     And I am shown the survey reminder
-    And select continue on the the survey reminder
+    And select continue on the survey reminder
     And I am on the 'call centre dashboard' page
 
 @inscope_discrim_disability
