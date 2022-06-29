@@ -1,5 +1,8 @@
 from behave import *
-from features.constants import ClA_CONTACT_US_USER
+from features.constants import ClA_CONTACT_US_USER, CLA_CONTACT_US_USER_PERSON_TO_CALL, CLA_NUMBER
+from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import StaleElementReferenceException
+
 
 @step(u'I select \'Contact us\' from the banner')
 def step_impl(context):
@@ -39,3 +42,63 @@ def step_impl(context):
     assert full_name_input.get_attribute('value') == value
 
 
+@step(u'I am on the Contact Civil Legal Advice page')
+def step_impl(context):
+    context.execute_steps(u'''
+        Given I select 'Contact us' from the banner
+        And I select <question> from the contact civil legal advice page
+            | question                       |
+            | I’d prefer to speak to someone |
+        And I click 'continue to contact CLA'
+        And I am taken to the "Contact Civil Legal Advice" page located on "/contact"
+    ''')
+
+
+@step(u'I select the contact option \'Call someone else instead of me\'')
+def step_impl(context):
+    # input can not be found without first finding form
+    context.callback_form = context.helperfunc.find_by_xpath("//form")
+    callback_element = context.callback_form.find_element_by_xpath(f'//input[@value="thirdparty"]')
+    assert callback_element is not None
+    callback_element.click()
+    assert callback_element.get_attribute("value") == "thirdparty"
+
+
+@step(u'I select \'Call today\'')
+def step_impl(context):
+    # input can not be found without first finding form
+    context.callback_form = context.helperfunc.find_by_xpath("//form")
+    call_today = context.callback_form.find_element_by_xpath(f'//input[@value="today"]'
+                                                             f'[@id="thirdparty-time-specific_day-0"]')
+    assert call_today is not None
+    call_today.click()
+    assert call_today.get_attribute("value") == "today"
+
+
+# call someone else instead of me name input field
+@step(u'I enter the full name of the person to call')
+def step_impl(context):
+    value = CLA_CONTACT_US_USER_PERSON_TO_CALL
+    full_name_input = context.helperfunc.find_by_xpath("//input[@id='thirdparty-full_name']")
+    full_name_input.send_keys(value)
+    assert full_name_input.get_attribute('value') == value
+
+
+# call someone else instead of me phone number input field
+@step(u'I enter the phone number of the person to call back')
+def step_impl(context):
+    value = CLA_NUMBER
+    full_name_input = context.helperfunc.find_by_xpath("//input[@id='thirdparty-contact_number']")
+    full_name_input.send_keys(value)
+    assert full_name_input.get_attribute('value') == value
+
+
+@step(u'I select "{option}" from the \'Relationship to you\' drop down options')
+def step_impl(context, option):
+    context.callback_form = context.helperfunc.find_by_xpath("//form")
+    select = Select(context.callback_form.find_element_by_xpath(f'//select[@id="thirdparty-relationship"]'))
+    assert select is not None
+    try:
+        select.select_by_visible_text(option)
+    except StaleElementReferenceException:
+        assert False, f"Could find {option} in \'Relationship to you select\' options"
