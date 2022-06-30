@@ -2,7 +2,7 @@ Feature: Means test assessment
     Confirming if a person is eligible or not for legal aid and can be assigned a provider
 
 Background: Login
-    Given that I am logged in as "CHS"
+    Given that I am logged in as "CHS_GENERAL_USER"
 
 @means_test_universal
 Scenario: Successful means test assessment resulting in user being eligible for legal aid

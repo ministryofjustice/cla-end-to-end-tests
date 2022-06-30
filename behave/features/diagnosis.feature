@@ -2,7 +2,7 @@ Feature: Give a decision for various diagnosis journeys
 Confirms that get INSCOPE or OUTOFSCOPE as required
 
 Background: Login
-    Given that I am logged in as "CHS"
+    Given that I am logged in as "CHS_GENERAL_USER"
 
 @in_scope_debt_court
 Scenario: Given an INSCOPE decision when selecting debt and court proceedings

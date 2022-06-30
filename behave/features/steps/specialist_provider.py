@@ -4,18 +4,6 @@ from features.steps.common_steps import compare_client_details_with_backend
 from selenium.common.exceptions import NoSuchElementException
 
 
-@step(u'I am logged in as a Specialist Provider')
-def step_logged_in(context):
-    config = context.config.userdata
-    login_url = f"{CLA_FRONTEND_URL}/auth/login/"
-    context.helperfunc.open(login_url)
-    form = context.helperfunc.find_by_name('login_frm')
-    assert form is not None
-    form.find_element_by_name("username").send_keys(config["cla_specialist_provider_username"])
-    form.find_element_by_name("password").send_keys(config["cla_specialist_provider_password"])
-    form.find_element_by_name("login-submit").click()
-
-
 @step(u'that I am on the specialist provider cases dashboard page')
 def step_on_spec_providers_dashboard(context):
     element = context.helperfunc.find_by_xpath("//html[@ng-app='cla.providerApp']")
