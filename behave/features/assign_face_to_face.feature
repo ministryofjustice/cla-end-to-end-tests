@@ -6,7 +6,7 @@ Feature: Assign face to face.
 Background: Login
     Given that I am logged in
 
-
+# Journey P6, LGA-1831
 @assign_f2f
 Scenario: Assign face to face checking survey reminder
     Given that I am on the Alternative Help page
