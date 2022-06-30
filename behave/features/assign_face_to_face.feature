@@ -14,4 +14,4 @@ Scenario: Assign face to face checking survey reminder
     Then I can select the Assign F2F button
     And I am shown the survey reminder
     And select continue on the survey reminder
-    Then I am taken to the call centre dashboard page
+    Then I am taken to the "call centre dashboard" page located on "/call_centre/"

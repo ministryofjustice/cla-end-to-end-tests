@@ -24,10 +24,3 @@ def step_impl(context):
     page.driver().execute_script("arguments[0].click();", face_to_face_tab)
     # This clicks the actual assign F2F button.
     page.click_button(By.NAME, "assign-f2f")
-
-
-@step(u'I am taken to the call centre dashboard page')
-def step_impl(context):
-    # Make sure that we get redirected to the call centre dashboard.
-    wait_until_page_is_loaded("/call_centre/", context)
-    assert_header_on_page("Cases", context)
