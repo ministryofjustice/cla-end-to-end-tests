@@ -95,5 +95,8 @@ CLA_CASE_DETAILS_INNER_TAB = {"Details": 1,
                               "Finances": 2,
                               "Income": 3,
                               "Expenses": 4}
+# P9 users for contact us options
 ClA_CONTACT_US_USER = "Nathan Drake"
+CLA_CONTACT_US_USER_PERSON_TO_CALL = "Elena Fisher"
+
 MINIMUM_SLEEP_SECONDS = 2
