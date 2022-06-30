@@ -23,7 +23,7 @@ Scenario: Complete callback form asking for callback
 Scenario: Complete callback form
   Given I have passed the means test
   And I enter my personal details
-  And I select the the callback option to callback CLA
+  And I select the contact option 'I’ll call CLA'
   # All steps that are clicking continue written in identical format so can reuse code
   And I click continue
   Then I am taken to the "Your details have been submitted" page located on "/result/confirmation"
@@ -31,8 +31,8 @@ Scenario: Complete callback form
   And I should see my reference number after the text "Your reference number is"
   And A matching case should be created on the CHS
 
-#Journey P8 Test the Housing category in scope journey. (LGA-1816)
-@cla-in-scope-housing
+#Journey P8  Housing category in scope journey but fail means test. (LGA-1816, LGA-1819)
+@cla-in-scope-fail-financially-housing
 Scenario: Complete in scope housing check
   Given I am taken to the "Choose the area you most need help with" page located on "/scope/diagnosis/"
   When I select the category <category>
@@ -41,4 +41,32 @@ Scenario: Complete in scope housing check
      | You’re living in rented accommodation |
      | Eviction                              |
   Then I am taken to the "Legal aid is available for this type of problem" page located on "/legal-aid-available"
-
+  And I click on the 'Check if you qualify financially' button
+  And I am taken to the "About you" page located on "/about"
+  And I <answer> the <question>
+     | question                                                   | answer |
+     | Do you have a partner?                                     | No     |
+     | Do you receive any benefits (including Child Benefit)?     | No     |
+     | Do you have any children aged 15 or under?                 | No     |
+     | Do you have any dependants aged 16 or over?                | No     |
+     | Do you own any property?                                   | Yes    |
+     | Are you employed?                                          | No     |
+     | Are you self-employed?                                     | No     |
+     | Are you or your partner (if you have one) aged 60 or over? | No     |
+     | Do you have any savings or investments?                    | No     |
+     | Do you have any valuable items worth over £500 each?       | No     |
+  And I click Continue
+  And I am taken to the "Your property" page located on "/property"
+  And I <answer> the <question>
+     | question                                                   | answer |
+     | Is this property your main home?                           | No     |
+     | Does anyone else own a share of the property?              | No     |
+     | How much is the property worth?                            | 50000  |
+     | How much is left to pay on the mortgage?                   | 0      |
+     | How much was your monthly mortgage repayment last month?   | 0      |
+     | Do you rent out any part of this property?                 | No     |
+     | Is your share of the property in dispute?                  | No     |
+  And I click Continue
+  And I am taken to the "Review your answers" page located on "/review"
+  And I click Confirm
+  And I am taken to the "You’re unlikely to get legal aid" page located on "/result/refer/housing"

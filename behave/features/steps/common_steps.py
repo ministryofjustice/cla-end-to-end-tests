@@ -6,6 +6,10 @@ from features.constants import CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK
 from selenium.webdriver.common.by import By
 
 
+def remove_prefix(text, prefix):
+    return text[len(prefix):] if text.startswith(prefix) else text
+
+
 def assert_header_on_page(title, context):
     # occasionally there could be more than one h1 on the page. In most cases we want the first one
     # Go through the list to check all h1 elements

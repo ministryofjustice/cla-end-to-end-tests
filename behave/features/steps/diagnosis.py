@@ -120,7 +120,7 @@ def step_impl(context):
     assert heading.text == 'Survey reminder'
 
 
-@then(u'select continue on the the survey reminder')
+@then(u'select continue on the survey reminder')
 def step_impl(context):
     continue_btn = context.helperfunc.find_by_css_selector('.modal-dialog .modal-content .FormActions button')
     assert continue_btn.text == "Continue"
