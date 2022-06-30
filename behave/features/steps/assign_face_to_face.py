@@ -1,3 +1,4 @@
+from features.constants import ASSIGN_F2F_CASE
 from features.steps.common_steps import search_and_select_case, wait_until_page_is_loaded
 from features.steps.cla_in_scope import assert_header_on_page
 from selenium.webdriver.common.by import By
@@ -7,7 +8,7 @@ from selenium.webdriver.common.by import By
 def step_impl(context):
     # The case used has been created for this test case.
     # we select and then go through to alternative help
-    search_and_select_case(context, "AS-0001-0001")
+    search_and_select_case(context, ASSIGN_F2F_CASE)
     context.execute_steps(u'''
         When I click on the Assign Alternative Help icon
         Then I am taken to the "Alternative help" page for the case located at "/alternative_help/"
