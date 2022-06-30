@@ -6,11 +6,12 @@ Feature: Assign face to face.
 Background: Login
     Given that I am logged in
 
-@wip
+
+@assign_f2f
 Scenario: Assign face to face checking survey reminder
     Given that I am on the Alternative Help page
     When I enter "the FALA search results" in the Assignment comments box
-    Then I am can select Assign F2F button
+    Then I can select the Assign F2F button
     And I am shown the survey reminder
-    And select continue on the the survey reminder
+    And select continue on the survey reminder
     Then I am taken to the call centre dashboard page
