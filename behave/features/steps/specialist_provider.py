@@ -41,6 +41,7 @@ def step_impl(context):
 @step(u'I select a case from the dashboard')
 def step_select_special_provider_case(context):
     case_reference = CLA_SPECIALIST_CASE_TO_ACCEPT
+
     table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
     # this will only return a link if the case hasn't already been accepted
     x_path = f".//tbody/tr[td/abbr[@title='Case status'][not(@class='Icon Icon--folderAccepted')]]/td/a[text()='{case_reference}']"

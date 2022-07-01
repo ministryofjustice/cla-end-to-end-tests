@@ -20,7 +20,7 @@ def assert_header_on_page(title, context):
     for heading in headings:
         if heading.text == title:
             found_heading = True
-    error_message = f"{heading.text} not found on {context.helperfunc.get_current_path()}"
+    error_message = f"{title} not found on {context.helperfunc.get_current_path()}"
     assert found_heading, error_message
 
 
@@ -171,3 +171,13 @@ def select_value_from_list(context, label, value, op='equals'):
         assert value == list_item.text, f"Could not find value {value} in {label} list"
     list_item.click()
 
+
+def search_and_select_case(context, case_reference):
+    # This method searches for and clicks on the case in the case list
+    # prevents not finding it if the list goes onto two pages.
+    context.selected_case_ref = case_reference
+    search_bar = context.helperfunc.find_by_id("case-search")
+    search_bar.send_keys(case_reference)
+    search_submit = context.helperfunc.find_by_class("CaseSearch-submit")
+    search_submit.click()
+    context.helperfunc.click_button(By.LINK_TEXT, case_reference)

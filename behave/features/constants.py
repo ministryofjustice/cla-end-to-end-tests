@@ -83,6 +83,8 @@ CLA_CALLBACK_CASES = ["TC-0001-0001",
                       "TC-0001-0004",
                       "TC-0001-0005"]
 
+ASSIGN_F2F_CASE = "AS-0001-0001"
+
 # This is so we can check personal details against the backend (LH block on diagnosis page)
 CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK = {
     "Full name": {"form_element_type": "h2", "form_element_title": "Full name", "backend_id": "full_name"},
