@@ -79,7 +79,8 @@ def step_impl(context):
 @step(u'I enter the full name of the person to call')
 def step_impl(context):
     value = CLA_CONTACT_US_USER_PERSON_TO_CALL
-    full_name_input = context.helperfunc.find_by_xpath("//input[@id='thirdparty-full_name'][@name='thirdparty-full_name']")
+    context.callback_form = context.helperfunc.find_by_xpath("//form")
+    full_name_input = context.callback_form.find_by_xpath("//input[@id='thirdparty-full_name'][@name='thirdparty-full_name']")
     full_name_input.send_keys(value)
     assert full_name_input.get_attribute('value') == value
 
