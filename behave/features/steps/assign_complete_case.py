@@ -26,7 +26,7 @@ def step_impl_matter_type1(context):
 @when(u'I select a category from Matter Type 2')
 def step_impl_matter_type2(context):
     # Find matter type 2 wrapper and focus on it
-    element = context.helperfunc.find_by_css_selector('#s2id_matter_type2').click()
+    element = context.helperfunc.find_by_css_selector('#s2id_matter_type2')
     element.click()
 
     # Find an element by text
