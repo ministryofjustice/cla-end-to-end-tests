@@ -26,7 +26,7 @@ def step_impl_matter_type1(context):
 @when(u'I select a category from Matter Type 2')
 def step_impl_matter_type2(context):
     # Find matter type 2 wrapper and focus on it
-    element = context.helperfunc.find_by_css_selector('#s2id_matter_type2')
+    element = context.helperfunc.find_by_css_selector('#s2id_matter_type2').click()
     element.click()
 
     # Find an element by text
@@ -46,7 +46,8 @@ def step_impl_one_provider(context):
 @when(u'I select \'Assign Provider\'')
 def step_impl_assign_provider(context):
     context.case_id = context.helperfunc.find_by_css_selector('.CaseBar-caseNum a').text
-    context.helperfunc.find_by_name("assign-provider").click()
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(context.helperfunc.find_by_name("assign-provider").click())
 
 
 @then(u'the case is assigned to the Specialist Provider')
