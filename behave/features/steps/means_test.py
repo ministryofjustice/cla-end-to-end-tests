@@ -30,8 +30,7 @@ def step_impl(context, tab_name):
     page = context.helperfunc
     inner_tab = page.find_by_xpath(f"//*[@id='pills-section-list']/li[{CLA_CASE_DETAILS_INNER_TAB[tab_name]}]")
     actions = ActionChains(page.driver())
-    actions.move_to_element(inner_tab).perform()
-    inner_tab.click()
+    actions.move_to_element(inner_tab).click(inner_tab).perform()
     # Confirm inner tab is active
     active_inner_tab = context.helperfunc.find_by_class("Pills-pill.is-active")
     assert tab_name in active_inner_tab.text
