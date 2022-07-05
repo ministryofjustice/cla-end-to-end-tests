@@ -101,6 +101,7 @@ services:
       DB_HOST: db
       DB_PORT: 5432
       BACKEND_ENABLED: "True"
+      LOAD_SEED_DATA: "True"
       LOAD_TEST_DATA: "True"
       LOAD_END_TO_END_FIXTURES: "True"
       ADMIN_USER: cla_admin
