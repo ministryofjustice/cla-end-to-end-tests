@@ -34,9 +34,15 @@ def wait_until_page_is_loaded(path, context):
 def click_on_hyperlink(context, hyperlink_text):
     # this is a generic step to click on a hyperlink
     assert context.helperfunc.find_by_link_text(hyperlink_text) is not None, f"Could not find link: {hyperlink_text}"
+    hyperlink_href = context.helperfunc.find_by_link_text(hyperlink_text).get_attribute("href")
     context.helperfunc.click_button(By.LINK_TEXT, hyperlink_text)
     # return the href
-    return context.helperfunc.find_by_link_text(hyperlink_text).get_attribute("href")
+    return hyperlink_href
+
+
+@step(u'I select the link "{hyperlink_text}"')
+def step_impl(context, hyperlink_text):
+    click_on_hyperlink(context, hyperlink_text)
 
 
 def switch_to_new_tab(context, new_tab_handle, hyperlink_selected):
