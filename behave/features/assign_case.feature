@@ -1,7 +1,7 @@
 Feature: Assign a case to a specialist provider.
 
 Background: Login
-    Given that I am logged in as "CHS_GENERAL_USER"
+    Given that I am logged in
 
 @complete_case
 Scenario: Attempt to assign a complete case
