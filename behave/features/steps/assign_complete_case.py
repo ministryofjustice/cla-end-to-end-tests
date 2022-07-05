@@ -46,7 +46,8 @@ def step_impl_one_provider(context):
 @when(u'I select \'Assign Provider\'')
 def step_impl_assign_provider(context):
     context.case_id = context.helperfunc.find_by_css_selector('.CaseBar-caseNum a').text
-    context.helperfunc.find_by_name("assign-provider").click()
+    provider = context.helperfunc.find_by_name("assign-provider")
+    provider.click()
 
 
 @then(u'the case is assigned to the Specialist Provider')
