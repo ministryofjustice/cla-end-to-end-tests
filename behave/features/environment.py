@@ -1,8 +1,7 @@
 import os
 import time
-
 from behave.log_capture import capture
-from features.constants import BROWSER, ARTIFACTS_DIRECTORY
+from features.constants import BROWSER, ARTIFACTS_DIRECTORY, DOWNLOAD_DIRECTORY
 from helper.helper_web import get_browser
 
 
@@ -10,10 +9,12 @@ def before_all(context):
     # Reading the browser type from the configuration file
     helper_func = get_browser(BROWSER)
     context.helperfunc = helper_func
-    
     # Dir to output test artifacts
     context.artifacts_dir = ARTIFACTS_DIRECTORY
-    helper_func.maximize();
+    # dir for report fox_admin_downloads
+    context.download_dir = DOWNLOAD_DIRECTORY
+    helper_func.maximize()
+
 
 @capture
 def after_scenario(context, scenario):
@@ -25,8 +26,10 @@ def after_scenario(context, scenario):
                                           + '.png')
         context.helperfunc.take_screenshot(scenario_file_path)
 
+
 def after_all(context):
     context.helperfunc.close()
+
 
 def make_dir(dir):
     """

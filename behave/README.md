@@ -49,9 +49,10 @@ This is because both `cla_frontend` and `cla_public` have dependencies that fail
 ## Using your local Chrome browser [optional]
 If you want to see the tests running in your hosts machines Chrome browser and still have the applications 
 running in their containers then do the following.
+You need to make sure that you have a version of chromedriver that matches your version of chrome.
 ```
 brew install chromedriver
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 chromedriver # take note of the port listed. Will stay running in the foreground
 ```
 

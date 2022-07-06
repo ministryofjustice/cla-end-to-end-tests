@@ -30,7 +30,6 @@ jobs:
             cd behave
             docker-compose run start_applications
             docker-compose exec clabackend bin/create_db.sh
-            docker-compose exec clabackend python manage.py loaddata test_special_provider_case.json
       - run:
           name: Run behave tests
           command: |
