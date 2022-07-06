@@ -66,7 +66,7 @@ def step_impl(context):
     context.helperfunc.find_by_partial_link_text('Create financial assessment').click()
 
 
-@then(u'I am taken to the Finances tab with the ‘Details’ sub-tab preselected')
+@step(u'I am taken to the Finances tab with the ‘Details’ sub-tab preselected')
 def step_impl(context):
     selected_tab = context.helperfunc.find_by_css_selector("li[class='Tabs-tab is-active']")
     assert 'Finances' in selected_tab.text
