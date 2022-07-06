@@ -1,6 +1,7 @@
 from behave import *
 from selenium.webdriver.common.action_chains import ActionChains
-from features.constants import CLA_CASE_DETAILS_INNER_TAB
+from features.constants import CLA_CASE_DETAILS_INNER_TAB, MINIMUM_SLEEP_SECONDS
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 def set_income_input_field_by_label(context, label, value):
@@ -26,14 +27,16 @@ def step_impl(context):
 
 @step(u'I move onto {tab_name} inner-tab')
 def step_impl(context, tab_name):
-    # CLA_CASE_DETAILS_INNER_TAB Dictionary contains list of inner tab names and indexes
+    xpath_scroll = f"//form/div[contains(@class,'Toolbar')]"
     page = context.helperfunc
-    inner_tab = page.find_by_xpath(f"//*[@id='pills-section-list']/li[{CLA_CASE_DETAILS_INNER_TAB[tab_name]}]")
     actions = ActionChains(page.driver())
-    actions.move_to_element(inner_tab).click(inner_tab).perform()
-    # Confirm inner tab is active
-    active_inner_tab = context.helperfunc.find_by_class("Pills-pill.is-active")
-    assert tab_name in active_inner_tab.text
+    actions.move_to_element(page.find_by_xpath(xpath_scroll)).perform()
+    page.find_by_xpath(f"//ul[@id='pills-section-list']/li/a[text()='{tab_name}']").click()
+
+    def wait_for_active_tab(*args):
+        return tab_name in context.helperfunc.find_by_class("Pills-pill.is-active").text
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_active_tab)
 
 
 @step(u'I select Save assessment')
