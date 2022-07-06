@@ -34,8 +34,7 @@ def step_impl(context, tab_name):
     actions.move_to_element(page.find_by_xpath(xpath)).click(page.find_by_xpath(xpath)).perform()
 
     def wait_for_active_tab(*args):
-        tab = context.helperfunc.find_by_class("Pills-pill.is-active")
-        return tab is not None and tab.is_displayed()
+        return tab_name in context.helperfunc.find_by_class("Pills-pill.is-active").text
     wait = WebDriverWait(page.driver(), 10)
     wait.until(wait_for_active_tab)
 
