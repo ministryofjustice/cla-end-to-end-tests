@@ -29,7 +29,7 @@ def step_impl(context):
 def step_impl(context, tab_name):
     # CLA_CASE_DETAILS_INNER_TAB Dictionary contains list of inner tab names and indexes
     xpath = f"//*[@id='pills-section-list']/li[{CLA_CASE_DETAILS_INNER_TAB[tab_name]}]"
-    page = context.callback_form.helperfunc
+    page = context.helperfunc
     actions = ActionChains(page.driver())
     actions.move_to_element(page.find_by_xpath(xpath)).click(page.find_by_xpath(xpath)).perform()
 
