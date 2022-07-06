@@ -105,6 +105,7 @@ services:
       LOAD_TEST_DATA: "True"
       LOAD_END_TO_END_FIXTURES: "True"
       ADMIN_USER: cla_admin
+      STATIC_FILES_BACKEND: local
       ADMIN_PASSWORD: cla_admin
       ALLOWED_HOSTS: "*"
 
