@@ -28,12 +28,16 @@ def step_impl(context):
 @step(u'I move onto {tab_name} inner-tab')
 def step_impl(context, tab_name):
     # CLA_CASE_DETAILS_INNER_TAB Dictionary contains list of inner tab names and indexes
-    pills_id = f"//*[@id='pills-section-list']/li[{CLA_CASE_DETAILS_INNER_TAB[tab_name]}]"
+    xpath = f"//*[@id='pills-section-list']/li[{CLA_CASE_DETAILS_INNER_TAB[tab_name]}]"
     page = context.callback_form.helperfunc
     actions = ActionChains(page.driver())
-    actions.move_to_element(page.find_by_xpath(pills_id)).click(page.find_by_xpath(pills_id)).perform()
+    actions.move_to_element(page.find_by_xpath(xpath)).click(page.find_by_xpath(xpath)).perform()
+
+    def wait_for_active_tab(*args):
+        tab = context.helperfunc.find_by_class("Pills-pill.is-active")
+        return tab is not None and tab.is_displayed()
     wait = WebDriverWait(page.driver(), 10)
-    wait.until(context.helperfunc.find_by_class("Pills-pill.is-active"))
+    wait.until(wait_for_active_tab)
 
 
 @step(u'I select Save assessment')
