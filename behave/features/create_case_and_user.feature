@@ -13,7 +13,7 @@ Feature: Case and user creation.
      - source
 
 Background: Login
-    Given that I am logged in
+    Given that I am logged in as "CHS_GENERAL_USER"
 
 @createuser
 Scenario: Create a Case and new User.

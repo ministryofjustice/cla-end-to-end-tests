@@ -2,7 +2,7 @@ import re
 from behave import *
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
-from features.constants import CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK
+from features.constants import CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK, CLA_FRONTEND_URL, USERS, USER_HTML_TAGS
 from selenium.webdriver.common.by import By
 
 
@@ -31,12 +31,19 @@ def wait_until_page_is_loaded(path, context):
     wait.until(do_test)
 
 
-def click_on_hyperlink(context, hyperlink_text):
+def click_on_hyperlink_and_get_href(context, hyperlink_text):
     # this is a generic step to click on a hyperlink
     assert context.helperfunc.find_by_link_text(hyperlink_text) is not None, f"Could not find link: {hyperlink_text}"
+    hyperlink_href = context.helperfunc.find_by_link_text(hyperlink_text).get_attribute("href")
     context.helperfunc.click_button(By.LINK_TEXT, hyperlink_text)
     # return the href
-    return context.helperfunc.find_by_link_text(hyperlink_text).get_attribute("href")
+    return hyperlink_href
+
+
+@step(u'I select the link "{hyperlink_text}"')
+def step_impl(context, hyperlink_text):
+    # this is a generic step to click on a hyperlink
+    context.helperfunc.click_button(By.LINK_TEXT, hyperlink_text)
 
 
 def switch_to_new_tab(context, new_tab_handle, hyperlink_selected):
@@ -76,6 +83,32 @@ def step_click_submit(context):
     except NoSuchElementException as ex:
         # this will error because we actually moved off the page which is actually what we want
         pass
+
+
+@step(u'that I am logged in as "{user}"')
+def step_impl(context, user):
+    login_url = USERS[user]["login_url"]
+    context.helperfunc.open(login_url)
+    if USERS[user]["application"] == "FRONTEND":
+        form = context.helperfunc.find_by_name(USER_HTML_TAGS[USERS[user]["application"]]["form_identifier"])
+        submit_xpath = f"//button[@type='submit']"
+        # on CHS, there is a tag which indicates whether you are logged in as an operator or a provider
+        # does not exist on fox_admin
+        if USERS[user]["user_type"] == "OPERATOR":
+            html_tag = "//html[@ng-app='cla.operatorApp']"
+        else:
+            html_tag = "//html[@ng-app='cla.providerApp']"
+    else:
+        form = context.helperfunc.find_by_id(USER_HTML_TAGS[USERS[user]["application"]]["form_identifier"])
+        submit_xpath = f"//input[@type='submit']"
+        html_tag = None
+    assert form is not None
+    form.find_element_by_name("username").send_keys(USERS[user]["username"])
+    form.find_element_by_name("password").send_keys(USERS[user]["password"])
+    form.find_element_by_xpath(submit_xpath).click()
+    if html_tag is not None:
+        element = context.helperfunc.find_by_xpath(html_tag)
+        assert element is not None
 
 
 @step(u'I click continue')

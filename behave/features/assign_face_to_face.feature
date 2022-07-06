@@ -4,7 +4,7 @@ Feature: Assign face to face.
     the survey and complete the end to end testing.
 
 Background: Login
-    Given that I am logged in
+    Given that I am logged in as "CHS_GENERAL_USER"
 
 # Journey P6, LGA-1831
 @assign_f2f

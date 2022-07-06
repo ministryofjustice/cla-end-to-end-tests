@@ -1,7 +1,7 @@
 Feature: Assign alternative help to out of scope case.
 
 Background: Login
-    Given that I am logged in
+    Given that I am logged in as "CHS_GENERAL_USER"
 
 @alt_help_succeeds
 Scenario: Assign alternative help for out of scope user with necessary details

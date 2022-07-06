@@ -4,7 +4,7 @@ Feature: Search for existing user with a case and create new case
     Search is by client name
 
 Background: Login
-    Given that I am logged in
+    Given that I am logged in as "CHS_GENERAL_USER"
 
 @create_case_existing_user
 Scenario: Create new case for existing user

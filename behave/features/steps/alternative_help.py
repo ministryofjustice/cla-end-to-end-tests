@@ -1,7 +1,7 @@
 from behave import *
 from features.constants import CLA_FRONTEND_URL, CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP, CLA_FRONTEND_PERSONAL_DETAILS_FORM
 from selenium.webdriver.common.by import By
-from common_steps import click_on_hyperlink, switch_to_new_tab
+from common_steps import click_on_hyperlink_and_get_href, switch_to_new_tab
 
 
 @step(u'I complete the users details with {user_choice:w} details')
@@ -51,7 +51,7 @@ def step_impl(context):
 @step(u'I select "{face_to_face_text}" and I am taken to a new tab displaying FALA')
 def step_impl(context, face_to_face_text):
     context.old_tabs = context.helperfunc.driver().window_handles
-    last_hyperlink_selected = click_on_hyperlink(context, face_to_face_text)
+    last_hyperlink_selected = click_on_hyperlink_and_get_href(context, face_to_face_text)
     new_tabs = context.helperfunc.driver().window_handles
     for tab in new_tabs:
         if tab in context.old_tabs:

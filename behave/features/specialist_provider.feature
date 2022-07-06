@@ -4,7 +4,7 @@ Feature: Specialist Provider Case Assignment
 # which is in run_test_local.sh
 
 Background: Log In Provider
-    Given I am logged in as a Specialist Provider
+    Given that I am logged in as "TEST_SPECIALIST_PROVIDER"
 
 @specialist-provider-select-case
 Scenario: Specialist Provider Selects a case
