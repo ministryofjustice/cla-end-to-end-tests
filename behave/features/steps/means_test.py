@@ -28,14 +28,17 @@ def step_impl(context):
 @step(u'I move onto {tab_name} inner-tab')
 def step_impl(context, tab_name):
     # CLA_CASE_DETAILS_INNER_TAB Dictionary contains list of inner tab names and indexes
-    xpath = f"//*[@id='pills-section-list']/li[{CLA_CASE_DETAILS_INNER_TAB[tab_name]}]"
-    page = context.helperfunc
-    actions = ActionChains(page.driver())
-    actions.move_to_element(page.find_by_xpath(xpath)).click(page.find_by_xpath(xpath)).perform()
+    context.form = context.helperfunc.find_by_xpath("//form/div[contains(@class, 'Toolbar')]")
+    tab = context.form.find_element_by_xpath(f"//ul[@id='pills-section-list']/li/a[text()='{tab_name}']")
+    assert tab is not None
+    tab.click()
+    # page = context.helperfunc
+    # actions = ActionChains(page.driver())
+    # actions.move_to_element(page.find_by_xpath(xpath)).click(page.find_by_xpath(xpath)).perform()
 
     def wait_for_active_tab(*args):
         return tab_name in context.helperfunc.find_by_class("Pills-pill.is-active").text
-    wait = WebDriverWait(page.driver(), 10)
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
     wait.until(wait_for_active_tab)
 
 
