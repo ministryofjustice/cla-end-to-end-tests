@@ -1,6 +1,7 @@
 from behave import *
 from selenium.webdriver.common.action_chains import ActionChains
-from features.constants import CLA_CASE_DETAILS_INNER_TAB
+from features.constants import CLA_CASE_DETAILS_INNER_TAB, MINIMUM_SLEEP_SECONDS
+import time
 
 
 def set_income_input_field_by_label(context, label, value):
@@ -28,12 +29,14 @@ def step_impl(context):
 def step_impl(context, tab_name):
     # CLA_CASE_DETAILS_INNER_TAB Dictionary contains list of inner tab names and indexes
     page = context.helperfunc
-    inner_tab = page.find_by_xpath(f"//*[@id='pills-section-list']/li[{CLA_CASE_DETAILS_INNER_TAB[tab_name]}]")
     actions = ActionChains(page.driver())
-    actions.move_to_element(inner_tab).click(inner_tab).perform()
+    actions.move_to_element(page.find_by_xpath(f"//*[@id='pills-section-list']/li"
+                                               f"[{CLA_CASE_DETAILS_INNER_TAB[tab_name]}]"))\
+        .click(page.find_by_xpath(f"//*[@id='pills-section-list']/li"
+                                  f"[{CLA_CASE_DETAILS_INNER_TAB[tab_name]}]")).perform()
+    time.sleep(MINIMUM_SLEEP_SECONDS)
     # Confirm inner tab is active
-    active_inner_tab = context.helperfunc.find_by_class("Pills-pill.is-active")
-    assert tab_name in active_inner_tab.text
+    assert tab_name in context.helperfunc.find_by_class("Pills-pill.is-active")
 
 
 @step(u'I select Save assessment')
