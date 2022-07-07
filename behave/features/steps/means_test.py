@@ -29,7 +29,7 @@ def step_impl(context):
 def step_impl(context, tab_name):
     # CLA_CASE_DETAILS_INNER_TAB Dictionary contains list of inner tab names and indexes
     context.form = context.helperfunc.find_by_xpath("//form/div[contains(@class, 'Toolbar')]")
-    tab = context.form.find_element_by_xpath(f"//ul/li[normalize-space(.) = '{tab_name}']")
+    tab = context.form.find_element_by_xpath(f"//ul[@id='pills-section-list']/li/a[text()='{tab_name}']")
     assert tab is not None
     tab.click()
     # page = context.helperfunc
