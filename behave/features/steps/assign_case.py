@@ -2,7 +2,6 @@ from behave import *
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import StaleElementReferenceException
 from features.constants import MATTER_TYPE_1, MATTER_TYPE_2, CLA_FRONTEND_URL
-from selenium.webdriver.common.by import By
 
 @given(u'case notes are empty')
 def step_impl(context):
@@ -112,7 +111,6 @@ def step_impl(context):
 def step_impl(context):
     context.helperfunc.find_by_partial_link_text("Assign").click()
 
-
 @then(u'I get a message with the text "Case notes must be added to close a case"')
 def step_impl(context):
     alert = context.helperfunc.find_by_css_selector("div[class='modal-dialog '")
@@ -152,8 +150,15 @@ def step_impl_matter_type2(context):
 
 @when(u'there is only one provider')
 def step_impl_one_provider(context):
-    # Find matter type 2 wrapper and focus on it
     form = context.helperfunc.find_by_name('assign_provider_form')
+
+    # Providers are loaded via ajax after clicking the assign tab
+    def wait_for_assign_providers_to_load(*args):
+        return form.find_element_by_css_selector('div.ContactBlock') is not None
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_assign_providers_to_load)
+
+    # Find matter type 2 wrapper and focus on it
     headings = form.find_elements_by_css_selector("h2.ContactBlock-heading")
     context.provider_selected = headings[0].text
     assert len(headings) == 1
