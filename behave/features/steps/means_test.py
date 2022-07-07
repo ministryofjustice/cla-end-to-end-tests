@@ -1,7 +1,8 @@
 from behave import *
 from selenium.webdriver.common.action_chains import ActionChains
-from features.constants import CLA_CASE_DETAILS_INNER_TAB, MINIMUM_SLEEP_SECONDS
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 def set_income_input_field_by_label(context, label, value):
@@ -27,11 +28,14 @@ def step_impl(context):
 
 @step(u'I move onto {tab_name} inner-tab')
 def step_impl(context, tab_name):
-    xpath_scroll = f"//form/div[contains(@class,'Toolbar')]"
     page = context.helperfunc
     actions = ActionChains(page.driver())
+    xpath_scroll = f"//form/div[contains(@class,'Toolbar')]"
     actions.move_to_element(page.find_by_xpath(xpath_scroll)).perform()
-    page.find_by_xpath(f"//ul[@id='pills-section-list']/li/a[text()='{tab_name}']").click()
+
+    xpath = f"//ul[@id='pills-section-list']/li/a[text()='{tab_name}']"
+    WebDriverWait(page.driver(), 10).until(EC.element_to_be_clickable((By.XPATH, xpath)))
+    page.find_by_xpath(xpath).click()
 
     def wait_for_active_tab(*args):
         return tab_name in context.helperfunc.find_by_class("Pills-pill.is-active").text
