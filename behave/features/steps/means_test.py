@@ -34,10 +34,7 @@ def step_impl(context, tab_name):
     actions.move_to_element(page.find_by_xpath(xpath_scroll)).perform()
 
     xpath = f"//ul[@id='pills-section-list']/li/a[text()='{tab_name}']"
-    WebDriverWait(page.driver(), 10).until(EC.element_to_be_clickable((By.XPATH, xpath)))
-    page.find_by_xpath(xpath).click()
-
-    page.find_by_xpath(f"//ul[@id='pills-section-list']/li/a[text()='{tab_name}']").click()
+    WebDriverWait(page.driver(), 10).until(EC.element_to_be_clickable((By.XPATH, xpath))).click()
 
     def wait_for_active_tab(*args):
         return tab_name in context.helperfunc.find_by_class("Pills-pill.is-active").text

@@ -111,6 +111,7 @@ def step_impl(context):
 def step_impl(context):
     context.helperfunc.find_by_partial_link_text("Assign").click()
 
+
 @then(u'I get a message with the text "Case notes must be added to close a case"')
 def step_impl(context):
     alert = context.helperfunc.find_by_css_selector("div[class='modal-dialog '")
