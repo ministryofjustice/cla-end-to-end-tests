@@ -10,7 +10,7 @@ Background: Log In Provider
 Scenario: Specialist Provider Selects a case
   Given that I am on the specialist provider cases dashboard page
   And there is a case available
-  And I select a case from the dashboard
+  And I select a case to accept from the dashboard
   And I am taken to the "specialist provider" case details page
   And I can view the client details
   | details     |
@@ -25,7 +25,7 @@ Scenario: Specialist Provider Selects a case
 Scenario: Specialist Provider Accepts a case
   Given that I am on the specialist provider cases dashboard page
   And there is a case available
-  And I select a case from the dashboard
+  And I select a case to accept from the dashboard
   And I am taken to the "specialist provider" case details page
   And I select 'Accept'
   And I can see a 'Case accepted successfully' message
@@ -94,3 +94,12 @@ Scenario: Specialist Provider Accepts a case and Selects Legal Help Form
   | Dependants Allowance (certain amount for each dependant) | £                  | N/A                 |
   | Partner Allowance                                        | £                  | N/A                 |
   | TOTAL MONTHLY DISPOSABLE INCOME                          | £                  | N/A                 |
+
+# p12 reject a case (LGA-1854)
+@specialist-provider-reject-case
+Scenario: Specialist Provider rejects a case
+  Given that I am on the specialist provider cases dashboard page
+  And I select a case to reject from the dashboard
+  And I am taken to the "specialist provider" case details page
+  And I select 'Reject'
+  Then the reject modal appears on screen
