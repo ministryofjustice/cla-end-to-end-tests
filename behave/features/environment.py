@@ -13,6 +13,7 @@ def before_all(context):
     
     # Dir to output test artifacts
     context.artifacts_dir = ARTIFACTS_DIRECTORY
+    helper_func.maximize();
 
 @capture
 def after_scenario(context, scenario):
