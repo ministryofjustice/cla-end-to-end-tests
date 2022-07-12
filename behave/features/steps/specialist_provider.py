@@ -1,12 +1,14 @@
 from behave import *
 from features.constants import CLA_FRONTEND_URL, CLA_SPECIALIST_PROVIDERS_NAME, \
-    CLA_SPECIALIST_CASE_TO_ACCEPT, CLA_SPECIALIST_CASE_TO_REJECT, CLA_SPECIALIST_CASE_BANNER_BUTTONS
+    CLA_SPECIALIST_CASE_TO_ACCEPT, CLA_SPECIALIST_CASE_TO_REJECT, CLA_SPECIALIST_CASE_BANNER_BUTTONS, \
+    LOREM_IPSUM_STRING, CLA_SPECIALIST_REJECTION_OUTCOME_CODES
 from features.steps.common_steps import compare_client_details_with_backend
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.by import By
 
 
-@step(u'that I am on the specialist provider cases dashboard page')
+@step(u'I am on the specialist provider cases dashboard page')
 def step_on_spec_providers_dashboard(context):
     element = context.helperfunc.find_by_xpath("//html[@ng-app='cla.providerApp']")
     assert element is not None
@@ -253,3 +255,34 @@ def step_impl(context):
     wait.until(wait_for_reject_dialog, "Could not find reject modal dialog")
     heading = context.helperfunc.find_by_css_selector('.modal-dialog .modal-content header h2')
     assert heading.text == 'Reject case'
+
+
+@step(u'I select a reject reason of \'{reject_reason}\'')
+def step_impl(context, reject_reason):
+    context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
+    modal_input = context.modal.find_element_by_xpath(f"//input[@value='{reject_reason}']")
+    assert modal_input is not None
+    modal_input.click()
+
+
+@step(u'I enter a reason into the Notes textarea')
+def step_impl(context):
+    context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
+    comment = LOREM_IPSUM_STRING
+    text_area = context.modal.find_element_by_xpath('//textarea[@name="outcomeNotes"][@placeholder="Notes"]')
+    text_area.send_keys(comment)
+    assert text_area.get_attribute("value") == comment
+
+
+@step(u'I select the \'Reject case\' button')
+def step_impl(context):
+    context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
+    context.modal.find_element_by_xpath("//button[@type='submit']").click()
+
+
+@step(u'I confirm that my case has an Outcome code of \'{reject_reason}\'')
+def step_impl(context, reject_reason):
+    outcome_code = context.helperfunc.find_by_xpath(f"//abbr[@title='"
+                                                    f"{CLA_SPECIALIST_REJECTION_OUTCOME_CODES[reject_reason]}']")
+    assert outcome_code is not None
+    assert outcome_code.get_attribute("title") == CLA_SPECIALIST_REJECTION_OUTCOME_CODES[reject_reason]
