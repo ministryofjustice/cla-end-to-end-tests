@@ -99,6 +99,13 @@ MATTER_TYPE_2 = "QDIS - Disability"
 
 CLA_SPECIALIST_PROVIDERS_NAME = "Howells"
 CLA_SPECIALIST_CASE_TO_ACCEPT = "JT-4272-9443"
+CLA_SPECIALIST_CASE_TO_REJECT = "FA-3465-9114"
+CLA_SPECIALIST_CASE_BANNER_BUTTONS = {
+    "Accept": "accept-case",
+    "Reject": "reject-case",
+    "Split": "split-case",
+    "Close": "provider-close-case"
+}
 # THESE ARE CASES FROM TEXT FIXTURE test_callbacks.json
 CLA_CALLBACK_CASES = ["TC-0001-0001",
                       "TC-0001-0002",
@@ -116,10 +123,6 @@ CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK = {
 }
 # Used for P5 - first step checks to see if we can find cases for a particular test user
 CLA_EXISTING_USER = "Obi-Wan Kenobi"
-CLA_CASE_DETAILS_INNER_TAB = {"Details": 1,
-                              "Finances": 2,
-                              "Income": 3,
-                              "Expenses": 4}
 # P9 users for contact us options
 ClA_CONTACT_US_USER = "Nathan Drake"
 CLA_CONTACT_US_USER_PERSON_TO_CALL = "Elena Fisher"

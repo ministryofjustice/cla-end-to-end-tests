@@ -1,7 +1,9 @@
 from behave import *
-from features.constants import CLA_FRONTEND_URL, CLA_SPECIALIST_PROVIDERS_NAME, CLA_SPECIALIST_CASE_TO_ACCEPT
+from features.constants import CLA_FRONTEND_URL, CLA_SPECIALIST_PROVIDERS_NAME, \
+    CLA_SPECIALIST_CASE_TO_ACCEPT, CLA_SPECIALIST_CASE_TO_REJECT, CLA_SPECIALIST_CASE_BANNER_BUTTONS
 from features.steps.common_steps import compare_client_details_with_backend
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 @step(u'that I am on the specialist provider cases dashboard page')
@@ -26,19 +28,36 @@ def step_impl(context):
     compare_client_details_with_backend(context, case_id, client_section)
 
 
-@step(u'I select a case from the dashboard')
+@step(u'I select a case to accept from the dashboard')
 def step_select_special_provider_case(context):
     case_reference = CLA_SPECIALIST_CASE_TO_ACCEPT
+    check_only_unaccepted_cases = True
+    select_a_case(context, case_reference, check_only_unaccepted_cases)
+
+
+@step(u'I select a case to reject from the dashboard')
+def step_impl(context):
+    case_reference = CLA_SPECIALIST_CASE_TO_REJECT
+    # Case doesn't need to accepted, can reject any case.
+    check_only_unaccepted_cases = False
+    select_a_case(context, case_reference, check_only_unaccepted_cases)
+
+
+def select_a_case(context, case_reference, check_only_unaccepted_cases):
 
     table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
+    unaccepted_check = "unaccepted" if check_only_unaccepted_cases else ""
     # this will only return a link if the case hasn't already been accepted
-    x_path = f".//tbody/tr[td/abbr[@title='Case status'][not(@class='Icon Icon--folderAccepted')]]/td/a[text()='{case_reference}']"
+    if check_only_unaccepted_cases:
+        x_path = f".//tbody/tr[td/abbr[@title='Case status'][not(@class='Icon Icon--folderAccepted')]]/td/a[text()='{case_reference}']"
+    else:
+        x_path = f".//tbody/tr[td/abbr[@title='Case status']]/td/a[text()='{case_reference}']"
     try:
         link = table.find_element_by_xpath(x_path)
-        assert link is not None, f"Could not find unaccepted case {case_reference} on the dashboard"
+        assert link is not None, f"Could not find {unaccepted_check} case {case_reference} on the dashboard"
         assert link.text == case_reference, f"Expected: {case_reference} - Found: {link.text}"
     except NoSuchElementException:
-        assert False, f"Could not find unaccepted case {case_reference} on the dashboard"
+        assert False, f"Could not find {unaccepted_check} case {case_reference} on the dashboard"
     context.selected_case_ref = case_reference
     link.click()
 
@@ -78,12 +97,14 @@ def step_impl(context):
     assert scope_cat_of_law is not None and len(scope_cat_of_law.text) > len("Category of law:")
 
 
-@given(u'I select \'Accept\'')
-def step_impl(context):
+@given(u'I select \'{value}\'')
+def step_impl(context, value):
     # find the accept button and click it
-    accept_button = context.helperfunc.find_by_xpath('//button[@name="accept-case"]')
-    assert accept_button is not None
-    accept_button.click()
+    # Using python dictionary to find name value for accept, reject and split
+    button_name = CLA_SPECIALIST_CASE_BANNER_BUTTONS[value]
+    button = context.helperfunc.find_by_xpath(f"//button[@name='{button_name}']")
+    assert button is not None
+    button.click()
 
 
 @given(u'I can see a \'Case accepted successfully\' message')
@@ -183,6 +204,7 @@ def step_impl(context):
     wrapper_element = heading_element.find_element_by_xpath("./..")
     assert_your_details(context.table, wrapper_element)
 
+
 @given(u'The legal help form "{section_heading}" section has the values')
 def step_imple(context, section_heading):
     driver = context.helperfunc.driver()
@@ -210,6 +232,7 @@ def step_impl(context):
     # click on the link
     finance_tab_link.click()
 
+
 @then(u'I can view the financial assessment entered by the Operator')
 def step_impl(context):
     tabs = context.helperfunc.find_by_css_selector("ul.Tabs")
@@ -219,4 +242,14 @@ def step_impl(context):
     assert "Icon--solidTick" in classes and "Icon--green" in classes
     # Checking that the overall form has loaded by checking one of the elements are there.
     assert context.helperfunc.find_by_id("id_your_details-has_partner_1") is not None
-    
+
+
+@step(u'the reject modal appears on screen')
+def step_impl(context):
+    def wait_for_reject_dialog(*args):
+        return context.helperfunc.find_by_css_selector('.modal-dialog') is not None
+
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_reject_dialog, "Could not find reject modal dialog")
+    heading = context.helperfunc.find_by_css_selector('.modal-dialog .modal-content header h2')
+    assert heading.text == 'Reject case'
