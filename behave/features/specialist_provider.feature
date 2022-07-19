@@ -8,7 +8,7 @@ Background: Log In Provider
 
 @specialist-provider-select-case
 Scenario: Specialist Provider Selects a case
-  Given that I am on the specialist provider cases dashboard page
+  Given I am on the specialist provider cases dashboard page
   And there is a case available
   And I select a case to accept from the dashboard
   And I am taken to the "specialist provider" case details page
@@ -23,7 +23,7 @@ Scenario: Specialist Provider Selects a case
 
 @specialist-provider-accept-case
 Scenario: Specialist Provider Accepts a case
-  Given that I am on the specialist provider cases dashboard page
+  Given I am on the specialist provider cases dashboard page
   And there is a case available
   And I select a case to accept from the dashboard
   And I am taken to the "specialist provider" case details page
@@ -95,11 +95,16 @@ Scenario: Specialist Provider Accepts a case and Selects Legal Help Form
   | Partner Allowance                                        | £                  | N/A                 |
   | TOTAL MONTHLY DISPOSABLE INCOME                          | £                  | N/A                 |
 
-# p12 reject a case (LGA-1854)
+# p12 reject a case (LGA-1854, LGA-1855)
 @specialist-provider-reject-case
 Scenario: Specialist Provider rejects a case
-  Given that I am on the specialist provider cases dashboard page
+  Given I am on the specialist provider cases dashboard page
   And I select a case to reject from the dashboard
   And I am taken to the "specialist provider" case details page
   And I select 'Reject'
   Then the reject modal appears on screen
+  And I select a reject reason of 'MIS-OOS'
+  And I enter a reason into the Notes textarea
+  When I select the 'Reject case' button
+  Then I am on the specialist provider cases dashboard page
+  And I confirm that my case has an Outcome code of 'MIS-OOS'
