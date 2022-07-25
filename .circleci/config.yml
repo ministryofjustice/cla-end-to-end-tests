@@ -52,27 +52,27 @@ workflows:
             branches:
               only:
                 - main
-      - orb-tools/publish-dev:
-          name: publish_dev_orb
-          attach-workspace: false
-          checkout: true
-          orb-name: ministryofjustice/cla-end-to-end-tests
-          orb-path: orb.yml
-          publish-token-variable: CIRCLE_TOKEN
-          context:
-            - laa-cla-orbs-token
+#      - orb-tools/publish-dev:
+#          name: publish_dev_orb
+#          attach-workspace: false
+#          checkout: true
+#          orb-name: ministryofjustice/cla-end-to-end-tests
+#          orb-path: orb.yml
+#          publish-token-variable: CIRCLE_TOKEN
+#          context:
+#            - laa-cla-orbs-token
       - orb-tools/increment:
           name: publish_production_orb
           segment: minor
           orb-ref: ministryofjustice/cla-end-to-end-tests
           workspace-root: '.'
           publish-token-variable: CIRCLE_TOKEN
-          requires:
-            - publish_dev_orb
+#          requires:
+#            - publish_dev_orb
           context:
             - laa-cla-orbs-token
 #          filters:
 #            branches:
 #              only:
 #                - main
-      - behave
+#      - behave
