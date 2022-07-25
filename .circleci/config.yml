@@ -67,20 +67,20 @@ workflows:
           checkout: true
           orb-name: ministryofjustice/cla-end-to-end-tests
           orb-path: orb.yml
-          publish-token-variable: CLI_TOKEN_TEST
+          publish-token-variable: CIRCLE_TOKEN
           context:
-            - test_create_orb
+            - laa-cla-orbs-token
       - orb-tools/dev-promote-prod-from-commit-subject:
           name: publish_production_orb
           add-pr-comment: false
           fail-if-semver-not-indicated: true
           orb-name: ministryofjustice/cla-end-to-end-tests
-          publish-token-variable: CLI_TOKEN_TEST
+          publish-token-variable: CIRCLE_TOKEN
           publish-version-tag: false
           requires:
             - publish_dev_orb
           context:
-            - test_create_orb
+            - laa-cla-orbs-token
           filters:
             branches:
               only:
