@@ -65,7 +65,7 @@ workflows:
           name: publish_production_orb
           segment: minor
           orb-ref: ministryofjustice/cla-end-to-end-tests
-          workspace-root: "./"
+          orb-path: orb.yml
           publish-token-variable: CIRCLE_TOKEN
 #          requires:
 #            - publish_dev_orb
