@@ -40,10 +40,10 @@ jobs:
 workflows:
   build:
     jobs:
-      - aws-ecr/build-and-push-image:
-          name: Build and push
-          repo: "${AWS_RESOURCE_NAME_PREFIX}"
-          tag: "${CIRCLE_SHA1}"
+#      - aws-ecr/build-and-push-image:
+#          name: Build and push
+#          repo: "${AWS_RESOURCE_NAME_PREFIX}"
+#          tag: "${CIRCLE_SHA1}"
       - aws-ecr/build-and-push-image:
           name: Build and push latest tag
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
@@ -65,7 +65,7 @@ workflows:
           name: publish_production_orb
           segment: minor
           orb-ref: ministryofjustice/cla-end-to-end-tests
-          workspace-root: '.'
+          attach-workspace: true
           publish-token-variable: CIRCLE_TOKEN
 #          requires:
 #            - publish_dev_orb
