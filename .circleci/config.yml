@@ -72,8 +72,8 @@ workflows:
             - publish_dev_orb
           context:
             - laa-cla-orbs-token
-          filters:
-            branches:
-              only:
-                - main
+#          filters:
+#            branches:
+#              only:
+#                - main
       - behave
