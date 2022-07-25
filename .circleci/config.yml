@@ -61,13 +61,11 @@ workflows:
           publish-token-variable: CIRCLE_TOKEN
           context:
             - laa-cla-orbs-token
-      - orb-tools/dev-promote-prod-from-commit-subject:
+      - orb-tools/increment:
           name: publish_production_orb
-          add-pr-comment: false
-          fail-if-semver-not-indicated: true
+          segment: minor
           orb-name: ministryofjustice/cla-end-to-end-tests
           publish-token-variable: CIRCLE_TOKEN
-          publish-version-tag: false
           requires:
             - publish_dev_orb
           context:
