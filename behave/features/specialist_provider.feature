@@ -108,3 +108,10 @@ Scenario: Specialist Provider rejects a case
   When I select the 'Reject case' button
   Then I am on the specialist provider cases dashboard page
   And I confirm that my case has an Outcome code of 'MIS-OOS'
+
+# p13 split a case (LGA-1857)
+@specialist-provider-split-case
+Scenario: Specialist Provider rejects a case
+  Given I am on the specialist provider cases dashboard page
+  And I select a case to split from the dashboard
+  And I am taken to the "specialist provider" case details page

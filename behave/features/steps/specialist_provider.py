@@ -1,7 +1,7 @@
 from behave import *
 from features.constants import CLA_FRONTEND_URL, CLA_SPECIALIST_PROVIDERS_NAME, \
     CLA_SPECIALIST_CASE_TO_ACCEPT, CLA_SPECIALIST_CASE_TO_REJECT, CLA_SPECIALIST_CASE_BANNER_BUTTONS, \
-    LOREM_IPSUM_STRING, CLA_SPECIALIST_REJECTION_OUTCOME_CODES
+    LOREM_IPSUM_STRING, CLA_SPECIALIST_REJECTION_OUTCOME_CODES, CLA_SPECIALIST_CASE_TO_SPLIT
 from features.steps.common_steps import compare_client_details_with_backend
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
@@ -40,6 +40,14 @@ def step_select_special_provider_case(context):
 @step(u'I select a case to reject from the dashboard')
 def step_impl(context):
     case_reference = CLA_SPECIALIST_CASE_TO_REJECT
+    # Case doesn't need to accepted, can reject any case.
+    check_only_unaccepted_cases = False
+    select_a_case(context, case_reference, check_only_unaccepted_cases)
+
+
+@step(u'I select a case to split from the dashboard')
+def step_impl(context):
+    case_reference = CLA_SPECIALIST_CASE_TO_SPLIT
     # Case doesn't need to accepted, can reject any case.
     check_only_unaccepted_cases = False
     select_a_case(context, case_reference, check_only_unaccepted_cases)
