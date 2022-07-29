@@ -1,3 +1,7 @@
+export BROWSER=chrome
+#these directories need to be overridden as they do not get picked up from cla-end-to-end-tests
+export ARTIFACTS_DIRECTORY="."
+export DOWNLOAD_DIRECTORY="/tmp"
 export CLA_E2E_BACKEND_URL=http://localhost:8010
 export CLA_E2E_FRONTEND_URL=http://localhost:8011
 export CLA_E2E_SELENIUM_WEB_DRIVER_URL=http://localhost:9515

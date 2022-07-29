@@ -1,9 +1,17 @@
 from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from helper.helper_base import HelperFunc
-from features.constants import SELENIUM_WEB_DRIVER_URL
+from features.constants import SELENIUM_WEB_DRIVER_URL, DOWNLOAD_DIRECTORY
 
  
 def get_browser(browser):
     if browser == "chrome":
-        return HelperFunc(webdriver.Remote(SELENIUM_WEB_DRIVER_URL, DesiredCapabilities.CHROME))
+        actual_path = DOWNLOAD_DIRECTORY
+        prefs = {
+            "download.default_directory": actual_path,
+        }
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_experimental_option("prefs", prefs)
+        capabilities = chrome_options.to_capabilities()
+        return HelperFunc(webdriver.Remote(SELENIUM_WEB_DRIVER_URL, desired_capabilities=capabilities))
+
+
