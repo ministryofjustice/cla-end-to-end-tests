@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@7.3.0
-  orb-tools: circleci/orb-tools@10.0.4
+  orb-tools: circleci/orb-tools@10.1.0
 
 jobs:
   behave:
