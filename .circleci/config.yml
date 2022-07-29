@@ -72,7 +72,7 @@ workflows:
             - laa-cla-orbs-token
       - orb-tools/increment:
           name: publish_production_orb
-          segment: minor
+          segment: patch
           orb-ref: ministryofjustice/cla-end-to-end-tests
           orb-path: orb.yml
           publish-token-variable: CIRCLE_TOKEN
