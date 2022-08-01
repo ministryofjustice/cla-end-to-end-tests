@@ -265,6 +265,17 @@ def step_impl(context):
     assert heading.text == 'Reject case'
 
 
+@step(u'the split case modal appears on screen')
+def step_impl(context):
+    def wait_for_reject_dialog(*args):
+        return context.helperfunc.find_by_css_selector('.modal-dialog') is not None
+
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_reject_dialog, "Could not find split case modal dialog")
+    heading = context.helperfunc.find_by_css_selector('.modal-dialog .modal-content header h2')
+    assert heading.text == f'Split case {CLA_SPECIALIST_CASE_TO_SPLIT}'
+
+
 @step(u'I select a reject reason of \'{reject_reason}\'')
 def step_impl(context, reject_reason):
     context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')

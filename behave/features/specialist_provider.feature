@@ -115,3 +115,5 @@ Scenario: Specialist Provider rejects a case
   Given I am on the specialist provider cases dashboard page
   And I select a case to split from the dashboard
   And I am taken to the "specialist provider" case details page
+  And I select 'Split'
+  Then the split case modal appears on screen
