@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@7.3.0
+  orb-tools: circleci/orb-tools@10.1.0
 
 jobs:
   behave:
@@ -55,6 +56,27 @@ workflows:
           name: Build and push latest tag
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: "latest"
+          filters:
+            branches:
+              only:
+                - main
+      - orb-tools/publish-dev:
+          name: publish_dev_orb
+          attach-workspace: false
+          checkout: true
+          orb-name: ministryofjustice/cla-end-to-end-tests
+          orb-path: orb.yml
+          context:
+            - laa-cla-orbs-token
+      - orb-tools/increment:
+          name: publish_production_orb
+          segment: patch
+          orb-ref: ministryofjustice/cla-end-to-end-tests
+          orb-path: orb.yml
+          requires:
+            - publish_dev_orb
+          context:
+            - laa-cla-orbs-token
           filters:
             branches:
               only:
