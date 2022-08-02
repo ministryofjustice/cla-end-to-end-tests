@@ -12,3 +12,4 @@ And I am taken to the user's details page
 And I select Staff status under permissions
 And I select save
 Then the users details are saved and I am taken back to the list of users
+And I select the link "Log out"
