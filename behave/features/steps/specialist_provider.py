@@ -4,8 +4,10 @@ from features.constants import CLA_FRONTEND_URL, CLA_SPECIALIST_PROVIDERS_NAME, 
     LOREM_IPSUM_STRING, CLA_SPECIALIST_REJECTION_OUTCOME_CODES, CLA_SPECIALIST_CASE_TO_SPLIT
 from features.steps.common_steps import compare_client_details_with_backend
 from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import StaleElementReferenceException
 
 
 @step(u'I am on the specialist provider cases dashboard page')
@@ -107,14 +109,11 @@ def step_impl(context):
     assert scope_cat_of_law is not None and len(scope_cat_of_law.text) > len("Category of law:")
 
 
-@given(u'I select \'{value}\'')
+@given(u'I select \'{value}\' in the case details page')
 def step_impl(context, value):
-    # find the accept button and click it
     # Using python dictionary to find name value for accept, reject and split
-    button_name = CLA_SPECIALIST_CASE_BANNER_BUTTONS[value]
-    button = context.helperfunc.find_by_xpath(f"//button[@name='{button_name}']")
-    assert button is not None
-    button.click()
+    xpath = f"//button[@name='{CLA_SPECIALIST_CASE_BANNER_BUTTONS[value]}']"
+    context.helperfunc.click_button(By.XPATH, xpath)
 
 
 @given(u'I can see a \'Case accepted successfully\' message')
@@ -305,3 +304,14 @@ def step_impl(context, reject_reason):
                                                     f"{CLA_SPECIALIST_REJECTION_OUTCOME_CODES[reject_reason]}']")
     assert outcome_code is not None
     assert outcome_code.get_attribute("title") == CLA_SPECIALIST_REJECTION_OUTCOME_CODES[reject_reason]
+
+
+@step(u'the new case drop down values are')
+def step_impl(context):
+    context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
+    select = Select(context.modal.find_element_by_xpath(f'//select[@name="category"]'))
+    assert select is not None
+    try:
+        select.select_by_visible_text("Education")
+    except StaleElementReferenceException:
+        assert False, f"Could find Category of law in \'Relationship to you select\' options"

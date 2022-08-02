@@ -27,7 +27,7 @@ Scenario: Specialist Provider Accepts a case
   And there is a case available
   And I select a case to accept from the dashboard
   And I am taken to the "specialist provider" case details page
-  And I select 'Accept'
+  And I select 'Accept' in the case details page
   And I can see a 'Case accepted successfully' message
   When I return to the specialist provider cases dashboard page
   And I select the Accepted tab
@@ -101,7 +101,7 @@ Scenario: Specialist Provider rejects a case
   Given I am on the specialist provider cases dashboard page
   And I select a case to reject from the dashboard
   And I am taken to the "specialist provider" case details page
-  And I select 'Reject'
+  And I select 'Reject' in the case details page
   Then the reject modal appears on screen
   And I select a reject reason of 'MIS-OOS'
   And I enter a reason into the Notes textarea
@@ -109,11 +109,16 @@ Scenario: Specialist Provider rejects a case
   Then I am on the specialist provider cases dashboard page
   And I confirm that my case has an Outcome code of 'MIS-OOS'
 
-# p13 split a case (LGA-1857)
+# p13 split a case (LGA-1857, LGA-1858)
 @specialist-provider-split-case
 Scenario: Specialist Provider rejects a case
   Given I am on the specialist provider cases dashboard page
   And I select a case to split from the dashboard
   And I am taken to the "specialist provider" case details page
-  And I select 'Split'
+  And I select 'Split' in the case details page
   Then the split case modal appears on screen
+  And the new case drop down values are
+  | field           | value                                                                    |
+  | Category of law | Education                                                                |
+  | Matter type 1   | ESEN - Special educational needs and/or children unable to attend school |
+  | Matter type 2   | EDSC - School                                                            |
