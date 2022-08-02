@@ -27,11 +27,13 @@ USERS = {
                                  "login_url": f"{CLA_FRONTEND_URL}/auth/login/",
                                  "user_type": "SPECIALIST_PROVIDER",
                                  "application": "FRONTEND"},
+    # whilst this user is said to be a general user, they are actually also in the superuser group on foxadmin
     "FOX_ADMIN_GENERAL_USER": {"username": "cla_admin",
                                "password": "cla_admin",
                                "login_url": f"{CLA_BACKEND_URL}/admin/login",
                                "user_type": "OPERATOR",
-                               "application": "BACKEND"}}
+                               "application": "BACKEND"},
+}
 
 USER_HTML_TAGS = {
     "FRONTEND":
@@ -39,6 +41,9 @@ USER_HTML_TAGS = {
     "BACKEND":
         {"form_identifier": "login-form"}
 }
+CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO = "test_staff"
+
+CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO_PK = 3
 
 CLA_FRONTEND_PERSONAL_DETAILS_FORM = {
     "full_name": "Bob Merchandise",

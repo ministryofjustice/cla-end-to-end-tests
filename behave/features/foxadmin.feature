@@ -14,4 +14,4 @@ When I enter a date range
 And I select 'Export'
 And the report is processed and available to download as a .csv
 Then I download the .csv
-
+And I select the link "Log out"
