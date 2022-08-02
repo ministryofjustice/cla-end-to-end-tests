@@ -14,7 +14,7 @@ And I select save
 Then the users details are saved and I am taken back to the list of users
 And I select the link "Log out"
 
-#Journey P11 Child 2 Create an operator user (LGA-1882)
+#Journey P11 Child 2 Create an operator user (LGA-1864)
 @fox-create-user
 Scenario: Create an operator user
 Given I select the link "Operators"
