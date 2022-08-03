@@ -1,7 +1,8 @@
 from behave import *
 from features.constants import CLA_FRONTEND_URL, CLA_SPECIALIST_PROVIDERS_NAME, \
     CLA_SPECIALIST_CASE_TO_ACCEPT, CLA_SPECIALIST_CASE_TO_REJECT, CLA_SPECIALIST_CASE_BANNER_BUTTONS, \
-    LOREM_IPSUM_STRING, CLA_SPECIALIST_REJECTION_OUTCOME_CODES, CLA_SPECIALIST_CASE_TO_SPLIT
+    LOREM_IPSUM_STRING, CLA_SPECIALIST_REJECTION_OUTCOME_CODES, CLA_SPECIALIST_CASE_TO_SPLIT,\
+    CLA_SPECIALIST_SPLIT_CASE_SELECT_OPTIONS, CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS
 from features.steps.common_steps import compare_client_details_with_backend
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -292,12 +293,6 @@ def step_impl(context):
     assert text_area.get_attribute("value") == comment
 
 
-@step(u'I select the \'Reject case\' button')
-def step_impl(context):
-    context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
-    context.modal.find_element_by_xpath("//button[@type='submit']").click()
-
-
 @step(u'I confirm that my case has an Outcome code of \'{reject_reason}\'')
 def step_impl(context, reject_reason):
     outcome_code = context.helperfunc.find_by_xpath(f"//abbr[@title='"
@@ -306,12 +301,34 @@ def step_impl(context, reject_reason):
     assert outcome_code.get_attribute("title") == CLA_SPECIALIST_REJECTION_OUTCOME_CODES[reject_reason]
 
 
-@step(u'the new case drop down values are')
+@step(u'the \'New case\' drop down values are')
 def step_impl(context):
     context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
-    select = Select(context.modal.find_element_by_xpath(f'//select[@name="category"]'))
-    assert select is not None
-    try:
-        select.select_by_visible_text("Education")
-    except StaleElementReferenceException:
-        assert False, f"Could find Category of law in \'Relationship to you select\' options"
+    for row in context.table:
+        field = row['field']
+        value = row['value']
+        name_value = CLA_SPECIALIST_SPLIT_CASE_SELECT_OPTIONS[field]
+        select = Select(context.modal.find_element_by_xpath(f'//select[@name="{name_value}"]'))
+        assert select is not None
+        try:
+            select.select_by_visible_text(value)
+        except StaleElementReferenceException:
+            assert False, f"Could find {value} in \'Relationship to you select\' options"
+
+
+@step(u'I enter a comment into the \'New case\' notes textarea')
+def step_impl(context):
+    context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
+    comment = LOREM_IPSUM_STRING
+    text_area = context.modal.find_element_by_xpath('//textarea[@name="notes"][@placeholder="Enter comments"]')
+    text_area.send_keys(comment)
+    assert text_area.get_attribute("value") == comment
+
+
+@step(u'I select \'{value}\' for the \'Assign\' radio options')
+def step_impl(context, value):
+    context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
+    modal_input = context.modal.find_element_by_xpath(f"//input[@value='"
+                                                      f"{CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS[value]}]")
+    assert modal_input is not None
+    modal_input.click()

@@ -117,8 +117,11 @@ Scenario: Specialist Provider rejects a case
   And I am taken to the "specialist provider" case details page
   And I select 'Split' in the case details page
   Then the split case modal appears on screen
-  And the new case drop down values are
+  And the 'New case' drop down values are
   | field           | value                                                                    |
   | Category of law | Education                                                                |
   | Matter type 1   | ESEN - Special educational needs and/or children unable to attend school |
   | Matter type 2   | EDSC - School                                                            |
+  And I enter a comment into the 'New case' notes textarea
+  And I select 'Internally to Howells' for the 'Assign' radio options
+  When I select the 'Split case' button

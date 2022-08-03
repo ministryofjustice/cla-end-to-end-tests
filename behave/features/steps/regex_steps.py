@@ -54,3 +54,9 @@ def step_impl(context, optional):
         assert element.text == 'The means test has been saved. The current result is not eligible for Legal Aid'
     else:
         assert element.text == 'The means test has been saved. The current result is eligible for Legal Aid'
+
+
+@step(u'I select the \'(?P<optional>.*?)\' button')
+def step_impl(context, optional):
+    context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
+    context.modal.find_element_by_xpath("//button[@type='submit']").click()
