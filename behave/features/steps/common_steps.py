@@ -50,7 +50,9 @@ def step_impl(context, hyperlink_text):
 def step_impl(context):
     context.menu = context.helperfunc.find_by_css_selector('.UserMenu')
     # Click the menu button to make the SignOut button visible.
-    context.menu.click()
+    user_menu = context.menu.find_element_by_xpath("//a[href='#UserMenu-links']")
+    assert user_menu is not None
+    user_menu.click()
     xpath = context.menu.find_element_by_xpath("//a[@href='/auth/logout/']")
     assert xpath is not None
     xpath.click()
