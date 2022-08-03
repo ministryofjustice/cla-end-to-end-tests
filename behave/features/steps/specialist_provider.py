@@ -328,7 +328,7 @@ def step_impl(context):
 @step(u'I select \'{value}\' for the \'Assign\' radio options')
 def step_impl(context, value):
     context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
-    modal_input = context.modal.find_element_by_xpath(f"//input[@value='"
-                                                      f"{CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS[value]}]")
+    modal_input = context.modal.find_element_by_xpath(f"//input[@value="
+                                                      f"'{CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS[value]}']")
     assert modal_input is not None
     modal_input.click()

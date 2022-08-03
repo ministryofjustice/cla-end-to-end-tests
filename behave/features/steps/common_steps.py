@@ -45,6 +45,8 @@ def step_impl(context, hyperlink_text):
     # this is a generic step to click on a hyperlink
     context.helperfunc.click_button(By.LINK_TEXT, hyperlink_text)
 
+@step(u'')
+
 
 def switch_to_new_tab(context, new_tab_handle, hyperlink_selected):
     context.helperfunc.driver().switch_to.window(new_tab_handle)
