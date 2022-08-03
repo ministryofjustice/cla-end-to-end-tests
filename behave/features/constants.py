@@ -35,6 +35,8 @@ USERS = {
                                "application": "BACKEND"},
 }
 
+FOX_ADMIN_NEW_OPERATOR = "elvis.presley"
+
 USER_HTML_TAGS = {
     "FRONTEND":
         {"form_identifier": "login_frm"},
