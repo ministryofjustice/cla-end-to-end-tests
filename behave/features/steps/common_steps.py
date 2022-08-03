@@ -45,7 +45,12 @@ def step_impl(context, hyperlink_text):
     # this is a generic step to click on a hyperlink
     context.helperfunc.click_button(By.LINK_TEXT, hyperlink_text)
 
-@step(u'')
+
+@step(u'I select the \'Sign out\' link')
+def step_impl(context):
+    xpath = context.helperfunc.find_by_xpath("//a[@href='/auth/logout/']")
+    assert xpath is not None
+    xpath.click()
 
 
 def switch_to_new_tab(context, new_tab_handle, hyperlink_selected):

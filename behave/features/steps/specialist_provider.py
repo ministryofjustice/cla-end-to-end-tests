@@ -332,3 +332,9 @@ def step_impl(context, value):
                                                       f"'{CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS[value]}']")
     assert modal_input is not None
     modal_input.click()
+
+
+@step(u'the new case is visible in the operators dashboard')
+def step_impl(context):
+    table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
+    table.find_element_by_xpath(f"//a[text()='{CLA_SPECIALIST_CASE_TO_SPLIT}']")
