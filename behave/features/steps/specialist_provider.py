@@ -326,6 +326,11 @@ def step_impl(context):
         list_item = context.form.find_element_by_xpath(f"//li/div[text()='{value}']")
         list_item.click()
 
+        # Once list item has been selected, check the anchor contains the correct value
+        label_value = context.form.find_element_by_xpath(f"//span[text()='{label}']"
+                                                         f"/../../span/span/div/a/span[text()='{value}']")
+        assert label_value.text == value
+
 
 @step(u'I enter a comment into the \'New case\' notes textarea')
 def step_impl(context):

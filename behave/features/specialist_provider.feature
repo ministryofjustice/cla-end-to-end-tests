@@ -123,7 +123,7 @@ Scenario: Specialist Provider rejects a case
   | Matter type 1   | ESEN - Special educational needs and/or children unable to attend school |
   | Matter type 2   | EDSC - School                                                            |
   And I enter a comment into the 'New case' notes textarea
-  And I select 'Internally to Howells' for the 'Assign' radio options
+  And I select 'To operator for assignment' for the 'Assign' radio options
   When I select the 'Split case' button
   And I select the 'Sign out' link
   And that I am logged in as "CHS_GENERAL_USER"
