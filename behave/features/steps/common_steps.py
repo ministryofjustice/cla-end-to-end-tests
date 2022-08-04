@@ -226,3 +226,9 @@ def search_and_select_case(context, case_reference):
     search_submit = context.helperfunc.find_by_class("CaseSearch-submit")
     search_submit.click()
     context.helperfunc.click_button(By.LINK_TEXT, case_reference)
+
+
+@step(u'the message \'{message}\' appears on the case details page')
+def step_impl(context, message):
+    element = context.helperfunc.find_by_css_selector(".Notice.Notice--closeable.success")
+    assert element.text == message

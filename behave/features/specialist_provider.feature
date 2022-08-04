@@ -125,6 +125,7 @@ Scenario: Specialist Provider rejects a case
   And I enter a comment into the 'New case' notes textarea
   And I select 'To operator for assignment' for the 'Assign' radio options
   When I select the 'Split case' button
+  Then the message 'Case split successfully' appears on the case details page
   And I select the 'Sign out' link
   And that I am logged in as "CHS_GENERAL_USER"
   Then the new case is visible in the operators dashboard

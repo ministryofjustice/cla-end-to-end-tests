@@ -354,3 +354,4 @@ def step_impl(context, value):
 def step_impl(context):
     table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
     table.find_element_by_xpath(f"//a[text()='{CLA_SPECIALIST_CASE_TO_SPLIT}']")
+

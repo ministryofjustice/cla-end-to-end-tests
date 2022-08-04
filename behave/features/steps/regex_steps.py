@@ -1,4 +1,5 @@
 from behave import *
+from selenium.webdriver.support.wait import WebDriverWait
 use_step_matcher("re")
 
 # This file uses step matcher Regex. By using Regex we can create optional parameters and more.
@@ -60,3 +61,5 @@ def step_impl(context, optional):
 def step_impl(context, optional):
     context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
     context.modal.find_element_by_xpath("//button[@type='submit']").click()
+    # modal can be to close once submit button has been clicked.
+    WebDriverWait(context.helperfunc.driver(), 10)
