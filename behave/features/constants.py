@@ -115,11 +115,6 @@ CLA_SPECIALIST_CASE_BANNER_BUTTONS = {
     "Split": "split-case",
     "Close": "provider-close-case"
 }
-CLA_SPECIALIST_SPLIT_CASE_SELECT_OPTIONS = {
-    "Category of law": "category",
-    "Matter type 1": "matter_type1",
-    "Matter type 2": "matter_type2"
-}
 CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS = {
     "Internally to Howells": "true",
     "To operator for assignment": "false"

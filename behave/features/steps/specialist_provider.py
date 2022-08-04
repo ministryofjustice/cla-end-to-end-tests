@@ -2,13 +2,11 @@ from behave import *
 from features.constants import CLA_FRONTEND_URL, CLA_SPECIALIST_PROVIDERS_NAME, \
     CLA_SPECIALIST_CASE_TO_ACCEPT, CLA_SPECIALIST_CASE_TO_REJECT, CLA_SPECIALIST_CASE_BANNER_BUTTONS, \
     LOREM_IPSUM_STRING, CLA_SPECIALIST_REJECTION_OUTCOME_CODES, CLA_SPECIALIST_CASE_TO_SPLIT,\
-    CLA_SPECIALIST_SPLIT_CASE_SELECT_OPTIONS, CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS
-from features.steps.common_steps import compare_client_details_with_backend
+    CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS
+from features.steps.common_steps import compare_client_details_with_backend, select_value_from_list
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support.ui import Select
-from selenium.common.exceptions import StaleElementReferenceException
 
 
 @step(u'I am on the specialist provider cases dashboard page')
@@ -303,17 +301,30 @@ def step_impl(context, reject_reason):
 
 @step(u'the \'New case\' drop down values are')
 def step_impl(context):
+    # Find the modal container
     context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
+    # Inside modal find the form we want to focus on.
+    context.form = context.modal.find_element_by_xpath("//form[@name='split_case_frm']")
     for row in context.table:
-        field = row['field']
+        label = row['label']
         value = row['value']
-        name_value = CLA_SPECIALIST_SPLIT_CASE_SELECT_OPTIONS[field]
-        select = Select(context.modal.find_element_by_xpath(f'//select[@name="{name_value}"]'))
-        assert select is not None
-        try:
-            select.select_by_visible_text(value)
-        except StaleElementReferenceException:
-            assert False, f"Could find {value} in \'Relationship to you select\' options"
+
+        label_link = context.form.find_element_by_xpath(f"//span[text()='{label}']/../../span/span/div/a")
+        # Clicking this link will automatically focus the input for us to type into
+        label_link.click()
+
+        def wait_for_list_of_values(*args):
+            try:
+                # Try and see when this element is visible in the modal
+                context.form.find_element_by_xpath(f"//li/div[text()='{value}']")
+                return True
+            except NoSuchElementException:
+                return False
+
+        wait = WebDriverWait(context.helperfunc.driver(), 10)
+        wait.until(wait_for_list_of_values, message=f"Could not find any matches for {value} in {label} list")
+        list_item = context.form.find_element_by_xpath(f"//li/div[text()='{value}']")
+        list_item.click()
 
 
 @step(u'I enter a comment into the \'New case\' notes textarea')

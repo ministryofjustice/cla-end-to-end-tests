@@ -118,7 +118,7 @@ Scenario: Specialist Provider rejects a case
   And I select 'Split' in the case details page
   Then the split case modal appears on screen
   And the 'New case' drop down values are
-  | field           | value                                                                    |
+  | label           | value                                                                    |
   | Category of law | Education                                                                |
   | Matter type 1   | ESEN - Special educational needs and/or children unable to attend school |
   | Matter type 2   | EDSC - School                                                            |
