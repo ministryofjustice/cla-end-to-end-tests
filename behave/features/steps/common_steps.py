@@ -48,14 +48,16 @@ def step_impl(context, hyperlink_text):
 
 @step(u'I select the \'Sign out\' link')
 def step_impl(context):
-    context.menu = context.helperfunc.find_by_css_selector('.UserMenu')
-    # Click the menu button to make the SignOut button visible.
-    user_menu = context.menu.find_element_by_xpath("//a[href='#UserMenu-links']")
+    context.header = context.helperfunc.find_by_xpath("//header[@id='global-header']")
+    # find the menu link
+    user_menu = context.header.find_element_by_xpath("//div[@class='UserMenu']/a")
     assert user_menu is not None
+    # Click the menu link to make the SignOut link visible
     user_menu.click()
-    xpath = context.menu.find_element_by_xpath("//a[@href='/auth/logout/']")
-    assert xpath is not None
-    xpath.click()
+    # Find the SignOut link now it's visible
+    sign_out_link = context.header.find_element_by_xpath("//ul[@id='UserMenu-links']/li[2]/a")
+    assert sign_out_link is not None
+    sign_out_link.click()
 
 
 def switch_to_new_tab(context, new_tab_handle, hyperlink_selected):
