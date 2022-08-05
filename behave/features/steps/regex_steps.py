@@ -62,4 +62,4 @@ def step_impl(context, optional):
     context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
     context.modal.find_element_by_xpath("//button[@type='submit']").click()
     # modal can be slow to close once submit button has been clicked.
-    time.sleep(10)
+    time.sleep(2)
