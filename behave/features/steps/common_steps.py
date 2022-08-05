@@ -4,6 +4,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
 from features.constants import CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK, CLA_FRONTEND_URL, USERS, USER_HTML_TAGS
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 
 
 def remove_prefix(text, prefix):
@@ -48,12 +49,13 @@ def step_impl(context, hyperlink_text):
 
 @step(u'I select the \'Sign out\' link')
 def step_impl(context):
-    context.header = context.helperfunc.find_by_xpath("//header[@id='global-header']")
+    page = context.helperfunc.find_by_xpath("//header[@id='global-header']")
+    context.header = page
     # find the menu link
-    user_menu = context.header.find_element_by_xpath("//div[@class='UserMenu']/a")
+    user_menu = "//div[@class='UserMenu']/a"
     assert user_menu is not None
     # Click the menu link to make the SignOut link visible
-    user_menu.click()
+    WebDriverWait(page.driver(), 10).until(EC.element_to_be_clickable((By.XPATH, user_menu))).click()
     # Find the SignOut link now it's visible
     sign_out_link = context.header.find_element_by_xpath("//ul[@id='UserMenu-links']/li[2]/a")
     assert sign_out_link is not None
