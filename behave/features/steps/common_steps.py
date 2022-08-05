@@ -54,7 +54,7 @@ def step_impl(context):
     # find the menu link
     user_menu = "//div[@class='UserMenu']/a"
     assert user_menu is not None
-    # Click the menu link to make the SignOut link visible
+    # wait for the menu link to be visible then click
     WebDriverWait(page.driver(), 10).until(EC.element_to_be_clickable((By.XPATH, user_menu))).click()
     # Find the SignOut link now it's visible
     sign_out_link = context.header.find_element_by_xpath("//ul[@id='UserMenu-links']/li[2]/a")
