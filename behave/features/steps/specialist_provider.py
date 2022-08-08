@@ -352,6 +352,12 @@ def step_impl(context, value):
 
 @step(u'the new case is visible in the operators dashboard')
 def step_impl(context):
-    table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
-    table.find_element_by_xpath(f"//a[text()='{CLA_SPECIALIST_CASE_TO_SPLIT}']")
+    def wait_until_dashboard_page_is_loaded(*args):
+        try:
+            table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
+            return CLA_SPECIALIST_CASE_TO_SPLIT in table.text
+        except Exception:
+            return False
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_until_dashboard_page_is_loaded)
 
