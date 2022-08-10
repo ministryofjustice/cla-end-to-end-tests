@@ -39,6 +39,10 @@ services:
       CLA_PROVIDER_SECRET_ID: 0494287c65bdf61d29f0eeed467ec8e090f0d80f
 
   seleniumchrome:
+    deploy:
+      resources:
+        limits:
+          memory: 2gb
     image: selenium/standalone-chrome:latest
     user: root
     hostname: chrome

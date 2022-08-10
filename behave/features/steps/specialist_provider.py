@@ -1,15 +1,20 @@
 from behave import *
 from features.constants import CLA_FRONTEND_URL, CLA_SPECIALIST_PROVIDERS_NAME, \
     CLA_SPECIALIST_CASE_TO_ACCEPT, CLA_SPECIALIST_CASE_TO_REJECT, CLA_SPECIALIST_CASE_BANNER_BUTTONS, \
-    LOREM_IPSUM_STRING, CLA_SPECIALIST_REJECTION_OUTCOME_CODES, CLA_SPECIALIST_CASE_TO_SPLIT
-from features.steps.common_steps import compare_client_details_with_backend
+    LOREM_IPSUM_STRING, CLA_SPECIALIST_REJECTION_OUTCOME_CODES, CLA_SPECIALIST_CASE_TO_SPLIT,\
+    CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS,CASE_SPLIT_TEXT
+from features.steps.common_steps import compare_client_details_with_backend, select_value_from_list
 from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 @step(u'I am on the specialist provider cases dashboard page')
 def step_on_spec_providers_dashboard(context):
+    def wait_for_dashboard(*args):
+        return context.helperfunc.find_by_css_selector('body.v-Dashboard') is not None
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_dashboard, "Could not find dashboard")
     element = context.helperfunc.find_by_xpath("//html[@ng-app='cla.providerApp']")
     assert element is not None
 
@@ -54,7 +59,6 @@ def step_impl(context):
 
 
 def select_a_case(context, case_reference, check_only_unaccepted_cases):
-
     table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
     unaccepted_check = "unaccepted" if check_only_unaccepted_cases else ""
     # this will only return a link if the case hasn't already been accepted
@@ -107,14 +111,11 @@ def step_impl(context):
     assert scope_cat_of_law is not None and len(scope_cat_of_law.text) > len("Category of law:")
 
 
-@given(u'I select \'{value}\'')
+@given(u'I select \'{value}\' in the case details page')
 def step_impl(context, value):
-    # find the accept button and click it
     # Using python dictionary to find name value for accept, reject and split
-    button_name = CLA_SPECIALIST_CASE_BANNER_BUTTONS[value]
-    button = context.helperfunc.find_by_xpath(f"//button[@name='{button_name}']")
-    assert button is not None
-    button.click()
+    xpath = f"//button[@name='{CLA_SPECIALIST_CASE_BANNER_BUTTONS[value]}']"
+    context.helperfunc.click_button(By.XPATH, xpath)
 
 
 @given(u'I can see a \'Case accepted successfully\' message')
@@ -265,6 +266,17 @@ def step_impl(context):
     assert heading.text == 'Reject case'
 
 
+@step(u'the split case modal appears on screen')
+def step_impl(context):
+    def wait_for_reject_dialog(*args):
+        return context.helperfunc.find_by_css_selector('.modal-dialog') is not None
+
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_reject_dialog, "Could not find split case modal dialog")
+    heading = context.helperfunc.find_by_css_selector('.modal-dialog .modal-content header h2')
+    assert heading.text == f'Split case {CLA_SPECIALIST_CASE_TO_SPLIT}'
+
+
 @step(u'I select a reject reason of \'{reject_reason}\'')
 def step_impl(context, reject_reason):
     context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
@@ -282,15 +294,77 @@ def step_impl(context):
     assert text_area.get_attribute("value") == comment
 
 
-@step(u'I select the \'Reject case\' button')
-def step_impl(context):
-    context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
-    context.modal.find_element_by_xpath("//button[@type='submit']").click()
-
-
 @step(u'I confirm that my case has an Outcome code of \'{reject_reason}\'')
 def step_impl(context, reject_reason):
     outcome_code = context.helperfunc.find_by_xpath(f"//abbr[@title='"
                                                     f"{CLA_SPECIALIST_REJECTION_OUTCOME_CODES[reject_reason]}']")
     assert outcome_code is not None
     assert outcome_code.get_attribute("title") == CLA_SPECIALIST_REJECTION_OUTCOME_CODES[reject_reason]
+
+
+@step(u'the \'New case\' drop down values are')
+def step_impl(context):
+    # Find the modal container
+    context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
+    # Inside modal find the form we want to focus on.
+    context.form = context.modal.find_element_by_xpath("//form[@name='split_case_frm']")
+    for row in context.table:
+        label = row['label']
+        value = row['value']
+
+        label_link = context.form.find_element_by_xpath(f"//span[text()='{label}']/../../span/span/div/a")
+        # Clicking this link will automatically focus the input for us to type into
+        label_link.click()
+
+        def wait_for_list_of_values(*args):
+            try:
+                # Try and see when this element is visible in the modal
+                context.form.find_element_by_xpath(f"//li/div[text()='{value}']")
+                return True
+            except NoSuchElementException:
+                return False
+
+        wait = WebDriverWait(context.helperfunc.driver(), 10)
+        wait.until(wait_for_list_of_values, message=f"Could not find any matches for {value} in {label} list")
+        list_item = context.form.find_element_by_xpath(f"//li/div[text()='{value}']")
+        list_item.click()
+
+        # Once list item has been selected, check the anchor contains the correct value
+        label_value = context.form.find_element_by_xpath(f"//span[text()='{label}']"
+                                                         f"/../../span/span/div/a/span[text()='{value}']")
+        assert label_value.text == value
+
+
+@step(u'I enter a comment into the new case notes textarea')
+def step_impl(context):
+    context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
+    comment = CASE_SPLIT_TEXT
+    text_area = context.modal.find_element_by_xpath('//textarea[@name="notes"][@placeholder="Enter comments"]')
+    text_area.send_keys(comment)
+    assert text_area.get_attribute("value") == comment
+
+
+@step(u'I select \'{value}\' for the \'Assign\' radio options')
+def step_impl(context, value):
+    context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
+    modal_input = context.modal.find_element_by_xpath(f"//input[@value="
+                                                      f"'{CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS[value]}']")
+    assert modal_input is not None
+    modal_input.click()
+
+
+@step(u'the new split case is available to the operator')
+def step_impl(context):
+    # Goto to the dashboard ordered by latest
+    context.helperfunc.open(f"{CLA_FRONTEND_URL}/call_centre/?ordering=-modified")
+    table = context.helperfunc.find_by_css_selector(".ListTable")
+    # Find the case on the dashboard and navigate to it
+    case_ref = table.find_element_by_xpath(".//tbody/tr/td[2]/a").text
+    context.helperfunc.open(f"{CLA_FRONTEND_URL}/call_centre/{case_ref}")
+    # Find the comment identifying that this case was split from our known case
+    full_case_log = context.helperfunc.find_by_css_selector(".CaseHistory-log").text
+    assert CASE_SPLIT_TEXT in full_case_log, "Could not find split case in operators dashboard"
+
+
+
+

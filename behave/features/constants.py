@@ -109,11 +109,16 @@ CLA_SPECIALIST_PROVIDERS_NAME = "Howells"
 CLA_SPECIALIST_CASE_TO_ACCEPT = "JT-4272-9443"
 CLA_SPECIALIST_CASE_TO_REJECT = "FA-3465-9114"
 CLA_SPECIALIST_CASE_TO_SPLIT = "C4-6754-5886"
+CASE_SPLIT_TEXT = f"This case is split from {CLA_SPECIALIST_CASE_TO_SPLIT}"
 CLA_SPECIALIST_CASE_BANNER_BUTTONS = {
     "Accept": "accept-case",
     "Reject": "reject-case",
     "Split": "split-case",
     "Close": "provider-close-case"
+}
+CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS = {
+    "Internally to Howells": "true",
+    "To operator for assignment": "false"
 }
 CLA_SPECIALIST_REJECTION_OUTCOME_CODES = {
     "MIS-OOS": "Misdiagnosed, out of scope"

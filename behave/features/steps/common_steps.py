@@ -4,6 +4,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
 from features.constants import CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK, CLA_FRONTEND_URL, USERS, USER_HTML_TAGS
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 
 
 def remove_prefix(text, prefix):
@@ -44,6 +45,21 @@ def click_on_hyperlink_and_get_href(context, hyperlink_text):
 def step_impl(context, hyperlink_text):
     # this is a generic step to click on a hyperlink
     context.helperfunc.click_button(By.LINK_TEXT, hyperlink_text)
+
+
+@step(u'I select the \'Sign out\' link')
+def step_impl(context):
+    # We need to be on a page that we can control, otherwise the current page could have a modal dialog visible which
+    # could impact how we can interact with menu elements
+    context.helperfunc.open(f"{CLA_FRONTEND_URL}")
+    page = context.helperfunc
+    context.header = page.find_by_xpath("//header[@id='global-header']")
+    # wait for the menu link to be visible then click
+    user_menu = "//div[@class='UserMenu']/a"
+    page.click_button(By.XPATH, user_menu)
+    # Find the SignOut link now it's visible
+    signout_link_xpath = "//ul[@id='UserMenu-links']/li[2]/a"
+    page.click_button(By.XPATH, signout_link_xpath)
 
 
 def switch_to_new_tab(context, new_tab_handle, hyperlink_selected):
@@ -214,3 +230,9 @@ def search_and_select_case(context, case_reference):
     search_submit = context.helperfunc.find_by_class("CaseSearch-submit")
     search_submit.click()
     context.helperfunc.click_button(By.LINK_TEXT, case_reference)
+
+
+@step(u'the message \'{message}\' appears on the case details page')
+def step_impl(context, message):
+    element = context.helperfunc.find_by_css_selector(".Notice.Notice--closeable.success")
+    assert element.text == message

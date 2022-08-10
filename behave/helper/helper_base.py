@@ -31,8 +31,6 @@ class HelperFunc(object):
 
     # Takes screenshot, specifically it grabs the entire body of the page.
     def take_screenshot(self, scenario_file_path):
-        S = lambda X: self._driver.execute_script('return document.body.parentNode.scroll'+X)
-        self._driver.set_window_size(S('Width'),S('Height'))
         element = self._driver.find_element_by_tag_name('body')
         element.screenshot(scenario_file_path)
 
@@ -89,14 +87,7 @@ class HelperFunc(object):
         return self.call_centre_backend.get_future_callbacks()
 
     def click_button(self, selector_type, selector):
+        wait = WebDriverWait(self._driver, 10, ignored_exceptions=StaleElementReferenceException)
+        wait.until(EC.element_to_be_clickable((selector_type, selector))).click()
 
-        def wait_until_button_is_clicked(*args):
-            try:
-                self._driver.find_element(selector_type, selector).click()
-                return True
-            except StaleElementReferenceException:
-                return False
-
-        wait = WebDriverWait(self._driver, 10)
-        wait.until(wait_until_button_is_clicked)
 

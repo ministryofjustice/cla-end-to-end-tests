@@ -1,4 +1,7 @@
 from behave import *
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.by import By
+
 use_step_matcher("re")
 
 # This file uses step matcher Regex. By using Regex we can create optional parameters and more.
@@ -54,3 +57,9 @@ def step_impl(context, optional):
         assert element.text == 'The means test has been saved. The current result is not eligible for Legal Aid'
     else:
         assert element.text == 'The means test has been saved. The current result is eligible for Legal Aid'
+
+
+@step(u'I select the \'(?P<optional>.*?)\' button')
+def step_impl(context, optional):
+    modal = context.helperfunc.find_by_css_selector('.modal-dialog')
+    modal.find_element_by_xpath("//button[@type='submit']").click()
