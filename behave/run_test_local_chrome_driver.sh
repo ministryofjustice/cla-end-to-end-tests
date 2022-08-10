@@ -2,8 +2,13 @@ export BROWSER=chrome
 #these directories need to be overridden as they do not get picked up from cla-end-to-end-tests
 export ARTIFACTS_DIRECTORY="."
 export DOWNLOAD_DIRECTORY="/tmp"
-export CLA_E2E_BACKEND_URL=http://localhost:8010
-export CLA_E2E_FRONTEND_URL=http://localhost:8011
+# UPDATE YOUR /etc/hosts to include the following snippet
+# 127.0.0.1   clabackend
+# 127.0.0.1	  clafrontend
+# 127.0.0.1   clapublic
+export CLA_E2E_BACKEND_URL=http://clabackend:8010
+export CLA_E2E_FRONTEND_URL=http://clafrontend:8011
+export CLA_E2E_PUBLIC_URL=http://clapublic:8012
 export CLA_E2E_SELENIUM_WEB_DRIVER_URL=http://localhost:9515
 export CALL_CENTRE_CLIENT_ID=b4b9220ffcb11ebfdab1
 export CALL_CENTRE_SECRET_ID=2df71313bdd38a2e1b815015e1b14387e7681d41
