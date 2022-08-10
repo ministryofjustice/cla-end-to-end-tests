@@ -49,6 +49,9 @@ def step_impl(context, hyperlink_text):
 
 @step(u'I select the \'Sign out\' link')
 def step_impl(context):
+    # We need to be on a page that we can control, otherwise the current page could have a modal dialog visible which
+    # could impact how we can interact with menu elements
+    context.helperfunc.open(f"{CLA_FRONTEND_URL}")
     page = context.helperfunc
     context.header = context.helperfunc.find_by_xpath("//header[@id='global-header']")
     # find the menu link
@@ -232,20 +235,5 @@ def search_and_select_case(context, case_reference):
 
 @step(u'the message \'{message}\' appears on the case details page')
 def step_impl(context, message):
-    css_selector = ".Notice.Notice--closeable.success"
-
-    def wait_for_message_to_disappear(*args):
-        try:
-            # Do not want to use find_by_css_selector here because that will wait until it times out when it
-            # cannot find the element
-            messages = context.helperfunc.driver().find_element(By.CSS_SELECTOR, css_selector)
-            return not messages.is_displayed
-        except Exception as e:
-            print(e)
-            return True
-
-    wait = WebDriverWait(context.helperfunc.driver(), 12)
-    wait.until(wait_for_message_to_disappear)
-
-    element = context.helperfunc.find_by_css_selector(css_selector)
+    element = context.helperfunc.find_by_css_selector(".Notice.Notice--closeable.success")
     assert element.text == message

@@ -63,17 +63,3 @@ def step_impl(context, optional):
 def step_impl(context, optional):
     modal = context.helperfunc.find_by_css_selector('.modal-dialog')
     modal.find_element_by_xpath("//button[@type='submit']").click()
-
-    # modal can be slow to close once submit button has been clicked.
-    def wait_for_modal_dialog_to_disappear(*args):
-        try:
-            # Do not want to use find_by_css_selector here because that will wait until it times out when it
-            # cannot find the element
-            dialog = context.helperfunc.driver().find_element(By.CSS_SELECTOR, '.modal-dialog')
-            return not dialog.is_displayed
-        except Exception as e:
-            print(e)
-            return True
-
-    wait = WebDriverWait(context.helperfunc.driver(), 10)
-    wait.until(wait_for_modal_dialog_to_disappear)
