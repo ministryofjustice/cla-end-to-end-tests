@@ -53,14 +53,13 @@ def step_impl(context):
     # could impact how we can interact with menu elements
     context.helperfunc.open(f"{CLA_FRONTEND_URL}")
     page = context.helperfunc
-    context.header = context.helperfunc.find_by_xpath("//header[@id='global-header']")
-    # find the menu link
-    user_menu = "//div[@class='UserMenu']/a"
+    context.header = page.find_by_xpath("//header[@id='global-header']")
     # wait for the menu link to be visible then click
-    WebDriverWait(page.driver(), 10).until(EC.element_to_be_clickable((By.XPATH, user_menu))).click()
+    user_menu = "//div[@class='UserMenu']/a"
+    page.click_button(By.XPATH, user_menu)
     # Find the SignOut link now it's visible
     signout_link_xpath = "//ul[@id='UserMenu-links']/li[2]/a"
-    WebDriverWait(page.driver(), 10).until(EC.element_to_be_clickable((By.XPATH, signout_link_xpath))).click()
+    page.click_button(By.XPATH, signout_link_xpath)
 
 
 def switch_to_new_tab(context, new_tab_handle, hyperlink_selected):
