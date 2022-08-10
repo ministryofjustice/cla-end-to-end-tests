@@ -100,7 +100,7 @@ def step_impl(context):
 
     def wait_until_diversity_is_complete(*args):
         try:
-            return "The client has completed diversity monitoring." in page.find_by_class("SummaryBlock-content").text
+            return "The client has completed diversity monitoring." in page.find_by_class("SummaryBlock").text
         except StaleElementReferenceException:
             return False
     wait = WebDriverWait(page.driver(), 10)
