@@ -11,6 +11,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 @step(u'I am on the specialist provider cases dashboard page')
 def step_on_spec_providers_dashboard(context):
+    def wait_for_dashboard(*args):
+        return context.helperfunc.find_by_css_selector('body.v-Dashboard') is not None
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_dashboard, "Could not find dashboard")
     element = context.helperfunc.find_by_xpath("//html[@ng-app='cla.providerApp']")
     assert element is not None
 
@@ -55,7 +59,6 @@ def step_impl(context):
 
 
 def select_a_case(context, case_reference, check_only_unaccepted_cases):
-
     table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
     unaccepted_check = "unaccepted" if check_only_unaccepted_cases else ""
     # this will only return a link if the case hasn't already been accepted
