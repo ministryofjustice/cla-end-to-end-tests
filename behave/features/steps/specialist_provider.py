@@ -2,7 +2,7 @@ from behave import *
 from features.constants import CLA_FRONTEND_URL, CLA_SPECIALIST_PROVIDERS_NAME, \
     CLA_SPECIALIST_CASE_TO_ACCEPT, CLA_SPECIALIST_CASE_TO_REJECT, CLA_SPECIALIST_CASE_BANNER_BUTTONS, \
     LOREM_IPSUM_STRING, CLA_SPECIALIST_REJECTION_OUTCOME_CODES, CLA_SPECIALIST_CASE_TO_SPLIT,\
-    CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS
+    CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS,CASE_SPLIT_TEXT
 from features.steps.common_steps import compare_client_details_with_backend, select_value_from_list
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -335,10 +335,10 @@ def step_impl(context):
         assert label_value.text == value
 
 
-@step(u'I enter a comment into the \'New case\' notes textarea')
+@step(u'I enter a comment into the new case notes textarea')
 def step_impl(context):
     context.modal = context.helperfunc.find_by_css_selector('.modal-dialog')
-    comment = LOREM_IPSUM_STRING
+    comment = CASE_SPLIT_TEXT
     text_area = context.modal.find_element_by_xpath('//textarea[@name="notes"][@placeholder="Enter comments"]')
     text_area.send_keys(comment)
     assert text_area.get_attribute("value") == comment
@@ -353,14 +353,18 @@ def step_impl(context, value):
     modal_input.click()
 
 
-@step(u'the new case is visible in the operators dashboard')
+@step(u'the new split case is available to the operator')
 def step_impl(context):
-    def wait_until_dashboard_page_is_loaded(*args):
-        try:
-            table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
-            return CLA_SPECIALIST_CASE_TO_SPLIT in table.text
-        except Exception:
-            return False
-    wait = WebDriverWait(context.helperfunc.driver(), 10)
-    wait.until(wait_until_dashboard_page_is_loaded)
+    # Goto to the dashboard ordered by latest
+    context.helperfunc.open(f"{CLA_FRONTEND_URL}/call_centre/?ordering=-modified")
+    table = context.helperfunc.find_by_css_selector(".ListTable")
+    # Find the case on the dashboard and navigate to it
+    case_ref = table.find_element_by_xpath(".//tbody/tr/td[2]/a").text
+    context.helperfunc.open(f"{CLA_FRONTEND_URL}/call_centre/{case_ref}")
+    # Find the comment identifying that this case was split from our known case
+    full_case_log = context.helperfunc.find_by_css_selector(".CaseHistory-log").text
+    assert CASE_SPLIT_TEXT in full_case_log, "Could not find split case in operators dashboard"
+
+
+
 
