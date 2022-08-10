@@ -53,13 +53,11 @@ def step_impl(context):
     context.header = context.helperfunc.find_by_xpath("//header[@id='global-header']")
     # find the menu link
     user_menu = "//div[@class='UserMenu']/a"
-    assert user_menu is not None
     # wait for the menu link to be visible then click
     WebDriverWait(page.driver(), 10).until(EC.element_to_be_clickable((By.XPATH, user_menu))).click()
     # Find the SignOut link now it's visible
-    sign_out_link = context.header.find_element_by_xpath("//ul[@id='UserMenu-links']/li[2]/a")
-    assert sign_out_link is not None
-    sign_out_link.click()
+    signout_link_xpath = "//ul[@id='UserMenu-links']/li[2]/a"
+    WebDriverWait(page.driver(), 10).until(EC.element_to_be_clickable((By.XPATH, signout_link_xpath))).click()
 
 
 def switch_to_new_tab(context, new_tab_handle, hyperlink_selected):
@@ -234,5 +232,20 @@ def search_and_select_case(context, case_reference):
 
 @step(u'the message \'{message}\' appears on the case details page')
 def step_impl(context, message):
-    element = context.helperfunc.find_by_css_selector(".Notice.Notice--closeable.success")
+    css_selector = ".Notice.Notice--closeable.success"
+
+    def wait_for_message_to_disappear(*args):
+        try:
+            # Do not want to use find_by_css_selector here because that will wait until it times out when it
+            # cannot find the element
+            messages = context.helperfunc.driver().find_element(By.CSS_SELECTOR, css_selector)
+            return not messages.is_displayed
+        except Exception as e:
+            print(e)
+            return True
+
+    wait = WebDriverWait(context.helperfunc.driver(), 12)
+    wait.until(wait_for_message_to_disappear)
+
+    element = context.helperfunc.find_by_css_selector(css_selector)
     assert element.text == message
