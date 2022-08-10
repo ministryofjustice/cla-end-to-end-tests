@@ -24,7 +24,6 @@ class HelperFunc(object):
         self._driver.get(url)
  
     def maximize(self):
-        self._driver.set_window_size(1024, 768)
         self._driver.maximize_window()        
         
     def close(self):
@@ -32,8 +31,6 @@ class HelperFunc(object):
 
     # Takes screenshot, specifically it grabs the entire body of the page.
     def take_screenshot(self, scenario_file_path):
-        S = lambda X: self._driver.execute_script('return document.body.parentNode.scroll'+X)
-        self._driver.set_window_size(S('Width'),S('Height'))
         element = self._driver.find_element_by_tag_name('body')
         element.screenshot(scenario_file_path)
 
