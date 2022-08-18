@@ -14,19 +14,16 @@ And I select save
 Then the users details are saved and I am taken back to the list of users
 And I select the link "Log out"
 
-#Journey P11 Child 2 Create an operator user (LGA-1864)
+#Journey P11 Child 2, Child 3 Create an operator user and login (LGA-1864, LGA-1865)
 @fox-create-user
 Scenario: Create an operator user
 Given I select the link "Operators"
 And I choose to "Add operator"
 And I am taken to the "Add operator" page located on "/admin/call_centre/operator/add/"
-And I <provide> the <details> to create a user
-        | details                    | provide           |
-        | Username:                  | elvis.presley     |
-        | Password:                  | rockandroll       |
-        | Password confirmation:     | rockandroll       |
+And I create a new operator user
 And I select 'Is active’
 And I choose to "save"
 Then the new operator user is created
 And I am taken to the list of operators page
 And I select the link "Log out"
+And that I am logged in as "FOX_ADMIN_NEW_USER"

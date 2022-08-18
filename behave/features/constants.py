@@ -33,9 +33,16 @@ USERS = {
                                "login_url": f"{CLA_BACKEND_URL}/admin/login",
                                "user_type": "OPERATOR",
                                "application": "BACKEND"},
+    "FOX_ADMIN_NEW_USER": {"username": "elvis.presley",
+                           "password": "rockandroll",
+                           "login_url": f"{CLA_BACKEND_URL}/admin/login",
+                           "user_type": "OPERATOR",
+                           "application": "BACKEND"},
 }
-
-FOX_ADMIN_NEW_OPERATOR = "elvis.presley"
+# value_key is linked to FOX_ADMIN_NEW_USER
+FOX_ADMIN_NEW_OPERATOR = {"username": {"label": "Username:", "value_key": "username"},
+                          "password": {"label": "Password:", "value_key": "password"},
+                          "password_confirmation": {"label": "Password confirmation:", "value_key": "password"}}
 
 USER_HTML_TAGS = {
     "FRONTEND":
