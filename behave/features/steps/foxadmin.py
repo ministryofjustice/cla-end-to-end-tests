@@ -4,7 +4,7 @@ import datetime
 from selenium.webdriver.support.ui import WebDriverWait
 import os
 from features.constants import MINIMUM_WAIT_UNTIL_TIME, CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO, \
-    CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO_PK, FOX_ADMIN_NEW_OPERATOR, USERS
+    CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO_PK, FOX_ADMIN_FORM_FIELDS, USERS
 from features.steps.common_steps import wait_until_page_is_loaded, assert_header_on_page
 
 
@@ -139,7 +139,7 @@ def step_impl(context, action):
 def step_impl(context):
     # Find the question by details
     # Find corresponding input and insert value from provide
-    new_user = FOX_ADMIN_NEW_OPERATOR
+    new_user = FOX_ADMIN_FORM_FIELDS
     for key in new_user.values():
         xpath = f".//label[text()='{key['label']}']/following-sibling::input"
         context.helperfunc.find_by_xpath(xpath).send_keys(USERS["FOX_ADMIN_NEW_USER"][key['value_key']])

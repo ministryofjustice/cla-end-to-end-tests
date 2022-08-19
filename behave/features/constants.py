@@ -40,7 +40,7 @@ USERS = {
                            "application": "BACKEND"},
 }
 # value_key is linked to FOX_ADMIN_NEW_USER
-FOX_ADMIN_NEW_OPERATOR = {"username": {"label": "Username:", "value_key": "username"},
+FOX_ADMIN_FORM_FIELDS = {"username": {"label": "Username:", "value_key": "username"},
                           "password": {"label": "Password:", "value_key": "password"},
                           "password_confirmation": {"label": "Password confirmation:", "value_key": "password"}}
 
