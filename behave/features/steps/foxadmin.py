@@ -3,7 +3,8 @@ from selenium.webdriver.common.by import By
 import datetime
 from selenium.webdriver.support.ui import WebDriverWait
 import os
-from features.constants import MINIMUM_WAIT_UNTIL_TIME, CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO, CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO_PK, FOX_ADMIN_NEW_OPERATOR
+from features.constants import MINIMUM_WAIT_UNTIL_TIME, CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO, \
+    CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO_PK, FOX_ADMIN_FORM_FIELDS, USERS
 from features.steps.common_steps import wait_until_page_is_loaded, assert_header_on_page
 
 
@@ -134,15 +135,14 @@ def step_impl(context, action):
     context.helperfunc.click_button(By.XPATH, xpath)
 
 
-@step(u'I <provide> the <details> to create a user')
+@step(u'I create a new operator user')
 def step_impl(context):
     # Find the question by details
     # Find corresponding input and insert value from provide
-    for row in context.table:
-        text = row['details']
-        value = row['provide']
-        xpath = f".//label[text()='{text}']/following-sibling::input"
-        context.helperfunc.find_by_xpath(xpath).send_keys(value)
+    new_user = FOX_ADMIN_FORM_FIELDS
+    for key in new_user.values():
+        xpath = f".//label[text()='{key['label']}']/following-sibling::input"
+        context.helperfunc.find_by_xpath(xpath).send_keys(USERS["FOX_ADMIN_NEW_USER"][key['value_key']])
 
 
 @step(u'I select \'Is active’')
@@ -169,9 +169,9 @@ def step_impl(context):
     context.execute_steps('''
     Then I am taken to the "Select operator to change" page located on "/admin/call_centre/operator/"''')
     # the user just created exists - look for the created user in the table
-    xpath = f".//table[@id='result_list']/tbody/tr[th/a[text()='{FOX_ADMIN_NEW_OPERATOR}']]"
+    xpath = f".//table[@id='result_list']/tbody/tr[th/a[text()='{USERS['FOX_ADMIN_NEW_USER']['username']}']]"
     # .//table[@id='result_list']/tbody/tr[th/a[text()='elvis.presley']]
-    assert context.helperfunc.find_by_xpath(xpath) is not None, f"cannot find row with user {FOX_ADMIN_NEW_OPERATOR}"
+    assert context.helperfunc.find_by_xpath(xpath) is not None, f"cannot find row with user {USERS['FOX_ADMIN_NEW_USER']['username']}"
     # now check that it is active but not a manager or a superuser
     image_path_yes = "/static/admin/img/icon-yes.gif"
     image_path_no = "/static/admin/img/icon-no.gif"
