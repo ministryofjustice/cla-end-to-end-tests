@@ -2,6 +2,7 @@ from behave import *
 from selenium.webdriver.common.by import By
 import datetime
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import NoSuchElementException
 import os
 from features.constants import MINIMUM_WAIT_UNTIL_TIME, CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO, \
     CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO_PK, FOX_ADMIN_FORM_FIELDS, USERS
@@ -89,7 +90,7 @@ def step_impl(context):
     ''')
 
 
-@when(u'I am taken to the user\'s details page')
+@step(u'I am taken to the non-staff user\'s details page')
 def step_impl(context):
     # user details page is at /admin/auth/user/{pk}
     page = f"/admin/auth/user/{CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO_PK}/"
@@ -145,7 +146,7 @@ def step_impl(context):
         context.helperfunc.find_by_xpath(xpath).send_keys(USERS["FOX_ADMIN_NEW_USER"][key['value_key']])
 
 
-@step(u'I select \'Is active’')
+@step(u'I select \'Is active\'')
 def step_impl(context):
     radio_input = context.helperfunc.find_by_css_selector(f"input[name='is_active']")
     radio_input.click()
@@ -186,5 +187,54 @@ def step_impl(context):
         f"User should not be superuser"
 
 
+@step('I select the newly created user from the list')
+def step_impl(context):
+    # Click on newly created operator
+    context.execute_steps(f'''
+    Given I select the link "{USERS['FOX_ADMIN_NEW_USER']['username']}"
+    ''')
+
+
+@step('I select \'Delete\' in the user\'s details page')
+def step_impl(context):
+    btn = context.helperfunc.find_by_xpath(f"//a[text()='Delete']")
+    assert btn is not None
+    btn.click()
+
+
+@step(u'I am taken to the user\'s details page')
+def step_impl(context):
+    user_input = context.helperfunc.driver().find_element_by_xpath("//*[@id='id_username']")
+    assert user_input.get_attribute('value') == USERS['FOX_ADMIN_NEW_USER']['username']
+    assert_header_on_page("Change user", context)
+
+
+@step(u'I am taken to the \'Are you sure page\'')
+def step_impl(context):
+    # Cannot rely on checking page URL because PK could be different on each test run.
+    header = context.helperfunc.driver().find_element_by_xpath("//*[@id='content']/h1[text()='Are you sure?']")
+    assert header is not None
+
+
+@step(u'I confirm the user has been deleted from the list of users')
+def step_impl(context):
+    xpath = f"//a[text()='{USERS['FOX_ADMIN_NEW_USER']['username']}']"
+    try:
+        context.helperfunc.driver().find_element_by_xpath(xpath)
+    except NoSuchElementException as ex:
+        pass
+
+
+@step(u'I select the \'Yes, I\'m sure\'')
+def step_impl(context):
+    yes_btn = "//input[@type='submit']"
+    context.helperfunc.click_button(By.XPATH, yes_btn)
+
+
+@step(u'I am on the call centre dashboard')
+def step_impl(context):
+    page = "/call_centre/"
+    wait_until_page_is_loaded(page, context)
+    assert_header_on_page("Cases", context)
 
 

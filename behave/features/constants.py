@@ -35,9 +35,9 @@ USERS = {
                                "application": "BACKEND"},
     "FOX_ADMIN_NEW_USER": {"username": "elvis.presley",
                            "password": "rockandroll",
-                           "login_url": f"{CLA_BACKEND_URL}/admin/login",
+                           "login_url": f"{CLA_FRONTEND_URL}/auth/login/",
                            "user_type": "OPERATOR",
-                           "application": "BACKEND"},
+                           "application": "FRONTEND"},
 }
 # value_key is linked to FOX_ADMIN_NEW_USER
 FOX_ADMIN_FORM_FIELDS = {"username": {"label": "Username:", "value_key": "username"},
