@@ -28,8 +28,8 @@ Then the new operator user is created
 And I am taken to the list of operators page
 #Child 3
 And I select the link "Log out"
-And that I am logged in as "FOX_ADMIN_NEW_USER"
-Then I am on the call centre dashboard
+And that I am logged in as "NEWLY_CREATED_OPERATOR"
+Then I am on the 'call centre dashboard' page
 #Child 4
 And that I am logged in as "FOX_ADMIN_GENERAL_USER"
 And I select the link "Users"

@@ -143,7 +143,7 @@ def step_impl(context):
     new_user = FOX_ADMIN_FORM_FIELDS
     for key in new_user.values():
         xpath = f".//label[text()='{key['label']}']/following-sibling::input"
-        context.helperfunc.find_by_xpath(xpath).send_keys(USERS["FOX_ADMIN_NEW_USER"][key['value_key']])
+        context.helperfunc.find_by_xpath(xpath).send_keys(USERS["NEWLY_CREATED_OPERATOR"][key['value_key']])
 
 
 @step(u'I select \'Is active\'')
@@ -170,9 +170,9 @@ def step_impl(context):
     context.execute_steps('''
     Then I am taken to the "Select operator to change" page located on "/admin/call_centre/operator/"''')
     # the user just created exists - look for the created user in the table
-    xpath = f".//table[@id='result_list']/tbody/tr[th/a[text()='{USERS['FOX_ADMIN_NEW_USER']['username']}']]"
+    xpath = f".//table[@id='result_list']/tbody/tr[th/a[text()='{USERS['NEWLY_CREATED_OPERATOR']['username']}']]"
     # .//table[@id='result_list']/tbody/tr[th/a[text()='elvis.presley']]
-    assert context.helperfunc.find_by_xpath(xpath) is not None, f"cannot find row with user {USERS['FOX_ADMIN_NEW_USER']['username']}"
+    assert context.helperfunc.find_by_xpath(xpath) is not None, f"cannot find row with user {USERS['NEWLY_CREATED_OPERATOR']['username']}"
     # now check that it is active but not a manager or a superuser
     image_path_yes = "/static/admin/img/icon-yes.gif"
     image_path_no = "/static/admin/img/icon-no.gif"
@@ -191,7 +191,7 @@ def step_impl(context):
 def step_impl(context):
     # Click on newly created operator
     context.execute_steps(f'''
-    Given I select the link "{USERS['FOX_ADMIN_NEW_USER']['username']}"
+    Given I select the link "{USERS['NEWLY_CREATED_OPERATOR']['username']}"
     ''')
 
 
@@ -205,7 +205,7 @@ def step_impl(context):
 @step(u'I am taken to the user\'s details page')
 def step_impl(context):
     user_input = context.helperfunc.driver().find_element_by_xpath("//*[@id='id_username']")
-    assert user_input.get_attribute('value') == USERS['FOX_ADMIN_NEW_USER']['username']
+    assert user_input.get_attribute('value') == USERS['NEWLY_CREATED_OPERATOR']['username']
     assert_header_on_page("Change user", context)
 
 
@@ -215,13 +215,13 @@ def step_impl(context):
     header = context.helperfunc.driver().find_element_by_xpath("//*[@id='content']/h1[text()='Are you sure?']")
     assert header is not None
     user_name = context.helperfunc.driver().find_element_by_xpath(f"//ul/li[text()='User: ']/a[text()='"
-                                                                  f"{USERS['FOX_ADMIN_NEW_USER']['username']}']")
+                                                                  f"{USERS['NEWLY_CREATED_OPERATOR']['username']}']")
     assert user_name is not None
 
 
 @step(u'I confirm the user has been deleted from the list of users')
 def step_impl(context):
-    xpath = f"//a[text()='{USERS['FOX_ADMIN_NEW_USER']['username']}']"
+    xpath = f"//a[text()='{USERS['NEWLY_CREATED_OPERATOR']['username']}']"
     try:
         context.helperfunc.driver().find_element_by_xpath(xpath)
     except NoSuchElementException as ex:
@@ -232,12 +232,5 @@ def step_impl(context):
 def step_impl(context):
     yes_btn = "//input[@type='submit']"
     context.helperfunc.click_button(By.XPATH, yes_btn)
-
-
-@step(u'I am on the call centre dashboard')
-def step_impl(context):
-    page = "/call_centre/"
-    wait_until_page_is_loaded(page, context)
-    assert_header_on_page("Cases", context)
 
 
