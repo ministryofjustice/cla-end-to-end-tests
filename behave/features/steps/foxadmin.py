@@ -214,6 +214,9 @@ def step_impl(context):
     # Cannot rely on checking page URL because PK could be different on each test run.
     header = context.helperfunc.driver().find_element_by_xpath("//*[@id='content']/h1[text()='Are you sure?']")
     assert header is not None
+    user_name = context.helperfunc.driver().find_element_by_xpath(f"//ul/li[text()='User: ']/a[text()='"
+                                                                  f"{USERS['FOX_ADMIN_NEW_USER']['username']}']")
+    assert user_name is not None
 
 
 @step(u'I confirm the user has been deleted from the list of users')
