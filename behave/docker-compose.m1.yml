@@ -7,7 +7,3 @@ services:
   clafrontend:
     platform: linux/arm64
     build: https://github.com/ministryofjustice/cla_frontend.git#master
-
-  clapublic:
-    platform: linux/arm64
-    build: https://github.com/ministryofjustice/cla_public.git#master

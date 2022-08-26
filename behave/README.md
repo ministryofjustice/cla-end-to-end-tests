@@ -26,6 +26,9 @@ bash into the container and run them from there:
 
 Apples new line of computers (Apple Silicon) no longer use Intel processors. Instead, Apple has made their own, (at the time of writing) it isn't widely supported. 
 
+Before running command below, make sure you are logged into your AWS via the aws command-line tool. 
+Please see [Authenticating to your docker image repository](https://user-guide.cloud-platform.service.justice.gov.uk/documentation/deploying-an-app/helloworld-app-deploy.html#authenticating-to-your-docker-image-repository)
+
 To run the tests locally just run this script for Apple Silicon users. 
 
 `./run_test_local_m1.sh`
