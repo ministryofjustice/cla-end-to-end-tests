@@ -1,12 +1,15 @@
 from behave import *
+import os
 from features.constants import CLA_FRONTEND_URL, CLA_SPECIALIST_PROVIDERS_NAME, \
     CLA_SPECIALIST_CASE_TO_ACCEPT, CLA_SPECIALIST_CASE_TO_REJECT, CLA_SPECIALIST_CASE_BANNER_BUTTONS, \
     LOREM_IPSUM_STRING, CLA_SPECIALIST_REJECTION_OUTCOME_CODES, CLA_SPECIALIST_CASE_TO_SPLIT,\
-    CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS,CASE_SPLIT_TEXT
-from features.steps.common_steps import compare_client_details_with_backend, select_value_from_list
+    CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS,CASE_SPLIT_TEXT, CLA_SPECIALIST_CSV_UPLOAD_PATH, CLA_FRONTEND_CSV_URL
+from features.steps.common_steps import compare_client_details_with_backend, select_value_from_list, wait_until_page_is_loaded
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import StaleElementReferenceException
 
 
 @step(u'I am on the specialist provider cases dashboard page')
@@ -233,7 +236,7 @@ def step_impl(context):
     wrapper_element = sub_heading_element.find_element_by_xpath("./..//ancestor::table")
     assert_four_column_table(context.table, wrapper_element)
 
-     
+
 @when(u'I select Finances')
 def step_impl(context):
     tabs = context.helperfunc.find_by_css_selector("ul.Tabs")
@@ -366,5 +369,68 @@ def step_impl(context):
     assert CASE_SPLIT_TEXT in full_case_log, "Could not find split case in operators dashboard"
 
 
+@step(u'I am on the CSV upload page')
+def step_impl(context):
+    csv_page = f"{CLA_FRONTEND_URL}{CLA_FRONTEND_CSV_URL}"
+    context.helperfunc.open(csv_page)
+    page = CLA_FRONTEND_CSV_URL
+    wait_until_page_is_loaded(page, context)
+    header = context.helperfunc.find_by_xpath("//header/h2[text()='CSV Upload']")
+    assert header is not None
 
 
+@step(u'I select \'Choose file\' and upload a csv file')
+def step_impl(context):
+    input_csv = context.helperfunc.find_by_xpath("//input[@name='csvfile']")
+    # test will fail if file can't be found or upload fails.
+    input_csv.send_keys(os.getcwd() + CLA_SPECIALIST_CSV_UPLOAD_PATH)
+
+
+@step(u'I select the month and year for the uploaded csv file')
+def step_impl(context):
+    date_now = context.helperfunc.get_date_now()
+    # Alter date to be the first day of month
+    # Minis one month because current month will not be visible as option
+    new_date = context.helperfunc.date_start_this_month.strftime("%Y-%m-%d")
+    select = Select(context.helperfunc.find_by_xpath(f'//form[@name="csvForm"]/label/select'))
+    assert select is not None
+    try:
+        select.select_by_value(f"string:{new_date}")
+    except StaleElementReferenceException:
+        # Note: always check generated screenshot to ensure that select option is visible and functioning
+        assert False, f"Could not find {new_date} in select options"
+
+
+@step(u'I select the \'upload\' button and check for errors')
+def step_impl(context):
+    button = context.helperfunc.find_by_xpath("//button[@type='submit'][text()='Upload']")
+    assert button is not None
+    button.click()
+
+    # This error block will appear in an HTML li attribute. This appears when you've uploaded
+    # a CSV file with the same date as a previous CSV file. Located at the top of the page
+    error_notice = "//div[1]/ul/li"
+    # If you upload a CSV file that has problems with some of its rows, a dynamic HTML element
+    # appears in the DOM with a list of the following errors for the user to address.
+    error_header = "//h2[text()='Please correct the following errors:']"
+
+    context.csv_page = context.helperfunc.find_by_xpath("//*[@id='wrapper']")
+    try:
+        if context.csv_page.find_element_by_xpath(error_notice):
+            error_text_notice = context.csv_page.find_element_by_xpath(error_notice).get_attribute('innerHTML')
+            assert False, f"Error occurred: {error_text_notice}"
+        elif context.csv_page.find_element_by_xpath(error_header):
+            error_text_header = context.csv_page.find_element_by_xpath(error_header).get_attribute('innerHTML')
+            # Always a good idea to also check the screenshot if there was more listed errors
+            assert False, f"Errors occurred: {error_text_header}"
+    except NoSuchElementException:
+        pass
+
+
+@step(u'I can see the file listed in the uploaded files table')
+def step_impl(context):
+    # Create a string that is a short version of the month and year only
+    new_date = context.helperfunc.date_start_this_month.strftime("%b %Y")
+    # Find the same date as the uploaded csv file
+    table_row = context.helperfunc.find_by_xpath(f"//table/tbody/tr/td[text()='{new_date} Upload']")
+    assert table_row is not None
