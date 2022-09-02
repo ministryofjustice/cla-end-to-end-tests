@@ -5,6 +5,7 @@ ARTIFACTS_DIRECTORY = os.environ.get("ARTIFACTS_DIRECTORY")
 DOWNLOAD_DIRECTORY = os.environ.get("DOWNLOAD_DIRECTORY")
 CLA_BACKEND_URL = os.environ.get("CLA_E2E_BACKEND_URL")
 CLA_FRONTEND_URL = os.environ.get("CLA_E2E_FRONTEND_URL")
+CLA_FRONTEND_CSV_URL = "/provider/csvupload/"
 CLA_PUBLIC_URL = os.environ.get("CLA_E2E_PUBLIC_URL")
 SELENIUM_WEB_DRIVER_URL = os.environ.get("CLA_E2E_SELENIUM_WEB_DRIVER_URL")
 MINIMUM_WAIT_UNTIL_TIME = 10
@@ -130,6 +131,7 @@ CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS = {
 CLA_SPECIALIST_REJECTION_OUTCOME_CODES = {
     "MIS-OOS": "Misdiagnosed, out of scope"
 }
+CLA_SPECIALIST_CSV_UPLOAD_PATH = "/uploads/csvupload.csv"
 # Used for text fields or text areas that just need a random string entered.
 LOREM_IPSUM_STRING = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fringilla tincidunt consectetur."
 

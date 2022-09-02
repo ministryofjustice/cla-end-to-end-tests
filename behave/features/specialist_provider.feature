@@ -105,7 +105,7 @@ Scenario: Specialist Provider rejects a case
   Then the reject modal appears on screen
   And I select a reject reason of 'MIS-OOS'
   And I enter a reason into the Notes textarea
-  When I select the 'Reject case' button
+  When I select the 'Reject case' button in the pop-up
   Then I am on the specialist provider cases dashboard page
   And I confirm that my case has an Outcome code of 'MIS-OOS'
 
@@ -124,8 +124,17 @@ Scenario: Specialist Provider rejects a case
   | Matter type 2   | EDSC - School                                                            |
   And I enter a comment into the new case notes textarea
   And I select 'To operator for assignment' for the 'Assign' radio options
-  When I select the 'Split case' button
+  When I select the 'Split case' button in the pop-up
   Then the message 'Case split successfully' appears on the case details page
   And I select the 'Sign out' link
   And that I am logged in as "CHS_GENERAL_USER"
   Then the new split case is available to the operator
+
+
+@specialist-provider-upload-csv
+Scenario: Specialist Provider upload a csv file
+  Given I am on the CSV upload page
+  When I select 'Choose file' and upload a csv file
+  Then I select the month and year for the uploaded csv file
+  And I select the 'Upload' button and check for errors
+  Then I can see the file listed in the uploaded files table
