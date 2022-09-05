@@ -130,11 +130,17 @@ Scenario: Specialist Provider rejects a case
   And that I am logged in as "CHS_GENERAL_USER"
   Then the new split case is available to the operator
 
-
-@specialist-provider-upload-csv
-Scenario: Specialist Provider upload a csv file
+# p14 Child 1 & Child 2, Upload a CSV file with errors, then upload a csv with no errors. (LGA-1868, LGA-1871)
+@specialist-provider-upload-csv-errors
+Scenario: Specialist Provider upload a csv
   Given I am on the CSV upload page
-  When I select 'Choose file' and upload a csv file
+  When I select 'Choose file' and upload an invalid csv file
   Then I select the month and year for the uploaded csv file
-  And I select the 'Upload' button and check for errors
+  And I select the 'Upload' button
+  And I am given details of the errors in each line of the csv file
+  # Upload a valid csv file again straight after an error upload
+  When I select 'Choose file' and upload an valid csv file
+  Then I select the month and year for the uploaded csv file
+  And I select the 'Upload' button
+  And I check that there are no errors in the csv upload page
   Then I can see the file listed in the uploaded files table

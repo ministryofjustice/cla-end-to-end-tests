@@ -132,6 +132,7 @@ CLA_SPECIALIST_REJECTION_OUTCOME_CODES = {
     "MIS-OOS": "Misdiagnosed, out of scope"
 }
 CLA_SPECIALIST_CSV_UPLOAD_PATH = "/uploads/csvupload.csv"
+CLA_SPECIALIST_CSV_UPLOAD_PATH_ERRORS = "/uploads/csvupload_errors.csv"
 # Used for text fields or text areas that just need a random string entered.
 LOREM_IPSUM_STRING = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fringilla tincidunt consectetur."
 
