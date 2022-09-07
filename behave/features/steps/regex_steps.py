@@ -1,6 +1,4 @@
 from behave import *
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.by import By
 
 use_step_matcher("re")
 
