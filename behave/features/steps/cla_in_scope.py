@@ -1,12 +1,17 @@
 from behave import *
 from features.constants import CLA_PUBLIC_URL
-from features.steps.common_steps import assert_header_on_page, wait_until_page_is_loaded, remove_prefix
+from features.steps.common_steps import (
+    assert_header_on_page,
+    wait_until_page_is_loaded,
+    remove_prefix,
+)
 
 
-@step(u'I have passed the means test')
+@step("I have passed the means test")
 def step_impl(context):
     # The next steps are the steps that pass the means test
-    context.execute_steps(u'''
+    context.execute_steps(
+        """
         Given I am taken to the "Choose the area you most need help with" page located on "/scope/diagnosis/"
         When I select the category <category> 
             | category                  |
@@ -36,80 +41,93 @@ def step_impl(context):
         # this is actually click confirm
         And I click continue
         Then I am taken to the "Contact Civil Legal Advice" page located on "/result/eligible"
-        ''')
+        """
+    )
 
 
-@step(u'I have selected the start now button on the start page')
+@step("I have selected the start now button on the start page")
 def step_impl(context):
     start_page_url = f"{CLA_PUBLIC_URL}"
     context.helperfunc.open(start_page_url)
     assert_header_on_page("Check if you can get legal aid", context)
-    start_button = context.helperfunc.find_by_id('start')
+    start_button = context.helperfunc.find_by_id("start")
     assert start_button is not None
     assert start_button.text == "Start now"
     start_button.click()
 
 
-@step(u'I select the category <category>')
+@step("I select the category <category>")
 def step_impl(context):
     next_page_path = None
     for row in context.table:
         if next_page_path is not None:
             wait_until_page_is_loaded(next_page_path, context)
-        category_link = context.helperfunc.find_by_xpath(f'//a[@title="{row["category"]}"]')
+        category_link = context.helperfunc.find_by_xpath(
+            f'//a[@title="{row["category"]}"]'
+        )
         next_page_path = category_link.get_attribute("pathname")
         assert category_link is not None
         category_link.click()
 
 
-@step(u'I click on the \'Check if you qualify financially\' button')
+@step("I click on the 'Check if you qualify financially' button")
 def step_impl(context):
     check_if_you_qualify_link = context.helperfunc.find_by_xpath('//a[@href="/about"]')
     assert check_if_you_qualify_link is not None
-    check_if_you_qualify_link.click()    
+    check_if_you_qualify_link.click()
 
 
-@step(u'I <answer> the <question>')
+@step("I <answer> the <question>")
 def step_impl(context):
     # answer tells me if I say yes or no
     # question helps me find the radio buttons
     for row in context.table:
-        value = row['question']
-        question_fieldset = context.helperfunc.find_by_xpath(f"//*[contains(text(),'{row['question']}')]")
+        value = row["question"]
+        question_fieldset = context.helperfunc.find_by_xpath(
+            f"//*[contains(text(),'{row['question']}')]"
+        )
         question_field_id = question_fieldset.get_attribute("id")
         question_input_id_start = remove_prefix(question_field_id, "field-label-")
-        if row['answer'] == 'No' or row['answer'] == 'Yes':
-            if row['answer'] == 'No':
-                question_id = question_input_id_start + '-1'
+        if row["answer"] == "No" or row["answer"] == "Yes":
+            if row["answer"] == "No":
+                question_id = question_input_id_start + "-1"
             else:
-                question_id = question_input_id_start + '-0'
-            question_radio = context.helperfunc.driver().find_element_by_xpath(f"//input[@id='{question_id}']")
+                question_id = question_input_id_start + "-0"
+            question_radio = context.helperfunc.driver().find_element_by_xpath(
+                f"//input[@id='{question_id}']"
+            )
             assert question_radio is not None, f"Could not find: {value}"
             question_radio.click()
             # check that the input is selected
-            assert question_radio.get_attribute('checked') == 'true'
+            assert question_radio.get_attribute("checked") == "true"
         else:
             # textbox answer rather than radio buttons
             question_id = question_input_id_start
-            question_box = context.helperfunc.driver().find_element_by_xpath(f"//input[@id='{question_id}']")
+            question_box = context.helperfunc.driver().find_element_by_xpath(
+                f"//input[@id='{question_id}']"
+            )
             assert question_box is not None, f"Could not find: {value}"
             # type in the text
-            question_box.send_keys(row['answer'])
+            question_box.send_keys(row["answer"])
 
 
-@step(u'I select \'Universal Credit\' from the list of benefits')
+@step("I select 'Universal Credit' from the list of benefits")
 def step_impl(context):
     # check value of universal_credit checkbox
-    check_box_universal_credit = context.helperfunc.driver().find_element_by_id("benefits-4")
+    check_box_universal_credit = context.helperfunc.driver().find_element_by_id(
+        "benefits-4"
+    )
     assert check_box_universal_credit is not None
     # click on universal credit
     check_box_universal_credit.click()
     # now check universal credit is checked
-    assert check_box_universal_credit.get_attribute('checked') == 'true'
+    assert check_box_universal_credit.get_attribute("checked") == "true"
 
 
-@step(u'I click Confirm')
+@step("I click Confirm")
 def step_impl(context):
-    context.execute_steps(u'''
+    context.execute_steps(
+        """
         Given I click continue
-    ''')
+    """
+    )
