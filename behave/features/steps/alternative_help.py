@@ -11,9 +11,9 @@ from common_steps import click_on_hyperlink_and_get_href, switch_to_new_tab
 @step("I complete the users details with {user_choice:w} details")
 def step_impl(context, user_choice):
     try:
-        context.personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP[
-            user_choice
-        ]
+        context.personal_details_form = (
+            CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP[user_choice]
+        )
     except KeyError:
         context.personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM
     context.execute_steps(
@@ -41,9 +41,9 @@ def step_impl(context):
 @step("I see the users previously entered {user_choice:w} details")
 def step_impl(context, user_choice):
     try:
-        context.personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP[
-            user_choice
-        ]
+        context.personal_details_form = (
+            CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP[user_choice]
+        )
     except KeyError:
         context.personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM
     context.execute_steps(

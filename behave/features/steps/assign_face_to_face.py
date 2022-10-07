@@ -7,20 +7,20 @@ from features.steps.cla_in_scope import assert_header_on_page
 from selenium.webdriver.common.by import By
 
 
-@step(u"that I am on the Alternative Help page")
+@step("that I am on the Alternative Help page")
 def step_impl(context):
     # The case used has been created for this test case.
     # we select and then go through to alternative help
     search_and_select_case(context, ASSIGN_F2F_CASE)
     context.execute_steps(
-        u"""
+        """
         When I click on the Assign Alternative Help icon
         Then I am taken to the "Alternative help" page for the case located at "/alternative_help/"
     """
     )
 
 
-@step(u"I can select the Assign F2F button")
+@step("I can select the Assign F2F button")
 def step_impl(context):
     # This clicks the face to face link, which is hidden as a tab.
     page = context.helperfunc

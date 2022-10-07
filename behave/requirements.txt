@@ -5,6 +5,6 @@ selenium==3.141.0
 six==1.16.0
 urllib3==1.26.6
 requests==2.26.0
-pre-commit==1.21.0
+pre-commit==2.20.0
 #need to use cla_common to check the availability of slots for the creation of callbacks
 git+https://github.com/ministryofjustice/cla_common.git@0.3.18#egg=cla_common

@@ -74,7 +74,7 @@ To lint with Black and flake8, install pre-commit hooks:
 ```
 virtualenv -p python3 env --prompt=\(cla_e2e\)
 . env/bin/activate
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 pre-commit install
 ```
 

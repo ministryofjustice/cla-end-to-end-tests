@@ -134,8 +134,10 @@ def step_impl(context):
 def step_impl(context):
     # check to see if the incorrect text element is present, if it isn't then we can carry on
     try:
-        confirmation_text_element = context.helperfunc.driver().find_element_by_css_selector(
-            ".laa-confirmation-inset"
+        confirmation_text_element = (
+            context.helperfunc.driver().find_element_by_css_selector(
+                ".laa-confirmation-inset"
+            )
         )
         if confirmation_text_element is not None:
             assert confirmation_text_element.text.startswith(
