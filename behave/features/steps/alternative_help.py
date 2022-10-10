@@ -1,4 +1,4 @@
-from behave import *
+from behave import step
 from features.constants import (
     CLA_FRONTEND_URL,
     CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP,
@@ -56,7 +56,7 @@ def step_impl(context, user_choice):
 @step("I click on the Assign Alternative Help icon")
 def step_impl(context):
     # no hyperlink text as it is just an icon in top RH corner
-    x_path = f".//a[@title='Assign alternative help']"
+    x_path = ".//a[@title='Assign alternative help']"
     context.helperfunc.click_button(By.XPATH, x_path)
 
 

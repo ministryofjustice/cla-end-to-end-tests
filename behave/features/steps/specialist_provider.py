@@ -1,8 +1,7 @@
-from behave import *
+from behave import step, when, then, given
 import os
 from features.constants import (
     CLA_FRONTEND_URL,
-    CLA_SPECIALIST_PROVIDERS_NAME,
     CLA_SPECIALIST_CASE_TO_ACCEPT,
     CLA_SPECIALIST_CASE_TO_REJECT,
     CLA_SPECIALIST_CASE_BANNER_BUTTONS,
@@ -17,7 +16,6 @@ from features.constants import (
 )
 from features.steps.common_steps import (
     compare_client_details_with_backend,
-    select_value_from_list,
     wait_until_page_is_loaded,
 )
 from selenium.common.exceptions import NoSuchElementException
@@ -42,9 +40,9 @@ def step_on_spec_providers_dashboard(context):
 def step_check_cases(context):
     # check there are cases available
     # only carry on if there are cases that have not been accepted
-    x_path = f".//table[@class='ListTable']/tbody/tr/td/abbr[@title='Case status'][not(@class='Icon Icon--folderAccepted')]"
+    x_path = ".//table[@class='ListTable']/tbody/tr/td/abbr[@title='Case status'][not(@class='Icon Icon--folderAccepted')]"
     cases_not_accepted = context.helperfunc.driver().find_elements_by_xpath(x_path)
-    assert len(cases_not_accepted) > 0, f"No unaccepted cases"
+    assert len(cases_not_accepted) > 0, "No unaccepted cases"
 
 
 @step("I can view the client details")
@@ -134,13 +132,13 @@ def step_impl(context):
     assert scope_description is not None
     # check that there is a category of law and that it is INSCOPE
     scope_inscope = scope_description.find_elements_by_xpath(
-        f'.//div/p[text()="INSCOPE"]'
+        './/div/p[text()="INSCOPE"]'
     )
     assert scope_inscope is not None
     # this would find all descriptors if needed
     # scope_descriptors = scope_description.find_element_by_xpath(f'.//div/p')
     scope_cat_of_law = scope_description.find_element_by_xpath(
-        f'.//div/p[starts-with(.,"Category of law")]'
+        './/div/p[starts-with(.,"Category of law")]'
     )
     assert scope_cat_of_law is not None and len(scope_cat_of_law.text) > len(
         "Category of law:"
@@ -217,7 +215,7 @@ def assert_your_details(table, root_element):
         assert (
             label_element is not None
         ), f"Could not find question on legal help form: {row['field']}"
-        parent_element = label_element.find_element_by_xpath(f"./..")
+        parent_element = label_element.find_element_by_xpath("./..")
         try:
             value_element = parent_element.find_element_by_tag_name("input")
         except NoSuchElementException:
@@ -271,7 +269,7 @@ def assert_four_column_table(table, root_element):
 @given("The legal help form Your details section has the values")
 def step_impl(context):
     driver = context.helperfunc.driver()
-    heading_element = driver.find_element_by_xpath(f"//h2[text()='Your Details']")
+    heading_element = driver.find_element_by_xpath("//h2[text()='Your Details']")
     wrapper_element = heading_element.find_element_by_xpath("./..")
     assert_your_details(context.table, wrapper_element)
 
@@ -289,7 +287,7 @@ def step_imple(context, section_heading):
 )
 def step_impl(context):
     driver = context.helperfunc.driver()
-    heading_element = driver.find_element_by_xpath(f"//h2[text()='Your Income']")
+    heading_element = driver.find_element_by_xpath("//h2[text()='Your Income']")
     wrapper_element = heading_element.find_element_by_xpath("./..")
     sub_heading_element = wrapper_element.find_element_by_xpath(
         ".//*[text()='Less monthly allowances']"
@@ -482,7 +480,7 @@ def step_impl(context):
     # Minis one month because current month will not be visible as option
     new_date = context.helperfunc.date_start_this_month.strftime("%Y-%m-%d")
     select = Select(
-        context.helperfunc.find_by_xpath(f'//form[@name="csvForm"]/label/select')
+        context.helperfunc.find_by_xpath('//form[@name="csvForm"]/label/select')
     )
     assert select is not None
     try:

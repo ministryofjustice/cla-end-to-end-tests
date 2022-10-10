@@ -1,5 +1,5 @@
 import re
-from behave import *
+from behave import step
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
 from features.constants import (
@@ -9,7 +9,6 @@ from features.constants import (
     USER_HTML_TAGS,
 )
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 
 
 def remove_prefix(text, prefix):
@@ -118,8 +117,8 @@ def step_click_submit(context):
         )
         if confirmation_text_element is not None:
             assert confirmation_text_element.text.startswith("There is a problem")
-            raise AssertionError(f"There is a problem with submitting the form")
-    except NoSuchElementException as ex:
+            raise AssertionError("There is a problem with submitting the form")
+    except NoSuchElementException:
         # this will error because we actually moved off the page which is actually what we want
         pass
 
@@ -132,7 +131,7 @@ def step_impl(context, user):
         form = context.helperfunc.find_by_name(
             USER_HTML_TAGS[USERS[user]["application"]]["form_identifier"]
         )
-        submit_xpath = f"//button[@type='submit']"
+        submit_xpath = "//button[@type='submit']"
         # on CHS, there is a tag which indicates whether you are logged in as an operator or a provider
         # does not exist on fox_admin
         if USERS[user]["user_type"] == "OPERATOR":
@@ -143,7 +142,7 @@ def step_impl(context, user):
         form = context.helperfunc.find_by_id(
             USER_HTML_TAGS[USERS[user]["application"]]["form_identifier"]
         )
-        submit_xpath = f"//input[@type='submit']"
+        submit_xpath = "//input[@type='submit']"
         html_tag = None
     assert form is not None
     form.find_element_by_name("username").send_keys(USERS[user]["username"])
@@ -170,8 +169,8 @@ def step_click_continue(context):
         )
         if confirmation_text_element is not None:
             assert confirmation_text_element.text.startswith("There is a problem")
-            raise AssertionError(f"There is a problem with submitting the form")
-    except NoSuchElementException as ex:
+            raise AssertionError("There is a problem with submitting the form")
+    except NoSuchElementException:
         # this will error because we actually moved off the page which is actually what we want
         pass
 
@@ -209,7 +208,7 @@ def step_on_case_details_page(context, type_of_user):
     elif type_of_user == "call centre":
         url_dir = "call_centre"
     else:
-        assert url_dir is None, f"Incorrect path given to step function"
+        assert url_dir is None, "Incorrect path given to step function"
     # will look like /url_dir/CASEID/diagnosis/
     if case_id is not None:
         page = f"/{url_dir}/{context.selected_case_ref}/diagnosis/"

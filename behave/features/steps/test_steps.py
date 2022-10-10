@@ -1,7 +1,7 @@
 import re
-from features.constants import CLA_FRONTEND_PERSONAL_DETAILS_FORM, CLA_FRONTEND_URL
+from features.constants import CLA_FRONTEND_PERSONAL_DETAILS_FORM
 from selenium.webdriver.support.ui import Select, WebDriverWait
-from behave import *
+from behave import step, then
 from selenium.webdriver.common.by import By
 
 

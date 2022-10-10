@@ -1,4 +1,5 @@
 from features.steps.common_steps import compare_client_details_with_backend
+from behave import then, when, given, step
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import StaleElementReferenceException
 
@@ -17,12 +18,12 @@ def step_impl(context):
 @given("callback slot contains a case created on CLA Public")
 def step_impl(context):
     xpath_string = (
-        f'//table[@class="ListTable"]/tbody/tr[./td/abbr[@title="WEB CASE"]]/td/a'
+        '//table[@class="ListTable"]/tbody/tr[./td/abbr[@title="WEB CASE"]]/td/a'
     )
     cla_callback_case = context.helperfunc.find_by_xpath(xpath_string)
     assert (
         cla_callback_case is not None
-    ), f"Cannot find any cases created on CLA Public in the chosen callback slot"
+    ), "Cannot find any cases created on CLA Public in the chosen callback slot"
     # find the reference of the case associated with this icon and use it for next step
     context.callback_case_element_link = cla_callback_case
     context.selected_case_ref = cla_callback_case.text
@@ -31,9 +32,7 @@ def step_impl(context):
 @when("I select a case created on CLA Public from the callback slot")
 def step_impl(context):
     # find and click on the case in the callback list
-    assert (
-        context.callback_case_element_link is not None
-    ), f"No callback case to link to"
+    assert context.callback_case_element_link is not None, "No callback case to link to"
     context.callback_case_element_link.click()
 
 
@@ -48,7 +47,7 @@ def step_on_case_details_page(context):
     xpath_string = f'//{element}[@title="{title_value}"]'
     assert (
         client_section.find_element_by_xpath(xpath_string).text == "Web"
-    ), f"Case is not from WEB"
+    ), "Case is not from WEB"
 
 
 @when('I select "Start Call"')

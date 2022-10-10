@@ -1,9 +1,6 @@
 from features.constants import ASSIGN_F2F_CASE
-from features.steps.common_steps import (
-    search_and_select_case,
-    wait_until_page_is_loaded,
-)
-from features.steps.cla_in_scope import assert_header_on_page
+from features.steps.common_steps import search_and_select_case
+from behave import step
 from selenium.webdriver.common.by import By
 
 

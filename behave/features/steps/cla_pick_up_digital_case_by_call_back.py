@@ -2,6 +2,9 @@ from cla_common.call_centre_availability import OpeningHours
 from cla_common.constants import OPERATOR_HOURS
 from features.constants import CLA_CALLBACK_CASES, CLA_FRONTEND_URL
 from features.steps.cla_in_scope import assert_header_on_page
+
+from behave import given, when, then
+
 import pytz
 
 
@@ -90,5 +93,5 @@ def step_impl(context):
 def step_impl(context):
     # look for the cases displayed alongside the calendar
     list_cases = context.helperfunc.find_by_class("ListTable")
-    case_rows = list_cases.find_elements_by_xpath(f"//tbody/tr/td")
+    case_rows = list_cases.find_elements_by_xpath("//tbody/tr/td")
     assert case_rows is not None

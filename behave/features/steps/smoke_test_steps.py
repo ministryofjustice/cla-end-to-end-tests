@@ -1,5 +1,5 @@
 import requests
-from behave import *
+from behave import given, then
 from features.constants import CLA_PUBLIC_URL, CLA_FRONTEND_URL, CLA_BACKEND_URL
 
 
@@ -17,7 +17,7 @@ def step_impl(context, service):
 @then('I am shown that the "{service}" service is ready')
 def step_impl(context, service):
     if service == "cla backend":
-        assert context.response.json()["db"]["ready"] == True
+        assert context.response.json()["db"]["ready"] is True
     elif service == "cla frontend":
         assert context.response_ready.status_code == 200
         assert context.response_live.status_code == 200

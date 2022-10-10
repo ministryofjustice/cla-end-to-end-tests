@@ -1,4 +1,4 @@
-from behave import *
+from behave import step
 from features.constants import CLA_PUBLIC_URL
 from features.steps.common_steps import (
     assert_header_on_page,
@@ -13,14 +13,14 @@ def step_impl(context):
     context.execute_steps(
         """
         Given I am taken to the "Choose the area you most need help with" page located on "/scope/diagnosis/"
-        When I select the category <category> 
+        When I select the category <category>
             | category                  |
             | Education                 |
             | Special educational needs |
         Then I am taken to the "Legal aid is available for this type of problem" page located on "/legal-aid-available"
-        And I click on the 'Check if you qualify financially' button 
+        And I click on the 'Check if you qualify financially' button
         And I am taken to the "About you" page located on "/about"
-        And I <answer> the <question> 
+        And I <answer> the <question>
             | question                                                   | answer |
             | Do you have a partner?                                     | No     |
             | Do you receive any benefits (including Child Benefit)?     | Yes    |
@@ -36,7 +36,7 @@ def step_impl(context):
         And I click continue
         And I am taken to the "Which benefits do you receive?" page located on "/benefits"
         And I select 'Universal Credit' from the list of benefits
-        And I click continue 
+        And I click continue
         And I am taken to the "Review your answers" page located on "/review"
         # this is actually click confirm
         And I click continue

@@ -1,5 +1,6 @@
 from common_steps import select_value_from_list
 from features.constants import CLA_EXISTING_USER, MINIMUM_SLEEP_SECONDS
+from behave import step, given, then
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 import time
@@ -92,7 +93,7 @@ def step_impl(context, category):
 def step_impl(context, organisation):
     name, _ = organisation.split(" - ")
     search_input = context.helperfunc.find_by_xpath(
-        f"//input[@placeholder='Search providers and other help organisations']"
+        "//input[@placeholder='Search providers and other help organisations']"
     )
     search_input.clear()
     search_input.send_keys(name)

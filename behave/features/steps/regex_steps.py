@@ -1,6 +1,4 @@
-from behave import *
-
-use_step_matcher("re")
+from behave import step
 
 # This file uses step matcher Regex. By using Regex we can create optional parameters and more.
 # Regex pythons need to be separate in order to prevent parsing conflicts, which is Behaves default.

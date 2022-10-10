@@ -1,4 +1,4 @@
-from behave import *
+from behave import step
 from selenium.webdriver.common.by import By
 import datetime
 from selenium.webdriver.support.ui import WebDriverWait
@@ -127,7 +127,7 @@ def step_impl(context):
 @step("I select Staff status under permissions")
 def step_impl(context):
     # click on the staff status checkbox
-    xpath = f"//div[@class='checkbox-row']/input[@id='id_is_staff']"
+    xpath = "//div[@class='checkbox-row']/input[@id='id_is_staff']"
     context.helperfunc.find_by_xpath(xpath).click()
     # for some reason this doesn't work
     # context.helperfunc.click_button(By.XPATH, xpath)
@@ -141,7 +141,7 @@ def step_impl(context):
 @step("the users details are saved and I am taken back to the list of users")
 def step_impl(context):
     # check that you have moved back to the list of users page
-    page = f"/admin/auth/user/"
+    page = "/admin/auth/user/"
     wait_until_page_is_loaded(page, context)
     assert_header_on_page("Select user to change", context)
     # check there is a message that says the user was changed successfully
@@ -149,7 +149,7 @@ def step_impl(context):
     xpath = f"//ul/li[@class='success'][contains(text(), '{link_text}')]"
     assert (
         len(context.helperfunc.find_many_by_xpath(xpath)) > 0
-    ), f"Cannot find success message"
+    ), "Cannot find success message"
 
 
 @step('I choose to "{action}"')
@@ -178,7 +178,7 @@ def step_impl(context):
 
 @step("I select 'Is active'")
 def step_impl(context):
-    radio_input = context.helperfunc.find_by_css_selector(f"input[name='is_active']")
+    radio_input = context.helperfunc.find_by_css_selector("input[name='is_active']")
     radio_input.click()
     assert radio_input.get_attribute("checked") == "true"
 
@@ -191,9 +191,7 @@ def step_impl(context):
     # are we still on the same page?
     if (
         context.helperfunc.get_current_path() == "/admin/call_centre/operator/add/"
-        and context.helperfunc.driver().find_element_by_xpath(
-            f"//p[@class='errornote']"
-        )
+        and context.helperfunc.driver().find_element_by_xpath("//p[@class='errornote']")
         is not None
     ):
         assert False, "There are errors creating that user"
@@ -221,13 +219,13 @@ def step_impl(context):
     xpath_is_superuser = "//tr/td[@class='field-is_cla_superuser']/img"
     assert image_path_yes in context.helperfunc.find_by_xpath(
         xpath_is_active
-    ).get_attribute("src"), f"User should be active"
+    ).get_attribute("src"), "User should be active"
     assert image_path_no in context.helperfunc.find_by_xpath(
         xpath_is_manager
-    ).get_attribute("src"), f"User should not be manager"
+    ).get_attribute("src"), "User should not be manager"
     assert image_path_no in context.helperfunc.find_by_xpath(
         xpath_is_superuser
-    ).get_attribute("src"), f"User should not be superuser"
+    ).get_attribute("src"), "User should not be superuser"
 
 
 @step("I select the newly created user from the list")
@@ -242,7 +240,7 @@ def step_impl(context):
 
 @step("I select 'Delete' in the user's details page")
 def step_impl(context):
-    btn = context.helperfunc.find_by_xpath(f"//a[text()='Delete']")
+    btn = context.helperfunc.find_by_xpath("//a[text()='Delete']")
     assert btn is not None
     btn.click()
 
@@ -277,7 +275,7 @@ def step_impl(context):
     xpath = f"//a[text()='{USERS['NEWLY_CREATED_OPERATOR']['username']}']"
     try:
         context.helperfunc.driver().find_element_by_xpath(xpath)
-    except NoSuchElementException as ex:
+    except NoSuchElementException:
         pass
 
 

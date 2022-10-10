@@ -76,6 +76,6 @@ class Backend:
 
     def get_future_callbacks(self):
         response = requests.get(
-            self.url(f"/case/future_callbacks/"), headers=self.headers
+            self.url("/case/future_callbacks/"), headers=self.headers
         )
         return response.json()

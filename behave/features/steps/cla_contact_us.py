@@ -1,4 +1,4 @@
-from behave import *
+from behave import step
 from features.constants import (
     ClA_CONTACT_US_USER,
     CLA_CONTACT_US_USER_PERSON_TO_CALL,
@@ -71,7 +71,7 @@ def step_impl(context):
     # input can not be found without first finding form
     context.callback_form = context.helperfunc.find_by_xpath("//form")
     callback_element = context.callback_form.find_element_by_xpath(
-        f'//input[@value="thirdparty"]'
+        '//input[@value="thirdparty"]'
     )
     assert callback_element is not None
     callback_element.click()
@@ -83,7 +83,7 @@ def step_impl(context):
     # input can not be found without first finding form
     context.callback_form = context.helperfunc.find_by_xpath("//form")
     call_today = context.callback_form.find_element_by_xpath(
-        f'//input[@value="today"]' f'[@id="thirdparty-time-specific_day-0"]'
+        '//input[@value="today"]' '[@id="thirdparty-time-specific_day-0"]'
     )
     assert call_today is not None
     call_today.click()
@@ -119,7 +119,7 @@ def step_impl(context, option):
     context.callback_form = context.helperfunc.find_by_xpath("//form")
     select = Select(
         context.callback_form.find_element_by_xpath(
-            f'//select[@id="thirdparty-relationship"]'
+            '//select[@id="thirdparty-relationship"]'
         )
     )
     assert select is not None

@@ -1,6 +1,5 @@
-from behave import *
+from behave import step
 from features.constants import (
-    CLA_PUBLIC_URL,
     CLA_NUMBER,
     CLA_MEANS_TEST_PERSONAL_DETAILS_FORM,
     CLA_MEANS_TEST_CALL_BACK_NUMBER,
@@ -32,7 +31,7 @@ def step_impl(context):
 def step_impl(context):
     context.callback_form = context.helperfunc.find_by_xpath("//form")
     callback_element = context.callback_form.find_element_by_xpath(
-        f'//input[@value="call"]'
+        '//input[@value="call"]'
     )
     assert callback_element is not None
     callback_element.click()
@@ -76,7 +75,7 @@ def step_impl(context):
 @step('I select "Call me back"')
 def step_impl(context):
     call_me_back_element = context.callback_form.find_element_by_xpath(
-        f'//input[@value="callback"]'
+        '//input[@value="callback"]'
     )
     assert call_me_back_element is not None
     call_me_back_element.click()
@@ -98,7 +97,7 @@ def step_impl(context):
 @step('I select "Call on another day"')
 def step_impl(context):
     call_another_day = context.callback_form.find_element_by_xpath(
-        f'//input[@value="specific_day"]'
+        '//input[@value="specific_day"]'
     )
     assert call_another_day is not None
     call_another_day.click()
@@ -108,14 +107,12 @@ def step_impl(context):
 @step("I select an available day and time")
 def step_impl(context):
     choose_day = Select(
-        context.callback_form.find_element_by_xpath(
-            f'//select[@id="callback-time-day"]'
-        )
+        context.callback_form.find_element_by_xpath('//select[@id="callback-time-day"]')
     )
     assert choose_day is not None
     choose_time_in_day = Select(
         context.callback_form.find_element_by_xpath(
-            f'//select[@id="callback-time-time_in_day"]'
+            '//select[@id="callback-time-time_in_day"]'
         )
     )
     assert choose_time_in_day is not None
@@ -143,8 +140,8 @@ def step_impl(context):
             assert confirmation_text_element.text.startswith(
                 f"You can now call CLA on {CLA_NUMBER}."
             )
-            raise AssertionError(f"Incorrect confirmation message showing")
-    except NoSuchElementException as ex:
+            raise AssertionError("Incorrect confirmation message showing")
+    except NoSuchElementException:
         # the element can't be found and we are ok
         pass
 

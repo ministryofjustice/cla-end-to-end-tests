@@ -1,4 +1,4 @@
-from behave import *
+from behave import step
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -32,7 +32,7 @@ def step_impl(context):
 
 @step("I move onto {tab_name} inner-tab")
 def step_impl(context, tab_name):
-    xpath_scroll = f"//form/div[contains(@class,'Toolbar')]"
+    xpath_scroll = "//form/div[contains(@class,'Toolbar')]"
     page = context.helperfunc
     actions = ActionChains(page.driver())
     actions.move_to_element(page.find_by_xpath(xpath_scroll)).perform()
@@ -138,6 +138,6 @@ def step_impl(context, numbers):
     # float needs to be converted to a string.
     numbers_to_string = str(numbers)
     input_field = context.helperfunc.find_by_xpath(
-        f"//label/span[@class='FormRow-label ng-binding']/../input[@type='number']"
+        "//label/span[@class='FormRow-label ng-binding']/../input[@type='number']"
     )
     input_field.send_keys(numbers_to_string)

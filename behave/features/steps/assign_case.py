@@ -1,4 +1,4 @@
-from behave import *
+from behave import step, given, when, then
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import StaleElementReferenceException
 from features.constants import MATTER_TYPE_1, MATTER_TYPE_2, CLA_FRONTEND_URL
