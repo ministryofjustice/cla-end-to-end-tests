@@ -11,6 +11,11 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
+          name: Run linter and formatting checks
+          command: |
+            pip install pre-commit==2.17.0
+            pre-commit run --all-files
+      - run:
           name: Install compatible docker-compose
           command: pip install docker-compose==1.27.4
       - run:
