@@ -67,3 +67,18 @@ chromedriver # take note of the port listed. Will stay running in the foreground
 # Run tests with the "createuser" tag
 ./run_test_local_chrome_driver.sh -t "createuser"
 ```
+
+## Lint and pre-commit hooks
+
+To lint with Black and flake8, install pre-commit hooks:
+```
+virtualenv -p python3 env --prompt=\(cla_e2e\)
+. env/bin/activate
+pip3 install -r requirements.txt
+pre-commit install
+```
+
+To run them manually:
+```
+pre-commit run --all-files
+```
