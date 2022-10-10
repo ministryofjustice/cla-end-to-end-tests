@@ -15,7 +15,7 @@ from features.steps.common_steps import wait_until_page_is_loaded, assert_header
 
 
 @step("I enter a date range")
-def step_impl(context):
+def step_impl_enter_date_range(context):
     # report can only span 8 days
     # this can use the callbacks created for the other tests as all it does is check they are there
     # no concerns about order of tests running as it uses background task to create them if they are not there
@@ -30,7 +30,7 @@ def step_impl(context):
 
 
 @step("I select 'Export'")
-def step_impl(context):
+def step_impl_select_export(context):
     # no point checking for green message as it appears and stays even if this button clicked many times
     # but worth remembering how many rows in the table before we start
     xpath = "//div[@class='report-exports']/table/tbody/tr"
@@ -42,7 +42,7 @@ def step_impl(context):
 
 
 @step("the report is processed and available to download as a .csv")
-def step_impl(context):
+def step_impl_report_processed(context):
     # check that there is a new line in the table for this export
     # wait until the row created
     xpath = "//div[@class='report-exports']/table/tbody/tr"
@@ -74,7 +74,7 @@ def step_impl(context):
 
 
 @step("I download the .csv")
-def step_impl(context):
+def step_impl_download_csv(context):
     # click on the link and download the csv, checking it has more than just a header
     class WaitForReportToBeDownloaded(object):
         def __init__(self, name):
@@ -107,7 +107,7 @@ def step_impl(context):
 
 
 @step("I select a non-staff user from the list")
-def step_impl(context):
+def step_impl_select_non_staff_user(context):
     # just click on a user that we know has non-staff status
     context.execute_steps(
         f"""
@@ -117,7 +117,7 @@ def step_impl(context):
 
 
 @step("I am taken to the non-staff user's details page")
-def step_impl(context):
+def step_impl_non_staff_users_page(context):
     # user details page is at /admin/auth/user/{pk}
     page = f"/admin/auth/user/{CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO_PK}/"
     wait_until_page_is_loaded(page, context)
@@ -125,7 +125,7 @@ def step_impl(context):
 
 
 @step("I select Staff status under permissions")
-def step_impl(context):
+def step_impl_select_staff_status(context):
     # click on the staff status checkbox
     xpath = "//div[@class='checkbox-row']/input[@id='id_is_staff']"
     context.helperfunc.find_by_xpath(xpath).click()
@@ -134,12 +134,12 @@ def step_impl(context):
 
 
 @step("I select save")
-def step_impl(context):
+def step_impl_select_save(context):
     context.helperfunc.click_button(By.NAME, "_save")
 
 
 @step("the users details are saved and I am taken back to the list of users")
-def step_impl(context):
+def step_impl_user_details_saved(context):
     # check that you have moved back to the list of users page
     page = "/admin/auth/user/"
     wait_until_page_is_loaded(page, context)
@@ -153,7 +153,7 @@ def step_impl(context):
 
 
 @step('I choose to "{action}"')
-def step_impl(context, action):
+def step_impl_choose_action(context, action):
     if action == "Add operator":
         xpath = ".//li/a[@class='addlink']"
     elif action == "save":
@@ -165,7 +165,7 @@ def step_impl(context, action):
 
 
 @step("I create a new operator user")
-def step_impl(context):
+def step_impl_create_operator_user(context):
     # Find the question by details
     # Find corresponding input and insert value from provide
     new_user = FOX_ADMIN_FORM_FIELDS
@@ -177,14 +177,14 @@ def step_impl(context):
 
 
 @step("I select 'Is active'")
-def step_impl(context):
+def step_impl_select_is_active(context):
     radio_input = context.helperfunc.find_by_css_selector("input[name='is_active']")
     radio_input.click()
     assert radio_input.get_attribute("checked") == "true"
 
 
 @step("the new operator user is created")
-def step_impl(context):
+def step_impl_new_operator_user_created(context):
     # you are returned to the "select operator to change page"
     # the user just created exists
     # make sure that there are no errors on this page
@@ -200,7 +200,7 @@ def step_impl(context):
 
 
 @step("I am taken to the list of operators page")
-def step_impl(context):
+def step_impl_list_operators_page(context):
     context.execute_steps(
         '''
     Then I am taken to the "Select operator to change" page located on "/admin/call_centre/operator/"'''
@@ -229,7 +229,7 @@ def step_impl(context):
 
 
 @step("I select the newly created user from the list")
-def step_impl(context):
+def step_impl_select_new_user(context):
     # Click on newly created operator
     context.execute_steps(
         f"""
@@ -239,14 +239,14 @@ def step_impl(context):
 
 
 @step("I select 'Delete' in the user's details page")
-def step_impl(context):
+def step_impl_select_delete_user(context):
     btn = context.helperfunc.find_by_xpath("//a[text()='Delete']")
     assert btn is not None
     btn.click()
 
 
 @step("I am taken to the user's details page")
-def step_impl(context):
+def step_impl_user_details_page(context):
     user_input = context.helperfunc.driver().find_element_by_xpath(
         "//*[@id='id_username']"
     )
@@ -257,7 +257,7 @@ def step_impl(context):
 
 
 @step("I am taken to the 'Are you sure page'")
-def step_impl(context):
+def step_impl_are_you_sure_page(context):
     # Cannot rely on checking page URL because PK could be different on each test run.
     header = context.helperfunc.driver().find_element_by_xpath(
         "//*[@id='content']/h1[text()='Are you sure?']"
@@ -271,7 +271,7 @@ def step_impl(context):
 
 
 @step("I confirm the user has been deleted from the list of users")
-def step_impl(context):
+def step_impl_confirm_user_deleted(context):
     xpath = f"//a[text()='{USERS['NEWLY_CREATED_OPERATOR']['username']}']"
     try:
         context.helperfunc.driver().find_element_by_xpath(xpath)
@@ -280,6 +280,6 @@ def step_impl(context):
 
 
 @step("I select the 'Yes, I'm sure'")
-def step_impl(context):
+def step_imp_select_yes(context):
     yes_btn = "//input[@type='submit']"
     context.helperfunc.click_button(By.XPATH, yes_btn)

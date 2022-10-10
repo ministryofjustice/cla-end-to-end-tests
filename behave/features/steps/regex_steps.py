@@ -7,7 +7,7 @@ use_step_matcher("re")
 
 
 @step("I am (?P<optional>not )?on universal credit benefits")
-def step_impl(context, optional):
+def step_impluniversal_credit(context, optional):
     state = "true"
     if optional:
         state = "false"
@@ -20,7 +20,7 @@ def step_impl(context, optional):
 
 
 @step("I am (?P<optional>not )?self employed")
-def step_impl(context, optional):
+def step_impl_self_employed(context, optional):
     state = "1"
     if optional:
         state = "0"
@@ -32,7 +32,7 @@ def step_impl(context, optional):
 
 
 @step("I do (?P<optional>not )?have a partner")
-def step_impl(context, optional):
+def step_impl_has_partner(context, optional):
     state = "true"
     if optional:
         state = "false"
@@ -44,7 +44,7 @@ def step_impl(context, optional):
 
 
 @step("I am (?P<optional>not )?aged 60 or over")
-def step_impl(context, optional):
+def step_impl_over_sixty(context, optional):
     state = "true"
     if optional:
         state = "false"
@@ -59,7 +59,7 @@ def step_impl(context, optional):
     "I am given a message 'The means test has been saved. The current result is (?P<optional>not )?eligible "
     "for Legal Aid'"
 )
-def step_impl(context, optional):
+def step_impl_means_test_result(context, optional):
     element = context.helperfunc.find_by_css_selector(
         ".Notice.Notice--closeable.success"
     )
@@ -76,6 +76,6 @@ def step_impl(context, optional):
 
 
 @step("I select the '(?P<optional>.*?)' button in the pop-up")
-def step_impl(context, optional):
+def step_impl_popup_button(context, optional):
     modal = context.helperfunc.find_by_css_selector(".modal-dialog")
     modal.find_element_by_xpath("//button[@type='submit']").click()

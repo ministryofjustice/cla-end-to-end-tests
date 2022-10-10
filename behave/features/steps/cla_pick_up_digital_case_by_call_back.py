@@ -25,7 +25,7 @@ def get_next_available_callback_slots():
 
 @given("that I have created cases with callbacks")
 # This is the background step that takes test cases and assigns a callback slot some time over the next few days
-def step_impl(context):
+def step_impl_created_cases_and_callbacks(context):
     slots_chosen = get_next_available_callback_slots()
     for index, case in enumerate(CLA_CALLBACK_CASES):
         # don't create a callback for the case if there is already one for this case
@@ -67,14 +67,14 @@ def step_impl(context):
 
 
 @given("that I am on cases callback page")
-def step_impl(context):
+def step_impl_cases_callback_page(context):
     start_page_url = f"{CLA_FRONTEND_URL}/call_centre/callbacks/"
     context.helperfunc.open(start_page_url)
     assert_header_on_page("Cases", context)
 
 
 @given("multiple cases with a callback exists")
-def step_impl(context):
+def step_impl_multiple_cases(context):
     #  there will be at least one <a> element that shows callbacks are booked
     callbacks_exist = context.helperfunc.find_many_by_class("CallbackMatrix-slot")
     assert (
@@ -83,14 +83,14 @@ def step_impl(context):
 
 
 @when("I select a callback slot")
-def step_impl(context):
+def step_impl_select_callback_slot(context):
     # look for the callbacks and click on the first one
     callbacks = context.helperfunc.find_many_by_class("CallbackMatrix-slot")
     callbacks[0].click()
 
 
 @then("I can see the cases where a callback is booked for that slot")
-def step_impl(context):
+def step_impl_callback_booked(context):
     # look for the cases displayed alongside the calendar
     list_cases = context.helperfunc.find_by_class("ListTable")
     case_rows = list_cases.find_elements_by_xpath("//tbody/tr/td")

@@ -8,7 +8,7 @@ from features.steps.common_steps import (
 
 
 @step("I have passed the means test")
-def step_impl(context):
+def step_impl_passed_means_test(context):
     # The next steps are the steps that pass the means test
     context.execute_steps(
         """
@@ -46,7 +46,7 @@ def step_impl(context):
 
 
 @step("I have selected the start now button on the start page")
-def step_impl(context):
+def step_impl_select_start_button(context):
     start_page_url = f"{CLA_PUBLIC_URL}"
     context.helperfunc.open(start_page_url)
     assert_header_on_page("Check if you can get legal aid", context)
@@ -57,7 +57,7 @@ def step_impl(context):
 
 
 @step("I select the category <category>")
-def step_impl(context):
+def step_impl_select_category(context):
     next_page_path = None
     for row in context.table:
         if next_page_path is not None:
@@ -71,14 +71,14 @@ def step_impl(context):
 
 
 @step("I click on the 'Check if you qualify financially' button")
-def step_impl(context):
+def step_impl_select_financial_check(context):
     check_if_you_qualify_link = context.helperfunc.find_by_xpath('//a[@href="/about"]')
     assert check_if_you_qualify_link is not None
     check_if_you_qualify_link.click()
 
 
 @step("I <answer> the <question>")
-def step_impl(context):
+def step_impl_answer_question(context):
     # answer tells me if I say yes or no
     # question helps me find the radio buttons
     for row in context.table:
@@ -112,7 +112,7 @@ def step_impl(context):
 
 
 @step("I select 'Universal Credit' from the list of benefits")
-def step_impl(context):
+def step_impl_select_universal_credit(context):
     # check value of universal_credit checkbox
     check_box_universal_credit = context.helperfunc.driver().find_element_by_id(
         "benefits-4"
@@ -125,7 +125,7 @@ def step_impl(context):
 
 
 @step("I click Confirm")
-def step_impl(context):
+def step_impl_click_confirm(context):
     context.execute_steps(
         """
         Given I click continue

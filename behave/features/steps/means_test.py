@@ -21,7 +21,7 @@ def set_income_input_field_by_label_for(context, label, value):
 
 
 @step("I am on the Finances tab with the ‘Details’ sub-tab preselected")
-def step_impl(context):
+def step_impl_finance_details_tabs(context):
     context.execute_steps(
         """
         Given I have created a valid discrimination scope
@@ -31,7 +31,7 @@ def step_impl(context):
 
 
 @step("I move onto {tab_name} inner-tab")
-def step_impl(context, tab_name):
+def step_impl_move_to_tab(context, tab_name):
     xpath_scroll = "//form/div[contains(@class,'Toolbar')]"
     page = context.helperfunc
     actions = ActionChains(page.driver())
@@ -50,13 +50,13 @@ def step_impl(context, tab_name):
 
 
 @step("I select Save assessment")
-def step_impl(context):
+def step_impl_save_assessment(context):
     button = context.helperfunc.find_by_name("save-means-test")
     button.click()
 
 
 @step("the 'Diversity' and 'Assign' tabs become available")
-def step_impl(context):
+def step_impl_diversity_and_assign_available(context):
     page = context.helperfunc
     diversity_tab = page.find_by_partial_link_text("Diversity")
     assert "is-disabled" not in diversity_tab.get_attribute("class")
@@ -65,7 +65,7 @@ def step_impl(context):
 
 
 @step("I <answer> to Income <question>")
-def step_impl_means_test(context):
+def step_impl_answer_income_question(context):
     # Find the question by label
     # Find input and insert value from answer
     for row in context.table:
@@ -75,7 +75,7 @@ def step_impl_means_test(context):
 
 
 @step("I <answer> to Details <question>")
-def step_impl_means_test(context):
+def step_impl_answer_details_question(context):
     # Find the question by label
     # Find input and insert value from answer
     for row in context.table:
@@ -93,7 +93,7 @@ def step_impl_means_test(context):
 
 
 @step("I <answer> to Finances <question>")
-def step_impl_means_test(context):
+def step_impl_answer_finance_question(context):
     # Find the question by label
     # Find input and insert value from answer
     for row in context.table:
@@ -109,7 +109,7 @@ def step_impl_means_test(context):
 
 
 @step("I <answer> to Expenses <question>")
-def step_impl_means_test(context):
+def step_impl_answer_expense_question(context):
     # Find the question by label
     # Find input and insert value from answer
     for row in context.table:
@@ -121,19 +121,19 @@ def step_impl_means_test(context):
 
 
 @step("I have {number:d} dependants aged 16 and over")
-def step_impl(context, number):
+def step_impl_number_of_dependants_over(context, number):
     set_income_input_field_by_label_for(context, "id_dependants-dependants_old", number)
 
 
 @step("I have {number:d} dependants aged 15 and under")
-def step_impl(context, number):
+def step_impl_number_of_dependants_under(context, number):
     set_income_input_field_by_label_for(
         context, "id_dependants-dependants_young", number
     )
 
 
 @step("I am currently paying {numbers:f} towards legal aid for criminal defence")
-def step_impl(context, numbers):
+def step_impl_paying_defence(context, numbers):
     # In order to use float in send keys method.
     # float needs to be converted to a string.
     numbers_to_string = str(numbers)

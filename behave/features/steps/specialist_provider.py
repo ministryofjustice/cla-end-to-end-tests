@@ -46,7 +46,7 @@ def step_check_cases(context):
 
 
 @step("I can view the client details")
-def step_impl(context):
+def step_impl_view_client_details(context):
     case_id = context.selected_case_ref
     client_section = context.helperfunc.find_by_id("personal_details")
     compare_client_details_with_backend(context, case_id, client_section)
@@ -60,7 +60,7 @@ def step_select_special_provider_case(context):
 
 
 @step("I select a case to reject from the dashboard")
-def step_impl(context):
+def step_impl_select_case_to_reject(context):
     case_reference = CLA_SPECIALIST_CASE_TO_REJECT
     # Case doesn't need to accepted, can reject any case.
     check_only_unaccepted_cases = False
@@ -68,7 +68,7 @@ def step_impl(context):
 
 
 @step("I select a case to split from the dashboard")
-def step_impl(context):
+def step_impl_select_case_to_split(context):
     case_reference = CLA_SPECIALIST_CASE_TO_SPLIT
     # Case doesn't need to accepted, can reject any case.
     check_only_unaccepted_cases = False
@@ -100,7 +100,7 @@ def select_a_case(context, case_reference, check_only_unaccepted_cases):
 
 
 @given("I can view the case details and notes entered by the Operator")
-def step_impl(context):
+def step_impl_view_operator_case_details(context):
     # check there is a case history on the rhs
     case_history = context.helperfunc.find_by_class("CaseHistory")
     assert case_history is not None
@@ -113,7 +113,7 @@ def step_impl(context):
 
 
 @when("I select Scope")
-def step_impl(context):
+def step_impl_select_scope(context):
     scope_link = context.helperfunc.find_by_xpath(
         '//a[@ui-sref="case_detail.edit.diagnosis"]'
     )
@@ -123,7 +123,7 @@ def step_impl(context):
 
 
 @then("I can view the scope assessment entered by the Operator")
-def step_impl(context):
+def step_impl_view_scope_assessment(context):
     # <section class="SummaryBlock SummaryBlock--compact ng-scope" ng-if="diagnosis.nodes">
     # check that the scope assessment exists
     scope_description = context.helperfunc.find_by_xpath(
@@ -146,14 +146,14 @@ def step_impl(context):
 
 
 @given("I select '{value}' in the case details page")
-def step_impl(context, value):
+def step_impl_select_value(context, value):
     # Using python dictionary to find name value for accept, reject and split
     xpath = f"//button[@name='{CLA_SPECIALIST_CASE_BANNER_BUTTONS[value]}']"
     context.helperfunc.click_button(By.XPATH, xpath)
 
 
 @given("I can see a 'Case accepted successfully' message")
-def step_impl(context):
+def step_impl_case_accepted(context):
     # wait for the flash message to appear.
     flash_message = context.helperfunc.find_by_xpath(
         '//*[text()="Case accepted successfully"]'
@@ -162,7 +162,7 @@ def step_impl(context):
 
 
 @when("I return to the specialist provider cases dashboard page")
-def step_impl(context):
+def step_impl_return_to_dashboard(context):
     # click on the 'back to cases' link
     back_to_cases = context.helperfunc.find_by_xpath(
         '//a[@class="SubNav-link SubNav-link--back"]'
@@ -172,7 +172,7 @@ def step_impl(context):
 
 
 @when("I select the Accepted tab")
-def step_impl(context):
+def step_impl_select_accepted(context):
     # click on the 'Accepted' tab
     accepted_tab = context.helperfunc.find_by_xpath(
         '//a[@class="Label Icon Icon--folderAccepted"]'
@@ -182,7 +182,7 @@ def step_impl(context):
 
 
 @then("I can see my accepted case reference number")
-def step_impl(context):
+def step_impl_view_reference_number(context):
     # click on the 'back to cases' link
     my_case = context.helperfunc.find_by_xpath(
         f"//*[text()='{context.selected_case_ref}']"
@@ -191,14 +191,14 @@ def step_impl(context):
 
 
 @given("that I am viewing a case that I have accepted as a specialist provider")
-def step_impl(context):
+def step_impl_view_accepted_case(context):
     case_reference = CLA_SPECIALIST_CASE_TO_ACCEPT
     login_url = f"{CLA_FRONTEND_URL}/provider/{case_reference}/diagnosis/"
     context.helperfunc.open(login_url)
 
 
 @given("I select the Legal help form")
-def step_impl(context):
+def step_impl_select_legl_help(context):
     wrapper = context.helperfunc.find_by_css_selector(".CaseBar-actions")
     legal_help_form_link = wrapper.find_element_by_xpath(
         "//a[text()='Legal help form']"
@@ -267,7 +267,7 @@ def assert_four_column_table(table, root_element):
 
 
 @given("The legal help form Your details section has the values")
-def step_impl(context):
+def step_impl_your_details_values(context):
     driver = context.helperfunc.driver()
     heading_element = driver.find_element_by_xpath("//h2[text()='Your Details']")
     wrapper_element = heading_element.find_element_by_xpath("./..")
@@ -275,7 +275,7 @@ def step_impl(context):
 
 
 @given('The legal help form "{section_heading}" section has the values')
-def step_imple(context, section_heading):
+def step_impl_legal_help_values(context, section_heading):
     driver = context.helperfunc.driver()
     heading_element = driver.find_element_by_xpath(f"//h2[text()='{section_heading}']")
     wrapper_element = heading_element.find_element_by_xpath("./..")
@@ -285,7 +285,7 @@ def step_imple(context, section_heading):
 @given(
     "The legal help form Your Income section (less Monthly allowances) has the values"
 )
-def step_impl(context):
+def step_impl_income_values(context):
     driver = context.helperfunc.driver()
     heading_element = driver.find_element_by_xpath("//h2[text()='Your Income']")
     wrapper_element = heading_element.find_element_by_xpath("./..")
@@ -297,7 +297,7 @@ def step_impl(context):
 
 
 @when("I select Finances")
-def step_impl(context):
+def step_impl_select_finances(context):
     tabs = context.helperfunc.find_by_css_selector("ul.Tabs")
     finance_tab_link = tabs.find_element_by_link_text("Finances")
     assert finance_tab_link is not None
@@ -307,7 +307,7 @@ def step_impl(context):
 
 
 @then("I can view the financial assessment entered by the Operator")
-def step_impl(context):
+def step_impl_view_financial_assessment(context):
     tabs = context.helperfunc.find_by_css_selector("ul.Tabs")
     finance_tab_link = tabs.find_element_by_link_text("Finances")
     classes = finance_tab_link.get_attribute("class")
@@ -318,7 +318,7 @@ def step_impl(context):
 
 
 @step("the reject modal appears on screen")
-def step_impl(context):
+def step_impl_reject_modal(context):
     def wait_for_reject_dialog(*args):
         return context.helperfunc.find_by_css_selector(".modal-dialog") is not None
 
@@ -331,7 +331,7 @@ def step_impl(context):
 
 
 @step("the split case modal appears on screen")
-def step_impl(context):
+def step_impl_split_case_modal(context):
     def wait_for_reject_dialog(*args):
         return context.helperfunc.find_by_css_selector(".modal-dialog") is not None
 
@@ -344,7 +344,7 @@ def step_impl(context):
 
 
 @step("I select a reject reason of '{reject_reason}'")
-def step_impl(context, reject_reason):
+def step_impl_select_reject_reason(context, reject_reason):
     context.modal = context.helperfunc.find_by_css_selector(".modal-dialog")
     modal_input = context.modal.find_element_by_xpath(
         f"//input[@value='{reject_reason}']"
@@ -354,7 +354,7 @@ def step_impl(context, reject_reason):
 
 
 @step("I enter a reason into the Notes textarea")
-def step_impl(context):
+def step_impl_enter_reason(context):
     context.modal = context.helperfunc.find_by_css_selector(".modal-dialog")
     comment = LOREM_IPSUM_STRING
     text_area = context.modal.find_element_by_xpath(
@@ -365,7 +365,7 @@ def step_impl(context):
 
 
 @step("I confirm that my case has an Outcome code of '{reject_reason}'")
-def step_impl(context, reject_reason):
+def step_impl_confirm_outcome_code(context, reject_reason):
     outcome_code = context.helperfunc.find_by_xpath(
         f"//abbr[@title='" f"{CLA_SPECIALIST_REJECTION_OUTCOME_CODES[reject_reason]}']"
     )
@@ -377,7 +377,7 @@ def step_impl(context, reject_reason):
 
 
 @step("the 'New case' drop down values are")
-def step_impl(context):
+def step_impl_new_case_dropdown(context):
     # Find the modal container
     context.modal = context.helperfunc.find_by_css_selector(".modal-dialog")
     # Inside modal find the form we want to focus on.
@@ -416,7 +416,7 @@ def step_impl(context):
 
 
 @step("I enter a comment into the new case notes textarea")
-def step_impl(context):
+def step_impl_enter_comment(context):
     context.modal = context.helperfunc.find_by_css_selector(".modal-dialog")
     comment = CASE_SPLIT_TEXT
     text_area = context.modal.find_element_by_xpath(
@@ -427,7 +427,7 @@ def step_impl(context):
 
 
 @step("I select '{value}' for the 'Assign' radio options")
-def step_impl(context, value):
+def step_impl_select_assign(context, value):
     context.modal = context.helperfunc.find_by_css_selector(".modal-dialog")
     modal_input = context.modal.find_element_by_xpath(
         f"//input[@value=" f"'{CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS[value]}']"
@@ -437,7 +437,7 @@ def step_impl(context, value):
 
 
 @step("the new split case is available to the operator")
-def step_impl(context):
+def step_impl_split_case(context):
     # Goto to the dashboard ordered by latest
     context.helperfunc.open(f"{CLA_FRONTEND_URL}/call_centre/?ordering=-modified")
     table = context.helperfunc.find_by_css_selector(".ListTable")
@@ -452,7 +452,7 @@ def step_impl(context):
 
 
 @step("I am on the CSV upload page")
-def step_impl(context):
+def step_impl_csv_upload_page(context):
     csv_page = f"{CLA_FRONTEND_URL}{CLA_FRONTEND_CSV_URL}"
     context.helperfunc.open(csv_page)
     page = CLA_FRONTEND_CSV_URL
@@ -462,7 +462,7 @@ def step_impl(context):
 
 
 @step("I select 'Choose file' and upload an {csv_option} csv file")
-def step_impl(context, csv_option):
+def step_impl_choose_upload_file(context, csv_option):
     input_csv = context.helperfunc.find_by_xpath("//input[@name='csvfile']")
     if csv_option == "valid":
         input_csv.send_keys(os.getcwd() + CLA_SPECIALIST_CSV_UPLOAD_PATH)
@@ -475,7 +475,7 @@ def step_impl(context, csv_option):
 
 
 @step("I select the month and year for the uploaded csv file")
-def step_impl(context):
+def step_impl_select_date_for_upload(context):
     # Alter date to be the first day of month
     # Minis one month because current month will not be visible as option
     new_date = context.helperfunc.date_start_this_month.strftime("%Y-%m-%d")
@@ -491,7 +491,7 @@ def step_impl(context):
 
 
 @step("I select the 'upload' button")
-def step_impl(context):
+def step_impl_select_upload(context):
     button = context.helperfunc.find_by_xpath(
         "//button[@type='submit'][text()='Upload']"
     )
@@ -500,7 +500,7 @@ def step_impl(context):
 
 
 @step("I check that there are no errors in the csv upload page")
-def step_impl(context):
+def step_impl_no_csv_errors(context):
     context.csv_page = context.helperfunc.find_by_xpath("//*[@id='wrapper']")
     # This error block will appear in an HTML li attribute. This appears when you've uploaded
     # a CSV file with the same date as a previous CSV file. Located at the top of the page
@@ -518,7 +518,7 @@ def step_impl(context):
 
 
 @step("I can see the file listed in the uploaded files table")
-def step_impl(context):
+def step_impl_uploaded_file_list(context):
     # Create a string that is a short version of the month and year only
     new_date = context.helperfunc.date_start_this_month.strftime("%b %Y")
     # Find the same date as the uploaded csv file
@@ -529,7 +529,7 @@ def step_impl(context):
 
 
 @step("I am given details of the errors in each line of the csv file")
-def step_impl(context):
+def step_impl_csv_error_details(context):
     context.csv_page = context.helperfunc.find_by_xpath("//*[@id='wrapper']")
     # Check to make sure there are list items in the HTML unordered list attribute
     xpath = "//ul[contains(@class, 'ErrorSummary-list')]/li"

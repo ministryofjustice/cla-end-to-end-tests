@@ -4,7 +4,7 @@ from behave import when, then
 
 
 @when("I search for a client name with an existing case")
-def step_impl(context):
+def step_impl_search_client(context):
     # find the search box
     search_box = context.helperfunc.find_by_name("q")
     user_name = CLA_EXISTING_USER
@@ -17,7 +17,7 @@ def step_impl(context):
 
 
 @then("I am taken to search results that shows cases belonging to that client")
-def step_impl(context):
+def step_impl_search_results(context):
     context.execute_steps(
         """
         Given I am on the 'call centre dashboard' page
@@ -33,7 +33,7 @@ def step_impl(context):
 
 
 @then("I select the name hyperlink for an existing case")
-def step_impl(context):
+def step_impl_select_name_hyperlink(context):
     # use the name hyperlink in the first row, we know there are cases because of previous steps
     # often fails with stale element exception
     x_path = '//div/table[@class="ListTable"]/tbody/tr/td/span/a'
@@ -42,7 +42,7 @@ def step_impl(context):
 
 
 @then("I select the button to create a case for the client originally searched for")
-def step_impl(context):
+def step_impl_create_case_button(context):
     # this button has the same id as when it just says 'create a case' so can use the original step
     context.execute_steps(
         """

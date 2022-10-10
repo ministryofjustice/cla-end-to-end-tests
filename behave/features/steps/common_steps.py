@@ -51,13 +51,13 @@ def click_on_hyperlink_and_get_href(context, hyperlink_text):
 
 
 @step('I select the link "{hyperlink_text}"')
-def step_impl(context, hyperlink_text):
+def step_impl_select_link(context, hyperlink_text):
     # this is a generic step to click on a hyperlink
     context.helperfunc.click_button(By.LINK_TEXT, hyperlink_text)
 
 
 @step("I select the 'Sign out' link")
-def step_impl(context):
+def step_impl_sign_out(context):
     # We need to be on a page that we can control, otherwise the current page could have a modal dialog visible which
     # could impact how we can interact with menu elements
     context.helperfunc.open(f"{CLA_FRONTEND_URL}")
@@ -124,7 +124,7 @@ def step_click_submit(context):
 
 
 @step('that I am logged in as "{user}"')
-def step_impl(context, user):
+def step_impl_logged_in_as(context, user):
     login_url = USERS[user]["login_url"]
     context.helperfunc.open(login_url)
     if USERS[user]["application"] == "FRONTEND":
@@ -182,7 +182,7 @@ def step_check_page(context, page, header):
 
 
 @step('I am taken to the "{header}" page for the case located at "{sub_page}"')
-def step_impl(context, sub_page, header):
+def step_impl_taken_to_page(context, sub_page, header):
     # can't use the above step because there is a case reference in the url
     # find the first part of the url
     # sub_page will already have / at start and possibly at end as required
@@ -270,7 +270,7 @@ def search_and_select_case(context, case_reference):
 
 
 @step("the message '{message}' appears on the case details page")
-def step_impl(context, message):
+def step_impl_message_shown(context, message):
     element = context.helperfunc.find_by_css_selector(
         ".Notice.Notice--closeable.success"
     )

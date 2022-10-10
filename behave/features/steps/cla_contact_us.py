@@ -9,13 +9,13 @@ from selenium.common.exceptions import StaleElementReferenceException
 
 
 @step("I select 'Contact us' from the banner")
-def step_impl(context):
+def step_impl_select_contact_us(context):
     link = context.helperfunc.find_by_xpath("//span/a[text()='Contact us']")
     link.click()
 
 
 @step("I select <question> from the contact civil legal advice page")
-def step_impl(context):
+def step_impl_select_question_on_cla_page(context):
     # Find the question by label
     # Find input and insert value from answer
     for row in context.table:
@@ -27,7 +27,7 @@ def step_impl(context):
 
 
 @step("I click 'continue to contact CLA'")
-def step_impl(context):
+def step_impl_click_contact_cla(context):
     context.execute_steps(
         """
         Given I click continue
@@ -36,7 +36,7 @@ def step_impl(context):
 
 
 @step("I select 'Submit details'")
-def step_impl(context):
+def step_impl_submit_details(context):
     context.execute_steps(
         """
         Given I click continue
@@ -45,7 +45,7 @@ def step_impl(context):
 
 
 @step("I enter a name in the 'Your full name' field")
-def step_impl(context):
+def step_impl_enter_a_full_name(context):
     value = ClA_CONTACT_US_USER
     full_name_input = context.helperfunc.find_by_xpath("//input[@id='full_name']")
     full_name_input.send_keys(value)
@@ -53,7 +53,7 @@ def step_impl(context):
 
 
 @step("I am on the Contact Civil Legal Advice page")
-def step_impl(context):
+def step_impl_contact_cla_page(context):
     context.execute_steps(
         """
         Given I select 'Contact us' from the banner
@@ -67,7 +67,7 @@ def step_impl(context):
 
 
 @step("I select the contact option 'Call someone else instead of me'")
-def step_impl(context):
+def step_impl_select_call_someone_else(context):
     # input can not be found without first finding form
     context.callback_form = context.helperfunc.find_by_xpath("//form")
     callback_element = context.callback_form.find_element_by_xpath(
@@ -79,7 +79,7 @@ def step_impl(context):
 
 
 @step("I select 'Call today'")
-def step_impl(context):
+def step_impl_select_call_today(context):
     # input can not be found without first finding form
     context.callback_form = context.helperfunc.find_by_xpath("//form")
     call_today = context.callback_form.find_element_by_xpath(
@@ -92,7 +92,7 @@ def step_impl(context):
 
 # call someone else instead of me name input field
 @step("I enter the full name of the person to call")
-def step_impl(context):
+def step_impl_enter_name(context):
     value = CLA_CONTACT_US_USER_PERSON_TO_CALL
     callback_form = context.helperfunc.find_by_xpath("//form")
     full_name_input = callback_form.find_element_by_xpath(
@@ -104,7 +104,7 @@ def step_impl(context):
 
 # call someone else instead of me phone number input field
 @step("I enter the phone number of the person to call back")
-def step_impl(context):
+def step_impl_enter_phone_number(context):
     value = CLA_NUMBER
     callback_form = context.helperfunc.find_by_xpath("//form")
     full_name_input = callback_form.find_element_by_xpath(
@@ -115,7 +115,7 @@ def step_impl(context):
 
 
 @step("I select \"{option}\" from the 'Relationship to you' drop down options")
-def step_impl(context, option):
+def step_impl_select_relationship_option(context, option):
     context.callback_form = context.helperfunc.find_by_xpath("//form")
     select = Select(
         context.callback_form.find_element_by_xpath(

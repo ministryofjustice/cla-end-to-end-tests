@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 
 
 @step("that I am on the Alternative Help page")
-def step_impl(context):
+def step_impl_alt_help(context):
     # The case used has been created for this test case.
     # we select and then go through to alternative help
     search_and_select_case(context, ASSIGN_F2F_CASE)
@@ -18,7 +18,7 @@ def step_impl(context):
 
 
 @step("I can select the Assign F2F button")
-def step_impl(context):
+def step_impl_assign_f2f(context):
     # This clicks the face to face link, which is hidden as a tab.
     page = context.helperfunc
     tabs = page.find_by_css_selector("ul.Tabs")

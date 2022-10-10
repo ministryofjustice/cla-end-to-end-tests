@@ -7,7 +7,7 @@ import time
 
 
 @given("a client with an existing case is added to it")
-def step_impl(context):
+def step_impl_client_with_existing_case(context):
     select_value_from_list(
         context,
         label="Search for existing user",
@@ -22,12 +22,12 @@ def step_impl(context):
 
 
 @step("I select ‘Create Scope Diagnosis'")
-def step_impl(context):
+def step_impl_select_create_scope(context):
     context.helperfunc.find_by_name("diagnosis-new").click()
 
 
 @step("I select the diagnosis <category> and click next <number> times")
-def step_impl(context):
+def step_impl_select_diagnosis_category(context):
     def wait_for_diagnosis_form(*args):
         form = context.helperfunc.find_by_name("diagnosis-form")
         return form is not None and form.is_displayed()
@@ -64,18 +64,18 @@ def step_impl(context):
 
 
 @step('I get an "{scope}" decision')
-def step_impl(context, scope):
+def step_impl_scope_decision(context, scope):
     text = context.helperfunc.find_by_name("diagnosis-form").text
     assert scope in text
 
 
 @step("select 'Create financial assessment'")
-def step_impl(context):
+def step_impl_create_financial_assessment(context):
     context.helperfunc.find_by_partial_link_text("Create financial assessment").click()
 
 
 @step("I am taken to the Finances tab with the ‘Details’ sub-tab preselected")
-def step_impl(context):
+def step_impl_finances_tab(context):
     selected_tab = context.helperfunc.find_by_css_selector(
         "li[class='Tabs-tab is-active']"
     )
@@ -83,14 +83,14 @@ def step_impl(context):
 
 
 @then('I select the "{category}" knowledge base category')
-def step_impl(context, category):
+def step_impl_select_category(context, category):
     select_value_from_list(context, label="Law category", value=category)
     # Need to wait for a bit for the ajax event to complete before continuing to the next step
     time.sleep(MINIMUM_SLEEP_SECONDS)
 
 
 @then('I select the alternative help organisations "{organisation}"')
-def step_impl(context, organisation):
+def step_impl_select_alt_help_org(context, organisation):
     name, _ = organisation.split(" - ")
     search_input = context.helperfunc.find_by_xpath(
         "//input[@placeholder='Search providers and other help organisations']"
@@ -116,7 +116,7 @@ def step_impl(context, organisation):
 
 
 @step('I enter "{comment}" in the Assignment comments box')
-def step_impl(context, comment):
+def step_impl_enter_assignment_comment(context, comment):
     text_area = context.helperfunc.find_by_xpath(
         '//textarea[@name="assign-notes"][@placeholder="Assignment comments"]'
     )
@@ -125,7 +125,7 @@ def step_impl(context, comment):
 
 
 @then("I click the Assign Alternative Help button")
-def step_impl(context):
+def step_impl_click_assign_alt_help(context):
     submit_btn = context.helperfunc.find_by_xpath(
         '//button[@name="assign-alternative-help"]'
     )
@@ -133,7 +133,7 @@ def step_impl(context):
 
 
 @step("I am shown the survey reminder")
-def step_impl(context):
+def step_impl_survey_reminder_shown(context):
     def wait_for_survey_reminder_dialog(*args):
         return context.helperfunc.find_by_css_selector(".modal-dialog") is not None
 
@@ -148,7 +148,7 @@ def step_impl(context):
 
 
 @then("select continue on the survey reminder")
-def step_impl(context):
+def step_impl_select_continue_on_survey(context):
     continue_btn = context.helperfunc.find_by_css_selector(
         ".modal-dialog .modal-content .FormActions button"
     )

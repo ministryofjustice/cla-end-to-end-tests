@@ -5,7 +5,7 @@ from selenium.common.exceptions import StaleElementReferenceException
 
 
 @given("I am viewing a callback slot")
-def step_impl(context):
+def step_impl_view_callback(context):
     # this is actually a composite of several of the steps in another scenario
     context.execute_steps(
         """
@@ -16,7 +16,7 @@ def step_impl(context):
 
 
 @given("callback slot contains a case created on CLA Public")
-def step_impl(context):
+def step_impl_contains_case(context):
     xpath_string = (
         '//table[@class="ListTable"]/tbody/tr[./td/abbr[@title="WEB CASE"]]/td/a'
     )
@@ -30,7 +30,7 @@ def step_impl(context):
 
 
 @when("I select a case created on CLA Public from the callback slot")
-def step_impl(context):
+def step_impl_select_case(context):
     # find and click on the case in the callback list
     assert context.callback_case_element_link is not None, "No callback case to link to"
     context.callback_case_element_link.click()
@@ -51,7 +51,7 @@ def step_on_case_details_page(context):
 
 
 @when('I select "Start Call"')
-def step_impl(context):
+def step_impl_start_call(context):
     callback_btn = context.helperfunc.find_by_css_selector("callback-status button")
     assert (
         callback_btn is not None
@@ -75,7 +75,7 @@ def step_impl(context):
 
 
 @then("the call has started")
-def step_impl(context):
+def step_impl_call_has_started(context):
     assert context.selected_case_ref is not None, "Not viewing a case"
     case_logs = context.helperfunc.get_case_callback_details_from_backend(
         context.selected_case_ref
@@ -98,7 +98,7 @@ def step_impl(context):
 
 
 @then("I remove the callback")
-def step_impl(context):
+def step_impl_remove_callback(context):
     callback_wrapper_element = context.helperfunc.find_by_css_selector(
         "callback-status"
     )
@@ -130,7 +130,7 @@ def step_impl(context):
 
 
 @then("this case is removed from callback list (calendar view)")
-def step_impl(context):
+def step_impl_callback_removed(context):
     assert context.selected_case_ref is not None, "Case reference missing"
     callbacks = context.helperfunc.get_future_callbacks()
     for callback in callbacks:

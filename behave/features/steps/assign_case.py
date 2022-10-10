@@ -5,13 +5,13 @@ from features.constants import MATTER_TYPE_1, MATTER_TYPE_2, CLA_FRONTEND_URL
 
 
 @given("case notes are empty")
-def step_impl(context):
+def step_impl_empty_case_notes(context):
     notes = context.helperfunc.find_by_name("case.notes")
     assert len(notes.text) == 0
 
 
 @step("I have created a user")
-def step_impl(context):
+def step_impl_created_user(context):
     context.execute_steps(
         """
         When I select 'Create new user'
@@ -22,7 +22,7 @@ def step_impl(context):
 
 
 @step("I have created a valid discrimination scope")
-def step_impl(context):
+def step_impl_discrimination_scope(context):
     context.execute_steps(
         """
         When I select ‘Create Scope Diagnosis'
@@ -39,7 +39,7 @@ def step_impl(context):
 
 
 @given("I am on the Diversity tab")
-def step_impl(context):
+def step_impl_diversity_tab(context):
     def wait_until_finance_is_complete(*args):
         # this waits until all the finance questions have been answered
         classes = (
@@ -86,7 +86,7 @@ def step_impl(context):
 
 
 @when("I select 'Prefer not say' for all diversity questions")
-def step_impl(context):
+def step_impl_select_diversity_option(context):
     page = context.helperfunc
     radio = page.find_by_css_selector("input[name='gender'][value='Prefer not to say']")
     radio.click()
@@ -147,12 +147,12 @@ def step_impl(context):
 
 
 @when("select the Assign tab")
-def step_impl(context):
+def step_impl_select_assign_tab(context):
     context.helperfunc.find_by_partial_link_text("Assign").click()
 
 
 @then('I get a message with the text "Case notes must be added to close a case"')
-def step_impl(context):
+def step_impl_case_notes_required(context):
     alert = context.helperfunc.find_by_css_selector("div[class='modal-dialog '")
     assert "Case notes must be added to close a case" in alert.text
 
