@@ -1,7 +1,7 @@
 import os
 import time
 from behave.log_capture import capture
-from features.constants import BROWSER, ARTIFACTS_DIRECTORY, DOWNLOAD_DIRECTORY
+from helper.constants import BROWSER, ARTIFACTS_DIRECTORY, DOWNLOAD_DIRECTORY
 from helper.helper_web import get_browser
 
 

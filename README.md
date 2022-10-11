@@ -56,3 +56,19 @@ the default.
 ## Docker image
 This repository builds a docker image that is then used as the executor for the `behave` Circle CI job.
 You are unlikely to need to use the image directly elsewhere.
+
+## Test file structure.
+
+Each feature file is seperated out into their own directory to help make it easier to organise each services test.
+
+Cla_backend feature files:
+
+`behave > features > cla_backend`
+
+Cla_frontend feature files: 
+
+`behave > features > cla_frontend`
+
+Cla_public feature files:
+
+`behave > features > cla_public`

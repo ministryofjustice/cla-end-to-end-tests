@@ -1,9 +1,9 @@
-from features.constants import CLA_EXISTING_USER
+from helper.constants import CLA_EXISTING_USER
 from selenium.webdriver.common.by import By
-from behave import when, then
+from behave import step
 
 
-@when("I search for a client name with an existing case")
+@step("I search for a client name with an existing case")
 def step_impl_search_client(context):
     # find the search box
     search_box = context.helperfunc.find_by_name("q")
@@ -16,7 +16,7 @@ def step_impl_search_client(context):
     search_submit.click()
 
 
-@then("I am taken to search results that shows cases belonging to that client")
+@step("I am taken to search results that shows cases belonging to that client")
 def step_impl_search_results(context):
     context.execute_steps(
         """
@@ -32,7 +32,7 @@ def step_impl_search_results(context):
     ), "No cases associated with user {CLA_EXISTING_USER}"
 
 
-@then("I select the name hyperlink for an existing case")
+@step("I select the name hyperlink for an existing case")
 def step_impl_select_name_hyperlink(context):
     # use the name hyperlink in the first row, we know there are cases because of previous steps
     # often fails with stale element exception
@@ -41,7 +41,7 @@ def step_impl_select_name_hyperlink(context):
     context.helperfunc.click_button(By.XPATH, x_path)
 
 
-@then("I select the button to create a case for the client originally searched for")
+@step("I select the button to create a case for the client originally searched for")
 def step_impl_create_case_button(context):
     # this button has the same id as when it just says 'create a case' so can use the original step
     context.execute_steps(

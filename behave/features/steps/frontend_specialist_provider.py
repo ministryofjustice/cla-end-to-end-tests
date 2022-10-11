@@ -1,6 +1,6 @@
-from behave import step, when, then, given
+from behave import step
 import os
-from features.constants import (
+from helper.constants import (
     CLA_FRONTEND_URL,
     CLA_SPECIALIST_CASE_TO_ACCEPT,
     CLA_SPECIALIST_CASE_TO_REJECT,
@@ -99,7 +99,7 @@ def select_a_case(context, case_reference, check_only_unaccepted_cases):
     link.click()
 
 
-@given("I can view the case details and notes entered by the Operator")
+@step("I can view the case details and notes entered by the Operator")
 def step_impl_view_operator_case_details(context):
     # check there is a case history on the rhs
     case_history = context.helperfunc.find_by_class("CaseHistory")
@@ -112,7 +112,7 @@ def step_impl_view_operator_case_details(context):
     assert len(operator_comments) >= 3
 
 
-@when("I select Scope")
+@step("I select Scope")
 def step_impl_select_scope(context):
     scope_link = context.helperfunc.find_by_xpath(
         '//a[@ui-sref="case_detail.edit.diagnosis"]'
@@ -122,7 +122,7 @@ def step_impl_select_scope(context):
     scope_link.click()
 
 
-@then("I can view the scope assessment entered by the Operator")
+@step("I can view the scope assessment entered by the Operator")
 def step_impl_view_scope_assessment(context):
     # <section class="SummaryBlock SummaryBlock--compact ng-scope" ng-if="diagnosis.nodes">
     # check that the scope assessment exists
@@ -135,7 +135,6 @@ def step_impl_view_scope_assessment(context):
         './/div/p[text()="INSCOPE"]'
     )
     assert scope_inscope is not None
-    # this would find all descriptors if needed
     # scope_descriptors = scope_description.find_element_by_xpath(f'.//div/p')
     scope_cat_of_law = scope_description.find_element_by_xpath(
         './/div/p[starts-with(.,"Category of law")]'
@@ -145,14 +144,14 @@ def step_impl_view_scope_assessment(context):
     )
 
 
-@given("I select '{value}' in the case details page")
+@step("I select '{value}' in the case details page")
 def step_impl_select_value(context, value):
     # Using python dictionary to find name value for accept, reject and split
     xpath = f"//button[@name='{CLA_SPECIALIST_CASE_BANNER_BUTTONS[value]}']"
     context.helperfunc.click_button(By.XPATH, xpath)
 
 
-@given("I can see a 'Case accepted successfully' message")
+@step("I can see a 'Case accepted successfully' message")
 def step_impl_case_accepted(context):
     # wait for the flash message to appear.
     flash_message = context.helperfunc.find_by_xpath(
@@ -161,7 +160,7 @@ def step_impl_case_accepted(context):
     assert flash_message is not None
 
 
-@when("I return to the specialist provider cases dashboard page")
+@step("I return to the specialist provider cases dashboard page")
 def step_impl_return_to_dashboard(context):
     # click on the 'back to cases' link
     back_to_cases = context.helperfunc.find_by_xpath(
@@ -171,7 +170,7 @@ def step_impl_return_to_dashboard(context):
     back_to_cases.click()
 
 
-@when("I select the Accepted tab")
+@step("I select the Accepted tab")
 def step_impl_select_accepted(context):
     # click on the 'Accepted' tab
     accepted_tab = context.helperfunc.find_by_xpath(
@@ -181,7 +180,7 @@ def step_impl_select_accepted(context):
     accepted_tab.click()
 
 
-@then("I can see my accepted case reference number")
+@step("I can see my accepted case reference number")
 def step_impl_view_reference_number(context):
     # click on the 'back to cases' link
     my_case = context.helperfunc.find_by_xpath(
@@ -190,14 +189,14 @@ def step_impl_view_reference_number(context):
     assert my_case is not None
 
 
-@given("that I am viewing a case that I have accepted as a specialist provider")
+@step("I am viewing a case that I have accepted as a specialist provider")
 def step_impl_view_accepted_case(context):
     case_reference = CLA_SPECIALIST_CASE_TO_ACCEPT
     login_url = f"{CLA_FRONTEND_URL}/provider/{case_reference}/diagnosis/"
     context.helperfunc.open(login_url)
 
 
-@given("I select the Legal help form")
+@step("I select the Legal help form")
 def step_impl_select_legl_help(context):
     wrapper = context.helperfunc.find_by_css_selector(".CaseBar-actions")
     legal_help_form_link = wrapper.find_element_by_xpath(
@@ -266,7 +265,7 @@ def assert_four_column_table(table, root_element):
             assert_cell(elements[2], question, row[COL_FOUR_KEY])
 
 
-@given("The legal help form Your details section has the values")
+@step("The legal help form Your details section has the values")
 def step_impl_your_details_values(context):
     driver = context.helperfunc.driver()
     heading_element = driver.find_element_by_xpath("//h2[text()='Your Details']")
@@ -274,7 +273,7 @@ def step_impl_your_details_values(context):
     assert_your_details(context.table, wrapper_element)
 
 
-@given('The legal help form "{section_heading}" section has the values')
+@step('The legal help form "{section_heading}" section has the values')
 def step_impl_legal_help_values(context, section_heading):
     driver = context.helperfunc.driver()
     heading_element = driver.find_element_by_xpath(f"//h2[text()='{section_heading}']")
@@ -282,7 +281,7 @@ def step_impl_legal_help_values(context, section_heading):
     assert_four_column_table(context.table, wrapper_element)
 
 
-@given(
+@step(
     "The legal help form Your Income section (less Monthly allowances) has the values"
 )
 def step_impl_income_values(context):
@@ -296,7 +295,7 @@ def step_impl_income_values(context):
     assert_four_column_table(context.table, wrapper_element)
 
 
-@when("I select Finances")
+@step("I select Finances")
 def step_impl_select_finances(context):
     tabs = context.helperfunc.find_by_css_selector("ul.Tabs")
     finance_tab_link = tabs.find_element_by_link_text("Finances")
@@ -306,7 +305,7 @@ def step_impl_select_finances(context):
     finance_tab_link.click()
 
 
-@then("I can view the financial assessment entered by the Operator")
+@step("I can view the financial assessment entered by the Operator")
 def step_impl_view_financial_assessment(context):
     tabs = context.helperfunc.find_by_css_selector("ul.Tabs")
     finance_tab_link = tabs.find_element_by_link_text("Finances")

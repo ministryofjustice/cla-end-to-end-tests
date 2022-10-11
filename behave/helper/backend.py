@@ -1,5 +1,5 @@
 import requests
-from constants import CLA_BACKEND_URL
+from helper.constants import CLA_BACKEND_URL
 
 
 class Backend:

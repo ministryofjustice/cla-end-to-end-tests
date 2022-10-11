@@ -1,6 +1,6 @@
 from selenium import webdriver
 from helper.helper_base import HelperFunc
-from features.constants import SELENIUM_WEB_DRIVER_URL, DOWNLOAD_DIRECTORY
+from helper.constants import SELENIUM_WEB_DRIVER_URL, DOWNLOAD_DIRECTORY
 
 
 def get_browser(browser):

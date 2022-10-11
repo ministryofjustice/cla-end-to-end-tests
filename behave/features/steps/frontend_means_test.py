@@ -1,8 +1,10 @@
 from behave import step
+import re
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from helper.constants import CLA_FRONTEND_PERSONAL_DETAILS_FORM
 
 
 def set_income_input_field_by_label(context, label, value):
@@ -141,3 +143,54 @@ def step_impl_paying_defence(context, numbers):
         "//label/span[@class='FormRow-label ng-binding']/../input[@type='number']"
     )
     input_field.send_keys(numbers_to_string)
+
+
+@step("I am taken to the 'case details' page")
+def step_impl_case_details(context):
+    assert context.helperfunc.find_by_xpath("//header/h1").text == "Case details"
+    current_path = context.helperfunc.get_current_path()
+    assert re.match(r"^/call_centre/\w{2}-\d{4}-\d{4}/diagnosis/$", current_path)
+
+
+@step("I select 'Create new user'")
+def step_impl_create_user(context):
+    btn = context.helperfunc.find_by_name("create-newuser")
+    assert btn is not None
+    btn.click()
+    form = context.helperfunc.find_by_name("personaldetails_frm")
+    assert form.is_displayed()
+
+
+@step("enter the client's personal details")
+def step_impl_enter_details(context):
+    if not hasattr(context, "personal_details_form"):
+        context.personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM
+    for name, value in context.personal_details_form.items():
+        element = context.helperfunc.find_by_name(name)
+        assert element is not None
+        if element.tag_name == "select":
+            select_element = Select(element)
+            select_element.select_by_visible_text(value)
+        else:
+            element.send_keys(value)
+
+
+@step("I click the save button on the screen")
+def step_impl_click_save_button(context):
+    form = context.helperfunc.find_by_name("personaldetails_frm")
+    btn = context.helperfunc.find_by_name("save-personal-details")
+    assert btn is not None
+    btn.click()
+
+    def wait_until_personal_details_are_saved(*args):
+        return not form.is_displayed()
+
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_until_personal_details_are_saved)
+
+
+@step("I will see the users details")
+def step_impl_user_details(context):
+    personal_details = context.helperfunc.find_by_id("personal_details").text
+    for name, value in context.personal_details_form.items():
+        assert value in personal_details

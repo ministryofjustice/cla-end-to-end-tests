@@ -1,5 +1,5 @@
 from behave import step
-from features.constants import CLA_PUBLIC_URL
+from helper.constants import CLA_PUBLIC_URL
 from features.steps.common_steps import (
     assert_header_on_page,
     wait_until_page_is_loaded,

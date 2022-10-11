@@ -1,5 +1,5 @@
 from behave import step
-from features.constants import (
+from helper.constants import (
     CLA_NUMBER,
     CLA_MEANS_TEST_PERSONAL_DETAILS_FORM,
     CLA_MEANS_TEST_CALL_BACK_NUMBER,
@@ -118,7 +118,8 @@ def step_impl_select_available_day(context):
     assert choose_time_in_day is not None
     if len(choose_day.options) > 0:
         choose_day.select_by_index(0)
-        # once you choose this it will re-populate times drop down now choose the first time
+        # once you choose this it will re-populate times drop-down.
+        # Now choose the first time
         if len(choose_time_in_day.options) > 0:
             choose_time_in_day.select_by_index(1)
         else:

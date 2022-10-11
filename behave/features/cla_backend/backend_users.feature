@@ -1,7 +1,7 @@
 Feature: User journeys for Fox admin or cla_backend to update the users staff status
 
 Background: Log in to the Fox admin as a user within the super users group
-    Given that I am logged in as "FOX_ADMIN_GENERAL_USER"
+    Given I am logged in as "FOX_ADMIN_GENERAL_USER"
 
 #Journey P11 Child 1 Navigate to users authentication page and assign user staff status (LGA-1863)
 @fox-assign
@@ -28,10 +28,10 @@ Then the new operator user is created
 And I am taken to the list of operators page
 #Child 3
 And I select the link "Log out"
-And that I am logged in as "NEWLY_CREATED_OPERATOR"
+And I am logged in as "NEWLY_CREATED_OPERATOR"
 Then I am on the 'call centre dashboard' page
 #Child 4
-And that I am logged in as "FOX_ADMIN_GENERAL_USER"
+And I am logged in as "FOX_ADMIN_GENERAL_USER"
 And I select the link "Users"
 And I select the newly created user from the list
 And I am taken to the user's details page

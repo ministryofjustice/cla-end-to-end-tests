@@ -4,7 +4,7 @@ import datetime
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
 import os
-from features.constants import (
+from helper.constants import (
     MINIMUM_WAIT_UNTIL_TIME,
     CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO,
     CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO_PK,
@@ -187,9 +187,8 @@ def step_impl_select_is_active(context):
 def step_impl_new_operator_user_created(context):
     # you are returned to the "select operator to change page"
     # the user just created exists
-    # make sure that there are no errors on this page
-    # are we still on the same page?
     if (
+        # are we still on the same page and there are no errors
         context.helperfunc.get_current_path() == "/admin/call_centre/operator/add/"
         and context.helperfunc.driver().find_element_by_xpath("//p[@class='errornote']")
         is not None
