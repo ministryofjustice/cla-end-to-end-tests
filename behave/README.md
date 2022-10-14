@@ -5,6 +5,36 @@ This readme assumes that the working directory is that of this document, which i
 root of this repository: the root of this repository now provides a means to deliver and use the
 functionality in this directory.
 
+## Test file structure.
+
+Each feature file is seperated out into their own directory to help make it easier to organise each services test.
+
+Cla_backend feature files:
+
+`behave > features > cla_backend`
+
+Cla_frontend feature files:
+
+`behave > features > cla_frontend`
+
+Cla_public feature files:
+
+`behave > features > cla_public`
+
+## How to run tests
+
+To run all tests, execute in main behave directory (behave_local if bashed into Docker container):
+
+`behave`
+
+To run selective tests or test tag:
+
+Single
+`behave -t @tag1`
+
+Multiple
+`behave -t @tag1,@tag2,@tag3`
+
 ## Current state of affairs Intel users
 The commands to get this running locally are:
 
