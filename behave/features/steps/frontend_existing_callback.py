@@ -1,8 +1,10 @@
 from cla_common.call_centre_availability import OpeningHours
 from cla_common.constants import OPERATOR_HOURS
 from helper.constants import CLA_CALLBACK_CASES, CLA_FRONTEND_URL
-from features.steps.cla_in_scope import assert_header_on_page
-from features.steps.common_steps import compare_client_details_with_backend
+from features.steps.common_steps import (
+    compare_client_details_with_backend,
+    assert_header_on_page,
+)
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import StaleElementReferenceException
 
