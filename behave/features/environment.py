@@ -1,5 +1,6 @@
 import os
 import time
+from behave.contrib.scenario_autoretry import patch_scenario_with_autoretry
 from behave.log_capture import capture
 from helper.constants import BROWSER, ARTIFACTS_DIRECTORY, DOWNLOAD_DIRECTORY
 from helper.helper_web import get_browser
@@ -14,6 +15,11 @@ def before_all(context):
     # dir for report fox_admin_downloads
     context.download_dir = DOWNLOAD_DIRECTORY
     helper_func.maximize()
+
+
+def before_feature(context, feature):
+    for scenario in feature.scenarios:
+        patch_scenario_with_autoretry(scenario, max_attempts=3)
 
 
 @capture
