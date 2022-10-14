@@ -1,10 +1,8 @@
 Feature: Specialist Provider Case Assignment
-# there is now a fixture which should create two cases so that these tests can run. It is loaded by running 
-# docker-compose exec clabackend python manage.py loaddata test_special_provider_case.json 
-# which is in run_test_local.sh
+# Testing fixture used is loaded as part of creat_db.sh file.
 
 Background: Log In Provider
-    Given that I am logged in as "TEST_SPECIALIST_PROVIDER"
+    Given I am logged in as "TEST_SPECIALIST_PROVIDER"
 
 @specialist-provider-select-case
 Scenario: Specialist Provider Selects a case
@@ -35,7 +33,7 @@ Scenario: Specialist Provider Accepts a case
 
 @specialist-provider-select-legal-help-form
 Scenario: Specialist Provider Accepts a case and Selects Legal Help Form
-  Given that I am viewing a case that I have accepted as a specialist provider
+  Given I am viewing a case that I have accepted as a specialist provider
   And I select the Legal help form
   And The legal help form Your Details section has the values
   | field                                                    | value              |
@@ -127,7 +125,7 @@ Scenario: Specialist Provider rejects a case
   When I select the 'Split case' button in the pop-up
   Then the message 'Case split successfully' appears on the case details page
   And I select the 'Sign out' link
-  And that I am logged in as "CHS_GENERAL_USER"
+  And I am logged in as "CHS_GENERAL_USER"
   Then the new split case is available to the operator
 
 # p14 Child 1 & Child 2, Upload a CSV file with errors, then upload a csv with no errors. (LGA-1868, LGA-1871)

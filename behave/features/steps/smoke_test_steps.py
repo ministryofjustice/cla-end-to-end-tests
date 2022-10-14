@@ -1,9 +1,9 @@
 import requests
-from behave import given, then
-from features.constants import CLA_PUBLIC_URL, CLA_FRONTEND_URL, CLA_BACKEND_URL
+from behave import step
+from helper.constants import CLA_PUBLIC_URL, CLA_FRONTEND_URL, CLA_BACKEND_URL
 
 
-@given('I go to the "{service}" status endpoint')
+@step('I go to the "{service}" status endpoint')
 def step_impl_service_status_endpoint(context, service):
     if service == "cla backend":
         context.response = requests.get(f"{CLA_BACKEND_URL}/status/")
@@ -14,7 +14,7 @@ def step_impl_service_status_endpoint(context, service):
         context.response = requests.get(f"{CLA_PUBLIC_URL}/ping.json")
 
 
-@then('I am shown that the "{service}" service is ready')
+@step('I am shown that the "{service}" service is ready')
 def step_impl_service_ready(context, service):
     if service == "cla backend":
         assert context.response.json()["db"]["ready"] is True

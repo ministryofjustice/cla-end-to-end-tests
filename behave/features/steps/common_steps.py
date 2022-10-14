@@ -2,7 +2,7 @@ import re
 from behave import step
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
-from features.constants import (
+from helper.constants import (
     CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK,
     CLA_FRONTEND_URL,
     USERS,
@@ -73,7 +73,6 @@ def step_impl_sign_out(context):
 
 def switch_to_new_tab(context, new_tab_handle, hyperlink_selected):
     context.helperfunc.driver().switch_to.window(new_tab_handle)
-    # check the url
     error_string = f"Chosen link : {hyperlink_selected} is not the same as the tab url: {context.helperfunc.driver().current_url}"
     assert hyperlink_selected == context.helperfunc.driver().current_url, error_string
 
@@ -102,28 +101,7 @@ def compare_client_details_with_backend(context, case_id, client_section):
         ), f"For {title_value}, value displayed is {displayed_value} but actual value is {backend_value}"
 
 
-def step_click_submit(context):
-    # click on the continue button
-    continue_button = context.helperfunc.find_by_id("submit-button")
-    assert continue_button is not None
-    continue_button.click()
-    # did the form get submitted correctly?
-    # check for 'there is a problem'
-    try:
-        confirmation_text_element = (
-            context.helperfunc.driver().find_element_by_css_selector(
-                ".govuk-error-summary"
-            )
-        )
-        if confirmation_text_element is not None:
-            assert confirmation_text_element.text.startswith("There is a problem")
-            raise AssertionError("There is a problem with submitting the form")
-    except NoSuchElementException:
-        # this will error because we actually moved off the page which is actually what we want
-        pass
-
-
-@step('that I am logged in as "{user}"')
+@step('I am logged in as "{user}"')
 def step_impl_logged_in_as(context, user):
     login_url = USERS[user]["login_url"]
     context.helperfunc.open(login_url)
@@ -275,3 +253,26 @@ def step_impl_message_shown(context, message):
         ".Notice.Notice--closeable.success"
     )
     assert element.text == message
+
+
+@step("I am on the 'call centre dashboard' page")
+def step_impl_call_center_dashboard(context):
+    def wait_for_dashboard(*args):
+        return context.helperfunc.find_by_css_selector("body.v-Dashboard") is not None
+
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_dashboard, "Could not find dashboard")
+
+    current_path = context.helperfunc.get_current_path()
+    assert (
+        current_path == "/call_centre/"
+    ), f"Current path is {current_path}. Expected /call_centre/"
+
+
+@step("I select to 'Create a case'")
+def step_impl_create_case(context):
+    # wrap click() to avoid StaleElementException
+    context.helperfunc.click_button(By.ID, "create_case")
+    context.case_reference = context.helperfunc.find_by_css_selector(
+        "h1.CaseBar-caseNum a"
+    ).text
