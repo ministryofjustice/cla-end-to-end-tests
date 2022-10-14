@@ -17,7 +17,7 @@ def before_all(context):
     helper_func.maximize()
 
 
-def before_feature(feature):
+def before_feature(context, feature):
     for scenario in feature.scenarios:
         patch_scenario_with_autoretry(scenario, max_attempts=3)
 
