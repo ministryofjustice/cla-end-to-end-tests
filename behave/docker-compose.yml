@@ -17,6 +17,7 @@ services:
       - clafrontend
       - clabackend
       - seleniumchrome
+      - clasocketserver
 
   cla-end-to-end:
     container_name: cla-end-to-end
@@ -54,8 +55,7 @@ services:
       - ./fox_admin_downloads:/fox_admin_downloads
 
   clasocketserver:
-    build:
-      context: https://github.com/ministryofjustice/cla_frontend.git#master:cla_socketserver
+    image: ${CLA_SOCKET_SERVER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend_socket_server:master}
     environment:
       SITE_HOSTNAME: clasocketserver
 
