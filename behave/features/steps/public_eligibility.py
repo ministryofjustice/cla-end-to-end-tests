@@ -134,12 +134,12 @@ def step_impl_select_available_day(context):
         raise AssertionError("No option to call me back another day")
 
 
-@step("I select an available callback time")
-def step_impl_select_available_callback_time(context):
+@step('I select an available "{option}" call time')
+def step_impl_select_available_callback_time(context, option):
     context.callback_form = context.helperfunc.find_by_xpath("//form")
     choose_callback_time = Select(
         context.callback_form.find_element_by_xpath(
-            '//select[@id="thirdparty-time-time_today"]'
+            f'//select[@id="{option}-time-time_today"]'
         )
     )
 
