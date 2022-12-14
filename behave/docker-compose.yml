@@ -119,7 +119,7 @@ services:
       ALLOWED_HOSTS: "*"
 
   clapublic:
-    image: ${CLA_PUBLIC_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_public:feature-LGA-2302-remove-pre-select-callback-datetime.0f09735}
+    image: ${CLA_PUBLIC_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_public:master}
     ports:
       - "8012:8000"
     environment:
