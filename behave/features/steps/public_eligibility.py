@@ -123,7 +123,7 @@ def step_impl_select_available_day(context):
     )
     assert choose_time_in_day is not None
     if len(choose_day.options) > 0:
-        choose_day.select_by_index(0)
+        choose_day.select_by_index(1)
         # once you choose this it will re-populate times drop-down.
         # Now choose the first time
         if len(choose_time_in_day.options) > 0:
@@ -132,6 +132,22 @@ def step_impl_select_available_day(context):
             raise AssertionError("No option to call me back at a chosen time")
     else:
         raise AssertionError("No option to call me back another day")
+
+
+@step('I select an available "{option}" call time')
+def step_impl_select_available_callback_time(context, option):
+    context.callback_form = context.helperfunc.find_by_xpath("//form")
+    choose_callback_time = Select(
+        context.callback_form.find_element_by_xpath(
+            f'//select[@id="{option}-time-time_today"]'
+        )
+    )
+
+    assert choose_callback_time is not None
+    if len(choose_callback_time.options) > 0:
+        choose_callback_time.select_by_index(1)
+    else:
+        raise AssertionError("No option to callback time")
 
 
 @step('I should NOT see the text "You can now call CLA on 0345 345 4 345"')

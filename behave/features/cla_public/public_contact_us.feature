@@ -29,5 +29,6 @@ Scenario: contact us journey, selecting 'call someone else instead of me' option
   And I select "Family member or friend" from the 'Relationship to you' drop down options
   And I enter the phone number of the person to call back
   And I select 'Call today'
+  And I select an available "thirdparty" call time
   And I select 'Submit details'
   Then I am taken to the "We will call you back" page located on "/result/confirmation"
