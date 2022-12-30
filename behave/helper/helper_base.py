@@ -6,7 +6,7 @@ from selenium.common.exceptions import StaleElementReferenceException
 from helper.backend import Backend
 
 from helper.constants import CALL_CENTRE_ZONE
-from datetime import datetime, timedelta
+import datetime
 
 
 class HelperFunc(object):

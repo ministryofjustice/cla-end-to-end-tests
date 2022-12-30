@@ -6,7 +6,7 @@
      Given I have selected the start now button on the start page
 
 # Journey P9, Tickets combined (LGA-1874,LGA-2106)
-@cla-contact-us-link-journey
+@cla-contact-us-link-journey, @accessibility-check
 Scenario: contact us journey to contact civil legal advice page / form
     Given I select 'Contact us' from the banner
     And I select <question> from the contact civil legal advice page

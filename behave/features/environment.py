@@ -4,6 +4,7 @@ from behave.contrib.scenario_autoretry import patch_scenario_with_autoretry
 from behave.log_capture import capture
 from helper.constants import BROWSER, ARTIFACTS_DIRECTORY, DOWNLOAD_DIRECTORY
 from helper.helper_web import get_browser
+from features.steps.common_steps import check_accessibility
 
 
 def before_all(context):
@@ -48,3 +49,14 @@ def make_dir(dir):
     """
     if not os.path.exists(dir):
         os.makedirs(dir)
+
+
+def after_tag(context, tag):
+    if tag == "accessibility-check":
+        context.accessibility = True
+
+
+def after_step(context, step):
+    if context.accessibility:
+        print("accessibility test called")
+        check_accessibility(context)
