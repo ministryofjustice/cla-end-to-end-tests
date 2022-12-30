@@ -9,6 +9,7 @@ from helper.constants import (
     USER_HTML_TAGS,
 )
 from selenium.webdriver.common.by import By
+from axe_selenium_python import Axe
 
 
 def remove_prefix(text, prefix):
@@ -267,6 +268,7 @@ def step_impl_call_center_dashboard(context):
     assert (
         current_path == "/call_centre/"
     ), f"Current path is {current_path}. Expected /call_centre/"
+    check_accessibility(context)
 
 
 @step("I select to 'Create a case'")
@@ -276,3 +278,12 @@ def step_impl_create_case(context):
     context.case_reference = context.helperfunc.find_by_css_selector(
         "h1.CaseBar-caseNum a"
     ).text
+
+
+def check_accessibility(context):
+    axe = Axe(context.helperfunc.driver())
+    axe.inject()
+    results = axe.run()
+    axe.write_results(results, "ally.json")
+    context.helperfunc.close()
+    assert len(results["violations"]) == 0, axe.report(results["violations"])
