@@ -285,5 +285,4 @@ def check_accessibility(context):
     axe.inject()
     results = axe.run()
     axe.write_results(results, "ally.json")
-    context.helperfunc.close()
     assert len(results["violations"]) == 0, axe.report(results["violations"])
