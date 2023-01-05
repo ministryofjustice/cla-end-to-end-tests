@@ -17,8 +17,8 @@ class HelperFunc(object):
         self._driver = driver
         self.call_centre_backend = Backend("/call_centre/api/v1/")
         self.call_centre_backend.authenticate(**CALL_CENTRE_ZONE)
-        current_date = datetime.now().date()
-        self.date_start_this_month = (current_date - timedelta(days=current_date.day)).replace(day=1)
+        today = datetime.now().date()
+        self.date_start_this_month = (today - timedelta(days=today.day)).replace(day=1)
 
     def driver(self):
         return self._driver
