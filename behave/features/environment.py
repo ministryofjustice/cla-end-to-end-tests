@@ -2,9 +2,19 @@ import os
 import time
 from behave.contrib.scenario_autoretry import patch_scenario_with_autoretry
 from behave.log_capture import capture
-from helper.constants import BROWSER, ARTIFACTS_DIRECTORY, DOWNLOAD_DIRECTORY
+from helper.constants import (
+    BROWSER,
+    ARTIFACTS_DIRECTORY,
+    DOWNLOAD_DIRECTORY,
+    A11Y_TAG,
+)
+from behave.model import Scenario
 from helper.helper_web import get_browser
 from features.steps.common_steps import check_accessibility
+
+
+def get_tag(context, find_tag):
+    return [tag for tag in context if find_tag in tag]
 
 
 def before_all(context):
@@ -51,12 +61,19 @@ def make_dir(dir):
         os.makedirs(dir)
 
 
-def after_tag(context, tag):
-    if tag == "accessibility-check":
-        context.accessibility = True
+# def before_step(context, step):
+# Scenario.continue_after_failed_step = False
 
 
 def after_step(context, step):
-    if context.accessibility:
-        print("accessibility test called")
-        check_accessibility(context)
+    try:
+        # behave -D a11y=true -t @a11y-check
+        if context.config.userdata["a11y"] and get_tag(context.tags, A11Y_TAG):
+            # Don't stop the test, we want it to continue to create a report
+            Scenario.continue_after_failed_step = True
+            # stdout needs to be captured and sent to a text file.
+            # if accessibility error is already visible in step, don't call check again.
+            check_accessibility(context, step)
+            Scenario.continue_after_failed_step = False
+    except KeyError:
+        pass

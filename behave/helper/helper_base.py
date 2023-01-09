@@ -6,7 +6,7 @@ from selenium.common.exceptions import StaleElementReferenceException
 from helper.backend import Backend
 
 from helper.constants import CALL_CENTRE_ZONE
-import datetime
+from datetime import datetime, timedelta
 
 
 class HelperFunc(object):
@@ -19,6 +19,7 @@ class HelperFunc(object):
         self.call_centre_backend = Backend("/call_centre/api/v1/")
         self.call_centre_backend.authenticate(**CALL_CENTRE_ZONE)
         today = datetime.now().date()
+        self.accessibility_check = False
         self.date_start_this_month = (today - timedelta(days=today.day)).replace(day=1)
 
     def driver(self):

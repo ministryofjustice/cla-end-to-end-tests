@@ -279,7 +279,7 @@ def step_impl_create_case(context):
     ).text
 
 
-def check_accessibility(context):
+def check_accessibility(context, step):
     axe = Axe(context.helperfunc.driver())
     axe.inject()
     results = axe.run()

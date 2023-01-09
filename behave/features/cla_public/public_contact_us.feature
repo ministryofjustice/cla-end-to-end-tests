@@ -6,7 +6,7 @@
      Given I have selected the start now button on the start page
 
 # Journey P9, Tickets combined (LGA-1874,LGA-2106)
-@cla-contact-us-link-journey, @accessibility-check
+@cla-contact-us-link-journey, @a11y-check
 Scenario: contact us journey to contact civil legal advice page / form
     Given I select 'Contact us' from the banner
     And I select <question> from the contact civil legal advice page
@@ -20,7 +20,7 @@ Scenario: contact us journey to contact civil legal advice page / form
     Then I am taken to the "Your details have been submitted" page located on "/result/confirmation"
 
 # Journey P9, Ticket (LGA-2183)
-@cla-contact-us-call-someone-else
+@cla-contact-us-call-someone-else, @a11y-check
 Scenario: contact us journey, selecting 'call someone else instead of me' option
   Given I am on the Contact Civil Legal Advice page
   When I enter a name in the 'Your full name' field

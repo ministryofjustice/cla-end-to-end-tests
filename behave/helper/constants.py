@@ -11,6 +11,7 @@ CLA_FALA_URL = os.environ.get("CLA_E2E_FALA_URL")
 SELENIUM_WEB_DRIVER_URL = os.environ.get("CLA_E2E_SELENIUM_WEB_DRIVER_URL")
 MINIMUM_WAIT_UNTIL_TIME = 10
 CLA_NUMBER = "0345 345 4 345"
+A11Y_TAG = "a11y-check"
 CALL_CENTRE_ZONE = {
     "client_id": os.environ.get("CALL_CENTRE_CLIENT_ID"),
     "client_secret": os.environ.get("CALL_CENTRE_SECRET_ID"),

@@ -5,7 +5,7 @@ Feature:
 Background: Start page
     Given I have selected the start now button on the start page
 
-@cla-in-scope-callback
+@cla-in-scope-callback, @a11y-check
 Scenario: Complete callback form asking for callback
   Given I have passed the means test
   And I enter my personal details
@@ -21,7 +21,7 @@ Scenario: Complete callback form asking for callback
   And A matching case should be created on the CHS
   And The callback should have been created on the CHS
 
-@cla-in-scope-contact
+@cla-in-scope-contact, @a11y-check
 Scenario: Complete callback form
   Given I have passed the means test
   And I enter my personal details
@@ -34,7 +34,7 @@ Scenario: Complete callback form
   And A matching case should be created on the CHS
 
 #Journey P8  Housing category in scope journey but fail means test. (LGA-1816, LGA-1819)
-@cla-in-scope-fail-financially-housing
+@cla-in-scope-fail-financially-housing, @a11y-check
 Scenario: Complete in scope housing check
   Given I am taken to the "Choose the area you most need help with" page located on "/scope/diagnosis/"
   When I select the category <category>
@@ -74,7 +74,7 @@ Scenario: Complete in scope housing check
   And I am taken to the "You’re unlikely to get legal aid" page located on "/result/refer/housing"
 
 # Out of scope means tests
-@cla-out-of-scope-family-divorce
+@cla-out-of-scope-family-divorce, @a11y-check
 Scenario: Complete out of scope means test for family and divorce
   Given I am taken to the "Choose the area you most need help with" page located on "/scope/diagnosis/"
   When I select the category <category>
