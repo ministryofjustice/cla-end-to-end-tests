@@ -32,6 +32,7 @@ services:
       CLA_E2E_PUBLIC_URL: ${CLA_E2E_PUBLIC_URL:-http://clapublic:8000}
       CLA_E2E_BACKEND_URL: ${CLA_E2E_BACKEND_URL:-http://clabackend:8000}
       CLA_E2E_FRONTEND_URL: ${CLA_E2E_FRONTEND_URL:-http://clafrontend:8000}
+      CLA_E2E_FALA_URL: ${CLA_E2E_FALA_URL:-http://clafala:8000}
       CLA_E2E_SELENIUM_WEB_DRIVER_URL: ${CLA_E2E_SELENIUM_WEB_DRIVER_URL:-http://seleniumchrome:4444/wd/hub}
       CALL_CENTRE_CLIENT_ID: b4b9220ffcb11ebfdab1
       CALL_CENTRE_SECRET_ID: 2df71313bdd38a2e1b815015e1b14387e7681d41
