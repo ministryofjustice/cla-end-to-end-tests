@@ -14,4 +14,3 @@ Feature: FALA end to end tests
       | London   |
     When I select the "search" button on the FALA homepage
     Then I am taken to the search page
-

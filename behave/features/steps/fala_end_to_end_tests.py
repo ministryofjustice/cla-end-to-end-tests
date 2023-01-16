@@ -1,6 +1,5 @@
 from behave import step
 from selenium.webdriver.common.by import By
-from helper.constants import CLA_FALA_URL
 
 
 @step("I am on the Find a legal aid adviser homepage")
