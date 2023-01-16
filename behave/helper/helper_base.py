@@ -4,7 +4,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException
 from helper.backend import Backend
-from helper.constants import CALL_CENTRE_ZONE
+
+# from helper.constants import CALL_CENTRE_ZONE
 from datetime import datetime, timedelta
 
 
@@ -16,7 +17,7 @@ class HelperFunc(object):
         self._driver_wait = WebDriverWait(driver, HelperFunc.__TIMEOUT)
         self._driver = driver
         self.call_centre_backend = Backend("/call_centre/api/v1/")
-        self.call_centre_backend.authenticate(**CALL_CENTRE_ZONE)
+        # self.call_centre_backend.authenticate(**CALL_CENTRE_ZONE)
         today = datetime.now().date()
         self.date_start_this_month = (today - timedelta(days=today.day)).replace(day=1)
 

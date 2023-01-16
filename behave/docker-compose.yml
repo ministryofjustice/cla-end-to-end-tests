@@ -9,6 +9,7 @@ services:
       -wait tcp://clasocketserver:8005
       -wait tcp://clabackend:8000
       -wait tcp://clapublic:8000
+      -wait tcp://clafala:8000
       -wait tcp://seleniumchrome:4444
       -wait-retry-interval 10s
       -timeout 180s
@@ -18,6 +19,7 @@ services:
       - clabackend
       - seleniumchrome
       - clasocketserver
+      - clafala
 
   cla-end-to-end:
     container_name: cla-end-to-end
@@ -143,3 +145,13 @@ services:
       OS_PLACES_API_KEY: ${OS_PLACES_API_KEY:-CHANGE_ME}
     depends_on:
       - clabackend
+
+  clafala:
+    image: ${FALA_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/fala:master}
+    ports:
+      - "8013:8000"
+    environment:
+      HOST_NAME: "clafala"
+      SECRET_KEY: CHANGE_ME
+      LAALAA_API_HOST: https://laa-legal-adviser-api-staging.apps.live-1.cloud-platform.service.justice.gov.uk
+      CLA_ENV: dev
