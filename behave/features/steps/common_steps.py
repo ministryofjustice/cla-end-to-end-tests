@@ -1,4 +1,6 @@
 import re
+import time
+import os
 from behave import step
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
@@ -279,9 +281,23 @@ def step_impl_create_case(context):
     ).text
 
 
-def check_accessibility(context, step):
+def make_dir(dir):
+    """
+    Checks if directory exists, if not make a directory, given the directory path
+    :param: <string>dir: Full path of directory to create
+    """
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+
+
+def check_accessibility(context):
+    # Sleep prevents Axe exceptions.
+    # If no logs for Axe, Axe is called to fast to inject javascript.
+    time.sleep(1)
     axe = Axe(context.helperfunc.driver())
     axe.inject()
     results = axe.run()
-    axe.write_results(results, "ally.json")
-    assert len(results["violations"]) == 0, axe.report(results["violations"])
+    if len(axe.report(results["violations"])) > 0:
+        make_dir("feature_errors")
+        axe.write_results(results, "feature_errors/ally.json")
+    return len(results["violations"]) == 0, axe.report(results["violations"])

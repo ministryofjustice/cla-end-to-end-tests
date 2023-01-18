@@ -8,9 +8,9 @@ from helper.constants import (
     DOWNLOAD_DIRECTORY,
     A11Y_TAG,
 )
-from behave.model import Scenario
 from helper.helper_web import get_browser
-from features.steps.common_steps import check_accessibility
+from features.steps.common_steps import check_accessibility, make_dir
+import logging
 
 
 def get_tag(context, find_tag):
@@ -25,6 +25,7 @@ def before_all(context):
     context.artifacts_dir = ARTIFACTS_DIRECTORY
     # dir for report fox_admin_downloads
     context.download_dir = DOWNLOAD_DIRECTORY
+    context.a11y = False
     helper_func.maximize()
 
 
@@ -35,6 +36,8 @@ def before_feature(context, feature):
 
 @capture
 def after_scenario(context, scenario):
+    if context.a11y:
+        logging.error("ACCESSIBILITY ISSUES FOUND, CHECK ARTIFACTS FOR INFORMATION")
     if scenario.status == "failed":
         scenario_error_dir = os.path.join(context.artifacts_dir, "feature_errors")
         make_dir(scenario_error_dir)
@@ -52,15 +55,6 @@ def after_all(context):
     context.helperfunc.close()
 
 
-def make_dir(dir):
-    """
-    Checks if directory exists, if not make a directory, given the directory path
-    :param: <string>dir: Full path of directory to create
-    """
-    if not os.path.exists(dir):
-        os.makedirs(dir)
-
-
 # def before_step(context, step):
 # Scenario.continue_after_failed_step = False
 
@@ -68,12 +62,9 @@ def make_dir(dir):
 def after_step(context, step):
     try:
         # behave -D a11y=true -t @a11y-check
-        if context.config.userdata["a11y"] and get_tag(context.tags, A11Y_TAG):
-            # Don't stop the test, we want it to continue to create a report
-            Scenario.continue_after_failed_step = True
-            # stdout needs to be captured and sent to a text file.
-            # if accessibility error is already visible in step, don't call check again.
-            check_accessibility(context, step)
-            Scenario.continue_after_failed_step = False
-    except KeyError:
+        if context.config.userdata["a11y"] == "true" and get_tag(
+            context.tags, A11Y_TAG
+        ):
+            context.a11y = check_accessibility(context)
+    except (KeyError, AttributeError):
         pass
