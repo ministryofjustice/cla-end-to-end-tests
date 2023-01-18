@@ -1,17 +1,10 @@
 #!/bin/bash
-#
+
 # Simple wrapper for executing behave within Docker.
-#
-# ENVIRONMENT VARIABLES:
-#
-#    - REQUIREMENTS_PATH: requirements fullpath;
-#          default = "features/steps/requirements.txt"
-#
 
+export DOCKER_BUILDKIT=1
+export A11Y=${1:-false}
 
-#
-# execute behave
-#
 cd behave
 
-exec behave "$@"
+exec behave "-D a11y=${A11Y}"

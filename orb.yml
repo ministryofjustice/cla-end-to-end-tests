@@ -16,6 +16,7 @@ commands:
           command: |
             docker-compose pull
             docker-compose build
+            docker-compose build --build-arg a11y="true" clapublic
       - run:
           name: Check services are up
           command: |

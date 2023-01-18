@@ -25,4 +25,6 @@ COPY . /behave
 
 COPY ./wrapper.sh wrapper.sh
 
-ENTRYPOINT ["./wrapper.sh"]
+ENV run_a11y $a11y
+
+ENTRYPOINT ./wrapper.sh $run_a11y

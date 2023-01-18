@@ -281,6 +281,10 @@ def step_impl_create_case(context):
     ).text
 
 
+def get_tag(context, find_tag):
+    return [tag for tag in context if find_tag in tag]
+
+
 def make_dir(dir):
     """
     Checks if directory exists, if not make a directory, given the directory path
@@ -292,8 +296,8 @@ def make_dir(dir):
 
 def check_accessibility(context):
     # Sleep prevents Axe exceptions.
-    # If no logs for Axe, Axe is called to fast to inject javascript.
-    time.sleep(1)
+    # If no logs for Axe, Axe is called too fast when trying to inject javascript.
+    time.sleep(0.6)
     axe = Axe(context.helperfunc.driver())
     axe.inject()
     results = axe.run()

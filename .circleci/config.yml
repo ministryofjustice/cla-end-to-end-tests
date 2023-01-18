@@ -5,6 +5,10 @@ orbs:
 
 jobs:
   behave:
+    parameters:
+      run-a11y:
+        type: boolean
+        default: false
     docker:
       - image: cimg/python:3.10.1
     steps:
@@ -30,6 +34,9 @@ jobs:
             cd behave
             docker-compose pull
             docker-compose build
+            when:
+              condition: << parameters.run-a11y >>
+                docker-compose build --build-arg a11y="true" clapublic
       - run:
           name: Check services are up
           command: |
