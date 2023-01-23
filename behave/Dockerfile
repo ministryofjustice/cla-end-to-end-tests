@@ -14,6 +14,9 @@ RUN apk add --no-cache \
       libxml2-dev \
       libxslt-dev \
       linux-headers \
+      postgresql-dev \
+      gcc \
+      musl-dev \
       python3-dev && \
     pip3 install -U setuptools pip==18.1 wheel
 
