@@ -42,7 +42,7 @@ jobs:
             cd behave
             docker-compose run --name cla-end-to-end cla-end-to-end
       - store_artifacts:
-          path: data
+          path: behave/data
 
 workflows:
   build:
