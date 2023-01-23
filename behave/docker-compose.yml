@@ -27,12 +27,11 @@ services:
       context: .
     volumes:
       - .:/behave_local
-      -  ./fox_admin_downloads:/fox_admin_downloads
+      - ./data:/data
     environment:
       A11Y_ENABLED: ${A11Y_ENABLED:-false}
       BROWSER: chrome
       ARTIFACTS_DIRECTORY: ../behave_local
-      DOWNLOAD_DIRECTORY: /fox_admin_downloads
       CLA_E2E_PUBLIC_URL: ${CLA_E2E_PUBLIC_URL:-http://clapublic:8000}
       CLA_E2E_BACKEND_URL: ${CLA_E2E_BACKEND_URL:-http://clabackend:8000}
       CLA_E2E_FRONTEND_URL: ${CLA_E2E_FRONTEND_URL:-http://clafrontend:8000}
@@ -57,7 +56,7 @@ services:
       - "4444:4444"
     shm_size: 2g
     volumes:
-      - ./fox_admin_downloads:/fox_admin_downloads
+      - ./data:/data
 
   clasocketserver:
     image: ${CLA_SOCKET_SERVER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend_socket_server:master}
@@ -91,9 +90,9 @@ services:
       SESSION_COOKIE_SECURE: "False"
 
   db:
-    image: postgres:10.21-alpine
+    image: postgres:11.18-alpine
     ports:
-      - '5432:5432'
+      - 5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres

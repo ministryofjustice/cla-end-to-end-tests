@@ -41,14 +41,8 @@ jobs:
           command: |
             cd behave
             docker-compose run --name cla-end-to-end cla-end-to-end
-      - run:
-          name: Copy artifacts
-          command: |
-            mkdir -p /tmp/feature_errors
-            docker cp cla-end-to-end:behave_local ../../../tmp/feature_errors
-          when: always
       - store_artifacts:
-          path: /tmp/feature_errors
+          path: data
 
 workflows:
   build:

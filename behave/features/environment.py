@@ -2,12 +2,15 @@ import os
 import time
 from behave.contrib.scenario_autoretry import patch_scenario_with_autoretry
 from behave.log_capture import capture
+<<<<<<< HEAD
 from helper.constants import (
     BROWSER,
     ARTIFACTS_DIRECTORY,
     DOWNLOAD_DIRECTORY,
     A11Y_TAG,
 )
+
+from helper.constants import BROWSER, ARTIFACTS_DIRECTORY, DOWNLOAD_DIRECTORY, DATA_DIR
 from helper.helper_web import get_browser
 from features.steps.common_steps import check_accessibility, make_dir, get_tag
 import logging
@@ -40,7 +43,7 @@ def after_scenario(context, scenario):
     if not context.a11y_approved:
         logging.error("ACCESSIBILITY ISSUES FOUND, CHECK ARTIFACTS FOR INFORMATION")
     if scenario.status == "failed":
-        scenario_error_dir = os.path.join(context.artifacts_dir, "feature_errors")
+        scenario_error_dir = os.path.join(DATA_DIR, "feature_errors")
         make_dir(scenario_error_dir)
         scenario_file_path = os.path.join(
             scenario_error_dir,
