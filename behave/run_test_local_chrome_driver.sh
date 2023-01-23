@@ -1,7 +1,6 @@
 export BROWSER=chrome
 #these directories need to be overridden as they do not get picked up from cla-end-to-end-tests
 export ARTIFACTS_DIRECTORY="."
-export DOWNLOAD_DIRECTORY="/tmp"
 # UPDATE YOUR /etc/hosts to include the following snippet
 # 127.0.0.1   clabackend
 # 127.0.0.1	  clafrontend

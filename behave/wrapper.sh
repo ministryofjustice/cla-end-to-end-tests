@@ -7,3 +7,5 @@ echo "A11Y is $A11Y"
 cd behave
 
 exec behave "-D a11y=$A11Y"
+# Clean up downloads
+rm -rf data/downloads/*
