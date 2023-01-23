@@ -28,8 +28,8 @@ class TestDatabases:
     def setUpClass(cls):
         path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
-        cls.source_db = f"/tmp/yapdd.source.db"
-        cls.target_db = f"/tmp/yapdd.target.db"
+        cls.source_db = "/tmp/yapdd.source.db"
+        cls.target_db = "/tmp/yapdd.target.db"
         cls.cleanup_test_dbs()
 
         source_cursor = sqlite3.connect(cls.source_db).cursor()

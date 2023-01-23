@@ -5,8 +5,15 @@ from urllib.parse import urlparse
 from tabulate import tabulate
 
 
-class Yapgdd():
-    def __init__(self, source_dsn, target_dsn, exclude_columns=[], exclude_tables=[], output_dir="/tmp"):
+class Yapgdd:
+    def __init__(
+        self,
+        source_dsn,
+        target_dsn,
+        exclude_columns=[],
+        exclude_tables=[],
+        output_dir="/tmp",
+    ):
         self.source_conn = self.get_connection(source_dsn)
         self.target_conn = self.get_connection(target_dsn)
         self.source_cursor = self.source_conn.cursor()
@@ -23,11 +30,11 @@ class Yapgdd():
     def get_connection(self, dsn):
         url = urlparse(dsn)
         connection_details = {
-            'dbname': url.path.replace("/", ""),
-            'user': url.username,
-            'password': url.password,
-            'port': url.port,
-            'host': url.hostname
+            "dbname": url.path.replace("/", ""),
+            "user": url.username,
+            "password": url.password,
+            "port": url.port,
+            "host": url.hostname,
         }
         return psycopg2.connect(**connection_details)
 
@@ -35,8 +42,10 @@ class Yapgdd():
         return connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
     def get_tables(self, cursor):
-        cursor.execute("""SELECT table_name FROM information_schema.tables
-               WHERE table_schema = 'public'""")
+        cursor.execute(
+            """SELECT table_name FROM information_schema.tables
+               WHERE table_schema = 'public'"""
+        )
         return [table[0] for table in cursor.fetchall()]
 
     def get_columns(self, cursor, table):
@@ -62,7 +71,6 @@ class Yapgdd():
                     "column": key,
                     "source": value,
                     "target": target_value,
-
                 }
 
         # Check there is more data available in target row and if so add it to the diff
@@ -74,7 +82,6 @@ class Yapgdd():
                     "column": key,
                     "source": None,
                     "target": value,
-
                 }
         return diff
 
@@ -103,14 +110,16 @@ class Yapgdd():
                 "source": self.get_rows_count(self.source_cursor, table),
                 "target": self.get_rows_count(self.target_cursor, table),
             },
-            "diff": []
+            "diff": [],
         }
         source_cursor = self.select_all(self.source_conn, table, source_columns)
         target_cursor = self.select_all(self.target_conn, table, target_columns)
         for rownumber, source_row in enumerate(source_cursor):
             target_row = target_cursor.fetchone()
             if source_row != target_row:
-                output["diff"].append(self.diff_row(table, source_row, target_row, rownumber))
+                output["diff"].append(
+                    self.diff_row(table, source_row, target_row, rownumber)
+                )
 
         # Check if there are more target rows
         for target_row in target_cursor:
@@ -125,13 +134,15 @@ class Yapgdd():
             rows = []
             for diff in diffs:
                 for _, row in diff.items():
-                    rows.append([
-                        row["icon"],
-                        row["row number"],
-                        row["column"],
-                        row["source"],
-                        row["target"],
-                    ])
+                    rows.append(
+                        [
+                            row["icon"],
+                            row["row number"],
+                            row["column"],
+                            row["source"],
+                            row["target"],
+                        ]
+                    )
             table = tabulate(rows, headers, tablefmt="simple_grid")
             fh.write(table)
 
@@ -142,20 +153,26 @@ class Yapgdd():
                 continue
 
             output = self.diff_table(table)
-            if not output["diff"] and output["row count"]["source"] == output["row count"]["target"]:
+            if (
+                not output["diff"]
+                and output["row count"]["source"] == output["row count"]["target"]
+            ):
                 continue
 
             self.log_table_diff(table, output["diff"])
 
-            summary.append({
-                "table": table,
-                "table present": output["table present"],
-                "columns equal": output["columns equal"],
-                "source rows count": output["row count"]["source"],
-                "target rows count": output["row count"]["target"],
-                "counts equal": output["row count"]["source"] == output["row count"]["target"],
-                "rows equal": len(output["diff"]) == 0,
-            })
+            summary.append(
+                {
+                    "table": table,
+                    "table present": output["table present"],
+                    "columns equal": output["columns equal"],
+                    "source rows count": output["row count"]["source"],
+                    "target rows count": output["row count"]["target"],
+                    "counts equal": output["row count"]["source"]
+                    == output["row count"]["target"],
+                    "rows equal": len(output["diff"]) == 0,
+                }
+            )
             self.log_summary(summary)
 
     def log_summary(self, summary):
@@ -179,6 +196,8 @@ if __name__ == "__main__":
     dsn2 = "postgres://postgres@prev_db:5432/cla_backend"
     exclude_columns = ["id", "created", "modified", "search_field", "reference"]
     output_dir = "/data/yapgdd"
-    exclude_tables = ['oauth2_provider_refreshtoken', "auth_user"]
-    diff = Yapgdd(dsn1, dsn2, exclude_columns=exclude_columns, exclude_tables=exclude_tables)
+    exclude_tables = ["oauth2_provider_refreshtoken", "auth_user"]
+    diff = Yapgdd(
+        dsn1, dsn2, exclude_columns=exclude_columns, exclude_tables=exclude_tables
+    )
     print(diff.diff_data())
