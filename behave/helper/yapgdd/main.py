@@ -121,10 +121,14 @@ class Yapgdd:
                     self.diff_row(table, source_row, target_row, rownumber)
                 )
 
+        if "rownumber" not in locals():
+            rownumber = 0
+        else:
+            rownumber += 1
         # Check if there are more target rows
         for target_row in target_cursor:
-            rownumber += 1
             output["diff"].append(self.diff_row(table, {}, target_row, rownumber))
+            rownumber += 1
 
         return output
 
@@ -173,7 +177,7 @@ class Yapgdd:
                     "rows equal": len(output["diff"]) == 0,
                 }
             )
-            self.log_summary(summary)
+        self.log_summary(summary)
 
     def log_summary(self, summary):
         headers = {
@@ -195,9 +199,9 @@ if __name__ == "__main__":
     dsn1 = "postgres://postgres@db:5432/cla_backend"
     dsn2 = "postgres://postgres@prev_db:5432/cla_backend"
     exclude_columns = ["id", "created", "modified", "search_field", "reference"]
-    output_dir = "/data/yapgdd"
+    output_dir = os.path.join(os.environ.get("DATA_DIRECTORY", "/tmp"), "yapgdd")
     exclude_tables = ["oauth2_provider_refreshtoken", "auth_user"]
     diff = Yapgdd(
         dsn1, dsn2, exclude_columns=exclude_columns, exclude_tables=exclude_tables
     )
-    print(diff.diff_data())
+    diff.diff_data()

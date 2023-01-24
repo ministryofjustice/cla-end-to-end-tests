@@ -8,4 +8,4 @@ if test -f "./data/cla_backend.main.backup.sql"; then
   echo "RESTORING PREVIOUS DATABASE"
   docker-compose exec prev_db psql cla_backend -U postgres -a -f "./data/cla_backend.main.backup.sql"
 fi
-docker-compose run --entrypoint "python3 /behave_local/helper/yapgdd/main.py" cla-end-to-end
+docker-compose run --entrypoint "python3 /behave/helper/yapgdd/main.py" cla-end-to-end
