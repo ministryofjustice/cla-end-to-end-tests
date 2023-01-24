@@ -41,8 +41,16 @@ jobs:
           command: |
             cd behave
             docker-compose run --name cla-end-to-end cla-end-to-end
+      - run:
+          name: Copy artifacts
+          command: |
+            echo "Manually copying files because circleci docker executor does not support volumes"
+            echo "https://support.circleci.com/hc/en-us/articles/360007324514-How-can-I-mount-volumes-to-docker-containers-"
+            docker cp cla-end-to-end:/data behave/data
+          when: always
       - store_artifacts:
           path: behave/data
+          destination: data
 
 workflows:
   build:

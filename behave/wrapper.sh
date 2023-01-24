@@ -6,6 +6,10 @@ export A11Y=${A11Y_ENABLED:-false}
 echo "A11Y is $A11Y"
 cd behave
 
+#
+# execute behave
+#
+
 exec behave "-D a11y=$A11Y"
 # Clean up downloads
 rm -rf data/downloads/*

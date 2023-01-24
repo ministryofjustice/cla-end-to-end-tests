@@ -24,9 +24,9 @@ COPY requirements.txt requirements.txt
 RUN pip3 install -r ./requirements.txt
 
 RUN mkdir /behave
-COPY . /behave
+WORKDIR /behave
 
-COPY ./wrapper.sh wrapper.sh
+COPY . .
 
 ENV run_a11y $a11y
 

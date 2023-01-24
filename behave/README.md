@@ -27,7 +27,7 @@ fala feature files:
 
 ## How to run tests
 
-To run all tests, execute in main behave directory (behave_local if bashed into Docker container):
+To run all tests, execute in main behave directory (/behave_local if bashed into Docker container):
 
 `behave`
 
@@ -54,7 +54,7 @@ to build locally:
 `docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d --build`
 
 bash into the container and run them from there:
-`docker-compose run --entrypoint /bin/bash cla-end-to-end`
+`docker-compose run --entrypoint sh cla-end-to-end`
 
 ## Current state of affairs Apple Silicon (arm64) users
 
