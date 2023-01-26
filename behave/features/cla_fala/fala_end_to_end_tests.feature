@@ -7,10 +7,11 @@ Feature: FALA end to end tests
     Given I am on the Find a legal aid adviser homepage
 
   @fala-search-location
-  Scenario: Search for legal advisers via postcode and city
-    Given I provide the <location> details
+  Scenario Outline: Search for legal advisers via postcode and city
+    Given I provide the "<location>" details
+    When I select the 'search' button on the FALA homepage
+    Then I am taken to the result page
+    Examples:
       | location |
       | SW1H 9AJ |
       | London   |
-    When I select the "search" button on the FALA homepage
-    Then I am taken to the search page
