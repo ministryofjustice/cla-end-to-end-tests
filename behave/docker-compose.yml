@@ -29,6 +29,7 @@ services:
       - .:/behave_local
       -  ./fox_admin_downloads:/fox_admin_downloads
     environment:
+      A11Y_ENABLED: ${A11Y_ENABLED:-false}
       BROWSER: chrome
       ARTIFACTS_DIRECTORY: ../behave_local
       DOWNLOAD_DIRECTORY: /fox_admin_downloads

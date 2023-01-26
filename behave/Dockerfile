@@ -25,7 +25,6 @@ COPY . /behave
 
 COPY ./wrapper.sh wrapper.sh
 
-ARG a11y="false"
 ENV run_a11y $a11y
 
 ENTRYPOINT ./wrapper.sh $run_a11y

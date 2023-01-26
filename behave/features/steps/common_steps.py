@@ -301,7 +301,7 @@ def check_accessibility(context):
     axe = Axe(context.helperfunc.driver())
     axe.inject()
     results = axe.run()
-    if len(axe.report(results["violations"])) > 0:
+    if len(results["violations"]) > 0:
         make_dir("feature_errors")
         axe.write_results(results, "feature_errors/ally.json")
     return len(results["violations"]) == 0, axe.report(results["violations"])

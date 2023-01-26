@@ -23,8 +23,10 @@ def before_all(context):
     context.download_dir = DOWNLOAD_DIRECTORY
     # Boolean for axe finding a11y issues or not
     context.a11y_running = False
-    if not context.config.userdata.get("a11y", False):
-        context.config.userdata.update({"a11y": "false"})
+    # Boolean that a11y environment variables are set
+    a11y_arg = context.config.userdata.get("a11y", "false").lower() == "true"
+    # Set userdata a11y to be boolean value and not a String
+    context.config.userdata.update({"a11y": a11y_arg})
     helper_func.maximize()
 
 
@@ -55,6 +57,6 @@ def after_all(context):
 
 
 def after_step(context, step):
-    # behave -D a11y=true -t @a11y-check
-    if context.config.userdata["a11y"] == "true" and get_tag(context.tags, A11Y_TAG):
+    # command to run: behave -D a11y=true -t @a11y-check
+    if context.config.userdata["a11y"] and get_tag(context.tags, A11Y_TAG):
         context.a11y_running = check_accessibility(context)
