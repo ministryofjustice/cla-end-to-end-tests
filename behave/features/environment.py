@@ -1,19 +1,24 @@
 import os
 import time
+import logging
+import subprocess
 from behave.contrib.scenario_autoretry import patch_scenario_with_autoretry
 from behave.log_capture import capture
 
 from helper.constants import (
     BROWSER,
     ARTIFACTS_DIRECTORY,
-    DOWNLOAD_DIRECTORY,
-    A11Y_TAG,
     DATA_DIRECTORY,
+    A11Y_TAG,
+    DATABASE_SNAPSHOT_ENABLED,
 )
 
 from helper.helper_web import get_browser
 from features.steps.common_steps import check_accessibility, make_dir, get_tag
 import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 def before_all(context):
@@ -36,9 +41,52 @@ def before_all(context):
     helper_func.maximize()
 
 
+def run_cmd(cmd):
+    logging.info("running: %r" % cmd)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = proc.communicate()
+    if proc.returncode:
+        logging.error(stderr)
+    else:
+        if stdout:
+            logging.error("unexpected output: " + str(stdout))
+        if stderr:
+            logging.info(stderr)
+    logging.info("done")
+
+
+def restore_to_last_snapshot():
+    cmd = [
+        "pg_restore",
+        "--clean",
+        "--dbname=cla_backend",
+        "cla_backend.backup",
+    ]
+    run_cmd(cmd)
+
+
+def take_snapshot():
+    cmd = [
+        "pg_dump",
+        "--clean",
+        "--blobs",
+        "--format=custom",
+        "--file=cla_backend.backup",
+        "--host=db",
+        "--username=postgres",
+    ]
+    run_cmd(cmd)
+
+
 def before_feature(context, feature):
     for scenario in feature.scenarios:
         patch_scenario_with_autoretry(scenario, max_attempts=3)
+
+
+@capture
+def before_scenario(context, scenario):
+    if DATABASE_SNAPSHOT_ENABLED:
+        take_snapshot()
 
 
 @capture
@@ -46,6 +94,10 @@ def after_scenario(context, scenario):
     if not context.a11y_approved:
         logging.error("ACCESSIBILITY ISSUES FOUND, CHECK ARTIFACTS FOR INFORMATION")
     if scenario.status == "failed":
+
+        if DATABASE_SNAPSHOT_ENABLED:
+            restore_to_last_snapshot()
+
         scenario_file_path = os.path.join(
             context.feature_errors_dir,
             scenario.feature.name.replace(" ", "_")

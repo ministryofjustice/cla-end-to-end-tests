@@ -12,5 +12,3 @@ services:
     build: https://github.com/ministryofjustice/cla_backend.git#master
   clapublic:
     build: https://github.com/ministryofjustice/cla_public.git#master
-  db:
-    image: postgres

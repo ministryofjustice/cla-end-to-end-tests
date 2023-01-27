@@ -1,6 +1,9 @@
 import os
 
 BROWSER = os.environ.get("BROWSER")
+DATABASE_SNAPSHOT_ENABLED = (
+    os.environ.get("DATABASE_SNAPSHOT_ENABLED", "False").lower() == "true"
+)
 DATA_DIRECTORY = os.environ.get("DATA_DIRECTORY", "./data")
 ARTIFACTS_DIRECTORY = os.environ.get("ARTIFACTS_DIRECTORY")
 CLA_BACKEND_URL = os.environ.get("CLA_E2E_BACKEND_URL")

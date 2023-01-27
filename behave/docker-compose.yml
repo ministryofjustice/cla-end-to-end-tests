@@ -44,6 +44,11 @@ services:
       CALL_CENTRE_TEST_USER: test_operator
       CLA_PROVIDER_CLIENT_ID: 59657ed22d980251cdd3
       CLA_PROVIDER_SECRET_ID: 0494287c65bdf61d29f0eeed467ec8e090f0d80f
+      DATABASE_SNAPSHOT_ENABLED: ${DATABASE_SNAPSHOT_ENABLED:-false}
+      PGPASSWORD: postgres
+      PGUSER: postgres
+      PGHOST: db
+      PGDATABASE: cla_backend
 
   seleniumchrome:
     deploy:
@@ -92,24 +97,32 @@ services:
       SESSION_COOKIE_SECURE: "False"
 
   db:
-    image: postgres:11.18-alpine
+    image: postgres:11.6-alpine
     ports:
-      - 5432
+      - "55793:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: cla_backend
       POSTGRES_HOST_AUTH_METHOD: trust
+      PGPASSWORD: postgres
+      PGUSER: postgres
+      PGDATABASE: cla_backend
+    volumes:
+      - ./data:/data
 
   prev_db:
-    image: postgres:11.18-alpine
+    image: postgres:11.6-alpine
     ports:
-      - 5432
+      - "55794:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: cla_backend
       POSTGRES_HOST_AUTH_METHOD: trust
+      PGPASSWORD: postgres
+      PGUSER: postgres
+      PGDATABASE: cla_backend
     volumes:
       - ./data:/data
 

@@ -17,6 +17,7 @@ RUN apk add --no-cache \
       postgresql-dev \
       gcc \
       musl-dev \
+      postgresql-client \
       python3-dev && \
     pip3 install -U setuptools pip==18.1 wheel
 
@@ -24,7 +25,6 @@ COPY requirements.txt requirements.txt
 RUN pip3 install -r ./requirements.txt
 
 RUN mkdir /behave
-WORKDIR /behave
 
 COPY . .
 
