@@ -10,8 +10,8 @@ Feature: FALA end to end tests
   Scenario Outline: Search for legal advisers via postcode and city
     Given I provide the "<location>" details
     When I select the 'search' button on the FALA homepage
-    Then I am taken to the result page
+    Then I am taken to the page corresponding to "<location>" result
     Examples:
       | location |
-      | SW1H 9AJ |
+      | SW1H9AJ |
       | London   |
