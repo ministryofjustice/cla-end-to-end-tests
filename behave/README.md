@@ -21,9 +21,9 @@ Cla_public feature files:
 
 `behave > features > cla_public`
 
-Cla_fala feature files:
+fala feature files:
 
-`behave > features > cla_fala`
+`behave > features > fala`
 
 ## How to run tests
 
