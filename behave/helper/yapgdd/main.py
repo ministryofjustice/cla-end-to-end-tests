@@ -61,9 +61,10 @@ class Yapgdd:
         # Check source row matches target row
         for key, value in source_row.items():
             target_value = None
+            icon = "-"
             if target_row:
-                target_row.pop(key, None)
-            icon = "-" if target_value is None else "~"
+                icon = "~"
+                target_value = target_row.pop(key, None)
             if target_value != value:
                 diff[key] = {
                     "icon": icon,
@@ -95,7 +96,6 @@ class Yapgdd:
         sql = f"SELECT {cols} FROM {table}"
         if "id" in columns:
             sql += " order by id"
-        sql += " LIMIT 10"
         cursor = self.get_dict_cursor(connection)
         cursor.execute(sql)
         return cursor
@@ -114,7 +114,9 @@ class Yapgdd:
         }
         source_cursor = self.select_all(self.source_conn, table, source_columns)
         target_cursor = self.select_all(self.target_conn, table, target_columns)
-        for rownumber, source_row in enumerate(source_cursor):
+        rownumber = 0
+        for index, source_row in enumerate(source_cursor):
+            rownumber = index + 1
             target_row = target_cursor.fetchone()
             if source_row != target_row:
                 output["diff"].append(
@@ -147,6 +149,7 @@ class Yapgdd:
                             row["target"],
                         ]
                     )
+
             table = tabulate(rows, headers, tablefmt="simple_grid")
             fh.write(table)
 
@@ -196,12 +199,32 @@ class Yapgdd:
 
 
 if __name__ == "__main__":
-    dsn1 = "postgres://postgres@db:5432/cla_backend"
-    dsn2 = "postgres://postgres@prev_db:5432/cla_backend"
-    exclude_columns = ["id", "created", "modified", "search_field", "reference"]
+    dsn1 = "postgres://postgres:postgres@prev_db:5432/cla_backend"
+    dsn2 = "postgres://postgres:postgres@db:5432/cla_backend"
+
+    exclude_columns = [
+        "id",
+        "created",
+        "modified",
+        "search_field",
+        "reference",
+        "patch",
+        "notes",
+        "context",
+        "nodes",
+    ]
     output_dir = os.path.join(os.environ.get("DATA_DIRECTORY", "/tmp"), "yapgdd")
-    exclude_tables = ["oauth2_provider_refreshtoken", "auth_user"]
+    exclude_tables = [
+        "oauth2_provider_refreshtoken",
+        "auth_user",
+        "oauth2_provider_accesstoken",
+        "django_admin_log",
+    ]
     diff = Yapgdd(
-        dsn1, dsn2, exclude_columns=exclude_columns, exclude_tables=exclude_tables
+        dsn1,
+        dsn2,
+        exclude_columns=exclude_columns,
+        exclude_tables=exclude_tables,
+        output_dir=output_dir,
     )
     diff.diff_data()
