@@ -191,4 +191,4 @@ CLA_CONTACT_US_USER_PERSON_TO_CALL = "Elena Fisher"
 
 MINIMUM_SLEEP_SECONDS = 2
 
-FALA_HOMEPAGE_HEADER = "Find a legal aid adviser or family mediator"
+FALA_HEADER = "Find a legal aid adviser or family mediator"

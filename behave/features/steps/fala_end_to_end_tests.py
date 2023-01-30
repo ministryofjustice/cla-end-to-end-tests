@@ -1,4 +1,4 @@
-from helper.constants import CLA_FALA_URL, FALA_HOMEPAGE_HEADER
+from helper.constants import CLA_FALA_URL, FALA_HEADER
 
 from behave import step
 
@@ -10,7 +10,7 @@ def step_impl_homepage(context):
     title_xpath = context.helperfunc.find_by_xpath(
         "//html/body/div/main/div/div/h1"
     ).text.replace("\n", " ")
-    assert title_xpath, f"{FALA_HOMEPAGE_HEADER}"
+    assert title_xpath, f"{FALA_HEADER}"
 
 
 @step('I provide the "{location}" details')
@@ -40,5 +40,5 @@ def step_impl_result_page(context, location):
     )
 
     assert current_path, f"""{CLA_FALA_URL}/?postcode={location}+&name=&search="""
-    assert title_xpath, f"{FALA_HOMEPAGE_HEADER}"
+    assert title_xpath, f"{FALA_HEADER}"
     assert result_container_xpath, result_number_paragraph is not None
