@@ -13,7 +13,7 @@ Feature: FALA end to end tests
     Then I am taken to the page corresponding to "<location>" result
     Examples:
       | location |
-      | SW1H9AJ |
+      | SW1H9AJ  |
       | London   |
 
 
@@ -22,10 +22,10 @@ Feature: FALA end to end tests
     Given I provide the "<location>" details
     When I select the 'search' button on the FALA homepage
     Then I am taken to the page corresponding to "<location>" result
-    When I filter by the category 'Crime' on the result page
+    When I "<filter>" by category on the result page
     And I select the 'Apply filter' button
-    Then my result number and list has been updated to reflect the applied filter
+    Then the result number and list has been updated to reflect the applied filter
     Examples:
-      | location |
-      | SW1H9AJ |
-      | London   |
+      | location | filter |
+      | SW1H9AJ  | Crime  |
+      | London   | Crime  |
