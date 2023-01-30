@@ -9,6 +9,7 @@ services:
       -wait tcp://clasocketserver:8005
       -wait tcp://clabackend:8000
       -wait tcp://clapublic:8000
+      -wait tcp://fala:8000
       -wait tcp://seleniumchrome:4444
       -wait-retry-interval 10s
       -timeout 180s
@@ -18,6 +19,7 @@ services:
       - clabackend
       - seleniumchrome
       - clasocketserver
+      - fala
 
   cla-end-to-end:
     container_name: cla-end-to-end
@@ -32,6 +34,7 @@ services:
       CLA_E2E_PUBLIC_URL: ${CLA_E2E_PUBLIC_URL:-http://clapublic:8000}
       CLA_E2E_BACKEND_URL: ${CLA_E2E_BACKEND_URL:-http://clabackend:8000}
       CLA_E2E_FRONTEND_URL: ${CLA_E2E_FRONTEND_URL:-http://clafrontend:8000}
+      CLA_E2E_FALA_URL: ${CLA_E2E_FALA_URL:-http://fala:8000}
       CLA_E2E_SELENIUM_WEB_DRIVER_URL: ${CLA_E2E_SELENIUM_WEB_DRIVER_URL:-http://seleniumchrome:4444/wd/hub}
       CALL_CENTRE_CLIENT_ID: b4b9220ffcb11ebfdab1
       CALL_CENTRE_SECRET_ID: 2df71313bdd38a2e1b815015e1b14387e7681d41
@@ -142,3 +145,13 @@ services:
       OS_PLACES_API_KEY: ${OS_PLACES_API_KEY:-CHANGE_ME}
     depends_on:
       - clabackend
+
+  fala:
+    image: ${FALA_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/fala:master}
+    ports:
+      - "8013:8000"
+    environment:
+      HOST_NAME: "fala"
+      SECRET_KEY: CHANGE_ME
+      LAALAA_API_HOST: https://laa-legal-adviser-api-staging.apps.live-1.cloud-platform.service.justice.gov.uk
+      CLA_ENV: dev

@@ -21,6 +21,10 @@ Cla_public feature files:
 
 `behave > features > cla_public`
 
+fala feature files:
+
+`behave > features > fala`
+
 ## How to run tests
 
 To run all tests, execute in main behave directory (behave_local if bashed into Docker container):
