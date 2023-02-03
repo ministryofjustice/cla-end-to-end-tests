@@ -21,6 +21,14 @@ def step_impl_input_location(context, location):
     assert input_xpath.get_attribute("value"), location
 
 
+@step('I provide an organisation name "{organisation}"')
+def step_impl_input_organisation(context, organisation):
+    input_id = context.helperfunc.find_by_id("id_name")
+    input_id.send_keys(organisation)
+    input_xpath = context.helperfunc.find_by_xpath('//input[@id="id_name"]')
+    assert input_xpath.get_attribute("value"), organisation
+
+
 @step("I select the 'search' button on the FALA homepage")
 def step_impl_click_search(context):
     search_button = context.helperfunc.find_by_id("searchButton")
@@ -89,3 +97,26 @@ def step_impl_error_shown_on_page(context):
     alert = context.helperfunc.find_by_css_selector(".alert-message")
     assert alert is not None
     assert alert.text, "No results"
+
+
+@step('I am taken to the page corresponding to the "{location}" "{organisation}" search result')
+def step_impl_result_page_with_multi_params(context, location, organisation):
+    result_number_paragraph = context.helperfunc.find_by_xpath('//p[@class="govuk-body"]')
+    current_path = context.helperfunc.get_current_path()
+    title_xpath = context.helperfunc.find_by_xpath("//html/body/div/main/div/div/h1")
+    result_container_xpath = context.helperfunc.find_by_xpath('//div[@class="search-results-container"]')
+
+    assert (current_path), f"""{CLA_FALA_URL}/?postcode={location}+&name={organisation}&search="""
+    assert title_xpath, f"{FALA_HEADER}"
+    assert result_container_xpath, result_number_paragraph is not None
+
+
+@step('"{count}" result is visible on the results page')
+def step_impl_count_results_visible_on_results_page(context, count):
+    count = int(count)
+    listitems = context.helperfunc.find_many_by_xpath(
+        "//main/div/div[3]/div[1]/section/div/div[2]/div/ul/li"
+    )
+    assert listitems is not None
+    list_count = len(listitems)
+    assert list_count == count

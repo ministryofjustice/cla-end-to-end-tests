@@ -16,6 +16,7 @@ Feature: FALA end to end tests
       | SW1H9AJ  |
       | London   |
 
+<<<<<<< HEAD
 
   @fala-apply-filter-after-search
   Scenario Outline: Applying filters on the result page provide a new result list of legal advisers
@@ -37,3 +38,15 @@ Feature: FALA end to end tests
   And I provide the "Heswall" details
   When I select the 'search' button on the FALA homepage
   Then the page shows an error
+=======
+  @fala-search-organisation
+  Scenario Outline: Search by organisation name
+    Given I provide the "<location>" details
+    And I provide an organisation name "<organisation>"
+    When I select the 'search' button on the FALA homepage
+    Then I am taken to the page corresponding to the "<location>" "<organisation>" search result
+    And "1" result is visible on the results page
+    Examples:
+          | location |  organisation  |
+          | SE6 4QZ  | Boothroyds LLP |
+>>>>>>> LGA-2386 FALA end-to-end test for search by organisation name
