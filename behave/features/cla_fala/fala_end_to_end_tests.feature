@@ -22,10 +22,10 @@ Feature: FALA end to end tests
     Given I provide the "<location>" details
     When I select the 'search' button on the FALA homepage
     Then I am taken to the page corresponding to "<location>" result
-    When I "<filter>" by category on the result page
+    When I browse through the filter categories and select "<filter_label>"
     And I select the 'Apply filter' button
-    Then the result number and list has been updated to reflect the applied filter
+    Then the result page containing "<location>" is updated to apply the filter "<filter_label>"
     Examples:
-      | location | filter |
-      | SW1H9AJ  | Crime  |
-      | London   | Crime  |
+      | location | filter_label |
+      | SW1H9AJ  | Crime        |
+      | London   | Housing      |
