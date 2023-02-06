@@ -82,3 +82,10 @@ def step_impl_update_result_page(context, location, filter_label):
     assert title_xpath, f"{FALA_HEADER}"
     assert result_container_xpath is not None
     assert updated_result_number_paragraph is not None
+
+
+@step("the page shows an error")
+def step_impl_error_shown_on_page(context):
+    alert = context.helperfunc.find_by_css_selector(".alert-message")
+    assert alert is not None
+    assert alert.text, "No results"
