@@ -38,7 +38,47 @@ def step_impl_result_page(context, location):
     result_number_paragraph = context.helperfunc.find_by_xpath(
         '//p[@class="govuk-body"]'
     )
-
     assert current_path, f"""{CLA_FALA_URL}/?postcode={location}+&name=&search="""
     assert title_xpath, f"{FALA_HEADER}"
     assert result_container_xpath, result_number_paragraph is not None
+
+
+@step('I browse through the filter categories and select "{filter_label}"')
+def step_impl_click_checkbox_filter(context, filter_label):
+    find_label_in_labels_list = context.helperfunc.find_many_by_xpath(
+        f"//fieldset/div/div/label[contains(text(), '{filter_label}')]"
+    )
+    checkbox_list = context.helperfunc.find_many_by_xpath("//fieldset/div/div/input")
+    for checkbox in checkbox_list:
+        if find_label_in_labels_list == filter_label:
+            checkbox.click()
+            assert checkbox is not None
+
+    assert find_label_in_labels_list, f"{filter_label}"
+
+
+@step("I select the 'Apply filter' button")
+def step_impl_apply_filter(context):
+    apply_filter_button = context.helperfunc.find_by_name("filter")
+    assert apply_filter_button is not None
+    apply_filter_button.click()
+
+
+@step(
+    'the result page containing "{location}" is updated to apply the filter "{filter_label}"'
+)
+def step_impl_update_result_page(context, location, filter_label):
+    current_path = context.helperfunc.get_current_path()
+    title_xpath = context.helperfunc.find_by_xpath("//html/body/div/main/div/div/h1")
+    result_container_xpath = context.helperfunc.find_by_xpath(
+        '//div[@class="search-results-container"]'
+    )
+    updated_result_number_paragraph = context.helperfunc.find_by_xpath(
+        '//p[@class="govuk-body"]'
+    )
+    assert (
+        current_path
+    ), f"""{CLA_FALA_URL}/?postcode={location}&name=&categories={filter_label}&filter="""
+    assert title_xpath, f"{FALA_HEADER}"
+    assert result_container_xpath is not None
+    assert updated_result_number_paragraph is not None
