@@ -304,4 +304,4 @@ def check_accessibility(context):
     if len(results["violations"]) > 0:
         make_dir("feature_errors")
         axe.write_results(results, "feature_errors/ally.json")
-    return len(results["violations"]) == 0, axe.report(results["violations"])
+    return len(results["violations"]) == 0
