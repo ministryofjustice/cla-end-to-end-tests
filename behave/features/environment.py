@@ -37,7 +37,7 @@ def before_feature(context, feature):
 
 @capture
 def after_scenario(context, scenario):
-    if context.a11y_running:
+    if not context.a11y_running:
         logging.error("ACCESSIBILITY ISSUES FOUND, CHECK ARTIFACTS FOR INFORMATION")
     if scenario.status == "failed":
         scenario_error_dir = os.path.join(context.artifacts_dir, "feature_errors")
