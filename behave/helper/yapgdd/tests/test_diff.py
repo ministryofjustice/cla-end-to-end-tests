@@ -25,6 +25,15 @@ class DiffTest(TestDatabases, unittest.TestCase):
 
         expected_summary = [
             {
+                "table": "personal_details",
+                "table present": True,
+                "columns equal": True,
+                "source rows count": 1,
+                "target rows count": 1,
+                "counts equal": True,
+                "rows equal": False,
+            },
+            {
                 "table": "logs",
                 "table present": True,
                 "columns equal": True,
@@ -32,7 +41,7 @@ class DiffTest(TestDatabases, unittest.TestCase):
                 "target rows count": 3,
                 "counts equal": False,
                 "rows equal": False,
-            }
+            },
         ]
         self.assertEqual(summary, expected_summary)
 
@@ -42,20 +51,31 @@ class DiffTest(TestDatabases, unittest.TestCase):
                 {
                     "code": {
                         "icon": "+",
-                        "row number": 2,
+                        "row number": 3,
                         "column": "code",
                         "source": None,
                         "target": "COMPLAINT_CREATED",
                     },
                     "level": {
                         "icon": "+",
-                        "row number": 2,
+                        "row number": 3,
                         "column": "level",
                         "source": None,
                         "target": 29,
                     },
                 }
-            ]
+            ],
+            "personal_details": [
+                {
+                    "age": {
+                        "icon": "~",
+                        "column": "age",
+                        "source": 36,
+                        "target": 35,
+                        "row number": 1,
+                    }
+                }
+            ],
         }
 
         actual_diffs = {}
