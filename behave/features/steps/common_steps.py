@@ -1,4 +1,6 @@
 import re
+import time
+import os
 from behave import step
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
@@ -9,6 +11,7 @@ from helper.constants import (
     USER_HTML_TAGS,
 )
 from selenium.webdriver.common.by import By
+from axe_selenium_python import Axe
 
 
 def remove_prefix(text, prefix):
@@ -276,3 +279,29 @@ def step_impl_create_case(context):
     context.case_reference = context.helperfunc.find_by_css_selector(
         "h1.CaseBar-caseNum a"
     ).text
+
+
+def get_tag(context, find_tag):
+    return [tag for tag in context if find_tag in tag]
+
+
+def make_dir(dir):
+    """
+    Checks if directory exists, if not make a directory, given the directory path
+    :param: <string>dir: Full path of directory to create
+    """
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+
+
+def check_accessibility(context):
+    # Sleep prevents Axe exceptions.
+    # If no logs for Axe, Axe is called too fast when trying to inject javascript.
+    time.sleep(0.6)
+    axe = Axe(context.helperfunc.driver())
+    axe.inject()
+    results = axe.run()
+    if len(results["violations"]) > 0:
+        make_dir("feature_errors")
+        axe.write_results(results, "feature_errors/ally.json")
+    return len(results["violations"]) == 0
