@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.9'
 
 
 services:
@@ -23,11 +23,13 @@ services:
 
   cla-end-to-end:
     container_name: cla-end-to-end
-    build: .
+    build:
+      context: .
     volumes:
       - .:/behave_local
       -  ./fox_admin_downloads:/fox_admin_downloads
     environment:
+      A11Y_ENABLED: ${A11Y_ENABLED:-false}
       BROWSER: chrome
       ARTIFACTS_DIRECTORY: ../behave_local
       DOWNLOAD_DIRECTORY: /fox_admin_downloads

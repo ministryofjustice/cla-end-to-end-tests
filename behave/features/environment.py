@@ -2,8 +2,15 @@ import os
 import time
 from behave.contrib.scenario_autoretry import patch_scenario_with_autoretry
 from behave.log_capture import capture
-from helper.constants import BROWSER, ARTIFACTS_DIRECTORY, DOWNLOAD_DIRECTORY
+from helper.constants import (
+    BROWSER,
+    ARTIFACTS_DIRECTORY,
+    DOWNLOAD_DIRECTORY,
+    A11Y_TAG,
+)
 from helper.helper_web import get_browser
+from features.steps.common_steps import check_accessibility, make_dir, get_tag
+import logging
 
 
 def before_all(context):
@@ -14,6 +21,12 @@ def before_all(context):
     context.artifacts_dir = ARTIFACTS_DIRECTORY
     # dir for report fox_admin_downloads
     context.download_dir = DOWNLOAD_DIRECTORY
+    # Boolean for axe finding a11y issues or not
+    context.a11y_running = False
+    # Boolean that a11y environment variables are set
+    a11y_arg = context.config.userdata.get("a11y", "false").lower() == "true"
+    # Set userdata a11y to be boolean value and not a String
+    context.config.userdata.update({"a11y": a11y_arg})
     helper_func.maximize()
 
 
@@ -24,6 +37,8 @@ def before_feature(context, feature):
 
 @capture
 def after_scenario(context, scenario):
+    if context.a11y_running:
+        logging.error("ACCESSIBILITY ISSUES FOUND, CHECK ARTIFACTS FOR INFORMATION")
     if scenario.status == "failed":
         scenario_error_dir = os.path.join(context.artifacts_dir, "feature_errors")
         make_dir(scenario_error_dir)
@@ -41,10 +56,7 @@ def after_all(context):
     context.helperfunc.close()
 
 
-def make_dir(dir):
-    """
-    Checks if directory exists, if not make a directory, given the directory path
-    :param: <string>dir: Full path of directory to create
-    """
-    if not os.path.exists(dir):
-        os.makedirs(dir)
+def after_step(context, step):
+    # command to run: behave -D a11y=true -t @a11y-check
+    if context.config.userdata["a11y"] and get_tag(context.tags, A11Y_TAG):
+        context.a11y_running = check_accessibility(context)
