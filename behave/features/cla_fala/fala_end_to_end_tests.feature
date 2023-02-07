@@ -29,3 +29,11 @@ Feature: FALA end to end tests
       | location | filter_label |
       | SW1H9AJ  | Crime        |
       | London   | Housing      |
+
+
+  @fala-search-no-results
+  Scenario: I search for a town that does not have any solicitors and fails
+  Given I am on the Find a legal aid adviser homepage
+  And I provide the "Heswall" details
+  When I select the 'search' button on the FALA homepage
+  Then the page shows an error
