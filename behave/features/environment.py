@@ -22,7 +22,7 @@ def before_all(context):
     # dir for report fox_admin_downloads
     context.download_dir = DOWNLOAD_DIRECTORY
     # Boolean for axe finding a11y issues or not
-    context.a11y_running = False
+    context.a11y_approved = True
     # Boolean that a11y environment variables are set
     a11y_arg = context.config.userdata.get("a11y", "false").lower() == "true"
     # Set userdata a11y to be boolean value and not a String
@@ -37,7 +37,7 @@ def before_feature(context, feature):
 
 @capture
 def after_scenario(context, scenario):
-    if not context.a11y_running:
+    if not context.a11y_approved:
         logging.error("ACCESSIBILITY ISSUES FOUND, CHECK ARTIFACTS FOR INFORMATION")
     if scenario.status == "failed":
         scenario_error_dir = os.path.join(context.artifacts_dir, "feature_errors")
@@ -59,4 +59,5 @@ def after_all(context):
 def after_step(context, step):
     # command to run: behave -D a11y=true -t @a11y-check
     if context.config.userdata["a11y"] and get_tag(context.tags, A11Y_TAG):
-        context.a11y_running = check_accessibility(context)
+        # Returns False if a11y issues are found
+        context.a11y_approved = check_accessibility(context)
