@@ -115,6 +115,26 @@ pre-commit install
 To run them manually:
 ```
 pre-commit run --all-files
-``
+```
 
 ## Database diff
+Before we can compare anything we need to two database backups, master and the branch under test.
+### Master backup
+A backup of the resulting database of when the end-to-end tests are run the master branch. This backup should be called
+data/cla_backend.main.backup.
+
+You can generate this backup by making sure that you are using the master branches of the project under test
+and then running the following:
+```
+./run_test_local.sh --database-snapshot-enabled
+docker-compose exec db pg_dump cla_backend --clean --blobs --format=custom --host=db --username=postgres --file=/data/data/cla_backend.main.backup
+```
+
+### Generating the diff
+``
+./run_test_local.sh --database-snapshot-enabled
+./run_db_diff.sh
+``
+
+This should output a summary of all the tables that are different across the two databases.
+A more detailed difference of each table is created in the data/yapgdd/ folder, one .log file for each table
