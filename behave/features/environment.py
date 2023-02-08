@@ -15,10 +15,6 @@ from helper.constants import (
 
 from helper.helper_web import get_browser
 from features.steps.common_steps import check_accessibility, make_dir, get_tag
-import logging
-
-
-logger = logging.getLogger(__name__)
 
 
 def before_all(context):
