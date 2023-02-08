@@ -49,11 +49,9 @@ def step_impl_result_page(context, location):
         '//p[@class="govuk-body"]'
     )
     location_url_string = location.replace(" ", "+")
+    expected_url = f"""{CLA_FALA_URL}/?postcode={location_url_string}&name=&search="""
 
-    assert (
-        current_url
-        == f"""{CLA_FALA_URL}/?postcode={location_url_string}&name=&search="""
-    )
+    assert current_url == expected_url
     assert title_xpath == f"{FALA_HEADER}"
     assert result_container_xpath is not None
     assert result_number_paragraph is not None
@@ -90,11 +88,9 @@ def step_impl_update_result_page(context, location, filter_label):
         '//p[@class="govuk-body"]'
     )
     location_url_string = location.replace(" ", "+")
+    expected_url = f"""{CLA_FALA_URL}/?postcode={location_url_string}&name=&categories={filter_label}&filter="""
 
-    assert (
-        current_url
-        == f"""{CLA_FALA_URL}/?postcode={location_url_string}&name=&categories={filter_label}&filter="""
-    )
+    assert current_url == expected_url
     assert title_xpath == f"{FALA_HEADER}"
     assert result_container_xpath is not None
     assert updated_result_number_paragraph is not None
@@ -104,9 +100,8 @@ def step_impl_update_result_page(context, location, filter_label):
 def step_impl_error_shown_on_page(context):
     alert = context.helperfunc.find_by_css_selector(".alert-message")
     assert alert is not None
-    assert (
-        alert.text == "No results\nThere are no results matching your search criteria."
-    )
+    expected_text = "No results\nThere are no results matching your search criteria."
+    assert alert.text == expected_text
 
 
 @step(
@@ -125,11 +120,9 @@ def step_impl_result_page_with_multi_params(context, location, organisation):
     )
     organisation_url_string = organisation.replace(" ", "+")
     location_url_string = location.replace(" ", "+")
+    expected_url = f"""{CLA_FALA_URL}/?postcode={location_url_string}&name={organisation_url_string}&search="""
 
-    assert (
-        current_url
-        == f"""{CLA_FALA_URL}/?postcode={location_url_string}&name={organisation_url_string}&search="""
-    )
+    assert current_url == expected_url
     assert title_xpath == f"{FALA_HEADER}"
     assert result_container_xpath is not None
     assert result_number_paragraph is not None
