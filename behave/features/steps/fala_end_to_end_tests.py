@@ -17,8 +17,7 @@ def step_impl_homepage(context):
 def step_impl_input_location(context, location):
     input_id = context.helperfunc.find_by_id("id_postcode")
     input_id.send_keys(location)
-    input_xpath = context.helperfunc.find_by_xpath('//input[@id="id_postcode"]')
-    input_value = input_xpath.get_attribute("value")
+    input_value = input_id.get_attribute("value")
     assert input_value == location
 
 
@@ -26,8 +25,7 @@ def step_impl_input_location(context, location):
 def step_impl_input_organisation(context, organisation):
     input_id = context.helperfunc.find_by_id("id_name")
     input_id.send_keys(organisation)
-    input_xpath = context.helperfunc.find_by_xpath('//input[@id="id_name"]')
-    input_value = input_xpath.get_attribute("value")
+    input_value = input_id.get_attribute("value")
     assert input_value == organisation
 
 
@@ -50,9 +48,12 @@ def step_impl_result_page(context, location):
     result_number_paragraph = context.helperfunc.find_by_xpath(
         '//p[@class="govuk-body"]'
     )
-    location = location.replace(" ", "+")
+    location_url_string = location.replace(" ", "+")
 
-    assert current_url == f"""{CLA_FALA_URL}/?postcode={location}&name=&search="""
+    assert (
+        current_url
+        == f"""{CLA_FALA_URL}/?postcode={location_url_string}&name=&search="""
+    )
     assert title_xpath == f"{FALA_HEADER}"
     assert result_container_xpath, result_number_paragraph is not None
 
@@ -87,11 +88,11 @@ def step_impl_update_result_page(context, location, filter_label):
     updated_result_number_paragraph = context.helperfunc.find_by_xpath(
         '//p[@class="govuk-body"]'
     )
-    location = location.replace(" ", "+")
+    location_url_string = location.replace(" ", "+")
 
     assert (
         current_url
-        == f"""{CLA_FALA_URL}/?postcode={location}&name=&categories={filter_label}&filter="""
+        == f"""{CLA_FALA_URL}/?postcode={location_url_string}&name=&categories={filter_label}&filter="""
     )
     assert title_xpath == f"{FALA_HEADER}"
     assert result_container_xpath is not None
@@ -121,23 +122,21 @@ def step_impl_result_page_with_multi_params(context, location, organisation):
     result_container_xpath = context.helperfunc.find_by_xpath(
         '//div[@class="search-results-container"]'
     )
-    organisation = organisation.replace(" ", "+")
-    location = location.replace(" ", "+")
+    organisation_url_string = organisation.replace(" ", "+")
+    location_url_string = location.replace(" ", "+")
 
     assert (
         current_url
-        == f"""{CLA_FALA_URL}/?postcode={location}&name={organisation}&search="""
+        == f"""{CLA_FALA_URL}/?postcode={location_url_string}&name={organisation_url_string}&search="""
     )
     assert title_xpath == f"{FALA_HEADER}"
     assert result_container_xpath, result_number_paragraph is not None
 
 
-@step('"{count}" result is visible on the results page')
+@step("{count:d} result is visible on the results page")
 def step_impl_count_results_visible_on_results_page(context, count):
     count = int(count)
-    listitems = context.helperfunc.find_many_by_xpath(
-        "//main/div/div[3]/div[1]/section/div/div[2]/div/ul/li"
-    )
+    listitems = context.helperfunc.find_many_by_xpath("//ul[@Class='org-list']/li")
     assert listitems is not None
     list_count = len(listitems)
-    assert list_count == count
+    assert list_count == count, f"actual count is {list_count}"

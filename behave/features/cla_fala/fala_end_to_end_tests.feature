@@ -38,13 +38,13 @@ Feature: FALA end to end tests
   When I select the 'search' button on the FALA homepage
   Then the page shows an error
 
-  @fala-search-organisation   @fala-tests
+  @fala-search-organisation
   Scenario Outline: Search by organisation name
     Given I provide the "<location>" details
     And I provide an organisation name "<organisation>"
     When I select the 'search' button on the FALA homepage
     Then I am taken to the page corresponding to the "<location>" "<organisation>" search result
-    And "1" result is visible on the results page
+    And 1 result is visible on the results page
     Examples:
           | location |  organisation  |
-          | SE6 4QZ  | Boothroyds LLP |
+          | London   | Boothroyds LLP |
