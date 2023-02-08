@@ -55,7 +55,8 @@ def step_impl_result_page(context, location):
         == f"""{CLA_FALA_URL}/?postcode={location_url_string}&name=&search="""
     )
     assert title_xpath == f"{FALA_HEADER}"
-    assert result_container_xpath, result_number_paragraph is not None
+    assert result_container_xpath is not None
+    assert result_number_paragraph is not None
 
 
 @step('I browse through the filter categories and select "{filter_label}"')
@@ -130,7 +131,8 @@ def step_impl_result_page_with_multi_params(context, location, organisation):
         == f"""{CLA_FALA_URL}/?postcode={location_url_string}&name={organisation_url_string}&search="""
     )
     assert title_xpath == f"{FALA_HEADER}"
-    assert result_container_xpath, result_number_paragraph is not None
+    assert result_container_xpath is not None
+    assert result_number_paragraph is not None
 
 
 @step("{count:d} result is visible on the results page")
