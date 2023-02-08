@@ -27,8 +27,8 @@ Feature: FALA end to end tests
     Then the result page containing "<location>" is updated to apply the filter "<filter_label>"
     Examples:
       | location | filter_label |
-      | SW1H9AJ  | Crime        |
-      | London   | Housing      |
+      | SW1H9AJ  | crm          |
+      | London   | hou          |
 
 
   @fala-search-no-results
@@ -38,7 +38,7 @@ Feature: FALA end to end tests
   When I select the 'search' button on the FALA homepage
   Then the page shows an error
 
-  @fala-search-organisation
+  @fala-search-organisation   @fala-tests
   Scenario Outline: Search by organisation name
     Given I provide the "<location>" details
     And I provide an organisation name "<organisation>"
