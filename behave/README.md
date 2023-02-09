@@ -131,6 +131,10 @@ docker-compose exec db pg_dump cla_backend --clean --blobs --format=custom --hos
 ```
 
 ### Generating the diff
+Next we need to update docker-compose.yaml to use an image of the branch under test
+
+Then rerun the tests and followed by doing the database diff
+
 ``
 ./run_test_local.sh --database-snapshot-enabled
 ./run_db_diff.sh
