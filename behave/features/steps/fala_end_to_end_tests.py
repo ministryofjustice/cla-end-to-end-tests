@@ -1,6 +1,8 @@
-from helper.constants import CLA_FALA_URL, FALA_HEADER
+import time
 
+from helper.constants import CLA_FALA_URL, FALA_HEADER
 from behave import step
+from selenium.webdriver.support.select import Select
 
 
 @step("I am on the Find a legal aid adviser homepage")
@@ -135,3 +137,67 @@ def step_impl_count_results_visible_on_results_page(context, count):
     assert listitems is not None
     list_count = len(listitems)
     assert list_count == count, f"actual count is {list_count}"
+
+
+@step('I select the language "{language}"')
+def step_impl_select_language(context, language):
+    select = Select(context.helperfunc.find_by_xpath("//select"))
+    select.select_by_visible_text(f"{language}")
+
+    time.sleep(10)
+    # def do_test(*args):
+    #     return len(Select(context.helperfunc.find_by_xpath(f'//select')).all_selected_options) > 0
+    #
+    # wait = WebDriverWait(context.helperfunc.driver(), 10)
+    # wait.until(do_test)
+    # import pdb
+    # pdb.set_trace()
+    assert select.first_selected_option.get_attribute("text") == f"{language}"
+
+
+# select_all_languages = Select(context.helperfunc.find_by_xpath(f'//select'))
+# select_all_languages.select_by_visible_text(f'{language}')
+# time.sleep(3)
+# # breakpoint()
+# # select_chosen_language = select_all_languages.first_selected_option
+# assert select_all_languages.first_selected_option.get_attribute('text') == f'{language}'
+
+
+@step('it triggers the indicator code of "{code_indicator}"')
+def step_impl_select_code(context, code_indicator):
+    select_all_codes = Select(context.helperfunc.find_by_xpath("//select"))
+    select_all_codes.select_by_value(f"{code_indicator}")
+
+    dropdown_code_value = context.helperfunc.find_by_xpath("//select").get_attribute(
+        "value"
+    )
+    code_indicator_on_page = context.helperfunc.find_by_xpath("/html").get_attribute(
+        "lang"
+    )
+
+    assert f"{code_indicator}" == dropdown_code_value
+    assert dropdown_code_value == code_indicator_on_page
+
+
+@step('the page is updated to "{code_indicator}" and translated to "{language}"')
+def step_impl_translated(context, code_indicator, language):
+    updated_page = context.helperfunc.find_by_xpath("/html").get_attribute("lang")
+    updated_title_gui = context.helperfunc.find_by_xpath(
+        "//html/body/div/main/div/div/h1"
+    ).text
+    assert updated_page is not None
+    assert updated_title_gui is not None
+
+    # find_code_indicator = context.helperfunc.find_by_xpath(f'/html').get_attribute('lang')
+    # # find the xpath code
+    # # find_code_indicator = context.helperfunc.find_by_xpath(f'//html[@lang="{code_indicator}')
+    # # select the code and set the new xpath
+    # # find the xpath language
+    # create_new_current_path = context.helperfunc.get_current_path()
+    # print(create_new_current_path + "\n")
+    # # find_language_text = context.helperfunc.find_by_xpath(f'//select[contains(text(),"cy"')
+    # find_language_text = context.helperfunc.find_by_xpath(f'//select').get_attribute('value')
+    # # the code has to assert that it is truthy to the language
+    # print(find_code_indicator + "\n")
+    # print(find_language_text + "\n")
+    # assert False, find_code_indicator
