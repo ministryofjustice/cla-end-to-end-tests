@@ -138,14 +138,15 @@ def step_impl_count_results_visible_on_results_page(context, count):
     assert list_count == count, f"actual count is {list_count}"
 
 
-@step('I select the language "{language}"')
-def step_impl_select_language(context, language):
+@step('I select the language "{language} and select "{code_indicator}"')
+def step_impl_select_language(context, language, code_indicator):
     def options_created(*args):
         options_elements = context.helperfunc.find_many_by_xpath("//select/option")
         # have we got all the options recreated?
         return len(options_elements) == no_options
 
     select_all_languages = Select(context.helperfunc.find_by_xpath("//select"))
+
     # how many options are there for the languages?
     no_options = len(select_all_languages.options)
     select_all_languages.select_by_visible_text(f"{language}")
@@ -154,32 +155,20 @@ def step_impl_select_language(context, language):
     wait.until(options_created)
     select_chosen_language = select_all_languages.first_selected_option
     assert select_chosen_language.get_attribute("text") == f"{language}"
+    assert select_chosen_language.get_attribute("value") == f"{code_indicator}"
 
 
-@step('it triggers the indicator code of "{code_indicator}"')
-def step_impl_select_code(context, code_indicator):
-    select_all_codes = Select(context.helperfunc.find_by_xpath("//select"))
-    select_all_codes.select_by_value(f"{code_indicator}")
-
-    dropdown_code_value = context.helperfunc.find_by_xpath("//select").get_attribute(
-        "value"
-    )
-    code_indicator_on_page = context.helperfunc.find_by_xpath("/html").get_attribute(
-        "lang"
-    )
-
-    assert f"{code_indicator}" == dropdown_code_value
-    assert dropdown_code_value == code_indicator_on_page
-
-
-@step('the page is updated to "{code_indicator}" and translated to "{language}"')
-def step_impl_translated(context, code_indicator, language):
+@step(
+    'the page is updated to "{code_indicator}" and title starts with "{title_text_starts_with}"'
+)
+def step_impl_translated(context, code_indicator, title_text_starts_with):
     updated_page = context.helperfunc.find_by_xpath("/html").get_attribute("lang")
     updated_title_gui = context.helperfunc.find_by_xpath(
         "//html/body/div/main/div/div/h1"
     ).text
-    assert updated_page is not None
-    assert updated_title_gui is not None
+
+    assert updated_page == f"{code_indicator}"
+    assert updated_title_gui.startswith(f"{title_text_starts_with}")
 
     # find_code_indicator = context.helperfunc.find_by_xpath(f'/html').get_attribute('lang')
     # # find the xpath code

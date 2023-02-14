@@ -52,12 +52,11 @@ Feature: FALA end to end tests
 
   @dom-translation
   Scenario Outline: Selecting a language correctly updates the DOM
-    When I select the language "<language>"
-#    Then it triggers the indicator code of "<code_indicator>"
-#    And the page is updated to "<code_indicator>" and translated to "<language>"
+    When I select the language "<language>" and select "<code_indicator>"
+    And the page is updated to "<code_indicator>" and title starts with "<title_text_starts_with>"
     Examples:
-      | code_indicator | language     |
-      | cy             | Welsh        |
-#      | ee             | Ewe          |
-#      | ga             | Irish Gaelic |
-#      | gd             | Scots Gaelic |
+      | code_indicator | language     | title_text_starts_with |
+      | cy             | Welsh        | Dewch                  |
+     # | ee             | Ewe          |
+     # | ga             | Irish Gaelic |
+     # | gd             | Scots Gaelic |
