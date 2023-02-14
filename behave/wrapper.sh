@@ -4,7 +4,6 @@
 
 export A11Y=${A11Y_ENABLED:-false}
 echo "A11Y is $A11Y"
-cd behave
 
 #
 # execute behave
