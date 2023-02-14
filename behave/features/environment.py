@@ -7,7 +7,6 @@ from behave.log_capture import capture
 
 from helper.constants import (
     BROWSER,
-    ARTIFACTS_DIRECTORY,
     DATA_DIRECTORY,
     A11Y_TAG,
     DATABASE_SNAPSHOT_ENABLED,
@@ -26,8 +25,6 @@ def before_all(context):
     # Reading the browser type from the configuration file
     helper_func = get_browser(BROWSER, context.download_dir)
     context.helperfunc = helper_func
-    # Dir to output test artifacts
-    context.artifacts_dir = ARTIFACTS_DIRECTORY
     # Boolean for axe finding a11y issues or not
     context.a11y_approved = True
     # Boolean that a11y environment variables are set
