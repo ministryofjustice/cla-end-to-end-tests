@@ -1,8 +1,7 @@
-import time
-
-from helper.constants import CLA_FALA_URL, FALA_HEADER
+from helper.constants import CLA_FALA_URL, FALA_HEADER, MINIMUM_WAIT_UNTIL_TIME
 from behave import step
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 @step("I am on the Find a legal aid adviser homepage")
@@ -141,25 +140,19 @@ def step_impl_count_results_visible_on_results_page(context, count):
 
 @step('I select the language "{language}"')
 def step_impl_select_language(context, language):
-    # def do_test(*args):
-    #     # return len(Select(context.helperfunc.find_by_xpath(f'//select')).all_selected_options) > 0
-    #     return Select(context.helperfunc.find_by_xpath("//select")) is not None
-    #
-    # wait = WebDriverWait(context.helperfunc.driver(), 5)
-    # wait.until(do_test)
-    #
-    # select = Select(context.helperfunc.find_by_xpath("//select"))
-    # select.select_by_visible_text(f"{language}")
-    # time.sleep(10)
-    # assert select.first_selected_option.get_attribute("text") == f"{language}"
 
-    import pdb
+    def options_created(*args):
+        options_elements = context.helperfunc.find_many_by_xpath(f"//select/option")
+        # have we got all the options recreated?
+        return len(options_elements) == no_options
 
-    pdb.set_trace()
     select_all_languages = Select(context.helperfunc.find_by_xpath("//select"))
+    # how many options are there for the languages?
+    no_options = len(select_all_languages.options)
     select_all_languages.select_by_visible_text(f"{language}")
-    time.sleep(3)
-    # breakpoint()
+
+    wait = WebDriverWait(context.helperfunc.driver(), MINIMUM_WAIT_UNTIL_TIME)
+    wait.until(options_created)
     select_chosen_language = select_all_languages.first_selected_option
     assert select_chosen_language.get_attribute("text") == f"{language}"
 
