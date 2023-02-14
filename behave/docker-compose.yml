@@ -32,7 +32,6 @@ services:
     environment:
       A11Y_ENABLED: ${A11Y_ENABLED:-false}
       BROWSER: chrome
-      ARTIFACTS_DIRECTORY: /behave_local
       DATA_DIRECTORY: /data
       CLA_E2E_PUBLIC_URL: ${CLA_E2E_PUBLIC_URL:-http://clapublic:8000}
       CLA_E2E_BACKEND_URL: ${CLA_E2E_BACKEND_URL:-http://clabackend:8000}
