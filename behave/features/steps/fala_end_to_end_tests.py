@@ -1,4 +1,4 @@
-from helper.constants import CLA_FALA_URL, FALA_HEADER, MINIMUM_WAIT_UNTIL_TIME
+from helper.constants import CLA_FALA_URL, FALA_HEADER
 from behave import step
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
@@ -140,9 +140,8 @@ def step_impl_count_results_visible_on_results_page(context, count):
 
 @step('I select the language "{language}"')
 def step_impl_select_language(context, language):
-
     def options_created(*args):
-        options_elements = context.helperfunc.find_many_by_xpath(f"//select/option")
+        options_elements = context.helperfunc.find_many_by_xpath("//select/option")
         # have we got all the options recreated?
         return len(options_elements) == no_options
 
@@ -151,7 +150,7 @@ def step_impl_select_language(context, language):
     no_options = len(select_all_languages.options)
     select_all_languages.select_by_visible_text(f"{language}")
 
-    wait = WebDriverWait(context.helperfunc.driver(), MINIMUM_WAIT_UNTIL_TIME)
+    wait = WebDriverWait(context.helperfunc.driver(), 3)
     wait.until(options_created)
     select_chosen_language = select_all_languages.first_selected_option
     assert select_chosen_language.get_attribute("text") == f"{language}"
