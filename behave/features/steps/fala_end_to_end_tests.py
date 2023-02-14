@@ -141,26 +141,27 @@ def step_impl_count_results_visible_on_results_page(context, count):
 
 @step('I select the language "{language}"')
 def step_impl_select_language(context, language):
-    select = Select(context.helperfunc.find_by_xpath("//select"))
-    select.select_by_visible_text(f"{language}")
-
-    time.sleep(10)
     # def do_test(*args):
-    #     return len(Select(context.helperfunc.find_by_xpath(f'//select')).all_selected_options) > 0
+    #     # return len(Select(context.helperfunc.find_by_xpath(f'//select')).all_selected_options) > 0
+    #     return Select(context.helperfunc.find_by_xpath("//select")) is not None
     #
-    # wait = WebDriverWait(context.helperfunc.driver(), 10)
+    # wait = WebDriverWait(context.helperfunc.driver(), 5)
     # wait.until(do_test)
-    # import pdb
-    # pdb.set_trace()
-    assert select.first_selected_option.get_attribute("text") == f"{language}"
+    #
+    # select = Select(context.helperfunc.find_by_xpath("//select"))
+    # select.select_by_visible_text(f"{language}")
+    # time.sleep(10)
+    # assert select.first_selected_option.get_attribute("text") == f"{language}"
 
+    import pdb
 
-# select_all_languages = Select(context.helperfunc.find_by_xpath(f'//select'))
-# select_all_languages.select_by_visible_text(f'{language}')
-# time.sleep(3)
-# # breakpoint()
-# # select_chosen_language = select_all_languages.first_selected_option
-# assert select_all_languages.first_selected_option.get_attribute('text') == f'{language}'
+    pdb.set_trace()
+    select_all_languages = Select(context.helperfunc.find_by_xpath("//select"))
+    select_all_languages.select_by_visible_text(f"{language}")
+    time.sleep(3)
+    # breakpoint()
+    select_chosen_language = select_all_languages.first_selected_option
+    assert select_chosen_language.get_attribute("text") == f"{language}"
 
 
 @step('it triggers the indicator code of "{code_indicator}"')
