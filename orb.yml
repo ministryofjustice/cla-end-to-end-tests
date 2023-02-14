@@ -28,11 +28,13 @@ commands:
       - run:
           name: Copy artifacts
           command: |
-            mkdir -p /tmp/feature_errors
-            docker cp cla-end-to-end:behave_local ../../../tmp/feature_errors
+            echo "Manually copying files because circleci docker executor does not support volumes"
+            echo "https://support.circleci.com/hc/en-us/articles/360007324514-How-can-I-mount-volumes-to-docker-containers-"
+            docker cp cla-end-to-end:/data behave/data
           when: always
       - store_artifacts:
-          path: /tmp/feature_errors
+          path: behave/data
+          destination: data
 
 jobs:
   behave:
