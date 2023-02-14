@@ -118,27 +118,14 @@ pre-commit run --all-files
 ```
 
 ## Database diff
-Before we can compare anything we need to two database backups, master and the branch under test.
-### Master backup
-A backup of the resulting database of when the end-to-end tests are run the master branch. This backup should be called
-data/cla_backend.main.backup.
+This involves running the end-to-end tests twice, once using images defined in the docker-compose.yml and again using 
+a given backend image.
 
-You can generate this backup by making sure that you are using the master branches of the project under test
-and then running the following:
+For example to run a diff between the resulting database of end-to-end test using backend master and 
+the image of the django-upgrade branch which is django-upgrade.de199c9
 ```
-./run_test_local.sh --database-snapshot-enabled
-docker-compose exec db pg_dump cla_backend --clean --blobs --format=custom --host=db --username=postgres --file=/data/data/cla_backend.main.backup
+./run_test_local.sh --diff-with-branch 754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:django-upgrade.de199c9
 ```
-
-### Generating the diff
-Next we need to update docker-compose.yaml to use an image of the branch under test
-
-Then rerun the tests and followed by doing the database diff
-
-``
-./run_test_local.sh --database-snapshot-enabled
-./run_db_diff.sh
-``
 
 This should output a summary of all the tables that are different across the two databases.
 A more detailed difference of each table is created in the data/yapgdd/ folder, one .log file for each table
