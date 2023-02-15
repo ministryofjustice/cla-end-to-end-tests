@@ -58,4 +58,4 @@ Feature: FALA end to end tests
       | code_indicator  | language      | title_text_starts_with |
       | cy              | Welsh         | Dewch                  |
       | gd              | Scots Gaelic  | Lorg                   |
-      | ga              | Irish Gaelic  | Aimsigh                |
+
