@@ -1,6 +1,8 @@
-from helper.constants import CLA_FALA_URL, FALA_HEADER
-
+from helper.constants import CLA_FALA_URL, FALA_HEADER, MINIMUM_SLEEP_SECONDS
 from behave import step
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import StaleElementReferenceException
 
 
 @step("I am on the Find a legal aid adviser homepage")
@@ -135,3 +137,43 @@ def step_impl_count_results_visible_on_results_page(context, count):
     assert listitems is not None
     list_count = len(listitems)
     assert list_count == count, f"actual count is {list_count}"
+
+
+@step('I select the language "{language}" with value "{code_indicator}"')
+def step_impl_select_language(context, language, code_indicator):
+    def select_text(*args):
+        Select(context.helperfunc.find_by_xpath("//select")).select_by_visible_text(
+            f"{language}"
+        )
+        return True
+
+    def check_first_option(*args):
+        select_chosen_language = Select(
+            context.helperfunc.find_by_xpath("//select")
+        ).first_selected_option
+        assert select_chosen_language.get_attribute("text") == f"{language}"
+        assert select_chosen_language.get_attribute("value") == f"{code_indicator}"
+        return True
+
+    wait = WebDriverWait(context.helperfunc.driver(), MINIMUM_SLEEP_SECONDS)
+    wait.until(select_text)
+
+    wait = WebDriverWait(
+        context.helperfunc.driver(),
+        MINIMUM_SLEEP_SECONDS,
+        ignored_exceptions=[StaleElementReferenceException],
+    )
+    wait.until(check_first_option)
+
+
+@step(
+    'the page is updated to "{code_indicator}" and title starts with "{title_text_starts_with}"'
+)
+def step_impl_translated(context, code_indicator, title_text_starts_with):
+    updated_page = context.helperfunc.find_by_xpath("/html").get_attribute("lang")
+    updated_title_gui = context.helperfunc.find_by_xpath(
+        "//html/body/div/main/div/div/h1"
+    ).text
+
+    assert updated_page == f"{code_indicator}"
+    assert updated_title_gui.startswith(f"{title_text_starts_with}")

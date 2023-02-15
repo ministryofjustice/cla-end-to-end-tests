@@ -48,3 +48,14 @@ Feature: FALA end to end tests
     Examples:
           | location |  organisation  |
           | London   | Boothroyds LLP |
+
+
+  @dom-translation
+  Scenario Outline: Selecting a language correctly updates the DOM
+    When I select the language "<language>" with value "<code_indicator>"
+    Then the page is updated to "<code_indicator>" and title starts with "<title_text_starts_with>"
+    Examples:
+      | code_indicator  | language      | title_text_starts_with |
+      | cy              | Welsh         | Dewch                  |
+      | gd              | Scots Gaelic  | Lorg                   |
+
