@@ -131,7 +131,6 @@ def step_impl_count_results_visible_on_results_page(context, count):
     assert list_count == count, f"actual count is {list_count}"
 
 
-<<<<<<< HEAD
 @step('I select the language "{language}" with value "{code_indicator}"')
 def step_impl_select_language(context, language, code_indicator):
     def select_text(*args):
@@ -170,6 +169,7 @@ def step_impl_translated(context, code_indicator, title_text_starts_with):
 
     assert updated_page == f"{code_indicator}"
     assert updated_title_gui.startswith(f"{title_text_starts_with}")
+
 
 @step("There are less results visible on the results page")
 def step_impl_fewer_results_returned(context):
