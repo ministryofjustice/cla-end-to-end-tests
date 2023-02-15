@@ -57,5 +57,5 @@ Feature: FALA end to end tests
     Examples:
       | code_indicator  | language      | title_text_starts_with |
       | cy              | Welsh         | Dewch                  |
-      | ga              | Irish Gaelic  | Aimsigh                |
       | gd              | Scots Gaelic  | Lorg                   |
+      | ga              | Irish Gaelic  | Aimsigh                |
