@@ -139,7 +139,7 @@ def step_impl_count_results_visible_on_results_page(context, count):
     assert list_count == count, f"actual count is {list_count}"
 
 
-@step('I select the language "{language}" and select "{code_indicator}"')
+@step('I select the language "{language}" with value "{code_indicator}"')
 def step_impl_select_language(context, language, code_indicator):
     def select_text(*args):
         Select(context.helperfunc.find_by_xpath("//select")).select_by_visible_text(
@@ -177,17 +177,3 @@ def step_impl_translated(context, code_indicator, title_text_starts_with):
 
     assert updated_page == f"{code_indicator}"
     assert updated_title_gui.startswith(f"{title_text_starts_with}")
-
-    # find_code_indicator = context.helperfunc.find_by_xpath(f'/html').get_attribute('lang')
-    # # find the xpath code
-    # # find_code_indicator = context.helperfunc.find_by_xpath(f'//html[@lang="{code_indicator}')
-    # # select the code and set the new xpath
-    # # find the xpath language
-    # create_new_current_path = context.helperfunc.get_current_path()
-    # print(create_new_current_path + "\n")
-    # # find_language_text = context.helperfunc.find_by_xpath(f'//select[contains(text(),"cy"')
-    # find_language_text = context.helperfunc.find_by_xpath(f'//select').get_attribute('value')
-    # # the code has to assert that it is truthy to the language
-    # print(find_code_indicator + "\n")
-    # print(find_language_text + "\n")
-    # assert False, find_code_indicator
