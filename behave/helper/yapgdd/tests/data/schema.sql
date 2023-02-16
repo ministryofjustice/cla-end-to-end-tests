@@ -12,3 +12,10 @@ CREATE TABLE [logs] (
   [level] INT,
   [created] TEXT
 );
+
+CREATE TABLE [status] (
+  [id] INT,
+  [name] TEXT,
+  [code] TEXT,
+  [created] TEXT
+);
