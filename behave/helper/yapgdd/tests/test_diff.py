@@ -76,6 +76,17 @@ class DiffTest(TestDatabases, unittest.TestCase):
                     }
                 }
             ],
+            "status": [
+                {
+                    "code": {
+                        "icon": "~",
+                        "column": "code",
+                        "source": "NEW",
+                        "target": None,
+                        "row number": 1,
+                    }
+                }
+            ],
         }
 
         actual_diffs = {}
