@@ -62,7 +62,7 @@ Feature: FALA end to end tests
 
 
   @fala-filtering-homepage
-  Scenario Outline: Applying filters on the homepage, filters correctly
+  Scenario Outline: Applying filters specifically on the homepage, filters correctly
     Given I collect the resulting number for a generic "<location>" search
     When I am on the Find a legal aid adviser homepage
     And I provide the "<location>" details

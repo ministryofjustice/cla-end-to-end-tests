@@ -72,7 +72,7 @@ def step_impl_result_page_with_location_only(context, location):
     )
     expected_title = FALA_HEADER
 
-    assert_result_page(context, expected_url, expected_title, True)
+    assert_result_page(context, expected_url, expected_title, expected_results=True)
 
 
 @step('I browse through the filter categories and select "{filter_label}"')
