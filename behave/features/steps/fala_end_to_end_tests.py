@@ -5,6 +5,35 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import StaleElementReferenceException
 
 
+def assert_result_page(context, expected_url, expected_title, expected_results=False):
+    current_url = context.helperfunc.driver().current_url
+    title_xpath = context.helperfunc.find_by_xpath(
+        "//html/body/div/main/div/div/h1"
+    ).text.replace("\n", " ")
+    result_container_xpath = context.helperfunc.find_by_xpath(
+        '//div[@class="search-results-container"]'
+    )
+    result_number_paragraph = context.helperfunc.find_by_xpath(
+        '//section/p[@class="govuk-body"]'
+    )
+
+    assert (
+        current_url == expected_url
+    ), f"URL does not match expected value {expected_url}"
+    assert (
+        title_xpath == expected_title
+    ), f"Page title does not match expected value {expected_title}"
+    assert (
+        result_container_xpath is not None
+    ), "Could not find search results container element"
+    assert (
+        result_number_paragraph is not None
+    ), "Could not find result number paragraph element"
+
+    if expected_results:
+        context.results = int(result_number_paragraph.text.split()[0])
+
+
 @step("I am on the Find a legal aid adviser homepage")
 def step_impl_homepage(context):
     homepage_url = f"{CLA_FALA_URL}"
@@ -19,16 +48,14 @@ def step_impl_homepage(context):
 def step_impl_input_location(context, location):
     input_id = context.helperfunc.find_by_id("id_postcode")
     input_id.send_keys(location)
-    input_value = input_id.get_attribute("value")
-    assert input_value == location
+    assert input_id.get_attribute("value") == location
 
 
 @step('I provide an organisation name "{organisation}"')
 def step_impl_input_organisation(context, organisation):
     input_id = context.helperfunc.find_by_id("id_name")
     input_id.send_keys(organisation)
-    input_value = input_id.get_attribute("value")
-    assert input_value == organisation
+    assert input_id.get_attribute("value") == organisation
 
 
 @step("I select the 'search' button on the FALA homepage")
@@ -39,24 +66,13 @@ def step_impl_click_search(context):
 
 
 @step('I am taken to the page corresponding to "{location}" result')
-def step_impl_result_page(context, location):
-    current_url = context.helperfunc.driver().current_url
-    title_xpath = context.helperfunc.find_by_xpath(
-        "//html/body/div/main/div/div/h1"
-    ).text.replace("\n", " ")
-    result_container_xpath = context.helperfunc.find_by_xpath(
-        '//div[@class="search-results-container"]'
+def step_impl_result_page_with_location_only(context, location):
+    expected_url = (
+        f"{CLA_FALA_URL}/?postcode={location.replace(' ', '+')}&name=&search="
     )
-    result_number_paragraph = context.helperfunc.find_by_xpath(
-        '//p[@class="govuk-body"]'
-    )
-    location_url_string = location.replace(" ", "+")
-    expected_url = f"""{CLA_FALA_URL}/?postcode={location_url_string}&name=&search="""
+    expected_title = FALA_HEADER
 
-    assert current_url == expected_url
-    assert title_xpath == f"{FALA_HEADER}"
-    assert result_container_xpath is not None
-    assert result_number_paragraph is not None
+    assert_result_page(context, expected_url, expected_title, expected_results=True)
 
 
 @step('I browse through the filter categories and select "{filter_label}"')
@@ -78,24 +94,12 @@ def step_impl_apply_filter(context):
 @step(
     'the result page containing "{location}" is updated to apply the filter "{filter_label}"'
 )
-def step_impl_update_result_page(context, location, filter_label):
-    current_url = context.helperfunc.driver().current_url
-    title_xpath = context.helperfunc.find_by_xpath(
-        "//html/body/div/main/div/div/h1"
-    ).text.replace("\n", " ")
-    result_container_xpath = context.helperfunc.find_by_xpath(
-        '//div[@class="search-results-container"]'
-    )
-    updated_result_number_paragraph = context.helperfunc.find_by_xpath(
-        '//p[@class="govuk-body"]'
-    )
+def step_impl_result_page_with_location_filter(context, location, filter_label):
     location_url_string = location.replace(" ", "+")
-    expected_url = f"""{CLA_FALA_URL}/?postcode={location_url_string}&name=&categories={filter_label}&filter="""
+    expected_url = f"{CLA_FALA_URL}/?postcode={location_url_string}&name=&categories={filter_label}&filter="
+    expected_title = FALA_HEADER
 
-    assert current_url == expected_url
-    assert title_xpath == f"{FALA_HEADER}"
-    assert result_container_xpath is not None
-    assert updated_result_number_paragraph is not None
+    assert_result_page(context, expected_url, expected_title)
 
 
 @step("the page shows an error")
@@ -109,25 +113,13 @@ def step_impl_error_shown_on_page(context):
 @step(
     'I am taken to the page corresponding to the "{location}" "{organisation}" search result'
 )
-def step_impl_result_page_with_multi_params(context, location, organisation):
-    result_number_paragraph = context.helperfunc.find_by_xpath(
-        '//p[@class="govuk-body"]'
-    )
-    current_url = context.helperfunc.driver().current_url
-    title_xpath = context.helperfunc.find_by_xpath(
-        "//html/body/div/main/div/div/h1"
-    ).text.replace("\n", " ")
-    result_container_xpath = context.helperfunc.find_by_xpath(
-        '//div[@class="search-results-container"]'
-    )
+def step_impl_result_page_with_location_organisation(context, location, organisation):
     organisation_url_string = organisation.replace(" ", "+")
     location_url_string = location.replace(" ", "+")
-    expected_url = f"""{CLA_FALA_URL}/?postcode={location_url_string}&name={organisation_url_string}&search="""
+    expected_url = f"{CLA_FALA_URL}/?postcode={location_url_string}&name={organisation_url_string}&search="
+    expected_title = FALA_HEADER
 
-    assert current_url == expected_url
-    assert title_xpath == f"{FALA_HEADER}"
-    assert result_container_xpath is not None
-    assert result_number_paragraph is not None
+    assert_result_page(context, expected_url, expected_title)
 
 
 @step("{count:d} result is visible on the results page")
@@ -177,3 +169,22 @@ def step_impl_translated(context, code_indicator, title_text_starts_with):
 
     assert updated_page == f"{code_indicator}"
     assert updated_title_gui.startswith(f"{title_text_starts_with}")
+
+
+@step("There are less results visible on the results page")
+def step_impl_fewer_results_returned(context):
+    total_results = context.helperfunc.find_by_xpath(
+        '//section/p[@class="govuk-body"]'
+    ).text.split()[0]
+    assert int(total_results) < context.results
+
+
+@step('I collect the resulting number for a generic "{location}" search')
+def step_impl_resulting_generic_search(context, location):
+    context.execute_steps(
+        f"""
+        Given I provide the "{location}" details
+        And I select the 'search' button on the FALA homepage
+        And I am taken to the page corresponding to "{location}" result
+    """
+    )

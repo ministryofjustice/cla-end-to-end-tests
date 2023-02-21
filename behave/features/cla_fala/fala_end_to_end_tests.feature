@@ -13,7 +13,7 @@ Feature: FALA end to end tests
     Then I am taken to the page corresponding to "<location>" result
     Examples:
       | location |
-      | SW1H9AJ  |
+      | SW1H 9AJ |
       | London   |
 
 
@@ -25,9 +25,10 @@ Feature: FALA end to end tests
     When I browse through the filter categories and select "<filter_label>"
     And I select the 'Apply filter' button
     Then the result page containing "<location>" is updated to apply the filter "<filter_label>"
+    And there are less results visible on the results page
     Examples:
       | location | filter_label |
-      | SW1H9AJ  | crm          |
+      | SW1H 9AJ | crm          |
       | London   | hou          |
 
 
@@ -59,3 +60,16 @@ Feature: FALA end to end tests
       | cy              | Welsh         | Dewch                  |
       | gd              | Scots Gaelic  | Lorg                   |
 
+
+  @fala-filtering-homepage
+  Scenario Outline: Applying filters specifically on the homepage, filters correctly
+    Given I collect the resulting number for a generic "<location>" search
+    When I am on the Find a legal aid adviser homepage
+    And I provide the "<location>" details
+    And I browse through the filter categories and select "<filter_label>"
+    And I select the 'Apply filter' button
+    Then the result page containing "<location>" is updated to apply the filter "<filter_label>"
+    And there are less results visible on the results page
+    Examples:
+      | location | filter_label |
+      | London   | edu          |
