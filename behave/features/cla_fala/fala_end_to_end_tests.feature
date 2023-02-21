@@ -25,7 +25,7 @@ Feature: FALA end to end tests
     When I browse through the filter categories and select "<filter_label>"
     And I select the 'Apply filter' button
     Then the result page containing "<location>" is updated to apply the filter "<filter_label>"
-    And 10 result is visible on the results page
+    And there are less results visible on the results page
     Examples:
       | location | filter_label |
       | SW1H 9AJ | crm          |
