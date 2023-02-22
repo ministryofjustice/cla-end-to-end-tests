@@ -27,6 +27,9 @@ while [ -n "$1" ]; do # while loop starts
 	  echo "Comparing master backend with $DIFF_IMAGE"
 	  docker pull $DIFF_IMAGE
 	;;
+	--a11y)
+	  echo "Running with A11Y enabled"
+    export A11Y_ENABLED=True
 	esac
 	shift
 done
