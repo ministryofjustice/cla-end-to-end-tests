@@ -21,6 +21,8 @@ def before_all(context):
     make_dir(context.feature_errors_dir)
     context.download_dir = os.path.join(DATA_DIRECTORY, "downloads")
     make_dir(context.download_dir)
+    context.a11y_reports_dir = os.path.join(DATA_DIRECTORY, "a11y_reports")
+    make_dir(context.a11y_reports_dir)
 
     # Reading the browser type from the configuration file
     helper_func = get_browser(BROWSER, context.download_dir)
