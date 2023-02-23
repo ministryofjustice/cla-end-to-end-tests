@@ -30,10 +30,11 @@ commands:
           command: |
             echo "Manually copying files because circleci docker executor does not support volumes"
             echo "https://support.circleci.com/hc/en-us/articles/360007324514-How-can-I-mount-volumes-to-docker-containers-"
-            docker cp cla-end-to-end:/data behave/data
+            mkdir -p /tmp/end-to-end-data
+            docker cp cla-end-to-end:/data /tmp/end-to-end-data
           when: always
       - store_artifacts:
-          path: behave/data
+          path: /tmp/end-to-end-data
           destination: data
 
 jobs:
