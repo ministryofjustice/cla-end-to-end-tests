@@ -1,8 +1,10 @@
 import os
 
 BROWSER = os.environ.get("BROWSER")
-ARTIFACTS_DIRECTORY = os.environ.get("ARTIFACTS_DIRECTORY")
-DOWNLOAD_DIRECTORY = os.environ.get("DOWNLOAD_DIRECTORY")
+DATABASE_SNAPSHOT_ENABLED = (
+    os.environ.get("DATABASE_SNAPSHOT_ENABLED", "False").lower() == "true"
+)
+DATA_DIRECTORY = os.environ.get("DATA_DIRECTORY", "./data")
 CLA_BACKEND_URL = os.environ.get("CLA_E2E_BACKEND_URL")
 CLA_FRONTEND_URL = os.environ.get("CLA_E2E_FRONTEND_URL")
 CLA_FRONTEND_CSV_URL = "/provider/csvupload/"

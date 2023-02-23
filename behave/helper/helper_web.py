@@ -1,12 +1,12 @@
 from selenium import webdriver
 from helper.helper_base import HelperFunc
-from helper.constants import SELENIUM_WEB_DRIVER_URL, DOWNLOAD_DIRECTORY
+from helper.constants import SELENIUM_WEB_DRIVER_URL
 
 
-def get_browser(browser):
+def get_browser(browser, download_directory):
     if browser == "chrome":
-        actual_path = DOWNLOAD_DIRECTORY
-        prefs = {"download.default_directory": actual_path}
+
+        prefs = {"download.default_directory": download_directory}
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--start-maximized")
         chrome_options.add_argument("--incognito")

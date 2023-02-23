@@ -14,6 +14,10 @@ RUN apk add --no-cache \
       libxml2-dev \
       libxslt-dev \
       linux-headers \
+      postgresql-dev \
+      gcc \
+      musl-dev \
+      postgresql-client \
       python3-dev && \
     pip3 install -U setuptools pip==18.1 wheel
 
@@ -21,9 +25,9 @@ COPY requirements.txt requirements.txt
 RUN pip3 install -r ./requirements.txt
 
 RUN mkdir /behave
-COPY . /behave
+WORKDIR /behave
 
-COPY ./wrapper.sh wrapper.sh
+COPY . .
 
 ENV run_a11y $a11y
 

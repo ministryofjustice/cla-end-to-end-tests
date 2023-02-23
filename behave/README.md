@@ -27,7 +27,7 @@ fala feature files:
 
 ## How to run tests
 
-To run all tests, execute in main behave directory (behave_local if bashed into Docker container):
+To run all tests, execute in main behave directory (/behave_local if bashed into Docker container):
 
 `behave`
 
@@ -54,7 +54,7 @@ to build locally:
 `docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d --build`
 
 bash into the container and run them from there:
-`docker-compose run --entrypoint /bin/bash cla-end-to-end`
+`docker-compose run --entrypoint sh cla-end-to-end`
 
 ## Current state of affairs Apple Silicon (arm64) users
 
@@ -116,3 +116,16 @@ To run them manually:
 ```
 pre-commit run --all-files
 ```
+
+## Database diff
+This involves running the end-to-end tests twice, once using images defined in the docker-compose.yml and again using 
+a given backend image.
+
+For example to run a diff between the resulting database of end-to-end test using backend master and 
+the image of the django-upgrade branch which is django-upgrade.de199c9
+```
+./run_test_local.sh --diff-with-branch 754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:django-upgrade.de199c9
+```
+
+This should output a summary of all the tables that are different across the two databases.
+A more detailed difference of each table is created in the data/yapgdd/ folder, one .log file for each table

@@ -302,7 +302,5 @@ def check_accessibility(context):
     axe.inject()
     results = axe.run()
     if len(results["violations"]) > 0:
-        a11y_error_dir = os.path.join(context.artifacts_dir, "feature_errors")
-        make_dir(a11y_error_dir)
-        axe.write_results(results, f"{context.artifacts_dir}/feature_errors/a11y.json")
+        axe.write_results(results, f"{context.a11y_reports_dir}/a11y.json")
     return len(results["violations"]) == 0
