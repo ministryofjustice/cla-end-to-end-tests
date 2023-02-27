@@ -6,7 +6,7 @@ Feature: FALA end to end tests
   Background: Homepage page
     Given I am on the Find a legal aid adviser homepage
 
-  @fala-search-location
+  @fala-search-location @a11y-check
   Scenario Outline: Search for legal advisers via postcode and city
     Given I provide the "<location>" details
     When I select the 'search' button on the FALA homepage
@@ -17,7 +17,7 @@ Feature: FALA end to end tests
       | London   |
 
 
-  @fala-apply-filter-after-search
+  @fala-apply-filter-after-search @a11y-check
   Scenario Outline: Applying filters on the result page provide a new result list of legal advisers
     Given I provide the "<location>" details
     When I select the 'search' button on the FALA homepage
@@ -32,14 +32,14 @@ Feature: FALA end to end tests
       | London   | hou          |
 
 
-  @fala-search-no-results
+  @fala-search-no-results @a11y-check
   Scenario: I search for a town that does not have any solicitors and fails
   Given I am on the Find a legal aid adviser homepage
   And I provide the "Heswall" details
   When I select the 'search' button on the FALA homepage
   Then the page shows an error
 
-  @fala-search-organisation
+  @fala-search-organisation @a11y-check
   Scenario Outline: Search by organisation name
     Given I provide the "<location>" details
     And I provide an organisation name "<organisation>"
@@ -51,7 +51,7 @@ Feature: FALA end to end tests
           | London   | Boothroyds LLP |
 
 
-  @dom-translation
+  @dom-translation @a11y-check
   Scenario Outline: Selecting a language correctly updates the DOM
     When I select the language "<language>" with value "<code_indicator>"
     Then the page is updated to "<code_indicator>" and title starts with "<title_text_starts_with>"
@@ -61,7 +61,7 @@ Feature: FALA end to end tests
       | gd              | Scots Gaelic  | Lorg                   |
 
 
-  @fala-filtering-homepage
+  @fala-filtering-homepage @a11y-check
   Scenario Outline: Applying filters specifically on the homepage, filters correctly
     Given I collect the resulting number for a generic "<location>" search
     When I am on the Find a legal aid adviser homepage
