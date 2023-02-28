@@ -62,7 +62,7 @@ Feature: FALA end to end tests
       | gd             | Scots Gaelic | Lorg              |
 
 
-  @fala-homepage-apply-filter @a11y-check
+  @fala-apply-filter-on-homepage @a11y-check
   Scenario Outline: Applying filters specifically on the homepage, filters correctly
     Given I collect the resulting number for a generic "<location>" search
     When I am on the Find a legal aid adviser homepage

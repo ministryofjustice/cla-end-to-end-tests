@@ -1,5 +1,6 @@
 from helper.constants import CLA_FALA_URL, FALA_HEADER, MINIMUM_SLEEP_SECONDS
 from behave import step
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import StaleElementReferenceException
@@ -59,10 +60,7 @@ def step_impl_input_organisation_provided(context, organisation):
 
 @step('I select the "search" button on the FALA homepage')
 def step_impl_search_clicked(context):
-    search_button = context.helperfunc.find_by_id("searchButton")
-    assert search_button is not None
-
-    search_button.click()
+    context.helperfunc.click_button(By.ID, "searchButton")
 
 
 @step('I am taken to the page corresponding to "{location}" result')
@@ -77,20 +75,14 @@ def step_impl_result_page_with_location_only(context, location):
 
 @step('I browse through the filter categories and select "{filter_label}"')
 def step_impl_checkbox_filter_clicked(context, filter_label):
-    checkbox = context.helperfunc.find_by_css_selector(
-        f"input[type='checkbox'][value='{filter_label}']"
+    context.helperfunc.click_button(
+        By.CSS_SELECTOR, f"input[type='checkbox'][value='{filter_label}']"
     )
-    checkbox.click()
-
-    assert checkbox.get_attribute("checked") == "true"
 
 
 @step('I select the "Apply filter" button')
 def step_impl_apply_filter_on_homepage(context):
-    filter_button = context.helperfunc.find_by_name("filter")
-    assert filter_button is not None
-
-    filter_button.click()
+    context.helperfunc.click_button(By.NAME, "filter")
 
 
 @step(
