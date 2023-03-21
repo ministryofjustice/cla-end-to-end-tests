@@ -129,3 +129,5 @@ the image of the django-upgrade branch which is django-upgrade.de199c9
 
 This should output a summary of all the tables that are different across the two databases.
 A more detailed difference of each table is created in the data/yapgdd/ folder, one .log file for each table
+There will always be some differences returned please see this link for an explanation of those differences:
+[Typical database differences and reasons](DATABASE_DIFF.md)
