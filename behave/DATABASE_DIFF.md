@@ -3,21 +3,43 @@
 
 This readme attempts to explain why there are differences between an upgrade branch and the master version of cla_backend before LGA-1773. 
 
-If you see anything that is not explained below, then this should be queried.
+If you see anything that is not explained below, then this should be queried and the document updated.
 
-Some of these changes are to do with time differences between the runs and other are because there is no ordering to the way in which results are stored. So if there is more than one row of data to add to a table, these rows can be added in a different order and so will "look" different in the target database. 
+The main reasons for these changes are:
+- time differences between the runs
+- there is no ordering to the way in which results are stored. 
+So if there is more than one row of data to add to a table, these rows can be added in a different order and so will "look" different in the target database. 
 
 Examples are given below.
+
+
+### High-level Overview
+The below table shows the likely tables you will see when running the database-diff command 
+with a brief explanation as to why it appears in the log. See below for a greater explanation.
+
+| Table name                           | Reason for difference                                                    |
+|--------------------------------------|--------------------------------------------------------------------------|
+| cla_eventlog_log                     | (appears inconsistently) May appear if a test fails and retries          |
+| cla_provider_provider_preallocation  | (appears inconsistently) Test randomises this value                      |
+| django_migrations                    | When explicitly adding a migration or an upgrade to a framework includes |
+| [django_session](#django_session.log)| For security purposes, the sessions renews each run                      |
+| legalaid_case                        | Data is the same but the order they appear in the database is different  |
+| legalaid_deductions                  | Data is the same but the order they appear in the database is different  |
+| legalaid_eligibilitycheck            | Data is the same but the order they appear in the database is different  |
+| legalaid_income                      | Data is the same but the order they appear in the database is different  |
+| legalaid_person                      | Data is the same but the order they appear in the database is different  |
+| legalaid_personaldetails             | Data is the same but the order they appear in the database is different  |
+| legalaid_thirdpartydetails           | Data is the same but the order they appear in the database is different  |
+| summary                              | This is the high level overview/summary of the differences seen          |
+| timer_timer                          | Timing difference between runs                                           |
 
 
 ### summary.log
  There will always be a summary table, use this for a high level comparison
 
-### django_sessions.log
+### django_session.log
 
 This table contains details of the session and this will always be different from run to run. Just check to make sure that there is nothing ontoward.
-
-Please add any known differences to this as we proceed.
 
 ### timer.log
 
@@ -33,12 +55,16 @@ There will also be some additional migrations for the upgrades. These should be 
 Providers are allocated from a particular category. This is a random allocation. Check that the providers allocated are from the same category. In this case check that the `category_id` of both providers (in `cla_provider_providerallocation`) is the same. 
 
 ### cla_eventlog_log.log
-Not sure if this should be here - need to check...
+This may or may not appear in your runs. 
+The current theory is that this only shows a difference when one of the end-to-end tests fail and auto-retries.
+
 
 ### legalaid_personaldetails.log
-In the tests an eligibility check can be associated with several `legalaid_personaldetails` entries. It can be for `you`, your 'partner' or for a `thirdparty`. 
+In the tests an eligibility check can be associated with several `legalaid_personaldetails` entries. 
+It can be for `you`, your 'partner' or for a `thirdparty`. 
 
-There is no way of knowing which order these entries will be created in the `legalaid_personaldetails` table. This means that they will not normally have the same id in the link tables.
+There is no way of knowing which order these entries will be created in the `legalaid_personaldetails` table. 
+This means that they will not normally have the same id in the link tables.
 
 Elena Fisher is `you` and a user called Nathan Drake is a `thirdparty` for a particular `legalaid_eligibilitycheck` row
 Bob Merchandise is `you` and another Nathan Drake is your `partner` for a different `legalaid_eligibilitycheck` row
