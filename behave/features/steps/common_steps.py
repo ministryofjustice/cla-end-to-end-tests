@@ -300,7 +300,20 @@ def check_accessibility(context):
     time.sleep(0.6)
     axe = Axe(context.helperfunc.driver())
     axe.inject()
-    results = axe.run("resultTypes", ["violations", "incomplete"])
+    results = axe.run(
+        options={
+            "runOnly": {
+                "type": "rule",
+                "values": [
+                    "area-alt",
+                    "aria-allowed-attr",
+                    "color-contrast",
+                    "valid-lang",
+                ],
+            },
+            "resultTypes": ["violations", "incomplete"],
+        }
+    )
     if len(results["violations"]) > 0:
         axe.write_results(results, f"{context.a11y_reports_dir}/a11y.json")
     return len(results["violations"]) == 0
