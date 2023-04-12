@@ -18,10 +18,10 @@ def assert_result_page(context, expected_url, expected_title, expected_results=F
 
     assert (
         current_url == expected_url
-    ), f"URL does not match expected value {expected_url}"
+    ), f" actual URL {current_url} does not match expected value {expected_url}"
     assert (
         title_xpath == expected_title
-    ), f"Page title does not match expected value {expected_title}"
+    ), f"Page title {title_xpath} does not match expected value {expected_title}"
     assert (
         result_container_xpath is not None
     ), "Could not find search results container element"
