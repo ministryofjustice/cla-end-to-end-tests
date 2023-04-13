@@ -302,11 +302,11 @@ def check_accessibility(context):
     axe.inject()
     results = axe.run()
     if len(results["violations"]) > 0:
-        # TODO: Python dictionary with key of violations
-        # Append results violations to Python key
+        result_format = dict(
+            violations=results["violations"], incomplete=results["incomplete"]
+        )
         axe.write_results(
-            results["violations"] + results["incomplete"],
+            result_format,
             f"{context.a11y_reports_dir}/a11y.json",
         )
-        # axe.report(results["violations"])
     return len(results["violations"]) == 0
