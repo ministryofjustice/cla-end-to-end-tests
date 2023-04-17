@@ -14,6 +14,7 @@ from helper.constants import (
 
 from helper.helper_web import get_browser
 from features.steps.common_steps import check_accessibility, make_dir, get_tag
+import json
 
 
 def before_all(context):
@@ -104,7 +105,10 @@ def after_scenario(context, scenario):
 
 
 def after_all(context):
+    with json.loads(f"{context.a11y_reports_dir}/a11y.json") as f:
+        json.dump(f, f)
     context.helperfunc.close()
+
 
 
 def after_step(context, step):
