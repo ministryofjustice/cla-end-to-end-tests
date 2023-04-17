@@ -101,6 +101,7 @@ def after_scenario(context, scenario):
             + ".png",
         )
         context.helperfunc.take_screenshot(scenario_file_path)
+    context.helperfunc.delete_cookies()
 
 
 def after_all(context):
