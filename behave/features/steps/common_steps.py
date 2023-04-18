@@ -1,6 +1,7 @@
 import re
 import time
 import os
+import json
 from behave import step
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
@@ -12,7 +13,6 @@ from helper.constants import (
 )
 from selenium.webdriver.common.by import By
 from axe_selenium_python import Axe
-import json
 
 
 def remove_prefix(text, prefix):
@@ -295,7 +295,7 @@ def make_dir(dir):
         os.makedirs(dir)
 
 
-def check_accessibility(context):
+def check_accessibility(context, step_name):
     # Sleep prevents Axe exceptions.
     # If no logs for Axe, Axe is called too fast when trying to inject javascript.
     time.sleep(0.6)
@@ -303,12 +303,16 @@ def check_accessibility(context):
     axe.inject()
     results = axe.run()
     if len(results["violations"]) > 0:
-        result_format = [dict(
-            url=context.helperfunc.get_url(), violations=results["violations"], incomplete=results["incomplete"]
-        )]
+        result_format = [
+            dict(
+                step=step_name,
+                url=context.helperfunc.get_url(),
+                violations=results["violations"],
+            )
+        ]
 
         try:
-            f = open(f"{context.a11y_reports_dir}/a11y.json", 'r')
+            f = open(f"{context.a11y_reports_dir}/a11y.json", "r")
             result_format = json.load(f) + result_format
             axe.write_results(result_format, f"{context.a11y_reports_dir}/a11y.json")
             f.close()
