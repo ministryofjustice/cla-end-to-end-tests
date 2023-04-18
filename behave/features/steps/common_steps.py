@@ -13,8 +13,7 @@ from helper.constants import (
 from selenium.webdriver.common.by import By
 from axe_selenium_python import Axe
 import json
-from json2html import *
-import random
+
 
 def remove_prefix(text, prefix):
     return text[len(prefix) :] if text.startswith(prefix) else text
@@ -303,15 +302,17 @@ def check_accessibility(context):
     axe = Axe(context.helperfunc.driver())
     axe.inject()
     results = axe.run()
-    y = random.randrange(1,100000)
     if len(results["violations"]) > 0:
-        result_format = {str(y): dict(
+        result_format = [dict(
             url=context.helperfunc.get_url(), violations=results["violations"], incomplete=results["incomplete"]
-        )}
+        )]
 
-        with open(f"{context.a11y_reports_dir}/a11y.json", 'a') as f:
-            json.dump(result_format, f, indent=4)
-            f.write(',\n')
+        try:
+            f = open(f"{context.a11y_reports_dir}/a11y.json", 'r')
+            result_format = json.load(f) + result_format
+            axe.write_results(result_format, f"{context.a11y_reports_dir}/a11y.json")
             f.close()
+        except FileNotFoundError:
+            axe.write_results(result_format, f"{context.a11y_reports_dir}/a11y.json")
 
     return len(results["violations"]) == 0

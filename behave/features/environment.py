@@ -105,8 +105,6 @@ def after_scenario(context, scenario):
 
 
 def after_all(context):
-    with json.loads(f"{context.a11y_reports_dir}/a11y.json") as f:
-        json.dump(f, f)
     context.helperfunc.close()
 
 
