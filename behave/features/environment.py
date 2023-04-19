@@ -1,10 +1,8 @@
-import json
 import os
 import time
 import logging
 import subprocess
 
-from axe_selenium_python import Axe
 from behave.contrib.scenario_autoretry import patch_scenario_with_autoretry
 from behave.log_capture import capture
 
@@ -16,7 +14,12 @@ from helper.constants import (
 )
 
 from helper.helper_web import get_browser
-from features.steps.common_steps import check_accessibility, make_dir, get_tag
+from features.steps.common_steps import (
+    check_accessibility,
+    make_dir,
+    get_tag,
+    filter_accessibility_report,
+)
 
 
 def before_all(context):
@@ -107,30 +110,13 @@ def after_scenario(context, scenario):
 
 
 def after_all(context):
-    f = open(f"{context.a11y_reports_dir}/a11y.json", "r")
-    data = json.load(f)
-    results_to_copy = []
-
-    for index, error in enumerate(data):
-        if index == 0:
-            results_to_copy.append(error)
-        else:
-            contains_violation = False
-            for issue in results_to_copy:
-                if error["violations"] == issue["violations"]:
-                    contains_violation = True
-            if not contains_violation:
-                results_to_copy.append(error)
-
-    f = open(f"{context.a11y_reports_dir}/a11y_filtered.json", "x")
-    axe = Axe(context.helperfunc.driver())
-    axe.write_results(results_to_copy, f"{context.a11y_reports_dir}/a11y_filtered.json")
-    f.close()
+    if context.config.userdata["a11y"] and get_tag(context.tags, A11Y_TAG):
+        filter_accessibility_report(context)
     context.helperfunc.close()
 
 
 def after_step(context, step):
-    # command to run: behave -D a11y=true -t @a11y-check
+    # command to run: behave -D a11y=true -k -s --no-capture -t @fala
     if context.config.userdata["a11y"] and get_tag(context.tags, A11Y_TAG):
         # Returns False if a11y issues are found
         context.a11y_approved = check_accessibility(context, step.name)

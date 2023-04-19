@@ -320,3 +320,21 @@ def check_accessibility(context, step_name):
             axe.write_results(result_format, f"{context.a11y_reports_dir}/a11y.json")
 
     return len(results["violations"]) == 0
+
+
+def filter_accessibility_report(context):
+    with open(f"{context.a11y_reports_dir}/a11y.json", "r") as f:
+        data = json.load(f)
+
+    results_to_copy = []
+    for error in data:
+        violations = error["violations"]
+        # Check if the current violation is already in results_to_copy
+        if not any(violations == issue["violations"] for issue in results_to_copy):
+            results_to_copy.append(error)
+
+    with open(f"{context.a11y_reports_dir}/a11y_filtered.json", "x") as f:
+        axe = Axe(context.helperfunc.driver())
+        axe.write_results(
+            list(results_to_copy), f"{context.a11y_reports_dir}/a11y_filtered.json"
+        )
