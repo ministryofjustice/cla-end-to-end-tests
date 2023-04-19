@@ -110,13 +110,13 @@ def after_scenario(context, scenario):
 
 
 def after_all(context):
-    if context.config.userdata["a11y"] and get_tag(context.tags, A11Y_TAG):
+    if context.config.userdata["a11y"]:
         filter_accessibility_report(context)
     context.helperfunc.close()
 
 
 def after_step(context, step):
-    # command to run: behave -D a11y=true -k -s --no-capture -t @fala
+    # command to run: behave -D a11y=true -k -s --no-capture -t @a11y-check
     if context.config.userdata["a11y"] and get_tag(context.tags, A11Y_TAG):
         # Returns False if a11y issues are found
         context.a11y_approved = check_accessibility(context, step.name)
