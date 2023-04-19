@@ -323,8 +323,8 @@ def check_accessibility(context, step_name):
 
 
 def filter_accessibility_report(context):
-    f = open(f"{context.a11y_reports_dir}/a11y.json", "r")
-    data = json.load(f)
+    with open(f"{context.a11y_reports_dir}/a11y.json", "r") as f:
+        data = json.load(f)
 
     results_to_copy = []
     for error in data:
@@ -333,7 +333,8 @@ def filter_accessibility_report(context):
         if not any(violations == issue["violations"] for issue in results_to_copy):
             results_to_copy.append(error)
 
-    f = open(f"{context.a11y_reports_dir}/a11y_filtered.json", "x")
-    axe = Axe(context.helperfunc.driver())
-    axe.write_results(results_to_copy, f"{context.a11y_reports_dir}/a11y_filtered.json")
-    f.close()
+    with open(f"{context.a11y_reports_dir}/a11y_filtered.json", "x") as f:
+        axe = Axe(context.helperfunc.driver())
+        axe.write_results(
+            results_to_copy, f"{context.a11y_reports_dir}/a11y_filtered.json"
+        )
