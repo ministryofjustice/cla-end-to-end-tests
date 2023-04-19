@@ -1,7 +1,10 @@
+import json
 import os
 import time
 import logging
 import subprocess
+
+from axe_selenium_python import Axe
 from behave.contrib.scenario_autoretry import patch_scenario_with_autoretry
 from behave.log_capture import capture
 
@@ -104,6 +107,25 @@ def after_scenario(context, scenario):
 
 
 def after_all(context):
+    f = open(f"{context.a11y_reports_dir}/a11y.json", "r")
+    data = json.load(f)
+    results_to_copy = []
+
+    for index, error in enumerate(data):
+        if index == 0:
+            results_to_copy.append(error)
+        else:
+            contains_violation = False
+            for issue in results_to_copy:
+                if error["violations"] == issue["violations"]:
+                    contains_violation = True
+            if not contains_violation:
+                results_to_copy.append(error)
+
+    f = open(f"{context.a11y_reports_dir}/a11y_filtered.json", "x")
+    axe = Axe(context.helperfunc.driver())
+    axe.write_results(results_to_copy, f"{context.a11y_reports_dir}/a11y_filtered.json")
+    f.close()
     context.helperfunc.close()
 
 
