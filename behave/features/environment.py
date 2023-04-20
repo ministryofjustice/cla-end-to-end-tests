@@ -2,7 +2,6 @@ import os
 import time
 import logging
 import subprocess
-
 from behave.contrib.scenario_autoretry import patch_scenario_with_autoretry
 from behave.log_capture import capture
 
@@ -116,7 +115,7 @@ def after_all(context):
 
 
 def after_step(context, step):
-    # command to run: behave -D a11y=true -k -s --no-capture -t @a11y-check
+    # command to run: behave -D a11y=true -t @a11y-check
     if context.config.userdata["a11y"] and get_tag(context.tags, A11Y_TAG):
         # Returns False if a11y issues are found
         context.a11y_approved = check_accessibility(context, step.name)
