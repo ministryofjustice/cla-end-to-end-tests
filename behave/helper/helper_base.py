@@ -24,6 +24,9 @@ class HelperFunc(object):
     def driver(self):
         return self._driver
 
+    def delete_cookies(self):
+        return self._driver.delete_all_cookies()
+
     def open(self, url):
         self._driver.get(url)
 
