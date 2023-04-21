@@ -1,6 +1,7 @@
 import re
 import time
 import os
+import json
 from behave import step
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
@@ -294,7 +295,7 @@ def make_dir(dir):
         os.makedirs(dir)
 
 
-def check_accessibility(context):
+def check_accessibility(context, step_name):
     # Sleep prevents Axe exceptions.
     # If no logs for Axe, Axe is called too fast when trying to inject javascript.
     time.sleep(0.6)
@@ -302,5 +303,38 @@ def check_accessibility(context):
     axe.inject()
     results = axe.run()
     if len(results["violations"]) > 0:
-        axe.write_results(results, f"{context.a11y_reports_dir}/a11y.json")
+        result_format = [
+            dict(
+                step=step_name,
+                url=context.helperfunc.get_url(),
+                violations=results["violations"],
+            )
+        ]
+
+        try:
+            f = open(f"{context.a11y_reports_dir}/a11y.json", "r")
+            result_format = json.load(f) + result_format
+            axe.write_results(result_format, f"{context.a11y_reports_dir}/a11y.json")
+            f.close()
+        except FileNotFoundError:
+            axe.write_results(result_format, f"{context.a11y_reports_dir}/a11y.json")
+
     return len(results["violations"]) == 0
+
+
+def filter_accessibility_report(context):
+    with open(f"{context.a11y_reports_dir}/a11y.json", "r") as f:
+        reported_issues = json.load(f)
+
+    filtered_issues = []
+    for step_error in reported_issues:
+        violations = step_error["violations"]
+        # Check if the current violation is already in filtered_issues
+        if not any(violations == issue["violations"] for issue in filtered_issues):
+            filtered_issues.append(step_error)
+
+    with open(f"{context.a11y_reports_dir}/a11y_filtered.json", "x") as f:
+        axe = Axe(context.helperfunc.driver())
+        axe.write_results(
+            filtered_issues, f"{context.a11y_reports_dir}/a11y_filtered.json"
+        )

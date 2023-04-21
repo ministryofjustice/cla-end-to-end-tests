@@ -77,5 +77,6 @@ node_modules/
 
 .sass-cache/
 behave/data/*
+behave/fox_admin_downloads
 # exception to the rule
 !behave/data/.gitkeep

@@ -19,7 +19,6 @@ class HelperFunc(object):
         self.call_centre_backend = Backend("/call_centre/api/v1/")
         self.call_centre_backend.authenticate(**CALL_CENTRE_ZONE)
         today = datetime.now().date()
-        self.accessibility_check = False
         self.date_start_this_month = (today - timedelta(days=today.day)).replace(day=1)
 
     def driver(self):
@@ -96,6 +95,9 @@ class HelperFunc(object):
 
     def get_current_path(self):
         return urlparse(self._driver.current_url).path
+
+    def get_url(self):
+        return self._driver.current_url
 
     def scroll_to_top(self):
         self._driver.execute_script("window.scrollTo(0, 0);")
