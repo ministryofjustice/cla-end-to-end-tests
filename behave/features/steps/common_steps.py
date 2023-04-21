@@ -329,7 +329,7 @@ def filter_accessibility_report(context):
     filtered_issues = []
     for step_error in reported_issues:
         violations = step_error["violations"]
-        # Check if the current violation is already in results_to_copy
+        # Check if the current violation is already in filtered_issues
         if not any(violations == issue["violations"] for issue in filtered_issues):
             filtered_issues.append(step_error)
 
