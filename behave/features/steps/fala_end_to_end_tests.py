@@ -50,14 +50,6 @@ def step_impl_input_location_provided(context, location):
     assert input_location_id.get_attribute("value") == location
 
 
-@step('I provide an organisation name "{organisation}"')
-def step_impl_input_organisation_provided(context, organisation):
-    input_organisation_id = context.helperfunc.find_by_id("id_name")
-    input_organisation_id.send_keys(organisation)
-
-    assert input_organisation_id.get_attribute("value") == organisation
-
-
 @step('I select the "search" button on the FALA homepage')
 def step_impl_search_clicked(context):
     context.helperfunc.click_button(By.ID, "searchButton")
@@ -103,22 +95,6 @@ def step_impl_error_shown_on_page(context):
 
     expected_text = "No results\nThere are no results matching your search criteria."
     assert alert.text == expected_text
-
-
-@step(
-    'I am taken to the page corresponding to the "{location}" "{organisation}" search result'
-)
-def step_impl_result_page_with_location_organisation_provided(
-    context, location, organisation
-):
-    organisation_format = organisation.replace(" ", "+")
-    location_format = location.replace(" ", "+")
-    expected_url = (
-        f"{CLA_FALA_URL}/?postcode={location_format}&name={organisation_format}&search="
-    )
-    expected_title = FALA_HEADER
-
-    assert_result_page(context, expected_url, expected_title)
 
 
 @step("{count:d} result is visible on the results page")

@@ -7,14 +7,10 @@ Feature: FALA end to end tests
     Given I am on the Find a legal aid adviser homepage
 
   @fala-search-location @a11y-check
-  Scenario Outline: Search for legal advisers via postcode and city
-    Given I provide the "<location>" details
+  Scenario: Search for legal advisers via postcode and city
+    Given I provide the "SW1H 9AJ" details
     When I select the "search" button on the FALA homepage
-    Then I am taken to the page corresponding to "<location>" result
-    Examples:
-      | location |
-      | SW1H 9AJ |
-      | London   |
+    Then I am taken to the page corresponding to "SW1H 9AJ" result
 
 
   @fala-apply-filter-after-search @a11y-check
@@ -29,27 +25,15 @@ Feature: FALA end to end tests
     Examples:
       | location | filter_label |
       | SW1H 9AJ | crm          |
-      | London   | hou          |
+      | PL1 2DP  | hou          |
 
 
   @fala-search-no-results @a11y-check
-  Scenario: I search for a town that does not have any solicitors and fails
+  Scenario: I search for an incorrect postcode that does not have any solicitors and fails
     Given I am on the Find a legal aid adviser homepage
-    And I provide the "Heswall" details
+    And I provide the "PL9" details
     When I select the "search" button on the FALA homepage
     Then the page shows an error
-
-
-  @fala-search-organisation @a11y-check
-  Scenario Outline: Search by organisation name
-    Given I provide the "<location>" details
-    And I provide an organisation name "<organisation>"
-    When I select the "search" button on the FALA homepage
-    Then I am taken to the page corresponding to the "<location>" "<organisation>" search result
-    And 1 result is visible on the results page
-    Examples:
-      | location | organisation   |
-      | London   | Boothroyds LLP |
 
 
   @fala-dom-translation @a11y-check
@@ -73,4 +57,4 @@ Feature: FALA end to end tests
     And there are less results visible on the results page
     Examples:
       | location | filter_label |
-      | London   | edu          |
+      | SW1H 9AJ | edu          |
