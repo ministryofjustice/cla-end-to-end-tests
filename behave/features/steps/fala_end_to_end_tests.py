@@ -191,3 +191,16 @@ def step_impl_resulting_generic_search(context, location):
         And I am taken to the page corresponding to "{location}" result
     """
     )
+
+
+@step('A "{message}" error is returned')
+def step_impl_postcode_not_found_error_returned(context, message):
+    error_title = context.helperfunc.find_by_css_selector(".govuk-error-summary__title")
+    error_message = context.helperfunc.find_by_css_selector(
+        ".govuk-error-summary__body"
+    )
+
+    assert error_title is not None
+    assert error_message is not None
+    assert error_title.text == "There is a problem"
+    assert error_message.text == message, f"actual error message is {error_message}"
