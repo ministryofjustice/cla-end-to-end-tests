@@ -96,7 +96,7 @@ def step_impl_apply_filter_on_result_page(context, location, filter_label):
     assert_result_page(context, expected_url, expected_title)
 
 
-@step("the page shows an error")
+@step("no results are returned")
 def step_impl_error_shown_on_page(context):
     alert = context.helperfunc.find_by_css_selector(".alert-message")
     assert alert is not None

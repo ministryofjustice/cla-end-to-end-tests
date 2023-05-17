@@ -17,13 +17,14 @@ Feature: FALA end to end tests
 
 
   @fala-search-city @a11y-check
-  Scenario Outline: Search for legal advisers via city returns error
+  Scenario Outline: Search for legal advisers via invalid locations returns error
     Given I provide the "<location>" details
     When I select the "search" button on the FALA homepage
     Then A "Postcode not found" error is returned
     Examples:
       | location |
-      | London |
+      | London   |
+      | SWP 9AJ  |
 
 
   @fala-apply-filter-after-search @a11y-check
@@ -38,6 +39,14 @@ Feature: FALA end to end tests
     Examples:
       | location | filter_label |
       | SW1H 9AJ | crm          |
+
+
+ @fala-search-no-results @a11y-check
+  Scenario: I search for a town that does not have any solicitors and fails
+    Given I am on the Find a legal aid adviser homepage
+    And I provide an organisation name "Non existent org"
+    When I select the "search" button on the FALA homepage
+    Then no results are returned
 
 
   @fala-search-organisation @a11y-check
