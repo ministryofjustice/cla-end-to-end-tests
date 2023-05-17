@@ -1,3 +1,4 @@
+@fala
 Feature: FALA end to end tests
   - Testing the search tool
   - Testing to apply filters to the search tool

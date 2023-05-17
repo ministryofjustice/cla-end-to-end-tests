@@ -1,3 +1,4 @@
+@cla_frontend
 Feature: Check Callbacks for Digital Cases
 # Looking at the callbacks calendar view to see whether callbacks have been created and then viewing the cases
 

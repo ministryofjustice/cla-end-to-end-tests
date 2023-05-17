@@ -1,3 +1,4 @@
+@cla_frontend
 Feature: Specialist Provider Case Assignment
 # Testing fixture used is loaded as part of creat_db.sh file.
 
