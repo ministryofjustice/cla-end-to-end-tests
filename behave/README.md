@@ -102,6 +102,21 @@ chromedriver # take note of the port listed. Will stay running in the foreground
 ./run_test_local_chrome_driver.sh -t "createuser"
 ```
 
+### Run Accessibility tests
+[axe-selenium-python](https://pypi.org/project/axe-selenium-python/) 
+[core-documentation](https://www.deque.com/axe/core-documentation/api-documentation) 
+
+To turn on accessibility checks, set the 'define' value. 
+`behave -D a11y=true`
+
+To call all accessibility tests with `@a11y-check` tags
+`behave -D a11y=true -t @a11y-check`
+
+Finding the a11y.json report
+`behave/data/a11y_reports/a11y.json`
+
+Reports are generated at the end of a single test or whole run test run.
+
 ## Lint and pre-commit hooks
 
 To lint with Black and flake8, install pre-commit hooks:
