@@ -17,8 +17,8 @@ Feature: FALA end to end tests
       | SW1H 9AJ |
 
 
-  @fala-search-city @a11y-check
-  Scenario Outline: Search for legal advisers via invalid locations returns error
+  @fala-search-not-valid @a11y-check
+  Scenario Outline: Search for legal advisers via invalid postcode or city returns error
     Given I provide the "<location>" details
     When I select the "search" button on the FALA homepage
     Then A "Postcode not found" error is returned
