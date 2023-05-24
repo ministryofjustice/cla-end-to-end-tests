@@ -1,4 +1,5 @@
- Feature: Contact us link
+@cla_public
+Feature: Contact us link
      As a CLA/FALA developer, I want to test the contact us journey,
      so that I can complete the e2e test journey.
 

@@ -1,3 +1,4 @@
+@cla_public
 Feature:
   - In scope means tests and some with callback or confirmation details after successful means test
   - Out of scope means tests

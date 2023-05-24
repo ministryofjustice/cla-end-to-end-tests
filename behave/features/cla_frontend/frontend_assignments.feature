@@ -1,3 +1,4 @@
+@cla_frontend
 Feature: - Assign alternative help to out of scope case.
          - Assign a case to a specialist provider.
          - Assign face to face.

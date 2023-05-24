@@ -1,4 +1,9 @@
-from helper.constants import CLA_FALA_URL, FALA_HEADER, MINIMUM_SLEEP_SECONDS
+from helper.constants import (
+    CLA_FALA_URL,
+    FALA_HEADER,
+    MINIMUM_SLEEP_SECONDS,
+    ERROR_TITLE,
+)
 from behave import step
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
@@ -96,7 +101,7 @@ def step_impl_apply_filter_on_result_page(context, location, filter_label):
     assert_result_page(context, expected_url, expected_title)
 
 
-@step("the page shows an error")
+@step("no results are returned")
 def step_impl_error_shown_on_page(context):
     alert = context.helperfunc.find_by_css_selector(".alert-message")
     assert alert is not None
@@ -191,3 +196,15 @@ def step_impl_resulting_generic_search(context, location):
         And I am taken to the page corresponding to "{location}" result
     """
     )
+
+
+@step('A "{message}" error is returned')
+def step_impl_postcode_not_found_error_returned(context, message):
+    error_title = context.helperfunc.find_by_css_selector(".govuk-error-summary__title")
+    error_message = context.helperfunc.find_by_css_selector(
+        ".govuk-error-summary__body"
+    )
+
+    assert error_title, error_message is not None
+    assert error_title.text == ERROR_TITLE
+    assert error_message.text == message, f"actual error message is {error_message}"

@@ -1,3 +1,4 @@
+@fala
 Feature: FALA end to end tests
   - Testing the search tool
   - Testing to apply filters to the search tool
@@ -6,15 +7,25 @@ Feature: FALA end to end tests
   Background: Homepage page
     Given I am on the Find a legal aid adviser homepage
 
-  @fala-search-location @a11y-check
-  Scenario Outline: Search for legal advisers via postcode and city
+  @fala-search-postcode @a11y-check
+  Scenario Outline: Search for legal advisers via postcode
     Given I provide the "<location>" details
     When I select the "search" button on the FALA homepage
     Then I am taken to the page corresponding to "<location>" result
     Examples:
       | location |
       | SW1H 9AJ |
+
+
+  @fala-search-not-valid @a11y-check
+  Scenario Outline: Search for legal advisers via invalid postcode or city returns error
+    Given I provide the "<location>" details
+    When I select the "search" button on the FALA homepage
+    Then A "Postcode not found" error is returned
+    Examples:
+      | location |
       | London   |
+      | SWP 9AJ  |
 
 
   @fala-apply-filter-after-search @a11y-check
@@ -29,15 +40,14 @@ Feature: FALA end to end tests
     Examples:
       | location | filter_label |
       | SW1H 9AJ | crm          |
-      | London   | hou          |
 
 
-  @fala-search-no-results @a11y-check
+ @fala-search-no-results @a11y-check
   Scenario: I search for a town that does not have any solicitors and fails
     Given I am on the Find a legal aid adviser homepage
-    And I provide the "Heswall" details
+    And I provide an organisation name "Non existent org"
     When I select the "search" button on the FALA homepage
-    Then the page shows an error
+    Then no results are returned
 
 
   @fala-search-organisation @a11y-check
@@ -49,7 +59,7 @@ Feature: FALA end to end tests
     And 1 result is visible on the results page
     Examples:
       | location | organisation   |
-      | London   | Boothroyds LLP |
+      | SW1H 9AJ | Boothroyds LLP |
 
 
   @fala-dom-translation @a11y-check
@@ -73,4 +83,4 @@ Feature: FALA end to end tests
     And there are less results visible on the results page
     Examples:
       | location | filter_label |
-      | London   | edu          |
+      | SW1H 9AJ | edu          |

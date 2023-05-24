@@ -1,3 +1,4 @@
+@cla_backend
 Feature: User journeys for Fox admin or cla_backend
 
 Background: Start page

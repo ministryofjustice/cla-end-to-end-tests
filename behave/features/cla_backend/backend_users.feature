@@ -1,3 +1,4 @@
+@cla_backend
 Feature: User journeys for Fox admin or cla_backend to update the users staff status
 
 Background: Log in to the Fox admin as a user within the super users group

@@ -1,3 +1,4 @@
+@cla_frontend
 Feature: Case and user creation.
     Confirming that a case can be created and then a new User 
     linked with the case.

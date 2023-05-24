@@ -1,3 +1,4 @@
+@cla_frontend
 Feature: Means test assessment
     Confirming if a person is eligible or not for legal aid and can be assigned a provider
 
