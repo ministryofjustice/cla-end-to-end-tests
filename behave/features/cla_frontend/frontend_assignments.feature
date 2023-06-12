@@ -125,3 +125,24 @@ Scenario: Given an INSCOPE decision when selecting discrimination at work
     And select 'Create financial assessment'
     Then I am taken to the Finances tab with the ‘Details’ sub-tab preselected
 
+@inscope_family_skip_financial_assessment
+Scenario: Skip means assessment when parent seeking to discharge Special Guardianship order
+    Given I select to 'Create a case'
+    When I select ‘Create Scope Diagnosis'
+    And I select the diagnosis Family and click next once
+    And I select the Special Guardianship Order option
+    And I select the parent option
+    Then I get an "INSCOPE" decision
+    And select 'Skip financial assessment'
+    And I remain in the Scope tab
+
+@inscope_family_complete_financial_assessment
+Scenario: Move on to means assessment when other person seeking to discharge Special Guardianship order
+    Given I select to 'Create a case'
+    When I select ‘Create Scope Diagnosis'
+    And I select the diagnosis Family and click next once
+    And I select the Special Guardianship Order option
+    And I select the other person option
+    Then I get an "INSCOPE" decision
+    And select 'Create financial assessment'
+    And I am taken to the Finances tab with the ‘Details’ sub-tab preselected

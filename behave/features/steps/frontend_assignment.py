@@ -166,12 +166,25 @@ def step_impl_create_financial_assessment(context):
     context.helperfunc.find_by_partial_link_text("Create financial assessment").click()
 
 
+@step("select 'Skip financial assessment'")
+def step_impl_skip_financial_assessment(context):
+    context.helperfunc.find_by_partial_link_text("Skip financial assessment").click()
+
+
 @step("I am taken to the Finances tab with the ‘Details’ sub-tab preselected")
 def step_impl_finances_tab(context):
     selected_tab = context.helperfunc.find_by_css_selector(
         "li[class='Tabs-tab is-active']"
     )
     assert "Finances" in selected_tab.text
+
+
+@step("I remain in the Scope tab")
+def step_impl_remain_scope_tab(context):
+    selected_tab = context.helperfunc.find_by_css_selector(
+        "li[class='Tabs-tab is-active']"
+    )
+    assert "Scope" in selected_tab.text
 
 
 @step('I select the "{category}" knowledge base category')
@@ -515,3 +528,59 @@ def step_impl_assign_f2f(context):
     page.driver().execute_script("arguments[0].click();", face_to_face_tab)
     # This clicks the actual assign F2F button.
     page.click_button(By.NAME, "assign-f2f")
+
+
+@step("I select the Special Guardianship Order option")
+def step_impl_select_special_guardianship_option(context):
+    context.helperfunc.click_button(
+        By.CSS_SELECTOR, "input[type='radio'][value='n410']"
+    )
+    print("clicked")
+    context.helperfunc.click_button(By.NAME, "diagnosis-next")
+    print("selected next")
+
+
+@step("I select the parent option")
+def step_impl_select_family_option(context):
+    context.helperfunc.click_button(
+        By.CSS_SELECTOR, "input[type='radio'][value='n411']"
+    )
+    print("clicked")
+    context.helperfunc.click_button(By.NAME, "diagnosis-next")
+    print("selected next")
+
+
+@step("I select the other person option")
+def step_impl_select_other_option(context):
+    context.helperfunc.click_button(
+        By.CSS_SELECTOR, "input[type='radio'][value='n412']"
+    )
+    print("clicked")
+    context.helperfunc.click_button(By.NAME, "diagnosis-next")
+    print("selected next")
+
+
+@step("I select the diagnosis Family and click next once")
+def step_impl_select_family_diagnosis_category(context):
+    def wait_for_diagnosis_form(*args):
+        form = context.helperfunc.find_by_name("diagnosis-form")
+        return form is not None and form.is_displayed()
+
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_diagnosis_form)
+
+    # work out which category to choose
+    # note that there is one category where have to click 'next' twice
+    category_text = "Family"
+    next_number = 1
+    # find the radio input next to the text of the category
+    x_path = f".//p[contains(text(),'{category_text}')]//ancestor::label/input[@type='radio']"
+    # for some reason these seem to return stale element errors
+    context.helperfunc.click_button(By.XPATH, x_path)
+    # now click next the correct number of times (normally 1)
+    for _ in range(int(next_number)):
+        context.helperfunc.click_button(By.NAME, "diagnosis-next")
+        # This is required because the diagnosis-next button on the current page and next page have the same name
+        # Without this sleep it will just find the same button and click it again instead of waiting for new button
+        # to load
+        time.sleep(MINIMUM_SLEEP_SECONDS)
