@@ -161,30 +161,18 @@ def step_impl_scope_decision(context, scope):
     assert scope in text
 
 
-@step("select 'Create financial assessment'")
-def step_impl_create_financial_assessment(context):
-    context.helperfunc.find_by_partial_link_text("Create financial assessment").click()
+@step('select the "{button_text}" button')
+def step_impl_create_financial_assessment(context, button_text):
+    context.helperfunc.find_by_partial_link_text(f"{button_text}").click()
 
 
-@step("select 'Skip financial assessment'")
-def step_impl_skip_financial_assessment(context):
-    context.helperfunc.find_by_partial_link_text("Skip financial assessment").click()
-
-
-@step("I am taken to the Finances tab with the ‘Details’ sub-tab preselected")
-def step_impl_finances_tab(context):
+@step('I am taken to the "{tab_name}" tab with the ‘Details’ sub-tab preselected')
+@step('I remain in the "{tab_name}" tab')
+def step_impl_finances_tab(context, tab_name):
     selected_tab = context.helperfunc.find_by_css_selector(
         "li[class='Tabs-tab is-active']"
     )
-    assert "Finances" in selected_tab.text
-
-
-@step("I remain in the Scope tab")
-def step_impl_remain_scope_tab(context):
-    selected_tab = context.helperfunc.find_by_css_selector(
-        "li[class='Tabs-tab is-active']"
-    )
-    assert "Scope" in selected_tab.text
+    assert tab_name in selected_tab.text
 
 
 @step('I select the "{category}" knowledge base category')
@@ -290,7 +278,7 @@ def step_impl_discrimination_scope(context):
         | Disability                                              | 1      |
         | Work                                                    | 1      |
         Then I get an "INSCOPE" decision
-        And select 'Create financial assessment'
+        And select the "Create financial assessment" button
     """
     )
 
@@ -309,7 +297,7 @@ def step_impl_diversity_tab(context):
     # first need to complete the finances tab
     context.execute_steps(
         """
-        Given I am taken to the Finances tab with the ‘Details’ sub-tab preselected
+        Given I am taken to the "Finances" tab with the ‘Details’ sub-tab preselected
         And I do not have a partner
         And I am aged 60 or over
         And I <answer> to Details <question>
@@ -530,57 +518,18 @@ def step_impl_assign_f2f(context):
     page.click_button(By.NAME, "assign-f2f")
 
 
-@step("I select the Special Guardianship Order option")
-def step_impl_select_special_guardianship_option(context):
+@step('I select the "{option}" option and click next')
+def step_impl_select_radio_button_option_by_value(context, option):
+    value = ""
+    if option == "Family":
+        value = "n97"
+    if option == "Special Guardianship Order":
+        value = "n410"
+    if option == "parent":
+        value = "n411"
+    if option == "other person":
+        value = "n412"
     context.helperfunc.click_button(
-        By.CSS_SELECTOR, "input[type='radio'][value='n410']"
+        By.CSS_SELECTOR, f"input[type='radio'][value='{value}']"
     )
-    print("clicked")
     context.helperfunc.click_button(By.NAME, "diagnosis-next")
-    print("selected next")
-
-
-@step("I select the parent option")
-def step_impl_select_family_option(context):
-    context.helperfunc.click_button(
-        By.CSS_SELECTOR, "input[type='radio'][value='n411']"
-    )
-    print("clicked")
-    context.helperfunc.click_button(By.NAME, "diagnosis-next")
-    print("selected next")
-
-
-@step("I select the other person option")
-def step_impl_select_other_option(context):
-    context.helperfunc.click_button(
-        By.CSS_SELECTOR, "input[type='radio'][value='n412']"
-    )
-    print("clicked")
-    context.helperfunc.click_button(By.NAME, "diagnosis-next")
-    print("selected next")
-
-
-@step("I select the diagnosis Family and click next once")
-def step_impl_select_family_diagnosis_category(context):
-    def wait_for_diagnosis_form(*args):
-        form = context.helperfunc.find_by_name("diagnosis-form")
-        return form is not None and form.is_displayed()
-
-    wait = WebDriverWait(context.helperfunc.driver(), 10)
-    wait.until(wait_for_diagnosis_form)
-
-    # work out which category to choose
-    # note that there is one category where have to click 'next' twice
-    category_text = "Family"
-    next_number = 1
-    # find the radio input next to the text of the category
-    x_path = f".//p[contains(text(),'{category_text}')]//ancestor::label/input[@type='radio']"
-    # for some reason these seem to return stale element errors
-    context.helperfunc.click_button(By.XPATH, x_path)
-    # now click next the correct number of times (normally 1)
-    for _ in range(int(next_number)):
-        context.helperfunc.click_button(By.NAME, "diagnosis-next")
-        # This is required because the diagnosis-next button on the current page and next page have the same name
-        # Without this sleep it will just find the same button and click it again instead of waiting for new button
-        # to load
-        time.sleep(MINIMUM_SLEEP_SECONDS)
