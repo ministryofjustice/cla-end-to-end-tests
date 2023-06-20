@@ -96,8 +96,8 @@ Scenario: Given an INSCOPE decision when selecting debt and court proceedings
         | Homeless or at risk of becoming homeless within 56 days | 1      |
         | A court has issued possession proceedings               | 1      |
     And I get an "INSCOPE" decision
-    And select 'Create financial assessment'
-    Then I am taken to the Finances tab with the ‘Details’ sub-tab preselected
+    And select the "Create financial assessment" button
+    Then I am taken to the "Finances" tab with the ‘Details’ sub-tab preselected
     #This is the icon in the top RH corner
     When I click on the Assign Alternative Help icon
     Then I am taken to the "Alternative help" page for the case located at "/alternative_help/"
@@ -122,6 +122,27 @@ Scenario: Given an INSCOPE decision when selecting discrimination at work
         | Disability                                              | 1      |
         | Work                                                    | 1      |
     Then I get an "INSCOPE" decision
-    And select 'Create financial assessment'
-    Then I am taken to the Finances tab with the ‘Details’ sub-tab preselected
+    And select the "Create financial assessment" button
+    Then I am taken to the "Finances" tab with the ‘Details’ sub-tab preselected
 
+@inscope_family_skip_financial_assessment
+Scenario: Skip means assessment when parent seeking to discharge Special Guardianship order
+    Given I select to 'Create a case'
+    And I select ‘Create Scope Diagnosis'
+    When I select the "Family" option and click next
+    And I select the "Special Guardianship Order" option and click next
+    And I select the "parent" option and click next
+    Then I get an "INSCOPE" decision
+    And select the "Skip financial assessment" button
+    And I remain in the "Scope" tab
+
+@inscope_family_complete_financial_assessment
+Scenario: Move on to means assessment when other person seeking to discharge Special Guardianship order
+    Given I select to 'Create a case'
+    And I select ‘Create Scope Diagnosis'
+    When I select the "Family" option and click next
+    And I select the "Special Guardianship Order" option and click next
+    And I select the "other person" option and click next
+    Then I get an "INSCOPE" decision
+    And select the "Create financial assessment" button
+    And I am taken to the "Finances" tab with the ‘Details’ sub-tab preselected

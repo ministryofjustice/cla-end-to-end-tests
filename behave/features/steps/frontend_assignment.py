@@ -161,17 +161,18 @@ def step_impl_scope_decision(context, scope):
     assert scope in text
 
 
-@step("select 'Create financial assessment'")
-def step_impl_create_financial_assessment(context):
-    context.helperfunc.find_by_partial_link_text("Create financial assessment").click()
+@step('select the "{button_text}" button')
+def step_impl_create_financial_assessment(context, button_text):
+    context.helperfunc.find_by_partial_link_text(f"{button_text}").click()
 
 
-@step("I am taken to the Finances tab with the ‘Details’ sub-tab preselected")
-def step_impl_finances_tab(context):
+@step('I am taken to the "{tab_name}" tab with the ‘Details’ sub-tab preselected')
+@step('I remain in the "{tab_name}" tab')
+def step_impl_finances_tab(context, tab_name):
     selected_tab = context.helperfunc.find_by_css_selector(
         "li[class='Tabs-tab is-active']"
     )
-    assert "Finances" in selected_tab.text
+    assert tab_name in selected_tab.text
 
 
 @step('I select the "{category}" knowledge base category')
@@ -277,7 +278,7 @@ def step_impl_discrimination_scope(context):
         | Disability                                              | 1      |
         | Work                                                    | 1      |
         Then I get an "INSCOPE" decision
-        And select 'Create financial assessment'
+        And select the "Create financial assessment" button
     """
     )
 
@@ -296,7 +297,7 @@ def step_impl_diversity_tab(context):
     # first need to complete the finances tab
     context.execute_steps(
         """
-        Given I am taken to the Finances tab with the ‘Details’ sub-tab preselected
+        Given I am taken to the "Finances" tab with the ‘Details’ sub-tab preselected
         And I do not have a partner
         And I am aged 60 or over
         And I <answer> to Details <question>
@@ -515,3 +516,20 @@ def step_impl_assign_f2f(context):
     page.driver().execute_script("arguments[0].click();", face_to_face_tab)
     # This clicks the actual assign F2F button.
     page.click_button(By.NAME, "assign-f2f")
+
+
+@step('I select the "{option}" option and click next')
+def step_impl_select_radio_button_option_by_value(context, option):
+    value = ""
+    if option == "Family":
+        value = "n97"
+    if option == "Special Guardianship Order":
+        value = "n410"
+    if option == "parent":
+        value = "n411"
+    if option == "other person":
+        value = "n412"
+    context.helperfunc.click_button(
+        By.CSS_SELECTOR, f"input[type='radio'][value='{value}']"
+    )
+    context.helperfunc.click_button(By.NAME, "diagnosis-next")

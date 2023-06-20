@@ -27,7 +27,7 @@ def step_impl_finance_details_tabs(context):
     context.execute_steps(
         """
         Given I have created a valid discrimination scope
-        Then I am taken to the Finances tab with the ‘Details’ sub-tab preselected
+        Then I am taken to the "Finances" tab with the ‘Details’ sub-tab preselected
     """
     )
 
