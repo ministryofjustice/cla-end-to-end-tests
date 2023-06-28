@@ -11,6 +11,7 @@ services:
       -wait tcp://clapublic:8000
       -wait tcp://fala:8000
       -wait tcp://seleniumchrome:4444
+      -wait tcp://clabackendooh:8000
       -wait-retry-interval 10s
       -timeout 180s
     depends_on:
@@ -21,6 +22,7 @@ services:
       - clasocketserver
       - fala
       - prev_db
+      - clabackendooh
 
   cla-end-to-end:
     container_name: cla-end-to-end
@@ -148,6 +150,38 @@ services:
       STATIC_FILES_BACKEND: local
       ADMIN_PASSWORD: cla_admin
       ALLOWED_HOSTS: "*"
+      DEFAULT_NON_ROTA_START_TIME_HR: 1
+      DEFAULT_NON_ROTA_END_TIME_HR: 1
+      DEFAULT_ED_START_TIME_HR: 1
+      DEFAULT_ED_END_TIME_HR: 1
+      DEFAULT_DISCRIM_START_TIME_HR: 1
+      DEFAULT_DISCRIM_END_TIME_HR: 1
+
+  clabackendooh:
+    image: ${CLA_BACKEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:master}
+    ports:
+      - "8014:8000"
+    depends_on:
+      - db
+    environment:
+      ENV: local
+      DEBUG: "True"
+      SECRET_KEY: CHANGE_ME
+      DB_NAME: cla_backend
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: db
+      DB_PORT: 5432
+      BACKEND_ENABLED: "True"
+      LOAD_SEED_DATA: "True"
+      LOAD_TEST_DATA: "True"
+      LOAD_END_TO_END_FIXTURES: "True"
+      ADMIN_USER: cla_admin
+      STATIC_FILES_BACKEND: local
+      ADMIN_PASSWORD: cla_admin
+      ALLOWED_HOSTS: "*"
+      DEFAULT_ED_START_TIME_HR: 17
+      DEFAULT_ED_END_TIME_HR: 9
 
   clapublic:
     image: ${CLA_PUBLIC_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_public:master}
