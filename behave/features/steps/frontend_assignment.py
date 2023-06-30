@@ -454,6 +454,26 @@ def step_impl_one_provider(context):
     assert len(headings) == 1
 
 
+@step("I choose a provider")
+def step_impl_choose_provider(context):
+    form = context.helperfunc.find_by_name("assign_provider_form")
+
+    # Providers are loaded via ajax after clicking the assign tab
+    def wait_for_providers_to_load(*args):
+        return form.find_element_by_css_selector("div.FormRow") is not None
+
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_providers_to_load)
+
+    # Find matter type 2 wrapper and focus on it
+    radio = form.find_element_by_css_selector('strong[class="ng-binding"]')
+    radio.click()
+
+    headings = form.find_elements_by_css_selector("h2.ContactBlock-heading")
+    context.provider_selected = headings[0].text
+    assert len(headings) == 1
+
+
 @step("I select 'Assign Provider'")
 def step_impl_assign_provider(context):
     context.case_id = context.helperfunc.find_by_css_selector(".CaseBar-caseNum a").text

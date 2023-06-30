@@ -150,12 +150,12 @@ services:
       STATIC_FILES_BACKEND: local
       ADMIN_PASSWORD: cla_admin
       ALLOWED_HOSTS: "*"
-      DEFAULT_NON_ROTA_START_TIME_HR: 1
-      DEFAULT_NON_ROTA_END_TIME_HR: 1
-      DEFAULT_ED_START_TIME_HR: 1
-      DEFAULT_ED_END_TIME_HR: 1
-      DEFAULT_DISCRIM_START_TIME_HR: 1
-      DEFAULT_DISCRIM_END_TIME_HR: 1
+      NON_ROTA_START_TIME_HR: 8
+      NON_ROTA_END_TIME_HR: 12
+      ED_START_TIME_HR: 8
+      ED_END_TIME_HR: 12
+      DISCRIM_START_TIME_HR: 8
+      DISCRIM_END_TIME_HR: 12
 
   clabackendooh:
     image: ${CLA_BACKEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:master}
@@ -180,8 +180,12 @@ services:
       STATIC_FILES_BACKEND: local
       ADMIN_PASSWORD: cla_admin
       ALLOWED_HOSTS: "*"
-      DEFAULT_ED_START_TIME_HR: 17
-      DEFAULT_ED_END_TIME_HR: 9
+      NON_ROTA_START_TIME_HR: 17
+      NON_ROTA_END_TIME_HR: 8
+      ED_START_TIME_HR: 17
+      ED_END_TIME_HR: 9
+      DISCRIM_START_TIME_HR: 18
+      DISCRIM_END_TIME_HR: 8
 
   clapublic:
     image: ${CLA_PUBLIC_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_public:master}
