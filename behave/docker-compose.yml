@@ -12,6 +12,7 @@ services:
       -wait tcp://fala:8000
       -wait tcp://seleniumchrome:4444
       -wait tcp://clabackendooh:8000
+      -wait tcp://clafrontendooh:8000
       -wait-retry-interval 10s
       -timeout 180s
     depends_on:
@@ -23,6 +24,7 @@ services:
       - fala
       - prev_db
       - clabackendooh
+      - clafrontendooh
 
   cla-end-to-end:
     container_name: cla-end-to-end
@@ -97,6 +99,32 @@ services:
       ALLOWED_HOSTS: "*"
       SESSION_COOKIE_SECURE: "False"
 
+  clafrontendooh:
+    image: ${CLA_FRONTEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend:master}
+    ports:
+      - "8015:8000"
+    depends_on:
+      - clabackend
+      - clasocketserver
+    environment:
+      ENV: local
+      DEBUG: "True"
+      SECRET_KEY: CHANGE_ME
+      BACKEND_BASE_URI: http://clabackendooh:8000
+      CALL_CENTRE_CLIENT_ID: b4b9220ffcb11ebfdab1
+      CALL_CENTRE_SECRET_ID: 2df71313bdd38a2e1b815015e1b14387e7681d41
+      CLA_PROVIDER_CLIENT_ID: 59657ed22d980251cdd3
+      CLA_PROVIDER_SECRET_ID: 0494287c65bdf61d29f0eeed467ec8e090f0d80f
+      SOCKETIO_SERVER_URL: http://clasocketserver:8005/socket.io
+      SOCKETIO_SERVICE_URL: clasocketserver:8005/socket.io/
+      OS_PLACES_API_KEY: ${OS_PLACES_API_KEY:-CHANGE_ME}
+      GA_ID: ${GA_ID:-CHANGE_ME}
+      GA_DOMAIN:  ${GA_DOMAIN:-localhost}
+      SITE_HOSTNAME: clasocketserver
+      STATIC_FILES_BACKEND: local
+      ALLOWED_HOSTS: "*"
+      SESSION_COOKIE_SECURE: "False"
+
   db:
     image: postgres:11.6-alpine
     ports:
@@ -150,12 +178,12 @@ services:
       STATIC_FILES_BACKEND: local
       ADMIN_PASSWORD: cla_admin
       ALLOWED_HOSTS: "*"
-      NON_ROTA_START_TIME_HR: 8
-      NON_ROTA_END_TIME_HR: 12
-      ED_START_TIME_HR: 8
-      ED_END_TIME_HR: 12
-      DISCRIM_START_TIME_HR: 8
-      DISCRIM_END_TIME_HR: 12
+      NON_ROTA_START_TIME_HR: 1
+      NON_ROTA_END_TIME_HR: 22
+      EDUCATION_START_TIME_HR: 1
+      EDUCATION_END_TIME_HR: 22
+      DISCRIMINATION_START_TIME_HR: 1
+      DISCRIMINATION_END_TIME_HR: 22
 
   clabackendooh:
     image: ${CLA_BACKEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:master}
@@ -180,12 +208,12 @@ services:
       STATIC_FILES_BACKEND: local
       ADMIN_PASSWORD: cla_admin
       ALLOWED_HOSTS: "*"
-      NON_ROTA_START_TIME_HR: 17
-      NON_ROTA_END_TIME_HR: 8
-      ED_START_TIME_HR: 17
-      ED_END_TIME_HR: 9
-      DISCRIM_START_TIME_HR: 18
-      DISCRIM_END_TIME_HR: 8
+      NON_ROTA_START_TIME_HR: 22
+      NON_ROTA_END_TIME_HR: 23
+      EDUCATION_START_TIME_HR: 22
+      EDUCATION_END_TIME_HR: 23
+      DISCRIMINATION_START_TIME_HR: 22
+      DISCRIMINATION_END_TIME_HR: 23
 
   clapublic:
     image: ${CLA_PUBLIC_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_public:master}
