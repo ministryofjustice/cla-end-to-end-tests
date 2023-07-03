@@ -29,6 +29,13 @@ USERS = {
         "user_type": "OPERATOR",
         "application": "FRONTEND",
     },
+    "CHS_GENERAL_USER_OOH": {
+        "username": "test_operator",
+        "password": "test_operator",
+        "login_url": "http://clafrontendooh:8000/auth/login/",
+        "user_type": "OPERATOR",
+        "application": "FRONTEND",
+    },
     "TEST_SPECIALIST_PROVIDER": {
         "username": "test_howells",
         "password": "test_howells",
