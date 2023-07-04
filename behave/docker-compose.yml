@@ -73,14 +73,14 @@ services:
     environment:
       SITE_HOSTNAME: clasocketserver
 
-  clafrontend:
+  clafrontend: &clafrontend
     image: ${CLA_FRONTEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend:master}
     ports:
       - "8011:8000"
     depends_on:
       - clabackend
       - clasocketserver
-    environment:
+    environment: &clafrontendenvironment
       ENV: local
       DEBUG: "True"
       SECRET_KEY: CHANGE_ME
@@ -100,30 +100,14 @@ services:
       SESSION_COOKIE_SECURE: "False"
 
   clafrontendooh:
-    image: ${CLA_FRONTEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend:master}
+    <<: *clafrontend
     ports:
       - "8015:8000"
     depends_on:
-      - clabackend
-      - clasocketserver
+      - clafrontend
     environment:
-      ENV: local
-      DEBUG: "True"
-      SECRET_KEY: CHANGE_ME
+      <<: *clafrontendenvironment
       BACKEND_BASE_URI: http://clabackendooh:8000
-      CALL_CENTRE_CLIENT_ID: b4b9220ffcb11ebfdab1
-      CALL_CENTRE_SECRET_ID: 2df71313bdd38a2e1b815015e1b14387e7681d41
-      CLA_PROVIDER_CLIENT_ID: 59657ed22d980251cdd3
-      CLA_PROVIDER_SECRET_ID: 0494287c65bdf61d29f0eeed467ec8e090f0d80f
-      SOCKETIO_SERVER_URL: http://clasocketserver:8005/socket.io
-      SOCKETIO_SERVICE_URL: clasocketserver:8005/socket.io/
-      OS_PLACES_API_KEY: ${OS_PLACES_API_KEY:-CHANGE_ME}
-      GA_ID: ${GA_ID:-CHANGE_ME}
-      GA_DOMAIN:  ${GA_DOMAIN:-localhost}
-      SITE_HOSTNAME: clasocketserver
-      STATIC_FILES_BACKEND: local
-      ALLOWED_HOSTS: "*"
-      SESSION_COOKIE_SECURE: "False"
 
   db:
     image: postgres:11.6-alpine
@@ -155,13 +139,13 @@ services:
     volumes:
       - ./data:/data
 
-  clabackend:
+  clabackend: &clabackend
     image: ${CLA_BACKEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:master}
     ports:
       - "8010:8000"
     depends_on:
       - db
-    environment:
+    environment: &clabackendenvironment
       ENV: local
       DEBUG: "True"
       SECRET_KEY: CHANGE_ME
@@ -186,28 +170,15 @@ services:
       DISCRIMINATION_END_TIME_HR: 22
 
   clabackendooh:
-    image: ${CLA_BACKEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:master}
+    <<: *clabackend
     ports:
       - "8014:8000"
     depends_on:
-      - db
+      - clabackend
+    container_name:
+      clabackendooh
     environment:
-      ENV: local
-      DEBUG: "True"
-      SECRET_KEY: CHANGE_ME
-      DB_NAME: cla_backend
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_HOST: db
-      DB_PORT: 5432
-      BACKEND_ENABLED: "True"
-      LOAD_SEED_DATA: "True"
-      LOAD_TEST_DATA: "True"
-      LOAD_END_TO_END_FIXTURES: "True"
-      ADMIN_USER: cla_admin
-      STATIC_FILES_BACKEND: local
-      ADMIN_PASSWORD: cla_admin
-      ALLOWED_HOSTS: "*"
+      <<: *clabackendenvironment
       NON_ROTA_START_TIME_HR: 22
       NON_ROTA_END_TIME_HR: 23
       EDUCATION_START_TIME_HR: 22
