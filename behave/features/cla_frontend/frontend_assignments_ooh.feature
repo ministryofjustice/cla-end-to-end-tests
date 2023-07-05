@@ -8,7 +8,7 @@ Feature: - Assign alternative help to out of scope case.
 Background: Login
     Given I am logged in as "CHS_GENERAL_USER_OOH"
 
-# Test will work at any time between 2am to 1am the following day
+# Test will fail if run between 1am to 2am
 @complete_case_ooh @ooh
 Scenario: Attempt to assign a complete case out of hours
     Given I select to 'Create a case'

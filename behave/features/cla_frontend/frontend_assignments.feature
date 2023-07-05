@@ -43,8 +43,8 @@ Scenario: Assign alternative help for out of scope user without postcode or phon
     Then a Missing Information validation message is displayed to the user
 
 # Assign a case to a specialist provider.
-# Test will work any time between 2am and 11pm
-@complete_case
+# Test will fail if run any time after 11pm
+@complete_case_inh
 Scenario: Attempt to assign a complete case during working hours
     Given I select to 'Create a case'
     And I enter the case notes "All is okay with this case"
