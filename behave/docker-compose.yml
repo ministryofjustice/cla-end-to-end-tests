@@ -162,12 +162,12 @@ services:
       STATIC_FILES_BACKEND: local
       ADMIN_PASSWORD: cla_admin
       ALLOWED_HOSTS: "*"
-      NON_ROTA_START_TIME_HR: 1
-      NON_ROTA_END_TIME_HR: 22
-      EDUCATION_START_TIME_HR: 1
-      EDUCATION_END_TIME_HR: 22
-      DISCRIMINATION_START_TIME_HR: 1
-      DISCRIMINATION_END_TIME_HR: 22
+      NON_ROTA_START_TIME_HR: 2
+      NON_ROTA_END_TIME_HR: 23
+      EDUCATION_START_TIME_HR: 2
+      EDUCATION_END_TIME_HR: 23
+      DISCRIMINATION_START_TIME_HR: 2
+      DISCRIMINATION_END_TIME_HR: 23
 
   clabackendooh:
     <<: *clabackend
@@ -179,12 +179,12 @@ services:
       clabackendooh
     environment:
       <<: *clabackendenvironment
-      NON_ROTA_START_TIME_HR: 22
-      NON_ROTA_END_TIME_HR: 23
-      EDUCATION_START_TIME_HR: 22
-      EDUCATION_END_TIME_HR: 23
-      DISCRIMINATION_START_TIME_HR: 22
-      DISCRIMINATION_END_TIME_HR: 23
+      NON_ROTA_START_TIME_HR: 1
+      NON_ROTA_END_TIME_HR: 2
+      EDUCATION_START_TIME_HR: 1
+      EDUCATION_END_TIME_HR: 2
+      DISCRIMINATION_START_TIME_HR: 1
+      DISCRIMINATION_END_TIME_HR: 2
 
   clapublic:
     image: ${CLA_PUBLIC_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_public:master}
