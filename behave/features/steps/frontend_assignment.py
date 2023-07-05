@@ -9,6 +9,7 @@ from helper.constants import (
     MATTER_TYPE_2,
     CLA_FRONTEND_URL,
     ASSIGN_F2F_CASE,
+    CLA_FRONTEND_OOH_URL,
 )
 from selenium.webdriver.common.by import By
 from common_steps import (
@@ -515,7 +516,7 @@ def step_impl_case_removed_from_list(context):
 
 @step("the case does not show up on the call centre dashboard ooh")
 def step_impl_case_removed_from_list_ooh(context):
-    dashboard_url = "http://clafrontendooh:8000/call_centre/?ordering=-modified&page=1"
+    dashboard_url = f"{CLA_FRONTEND_OOH_URL}/call_centre/?ordering=-modified&page=1"
     context.helperfunc.open(dashboard_url)
 
     def wait_until_dashboard_page_is_loaded(*args):

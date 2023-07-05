@@ -7,6 +7,7 @@ DATABASE_SNAPSHOT_ENABLED = (
 DATA_DIRECTORY = os.environ.get("DATA_DIRECTORY", "./data")
 CLA_BACKEND_URL = os.environ.get("CLA_E2E_BACKEND_URL")
 CLA_FRONTEND_URL = os.environ.get("CLA_E2E_FRONTEND_URL")
+CLA_FRONTEND_OOH_URL = "http://clafrontendooh:8000"
 CLA_FRONTEND_CSV_URL = "/provider/csvupload/"
 CLA_PUBLIC_URL = os.environ.get("CLA_E2E_PUBLIC_URL")
 CLA_FALA_URL = os.environ.get("CLA_E2E_FALA_URL")
@@ -32,7 +33,7 @@ USERS = {
     "CHS_GENERAL_USER_OOH": {
         "username": "test_operator",
         "password": "test_operator",
-        "login_url": "http://clafrontendooh:8000/auth/login/",
+        "login_url": f"{CLA_FRONTEND_OOH_URL}/auth/login/",
         "user_type": "OPERATOR",
         "application": "FRONTEND",
     },
