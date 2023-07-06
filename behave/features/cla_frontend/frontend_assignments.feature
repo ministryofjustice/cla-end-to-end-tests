@@ -43,8 +43,9 @@ Scenario: Assign alternative help for out of scope user without postcode or phon
     Then a Missing Information validation message is displayed to the user
 
 # Assign a case to a specialist provider.
-@complete_case
-Scenario: Attempt to assign a complete case
+# Test will fail if not between DISCRIMINATION_START_TIME_HR and DISCRIMINATION_END_TIME_HR
+@complete_case_inh
+Scenario: Attempt to assign a complete case during working hours
     Given I select to 'Create a case'
     And I enter the case notes "All is okay with this case"
     And I have created a user

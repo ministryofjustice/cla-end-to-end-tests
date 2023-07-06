@@ -9,6 +9,7 @@ from helper.constants import (
     MATTER_TYPE_2,
     CLA_FRONTEND_URL,
     ASSIGN_F2F_CASE,
+    CLA_FRONTEND_OOH_URL,
 )
 from selenium.webdriver.common.by import By
 from common_steps import (
@@ -454,6 +455,25 @@ def step_impl_one_provider(context):
     assert len(headings) == 1
 
 
+@step("I choose a provider")
+def step_impl_choose_provider(context):
+    form = context.helperfunc.find_by_name("assign_provider_form")
+
+    # Providers are loaded via ajax after clicking the assign tab
+    def wait_for_providers_to_load(*args):
+        return form.find_element_by_css_selector("div.FormRow") is not None
+
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_for_providers_to_load)
+
+    # Find matter type 2 wrapper and focus on it
+    form.find_elements(By.CSS_SELECTOR, 'strong[class="ng-binding"]')[1].click()
+
+    headings = form.find_elements_by_css_selector("h2.ContactBlock-heading")
+    context.provider_selected = headings[0].text
+    assert len(headings) == 1
+
+
 @step("I select 'Assign Provider'")
 def step_impl_assign_provider(context):
     context.case_id = context.helperfunc.find_by_css_selector(".CaseBar-caseNum a").text
@@ -479,6 +499,24 @@ def step_impl_case_assigned(context):
 @step("the case does not show up on the call centre dashboard")
 def step_impl_case_removed_from_list(context):
     dashboard_url = f"{CLA_FRONTEND_URL}/call_centre/?ordering=-modified&page=1"
+    context.helperfunc.open(dashboard_url)
+
+    def wait_until_dashboard_page_is_loaded(*args):
+        try:
+            table = context.helperfunc.driver().find_element_by_css_selector(
+                ".ListTable"
+            )
+            return context.case_id not in table.text
+        except Exception:
+            return False
+
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(wait_until_dashboard_page_is_loaded)
+
+
+@step("the case does not show up on the call centre dashboard ooh")
+def step_impl_case_removed_from_list_ooh(context):
+    dashboard_url = f"{CLA_FRONTEND_OOH_URL}/call_centre/?ordering=-modified&page=1"
     context.helperfunc.open(dashboard_url)
 
     def wait_until_dashboard_page_is_loaded(*args):
