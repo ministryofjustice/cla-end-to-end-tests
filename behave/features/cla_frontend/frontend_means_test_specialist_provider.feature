@@ -29,13 +29,11 @@ Feature: Editing means test assessment as a specialist provider
     And I am taken to the "specialist provider" case details page
     When I select Finances
     And I move onto Finances inner-tab
-#  And The legal help form "Your Finances" section has the values
     And I can see on Finances inner-tab that the values remain updated
       | question                                             | answer |
       | How much was in your bank account/building           | 500.00 |
       | Do you have any investments, shares or ISAs?         | 0.00   |
       | Do you have any valuable items worth over £500 each? | 0.00   |
       | Do you have any money owed to you?                   | 0.00   |
-# And I can view my changed <answer> to Finances <question>
 
 
