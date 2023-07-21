@@ -541,3 +541,19 @@ def step_impl_csv_error_details(context):
     # Loop through HTML li elements and make sure the list items contain text.
     for error_item in error_list:
         assert error_item.get_attribute("innerText") is not None
+
+    @step("I can see on Finances inner-tab that the values remain updated")
+    def step_impl_your_finances_values(context):
+
+        # Find the question by label
+        # Find input and check value from answer
+        for row in context.table:
+            label = row["question"]
+            value = row["answer"]
+            label_format = label.ljust(len(label) + 1)
+            # Each question under the finances inner tab
+            # has a space character at the end of string
+            # Using ljust method to add space character
+            assert value == context.helperfunc.find_by_xpath(
+                f"//span[contains(text(),'{label_format}')]/../input"
+            ).get_attribute("value")
