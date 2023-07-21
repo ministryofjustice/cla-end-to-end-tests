@@ -60,6 +60,14 @@ def step_select_special_provider_case(context):
     select_a_case(context, case_reference, check_only_unaccepted_cases)
 
 
+@step("I select a case to edit from the dashboard")
+def step_impl_select_case_to_edit(context):
+    case_reference = CLA_SPECIALIST_CASE_TO_ACCEPT
+    # Case doesn't need to accepted, can reject any case.
+    check_only_unaccepted_cases = False
+    select_a_case(context, case_reference, check_only_unaccepted_cases)
+
+
 @step("I select a case to reject from the dashboard")
 def step_impl_select_case_to_reject(context):
     case_reference = CLA_SPECIALIST_CASE_TO_REJECT
@@ -163,6 +171,7 @@ def step_impl_case_accepted(context):
 
 @step("I return to the specialist provider cases dashboard page")
 def step_impl_return_to_dashboard(context):
+
     # click on the 'back to cases' link
     back_to_cases = context.helperfunc.find_by_xpath(
         '//a[@class="SubNav-link SubNav-link--back"]'
