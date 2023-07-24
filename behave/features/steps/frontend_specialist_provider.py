@@ -171,7 +171,6 @@ def step_impl_case_accepted(context):
 
 @step("I return to the specialist provider cases dashboard page")
 def step_impl_return_to_dashboard(context):
-
     # click on the 'back to cases' link
     back_to_cases = context.helperfunc.find_by_xpath(
         '//a[@class="SubNav-link SubNav-link--back"]'

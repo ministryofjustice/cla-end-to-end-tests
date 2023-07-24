@@ -5,6 +5,9 @@ Feature: Editing means test assessment as a specialist provider
   Background: Login
     Given I am logged in as "TEST_SPECIALIST_PROVIDER"
 
+#  We were going into a case that already exists and changing 500 to 500500 for some reason
+#  amended step "I <answer> to Finances <question> to
+#  clear the text field and then send keys instead of appending to the end of a string
   @specialist-provider-edit-case
   Scenario: Specialist Provider Edits a case
     Given I am on the specialist provider cases dashboard page
@@ -12,21 +15,20 @@ Feature: Editing means test assessment as a specialist provider
     And I am taken to the "specialist provider" case details page
     When I select Finances
     And I move onto Finances inner-tab
-        And I <answer> to Finances <question>
+    And I <answer> to Finances <question>
       | question                                             | answer |
-      | How much was in your bank account/building           | 500.00 |
+      | How much was in your bank account/building           | 500    |
       | Do you have any investments, shares or ISAs?         | 0.00   |
       | Do you have any valuable items worth over £500 each? | 0.00   |
       | Do you have any money owed to you?                   | 0.00   |
     And I select Save assessment
-  #need to make sure we are actually changing a value here and still eligible when we do it
+    Then I am given a message 'The means test has been saved. The current result is eligible for Legal Aid'
+    When I return to the specialist provider cases dashboard page
+    And I select a case to edit from the dashboard
   # step here checking the messages at the side?   `Then I can see my accepted case reference number`
   # this step fails with the following error:
-  # selenium.common.exceptions.ElementClickInterceptedException: Message: element click intercepted: Element <a ui-sref="case_list(caseListStateParams)" class="SubNav-link SubNav-link--back" href="/provider/">...</a> is not clickable at point (134, 20). Other element would receive the click: <a ui-sref="case_detail.edit.diagnosis" class="ng-binding" href="/provider/JT-4272-9443/diagnosis/">...</a>
-       # (Session info: chrome=112.0.5615.165)
-
-    #When I return to the specialist provider cases dashboard page
-    #And I select a case to edit from the dashboard
+  #      selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {"method":"css selector","selector":".ListTable"}
+  #        (Session info: chrome=114.0.5735.133)
     #And I am taken to the "specialist provider" case details page
     #When I select Finances
     #And I move onto Finances inner-tab

@@ -80,6 +80,7 @@ def step_impl_means_test_result(context, optional):
     element = context.helperfunc.find_by_css_selector(
         ".Notice.Notice--closeable.success"
     )
+    context.helperfunc.scroll_to_top()
     if optional:
         assert (
             element.text
