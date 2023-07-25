@@ -37,6 +37,13 @@ USERS = {
         "user_type": "OPERATOR",
         "application": "FRONTEND",
     },
+    "CHS_MANAGER_USER": {
+        "username": "test_operator_manager",
+        "password": "test_operator_manager",
+        "login_url": f"{CLA_FRONTEND_URL}/auth/login/",
+        "user_type": "OPERATOR",
+        "application": "FRONTEND",
+    },
     "TEST_SPECIALIST_PROVIDER": {
         "username": "test_howells",
         "password": "test_howells",
