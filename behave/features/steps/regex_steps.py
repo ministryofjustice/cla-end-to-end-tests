@@ -55,6 +55,44 @@ def step_impl_over_sixty(context, optional):
     assert radio_input.get_attribute("checked") == "true"
 
 
+@step("I am (?P<optional>not )?aged 17 or under")
+def step_impl_under_eighteen(context, optional):
+    state = "true"
+    if optional:
+        state = "false"
+    radio_input = context.helperfunc.find_by_xpath(
+        f"//input[@name='your_details-is_you_under_18'][@value='{state}']"
+    )
+    radio_input.click()
+    assert radio_input.get_attribute("checked") == "true"
+
+
+@step("I do (?P<optional>not )? receive money on a regular basis")
+def step_impl_receive_money_regularly(context, optional):
+    state = "true"
+    if optional:
+        state = "false"
+    radio_input = context.helperfunc.find_by_xpath(
+        f"//input[@name='your_details-under_18_receive_regular_payment'][@value='{state}']"
+    )
+    radio_input.click()
+    assert radio_input.get_attribute("checked") == "true"
+
+
+@step(
+    "I do (?P<optional>not )? have savings, items of value or investments totalling £2500 or more?"
+)
+def step_impl_have_savings_items_over_two_thousand_five_hundred(context, optional):
+    state = "true"
+    if optional:
+        state = "false"
+    radio_input = context.helperfunc.find_by_xpath(
+        f"//input[@name='your_details-under_18_has_valuables'][@value='{state}']"
+    )
+    radio_input.click()
+    assert radio_input.get_attribute("checked") == "true"
+
+
 @step(
     "I am given a message 'The means test has been saved. The current result is (?P<optional>not )?eligible "
     "for Legal Aid'"
