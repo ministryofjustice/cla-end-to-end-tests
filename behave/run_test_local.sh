@@ -3,7 +3,7 @@
 set -e
 
 export DOCKER_BUILDKIT=0
-
+export CLA_BACKEND_IMAGE=754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:lga-2568-complaints-search-e
 function start_applications {
   docker-compose -f docker-compose.yml run start_applications
 }
