@@ -140,7 +140,7 @@ services:
       - ./data:/data
 
   clabackend: &clabackend
-    image: ${CLA_BACKEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:lga-2568-complaints-search-e}
+    image: ${CLA_BACKEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:master}
     ports:
       - "8010:8000"
     depends_on:
