@@ -1,4 +1,6 @@
 export BROWSER=chrome
+export USING_CHROME_DRIVER=True
+export CHROME_DRIVER_LOCATION="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 #these directories need to be overridden as they do not get picked up from cla-end-to-end-tests
 # UPDATE YOUR /etc/hosts to include the following snippet
 # 127.0.0.1   clabackend

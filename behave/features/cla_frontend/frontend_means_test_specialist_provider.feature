@@ -25,11 +25,7 @@ Feature: Editing means test assessment as a specialist provider
     Then I am given a message 'The means test has been saved. The current result is eligible for Legal Aid'
     When I return to the specialist provider cases dashboard page
     And I select a case to edit from the dashboard
-  # step here checking the messages at the side?   `Then I can see my accepted case reference number`
-  # this step fails with the following error:
-  #      selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {"method":"css selector","selector":".ListTable"}
-  #        (Session info: chrome=114.0.5735.133)
-    #And I am taken to the "specialist provider" case details page
+    And I am taken to the "specialist provider" case details page
     #When I select Finances
     #And I move onto Finances inner-tab
     #And I can see on Finances inner-tab that the values remain updated

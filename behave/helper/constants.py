@@ -1,6 +1,8 @@
 import os
 
 BROWSER = os.environ.get("BROWSER")
+USING_CHROME_DRIVER = os.environ.get("USING_CHROME_DRIVER", "False").lower() == "true"
+CHROME_DRIVER_LOCATION = os.environ.get("CHROME_DRIVER_LOCATION")
 DATABASE_SNAPSHOT_ENABLED = (
     os.environ.get("DATABASE_SNAPSHOT_ENABLED", "False").lower() == "true"
 )
