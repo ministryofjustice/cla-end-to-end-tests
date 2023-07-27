@@ -36,7 +36,7 @@ services:
     environment:
       A11Y_ENABLED: ${A11Y_ENABLED:-false}
       BROWSER: chrome
-      USING_CHROME_DRIVER: False
+      USING_CHROME_DRIVER: "False"
       DATA_DIRECTORY: /data
       CLA_E2E_PUBLIC_URL: ${CLA_E2E_PUBLIC_URL:-http://clapublic:8000}
       CLA_E2E_BACKEND_URL: ${CLA_E2E_BACKEND_URL:-http://clabackend:8000}
