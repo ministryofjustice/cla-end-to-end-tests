@@ -40,7 +40,7 @@ def step_impl_under_eighteen(context, optional):
     assert_select_radio_button(context, optional, "your_details-is_you_under_18")
 
 
-@step("I do (?P<optional>not )? receive money on a regular basis")
+@step("I do (?P<optional>not )?receive money on a regular basis")
 def step_impl_receive_money_regularly(context, optional):
     assert_select_radio_button(
         context, optional, "your_details-under_18_receive_regular_payment"
@@ -48,10 +48,26 @@ def step_impl_receive_money_regularly(context, optional):
 
 
 @step(
-    "I do (?P<optional>not )? have savings, items of value or investments totalling £2500 or more?"
+    "I do (?P<optional>not )?have savings, items of value or investments totalling £2500 or more?"
 )
 def step_impl_have_savings_items_over_two_thousand_five_hundred(context, optional):
     assert_select_radio_button(context, optional, "your_details-under_18_has_valuables")
+
+
+@step("I can not answer the following 17 or under questions")
+def step_impl_complaint_fail(context):
+    has_valuables_radio_buttons = context.helperfunc.driver().find_elements_by_xpath(
+        "//input[@name='your_details-under_18_has_valuables']"
+    )
+    regular_payment_radio_buttons = context.helperfunc.driver().find_elements_by_xpath(
+        "//input[@name='your_details-under_18_receive_regular_payment']"
+    )
+    assert (
+        len(has_valuables_radio_buttons) == 0
+    ), "Expected under 18 has valuables question to be hidden"
+    assert (
+        len(regular_payment_radio_buttons) == 0
+    ), "Expected under 18 receives regular payment question to be hidden"
 
 
 def check_state(optional):
@@ -62,8 +78,6 @@ def check_state(optional):
 
 def assert_select_radio_button(context, optional, name):
     state = check_state(optional)
-    print(f"//input[@name='{name}'][@value='{state}']")
-    print("Test")
     radio_input = context.helperfunc.find_by_xpath(
         f"//input[@name='{name}'][@value='{state}']"
     )

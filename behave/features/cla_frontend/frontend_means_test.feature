@@ -71,3 +71,20 @@ Scenario: Failure means test assessment resulting in user not being eligible
     And I am currently paying 0.00 towards legal aid for criminal defence
     And I select Save assessment
     Then I am given a message 'The means test has been saved. The current result is not eligible for Legal Aid'
+
+@above_18_can_not_answer_follow_up_questions
+Scenario: Person aged 18 and above does not answer the follow up under 17 questions
+    Given I select to 'Create a case'
+    And I am on the Finances tab with the ‘Details’ sub-tab preselected
+    When I am not aged 17 or under
+    Then I can not answer the following 17 or under questions
+
+@under_18_passported
+Scenario: Person who is under 18 gets passported
+    Given I select to 'Create a case'
+    And I am on the Finances tab with the ‘Details’ sub-tab preselected
+    When I am aged 17 or under
+    And I do not receive money on a regular basis
+    And I do not have savings, items of value or investments totalling £2500 or more
+    And I select Save assessment
+    Then I am given a message 'The means test has been saved. The current result is eligible for Legal Aid'
