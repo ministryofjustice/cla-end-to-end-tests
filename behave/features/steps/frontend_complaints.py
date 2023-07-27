@@ -19,6 +19,7 @@ def step_impl_complaints_cases(context):
 
 @step("I search for '{complaint_text}'")
 def step_impl_complaints_search(context, complaint_text):
+    context.helperfunc.find_by_id("case-search").clear()
     context.helperfunc.find_by_id("case-search").send_keys(complaint_text)
     context.helperfunc.find_by_name("case-search-submit").click()
 

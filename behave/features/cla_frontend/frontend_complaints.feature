@@ -11,11 +11,11 @@ Scenario: Search for a complaint
     And There are complaints available
     When I search for 'JT-4272-9443'
     And I can select the complaint 'JT-4272-9443'
-    And I am on the complaint 'JT-4272-9443' detail page
+    Then I am on the complaint 'JT-4272-9443' detail page
 
 @complaints-search-returns-no-results
 Scenario: Search for a complaint failure
     Given I am on the 'Complaints' tab on the dashboard
     And There are complaints available
-    And I search for 'Failing'
+    When I search for 'Failing'
     Then there are no complaints returned
