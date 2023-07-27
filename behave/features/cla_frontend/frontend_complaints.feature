@@ -18,4 +18,4 @@ Scenario: Search for a complaint failure
     Given I am on the 'Complaints' tab on the dashboard
     And There are complaints available
     And I search for 'Failing'
-    #Then there are no complaints returned
+    Then there are no complaints returned

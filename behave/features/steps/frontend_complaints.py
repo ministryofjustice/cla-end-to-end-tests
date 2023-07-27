@@ -20,9 +20,7 @@ def step_impl_complaints_cases(context):
 @step("I search for '{complaint_text}'")
 def step_impl_complaints_search(context, complaint_text):
     context.helperfunc.find_by_id("case-search").send_keys(complaint_text)
-    context.helperfunc.find_by_xpath(
-        "//input[contains(@class,CaseSearch-submit)]"
-    ).click()
+    context.helperfunc.find_by_name("case-search-submit").click()
 
 
 @step("I can select the complaint '{complaint_num}'")
@@ -35,7 +33,6 @@ def step_impl_complaint_select(context, complaint_num):
 
 @step("I am on the complaint '{complaint_num}' detail page")
 def step_impl_complaint_open(context, complaint_num):
-    # <h1 class="ng-binding">Complaint details</h1>
     assert_header_on_page("Complaint details", context)
     assert (
         context.helperfunc.find_by_link_text(complaint_num) is not None
@@ -47,6 +44,6 @@ def step_impl_complaint_fail(context):
     assert (
         context.helperfunc.find_by_xpath(
             "//div[contains(@class,'Notice ng-scope')]"
-        ).getText()
+        ).text
         == "There are no complaints"
     ), "Complaints are available"
