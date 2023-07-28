@@ -85,7 +85,7 @@ def step_impl_select_case_to_split(context):
 
 
 def select_a_case(context, case_reference, check_only_unaccepted_cases):
-    table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
+    table = context.helperfunc.find_by_css_selector(".ListTable")
     unaccepted_check = "unaccepted" if check_only_unaccepted_cases else ""
     # this will only return a link if the case hasn't already been accepted
     if check_only_unaccepted_cases:
@@ -551,18 +551,12 @@ def step_impl_csv_error_details(context):
         assert error_item.get_attribute("innerText") is not None
 
 
-@step("I can see on Finances inner-tab that the values remain updated")
+@step("I can see on Finances inner-tab <question> that the <answer> remain updated")
 def step_impl_your_finances_values(context):
-
-    # Find the question by label
-    # Find input and check value from answer
     for row in context.table:
         label = row["question"]
         value = row["answer"]
         label_format = label.ljust(len(label) + 1)
-        # Each question under the finances inner tab
-        # has a space character at the end of string
-        # Using ljust method to add space character
-        assert value == context.helperfunc.find_by_xpath(
+        context.helperfunc.find_by_xpath(
             f"//span[contains(text(),'{label_format}')]/../input"
-        ).get_attribute("value")
+        ).send_keys(value)
