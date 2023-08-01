@@ -307,9 +307,11 @@ def step_impl_select_finances(context):
 
 @step("I can view the financial assessment entered by the Operator")
 def step_impl_view_financial_assessment(context):
-    tabs = context.helperfunc.find_by_css_selector("ul.Tabs")
-    finance_tab_link = tabs.find_element_by_link_text("Finances")
-    classes = finance_tab_link.get_attribute("class")
+    classes = (
+        context.helperfunc.find_by_css_selector("ul.Tabs")
+        .find_element_by_link_text("Finances")
+        .get_attribute("class")
+    )
     # Checking that the green tick is present for having the finance previously completed.
     assert "Icon--solidTick" in classes and "Icon--green" in classes
     # Checking that the overall form has loaded by checking one of the elements are there.

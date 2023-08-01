@@ -56,28 +56,23 @@ def step_impl_have_savings_items_over_two_thousand_five_hundred(context, optiona
 
 @step("I can not answer the following 17 or under questions")
 def step_impl_under_18_no_follow_up_questions_fail(context):
-    has_valuables_radio_buttons = context.helperfunc.driver().find_elements_by_xpath(
-        "//input[@name='your_details-under_18_has_valuables']"
+    assert_element_does_not_appear(context, "your_details-under_18_has_valuables")
+    assert_element_does_not_appear(
+        context, "your_details-under_18_receive_regular_payment"
     )
-    regular_payment_radio_buttons = context.helperfunc.driver().find_elements_by_xpath(
-        "//input[@name='your_details-under_18_receive_regular_payment']"
-    )
-    assert (
-        len(has_valuables_radio_buttons) == 0
-    ), "Expected under 18 has valuables question to be hidden"
-    assert (
-        len(regular_payment_radio_buttons) == 0
-    ), "Expected under 18 receives regular payment question to be hidden"
 
 
 @step("the do you have valuables totalling £2500 or more question does not appear")
 def step_impl_valuables_question_does_not_appear(context):
-    has_valuables_radio_buttons = context.helperfunc.driver().find_elements_by_xpath(
-        "//input[@name='your_details-under_18_has_valuables']"
+    assert_element_does_not_appear(context, "your_details-under_18_has_valuables")
+
+
+def assert_element_does_not_appear(context, name):
+    radio_button_element = context.helperfunc.driver().find_elements_by_xpath(
+        f"//input[@name='{name}']"
     )
-    assert (
-        len(has_valuables_radio_buttons) == 0
-    ), "Expected under 18 has valuables over £2500 question to be hidden"
+    question = name.replace("_", " ")
+    assert len(radio_button_element) == 0, f"Expected {question} question to be hidden"
 
 
 def check_state(optional):
@@ -123,9 +118,11 @@ def step_impl_popup_button(context, optional):
 
 @step("the green tick is (?P<optional>not )?present in the Finance tab")
 def step_impl_green_tick_present(context, optional):
-    tabs = context.helperfunc.find_by_css_selector("ul.Tabs")
-    finance_tab_link = tabs.find_element_by_link_text("Finances")
-    classes = finance_tab_link.get_attribute("class")
+    classes = (
+        context.helperfunc.find_by_css_selector("ul.Tabs")
+        .find_element_by_link_text("Finances")
+        .get_attribute("class")
+    )
     if optional:
         # Checking that the green tick in the Finance Tab is not present.
         assert "Icon--solidTick" not in classes and "Icon--green" not in classes
