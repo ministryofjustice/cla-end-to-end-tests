@@ -338,3 +338,7 @@ def filter_accessibility_report(context):
         axe.write_results(
             filtered_issues, f"{context.a11y_reports_dir}/a11y_filtered.json"
         )
+
+
+def green_checkmark_appears_on_tab(classes):
+    return "Icon--solidTick" in classes and "Icon--green" in classes

@@ -17,6 +17,7 @@ from helper.constants import (
 from features.steps.common_steps import (
     compare_client_details_with_backend,
     wait_until_page_is_loaded,
+    green_checkmark_appears_on_tab,
 )
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -313,7 +314,7 @@ def step_impl_view_financial_assessment(context):
         .get_attribute("class")
     )
     # Checking that the green tick is present for having the finance previously completed.
-    assert "Icon--solidTick" in classes and "Icon--green" in classes
+    assert green_checkmark_appears_on_tab(classes) is True
     # Checking that the overall form has loaded by checking one of the elements are there.
     assert context.helperfunc.find_by_id("id_your_details-has_partner_1") is not None
 

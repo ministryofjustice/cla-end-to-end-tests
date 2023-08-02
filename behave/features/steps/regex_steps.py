@@ -1,4 +1,5 @@
 from behave import step, use_step_matcher
+from features.steps.common_steps import green_checkmark_appears_on_tab
 
 use_step_matcher("re")
 
@@ -125,7 +126,8 @@ def step_impl_green_tick_present(context, optional):
     )
     if optional:
         # Checking that the green tick in the Finance Tab is not present.
-        assert "Icon--solidTick" not in classes and "Icon--green" not in classes
+        # make this function and refactor elsewhere
+        assert green_checkmark_appears_on_tab(classes) is False
     else:
         # Checking that the green tick in the Finance Tab is present.
-        assert "Icon--solidTick" in classes and "Icon--green" in classes
+        assert green_checkmark_appears_on_tab(classes) is True
