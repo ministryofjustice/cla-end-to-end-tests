@@ -4,43 +4,35 @@ Feature: Editing means test assessment as a specialist provider
 
   Background: Login
     Given I am logged in as "CHS_GENERAL_USER"
-     Given I select to 'Create a case'
-    And I enter the case notes "All is okay with this case"
-    And a client with an existing case is added to it
-    And I have created a valid discrimination scope
-    Given I am taken to the "Finances" tab with the ‘Details’ sub-tab preselected
-        And I do not have a partner
-        And I am aged 60 or over
-        And I <answer> to Details <question>
-          | question                                          | answer |
-          | Universal credit                                  | No     |
-          | Income Support                                    | No     |
-          | Income-based Job Seekers Allowance                | No     |
-          | Guarantee State Pension Credit                    | Yes    |
-          | Income-related Employment and Support Allowance   | No     |
-        Then I move onto Finances inner-tab
-        And I <answer> to Finances <question>
-          | question                                              | answer |
-          | How much was in your bank account/building society    | 0.00   |
-          | Do you have any investments, shares or ISAs?          | 0.00   |
-          | Do you have any valuable items worth over £500 each?  | 0.00   |
-          | Do you have any money owed to you?                    | 0.00   |
-        And I select Save assessment
-        And the 'Diversity' and 'Assign' tabs become available
-    And I fill in the Diversity tab if I need to
-    And select the Assign tab
-    When I select a category from Matter Type 1
+    And I select to 'Create a case'
+
+    Then I enter the case notes "All is okay with this case"
+    And I complete the users details with EDIT details
+
+    When I have created a valid discrimination scope
+    And I am on the Diversity tab
+    Then I select 'Prefer not say' for all diversity questions
+    And I select the Assign tab
+    Then I select a category from Matter Type 1
     And I select a category from Matter Type 2
-    And there is only one provider
+    Then I select the "Assign manually" button
+    And I choose a provider
+#    @todo: Make the assignment to Howells
     And I select 'Assign Provider'
+
     Then the case is assigned to the Specialist Provider
     And I have created a case to edit in hours
-    And I select the link "Log out"
-    Then I am logged in as "TEST_SPECIALIST_PROVIDER"
+
+    Then I select the 'Sign out' link
+    And I am logged in as "TEST_SPECIALIST_PROVIDER"
+
 
   @specialist-provider-edit-case
+# The case in use has been created previously in the background
+# Howells selects that case, edits it and come back to verify that the values remain the same
   Scenario: Specialist Provider Edits a case
     Given I am on the specialist provider cases dashboard page
+#    @todo: We have to be sure that the case has been assigned to Howells to make the next test passing
     And I select a case to edit from the dashboard
     And I am taken to the "specialist provider" case details page
     When I select Finances
@@ -64,5 +56,3 @@ Feature: Editing means test assessment as a specialist provider
       | Do you have any investments, shares or ISAs?         | 0.00   |
       | Do you have any valuable items worth over £500 each? | 0.00   |
       | Do you have any money owed to you?                   | 0.00   |
-
-

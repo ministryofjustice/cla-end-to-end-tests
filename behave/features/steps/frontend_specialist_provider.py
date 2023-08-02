@@ -53,6 +53,11 @@ def step_impl_view_client_details(context):
     compare_client_details_with_backend(context, case_id, client_section)
 
 
+@step('I select the "Assign manually" button')
+def step_impl_apply_filter_on_homepage(context):
+    context.helperfunc.click_button(By.NAME, "assign-manually")
+
+
 @step("I select a case to accept from the dashboard")
 def step_select_special_provider_case(context):
     case_reference = CLA_SPECIALIST_CASE_TO_ACCEPT
@@ -572,7 +577,7 @@ def step_imp_get_case_to_edit(context):
     # And I have created a valid discrimination scope
     # And I am on the Diversity tab
     # When I select 'Prefer not say' for all diversity questions
-    # And select the Assign tab
+    # And I select the Assign tab
     # When I select a category from Matter Type 1
     # And I select a category from Matter Type 2
     # And there is only one provider

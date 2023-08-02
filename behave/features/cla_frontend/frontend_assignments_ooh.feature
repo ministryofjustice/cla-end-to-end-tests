@@ -17,7 +17,7 @@ Scenario: Attempt to assign a complete case out of hours
     And I have created a valid discrimination scope
     And I am on the Diversity tab
     When I select 'Prefer not say' for all diversity questions
-    And select the Assign tab
+    And I select the Assign tab
     When I select a category from Matter Type 1
     And I select a category from Matter Type 2
     And I choose a provider

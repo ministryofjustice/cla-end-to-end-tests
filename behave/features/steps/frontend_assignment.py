@@ -393,7 +393,7 @@ def step_impl_select_diversity_option(context):
     wait.until(wait_until_diversity_is_complete)
 
 
-@step("select the Assign tab")
+@step("I select the Assign tab")
 def step_impl_select_assign_tab(context):
     context.helperfunc.find_by_partial_link_text("Assign").click()
 
@@ -467,8 +467,8 @@ def step_impl_choose_provider(context):
     wait = WebDriverWait(context.helperfunc.driver(), 10)
     wait.until(wait_for_providers_to_load)
 
-    # Find matter type 2 wrapper and focus on it
-    form.find_elements(By.CSS_SELECTOR, 'strong[class="ng-binding"]')[1].click()
+    # Find first provider and click on it
+    form.find_elements(By.CSS_SELECTOR, 'strong[class="ng-binding"]')[0].click()
 
     headings = form.find_elements_by_css_selector("h2.ContactBlock-heading")
     context.provider_selected = headings[0].text
