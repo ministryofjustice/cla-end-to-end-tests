@@ -1,5 +1,9 @@
 from behave import step, use_step_matcher
-from features.steps.common_steps import green_checkmark_appears_on_tab
+from features.steps.common_steps import (
+    green_checkmark_appears_on_tab,
+    assert_select_radio_button,
+    assert_element_does_not_appear,
+)
 
 use_step_matcher("re")
 
@@ -8,7 +12,7 @@ use_step_matcher("re")
 
 
 @step("I am (?P<optional>not )?on universal credit benefits")
-def step_impluniversal_credit(context, optional):
+def step_impl_universal_credit(context, optional):
     assert_select_radio_button(
         context, optional, "your_details-specific_benefits-universal_credit"
     )
@@ -66,29 +70,6 @@ def step_impl_under_18_no_follow_up_questions_fail(context):
 @step("the do you have valuables totalling £2500 or more question does not appear")
 def step_impl_valuables_question_does_not_appear(context):
     assert_element_does_not_appear(context, "your_details-under_18_has_valuables")
-
-
-def assert_element_does_not_appear(context, name):
-    radio_button_element = context.helperfunc.driver().find_elements_by_xpath(
-        f"//input[@name='{name}']"
-    )
-    question = name.replace("_", " ")
-    assert len(radio_button_element) == 0, f"Expected {question} question to be hidden"
-
-
-def check_state(optional):
-    if optional:
-        return "false"
-    return "true"
-
-
-def assert_select_radio_button(context, optional, name):
-    state = check_state(optional)
-    radio_input = context.helperfunc.find_by_xpath(
-        f"//input[@name='{name}'][@value='{state}']"
-    )
-    radio_input.click()
-    assert radio_input.get_attribute("checked") == "true"
 
 
 @step(
