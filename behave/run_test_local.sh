@@ -3,7 +3,6 @@
 set -e
 
 export DOCKER_BUILDKIT=0
-
 function start_applications {
   docker-compose -f docker-compose.yml run start_applications
 }
