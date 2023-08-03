@@ -10,6 +10,7 @@ from helper.constants import (
     CLA_FRONTEND_URL,
     ASSIGN_F2F_CASE,
     CLA_FRONTEND_OOH_URL,
+    CLA_SPECIALIST_PROVIDERS_NAME,
 )
 from selenium.webdriver.common.by import By
 from common_steps import (
@@ -126,7 +127,7 @@ def step_impl_select_diagnosis_category(context):
         form = context.helperfunc.find_by_name("diagnosis-form")
         return form is not None and form.is_displayed()
 
-    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait = WebDriverWait(context.helperfunc.driver(), MINIMUM_SLEEP_SECONDS)
     wait.until(wait_for_diagnosis_form)
 
     # work out which category to choose
@@ -467,8 +468,10 @@ def step_impl_choose_provider(context):
     wait = WebDriverWait(context.helperfunc.driver(), 10)
     wait.until(wait_for_providers_to_load)
 
-    # Find first provider and click on it
-    form.find_elements(By.CSS_SELECTOR, 'strong[class="ng-binding"]')[0].click()
+    # Find Howells provider and click on it
+    form.find_element_by_xpath(
+        f""".//strong[@class='ng-binding'][text()='{CLA_SPECIALIST_PROVIDERS_NAME}']"""
+    ).click()
 
     headings = form.find_elements_by_css_selector("h2.ContactBlock-heading")
     context.provider_selected = headings[0].text

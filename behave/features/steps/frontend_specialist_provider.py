@@ -569,23 +569,18 @@ def step_impl_your_finances_values(context):
 
 @step("I have created a case to edit in hours")
 def step_imp_get_case_to_edit(context):
-    # context.execute_steps(
-    #     f"""
-    # Given I select to 'Create a case'
-    # And I enter the case notes "All is okay with this case"
-    # And I have created a user
-    # And I have created a valid discrimination scope
-    # And I am on the Diversity tab
-    # When I select 'Prefer not say' for all diversity questions
-    # And I select the Assign tab
-    # When I select a category from Matter Type 1
-    # And I select a category from Matter Type 2
-    # And there is only one provider
-    # And I select 'Assign Provider'
-    # Then the case is assigned to the Specialist Provider
-    # """
-    # )
+    # save the case id to context to use later for editing
     context.case_to_be_edited = context.case_id
+
+
+@step("I select to 'Create a case' for editing")
+def step_impl_create_case(context):
+    # wrap click() to avoid StaleElementException
+    context.helperfunc.click_button(By.ID, "create_case")
+    # need to do this differently as we don't want to alter case_reference that is set in "I select to 'Create a case'"
+    context.case_to_be_edited = context.helperfunc.find_by_css_selector(
+        "h1.CaseBar-caseNum a"
+    ).text
 
 
 @step("I fill in the Diversity tab if I need to")
