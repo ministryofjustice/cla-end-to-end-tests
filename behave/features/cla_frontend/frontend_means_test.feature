@@ -5,6 +5,7 @@ Feature: Means test assessment
 Background: Login
     Given I am logged in as "CHS_GENERAL_USER"
 
+
 @means_test_universal
 Scenario: Successful means test assessment resulting in user being eligible for legal aid
     Given I select to 'Create a case'
@@ -25,6 +26,19 @@ Scenario: Successful means test assessment resulting in user being eligible for 
     And I select Save assessment
     Then I am given a message 'The means test has been saved. The current result is eligible for Legal Aid'
     And the 'Diversity' and 'Assign' tabs become available
+
+
+@means_test_operator_edit_case
+    Scenario: Successful means test assessment resulting in operator being able to edit a case
+        And I select to 'Create a case' for editing
+
+        Then I enter the case notes "I am creating this case to edit it"
+        And I complete the users details with EDIT details
+
+        When I have created a valid discrimination scope
+        And I am on the Diversity tab
+        Then I select 'Prefer not say' for all diversity questions
+
 
 @means_test_high_savings
 Scenario: Failure means test assessment resulting in user not being eligible
