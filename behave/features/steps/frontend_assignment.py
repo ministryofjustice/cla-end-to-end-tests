@@ -471,12 +471,19 @@ def step_impl_choose_provider(context):
     # Find CLA_SPECIALIST_PROVIDERS_NAME and click on it
     # CLA_SPECIALIST_PROVIDERS_NAME may be the chosen provider
     # if not then we need to select one from the list below
-    headings = form.find_elements_by_css_selector("h2.ContactBlock-heading")
-    if not headings[0].text == CLA_SPECIALIST_PROVIDERS_NAME:
+    # if out of hours then there will be no "pre-selected provider"
+    selected_provider_name = None
+    if form.find_elements_by_css_selector(
+        "div.ContactBlock ContactBlock--grey clearfix"
+    ):
+        selected_provider_name = form.find_elements_by_css_selector(
+            "h2.ContactBlock-heading"
+        )[0].text
+    if not selected_provider_name == CLA_SPECIALIST_PROVIDERS_NAME:
         form.find_element_by_xpath(
             f""".//strong[@class='ng-binding'][text()='{CLA_SPECIALIST_PROVIDERS_NAME}']"""
         ).click()
-
+    headings = form.find_elements_by_css_selector("h2.ContactBlock-heading")
     context.provider_selected = headings[0].text
     assert len(headings) == 1
 
