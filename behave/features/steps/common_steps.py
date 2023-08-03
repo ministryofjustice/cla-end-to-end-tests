@@ -338,3 +338,30 @@ def filter_accessibility_report(context):
         axe.write_results(
             filtered_issues, f"{context.a11y_reports_dir}/a11y_filtered.json"
         )
+
+
+def green_checkmark_appears_on_tab(classes):
+    return "Icon--solidTick" in classes and "Icon--green" in classes
+
+
+def check_state(optional):
+    if optional:
+        return "false"
+    return "true"
+
+
+def assert_select_radio_button(context, optional, name):
+    state = check_state(optional)
+    radio_input = context.helperfunc.find_by_xpath(
+        f"//input[@name='{name}'][@value='{state}']"
+    )
+    radio_input.click()
+    assert radio_input.get_attribute("checked") == "true"
+
+
+def assert_element_does_not_appear(context, name):
+    radio_button_element = context.helperfunc.driver().find_elements_by_xpath(
+        f"//input[@name='{name}']"
+    )
+    question = name.replace("_", " ")
+    assert len(radio_button_element) == 0, f"Expected {question} question to be hidden"

@@ -20,6 +20,7 @@ from common_steps import (
 )
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import StaleElementReferenceException
+from features.steps.common_steps import green_checkmark_appears_on_tab
 
 
 @step("I complete the users details with {user_choice:w} details")
@@ -293,7 +294,7 @@ def step_impl_diversity_tab(context):
             .find_element_by_link_text("Finances")
             .get_attribute("class")
         )
-        return "Icon--solidTick" in classes and "Icon--green" in classes
+        return green_checkmark_appears_on_tab(classes)
 
     # first need to complete the finances tab
     context.execute_steps(
