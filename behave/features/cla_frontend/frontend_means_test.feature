@@ -29,15 +29,15 @@ Scenario: Successful means test assessment resulting in user being eligible for 
 
 
 @means_test_operator_edit_case
-    Scenario: Successful means test assessment resulting in operator being able to edit a case
-        And I select to 'Create a case' for editing
+Scenario: Successful means test assessment resulting in operator being able to edit a case
+    And I select to 'Create a case' for editing
 
-        Then I enter the case notes "I am creating this case to edit it"
-        And I complete the users details with EDIT details
+    Then I enter the case notes "I am creating this case to edit it"
+    And I complete the users details with EDIT details
 
-        When I have created a valid discrimination scope
-        And I am on the Diversity tab
-        Then I select 'Prefer not say' for all diversity questions
+    When I have created a valid discrimination scope
+    And I am on the Diversity tab
+    Then I select 'Prefer not say' for all diversity questions
 
 
 @means_test_high_savings
