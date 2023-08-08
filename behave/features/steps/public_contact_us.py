@@ -5,7 +5,10 @@ from helper.constants import (
     CLA_NUMBER,
 )
 from selenium.webdriver.support.ui import Select
-from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import (
+    StaleElementReferenceException,
+    NoSuchElementException,
+)
 
 
 @step("I select 'Contact us' from the banner")
@@ -78,16 +81,64 @@ def step_impl_select_call_someone_else(context):
     assert callback_element.get_attribute("value") == "thirdparty"
 
 
-@step("I select 'Call today'")
-def step_impl_select_call_today(context):
-    # input can not be found without first finding form
+@step('I select the next available "{option}" time slot')
+def step_impl_select_next_available_time_slot(context, option):
+    def is_call_today_option_visible(*args):
+        try:
+            context.callback_form.find_element_by_xpath(
+                '//input[@value="today"]' '[@id="thirdparty-time-specific_day-0"]'
+            )
+            return True
+        except NoSuchElementException:
+            return False
+
     context.callback_form = context.helperfunc.find_by_xpath("//form")
-    call_today = context.callback_form.find_element_by_xpath(
-        '//input[@value="today"]' '[@id="thirdparty-time-specific_day-0"]'
-    )
-    assert call_today is not None
-    call_today.click()
-    assert call_today.get_attribute("value") == "today"
+    if is_call_today_option_visible() is True:
+        call_today = context.callback_form.find_element_by_xpath(
+            '//input[@value="today"]' '[@id="thirdparty-time-specific_day-0"]'
+        )
+        call_today.click()
+        assert call_today.get_attribute("value") == "today"
+
+        choose_callback_time = Select(
+            context.callback_form.find_element_by_xpath(
+                f'//select[@id="{option}-time-time_today"]'
+            )
+        )
+
+        assert choose_callback_time is not None
+        if len(choose_callback_time.options) > 0:
+            choose_callback_time.select_by_index(1)
+        else:
+            raise AssertionError("No option to callback time")
+    else:
+        specific_day = context.callback_form.find_element_by_xpath(
+            '//input[@value="specific_day"]' '[@id="thirdparty-time-specific_day-1"]'
+        )
+        specific_day.click()
+        assert specific_day.get_attribute("value") == "specific_day"
+
+        choose_callback_time = Select(
+            context.callback_form.find_element_by_xpath(
+                f'//select[@id="{option}-time-day"]'
+            )
+        )
+        assert choose_callback_time is not None
+        if len(choose_callback_time.options) > 0:
+            choose_callback_time.select_by_index(1)
+        else:
+            raise AssertionError("No option to callback time")
+
+        choose_callback_time = Select(
+            context.callback_form.find_element_by_xpath(
+                f'//select[@id="{option}-time-time_in_day"]'
+            )
+        )
+        assert choose_callback_time is not None
+        if len(choose_callback_time.options) > 0:
+            choose_callback_time.select_by_index(1)
+        else:
+            raise AssertionError("No option to callback time")
 
 
 # call someone else instead of me name input field
