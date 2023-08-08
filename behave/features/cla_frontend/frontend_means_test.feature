@@ -8,7 +8,8 @@ Background: Login
 @means_test_universal
 Scenario: Successful means test assessment resulting in user being eligible for legal aid
     Given I select to 'Create a case'
-    And I am on the Finances tab with the ‘Details’ sub-tab preselected
+    And I have created a valid discrimination scope
+    And I am taken to the "Finances" tab with the ‘Details’ sub-tab preselected
     When I am not aged 17 or under
     And I do not have a partner
     And I am not aged 60 or over
