@@ -52,7 +52,7 @@ Feature: Means test assessment
 #      | Do you have any money owed to you?                   | 0.00   |
 
     When I have created a valid discrimination scope
-    And I am on the Diversity tab
+    And I am on the Diversity tab having answered the finances questions
     Then I select 'Prefer not say' for all diversity questions
 
     And I select Save assessment

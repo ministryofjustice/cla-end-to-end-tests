@@ -11,7 +11,7 @@ Feature: Editing means test assessment as a specialist provider
     And I complete the users details with EDIT details
 
     When I have created a valid discrimination scope
-    And I am on the Diversity tab
+    And I am on the Diversity tab having answered the finances questions
     Then I select 'Prefer not say' for all diversity questions
     And I select the Assign tab
     Then I select a category from Matter Type 1

@@ -50,7 +50,7 @@ Scenario: Attempt to assign a complete case during working hours
     And I enter the case notes "All is okay with this case"
     And I have created a user
     And I have created a valid discrimination scope
-    And I am on the Diversity tab
+    And I am on the Diversity tab having answered the finances questions
     When I select 'Prefer not say' for all diversity questions
     And I select the Assign tab
     When I select a category from Matter Type 1
@@ -67,7 +67,7 @@ Scenario: Attempt to assign an incomplete case
     And case notes are empty
     And I have created a user
     And I have created a valid discrimination scope
-    And I am on the Diversity tab
+    And I am on the Diversity tab having answered the finances questions
     When I select 'Prefer not say' for all diversity questions
     And I select the Assign tab
     Then I get a message with the text "Case notes must be added to close a case"

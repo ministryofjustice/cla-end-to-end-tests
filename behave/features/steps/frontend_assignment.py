@@ -286,7 +286,7 @@ def step_impl_discrimination_scope(context):
     )
 
 
-@step("I am on the Diversity tab")
+@step("I am on the Diversity tab having answered the finances questions")
 def step_impl_diversity_tab(context):
     def wait_until_finance_is_complete(*args):
         # this waits until all the finance questions have been answered

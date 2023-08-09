@@ -581,15 +581,3 @@ def step_impl_create_case(context):
     context.case_to_be_edited = context.helperfunc.find_by_css_selector(
         "h1.CaseBar-caseNum a"
     ).text
-
-
-@step("I fill in the Diversity tab if I need to")
-def step_impl_diversity_tab(context):
-    context.helperfunc.find_by_partial_link_text("Diversity").click()
-    diversity_question_needed = False
-    if diversity_question_needed:
-        context.execute_steps(
-            """
-            I select 'Prefer not say' for all diversity questions
-           """
-        )
