@@ -30,51 +30,44 @@ Feature: Means test assessment
 
   @means_test_operator_edit_case
   Scenario: Successful means test assessment resulting in operator being able to edit a case
+#    @Todo: Replace the following test by : And I select 'Create a case' to edit for a "test operator"
     And I select to 'Create a case' for editing
 
     Then I enter the case notes "I am creating this case to edit it"
     And I complete the users details with EDIT details
-
-    When I select Finances
-#    And I am on the Finances tab with the ‘Details’ sub-tab preselected
-#    When I am not aged 17 or under
-#    And I do not have a partner
-#    And I am not aged 60 or over
-#    And I <answer> to Details <question>
-#      | question         | answer |
-#      | Universal credit | Yes    |
-#    And I move onto Finances inner-tab
-#    And I <answer> to Finances <question>
-#      | question                                             | answer |
-#      | How much was in your bank account/building           | 0.00   |
-#      | Do you have any investments, shares or ISAs?         | 300.00 |
-#      | Do you have any valuable items worth over £500 each? | 0.00   |
-#      | Do you have any money owed to you?                   | 0.00   |
-
     When I have created a valid discrimination scope
+
     And I am on the Diversity tab having answered the finances questions
     Then I select 'Prefer not say' for all diversity questions
 
     And I select Save assessment
     Then I am given a message 'The means test has been saved. The current result is eligible for Legal Aid'
 
-    Then I am taken to the "call centre" case details page
-#
-#    When I select Finances
-#    And I am on the Finances tab with the ‘Details’ sub-tab preselected
-#    When I am not aged 17 or under
-#    And I do not have a partner
-#    And I am not aged 60 or over
-#    And I <answer> to Details <question>
-#      | question         | answer |
-#      | Universal credit | Yes    |
-#    And I move onto Finances inner-tab
-#    And I <answer> to Finances <question>
-#      | question                                             | answer |
-#      | How much was in your bank account/building           | 0.00   |
-#      | Do you have any investments, shares or ISAs?         | 300.00 |
-#      | Do you have any valuable items worth over £500 each? | 0.00   |
-#      | Do you have any money owed to you?                   | 0.00   |
+    Then I return to the "test operator" cases dashboard page
+
+    When I select Finances
+    And I move onto Finances inner-tab
+    And I <answer> to Finances <question>
+      | question                                             | answer |
+      | How much was in your bank account/building           | 0.00   |
+      | Do you have any investments, shares or ISAs?         | 300.00 |
+      | Do you have any valuable items worth over £500 each? | 0.00   |
+      | Do you have any money owed to you?                   | 0.00   |
+
+    Then I return to the "test operator" cases dashboard page
+
+#    @todo: get back to the case detail page
+    And I am taken to the "operator" case details page
+
+#    @todo: checking the same as previous
+    When I select Finances
+    And I move onto Finances inner-tab
+    And I can see on Finances inner-tab <question> that the <answer> remain updated
+      | question                                             | answer |
+      | How much was in your bank account/building           | 0.00     |
+      | Do you have any investments, shares or ISAs?         | 300.00   |
+      | Do you have any valuable items worth over £500 each? | 0.00   |
+      | Do you have any money owed to you?                   | 0.00   |
 
 
   @means_test_high_savings

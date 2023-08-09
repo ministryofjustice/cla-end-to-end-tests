@@ -5,6 +5,7 @@ Feature: Editing means test assessment as a specialist provider
 # Background will fail if not between DISCRIMINATION_START_TIME_HR and DISCRIMINATION_END_TIME_HR
   Background: Login
     Given I am logged in as "CHS_GENERAL_USER"
+#    @Todo: Replace the following test by : I select 'Create a case' to edit for a "specialist provider"
     And I select to 'Create a case' for editing
 
     Then I enter the case notes "I am creating this case to edit it"
@@ -43,7 +44,7 @@ Feature: Editing means test assessment as a specialist provider
       | Do you have any money owed to you?                   | 0.00   |
     And I select Save assessment
     Then I am given a message 'The means test has been saved. The current result is eligible for Legal Aid'
-    When I return to the specialist provider cases dashboard page
+    When I return to the "specialist provider" cases dashboard page
     And I select a case to edit from the dashboard
     And I am taken to the "specialist provider" case details page
     When I select Finances
