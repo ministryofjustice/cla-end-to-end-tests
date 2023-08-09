@@ -35,7 +35,7 @@ Feature: Means test assessment
     Then I enter the case notes "I am creating this case to edit it"
     And I complete the users details with EDIT details
 
-#    When I select Finances
+    When I select Finances
 #    And I am on the Finances tab with the ‘Details’ sub-tab preselected
 #    When I am not aged 17 or under
 #    And I do not have a partner
