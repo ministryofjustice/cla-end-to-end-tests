@@ -1,5 +1,8 @@
 from behave import step
 import re
+
+from selenium.common.exceptions import ElementClickInterceptedException
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -33,10 +36,25 @@ def step_impl_finance_details_tabs(context):
 
 @step("I move onto {tab_name} inner-tab")
 def step_impl_move_to_tab(context, tab_name):
+    xpath_scroll = "//form/div[contains(@class,'Toolbar')]"
     page = context.helperfunc
-    context.helperfunc.scroll_to_top()
+    actions = ActionChains(page.driver())
+    actions.move_to_element(page.find_by_xpath(xpath_scroll)).perform()
 
     xpath = f"//ul[@id='pills-section-list']/li/a[text()='{tab_name}']"
+
+    def is_tab_option_clickable(*args):
+        try:
+            WebDriverWait(page.driver(), 10).until(
+                EC.element_to_be_clickable((By.XPATH, xpath))
+            ).click()
+            return True
+        except ElementClickInterceptedException:
+            return False
+
+    if is_tab_option_clickable() is False:
+        context.helperfunc.scroll_to_top()
+
     WebDriverWait(page.driver(), 10).until(
         EC.element_to_be_clickable((By.XPATH, xpath))
     ).click()
