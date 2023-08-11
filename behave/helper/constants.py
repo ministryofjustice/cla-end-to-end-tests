@@ -131,20 +131,6 @@ CLA_FRONTEND_PERSONAL_DETAILS_FORM_ALTERNATIVE_HELP = {
         "media_code": "Don't Know",
         "source": "Phone",
     },
-    "EDIT": {
-        "full_name": "Test Edit User",
-        "postcode": "SW1H 9AJ",
-        "street": "102 Petty France",
-        "mobile_phone": "020 3334 3555",
-        "email": "102pettyfrance@digital.justice.gov.uk",
-        "dob_day": "1",
-        "dob_month": "1",
-        "dob_year": "1990",
-        "ni_number": "PA102030F",
-        "adaptations": "No adaptations required",
-        "media_code": "Don't Know",
-        "source": "Phone",
-    },
 }
 
 CLA_MEANS_TEST_PERSONAL_DETAILS_FORM = {

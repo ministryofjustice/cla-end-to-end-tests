@@ -57,11 +57,6 @@ def step_impl_view_client_details(context):
     compare_client_details_with_backend(context, case_id, client_section)
 
 
-@step('I select the "Assign manually" button')
-def step_impl_apply_filter_on_homepage(context):
-    context.helperfunc.click_button(By.NAME, "assign-manually")
-
-
 @step('I select a "{case}" case from the dashboard')
 def step_impl_select_case_from_specialist_dashboard(context, case):
     case_reference = get_case_reference(case)
@@ -563,19 +558,3 @@ def step_impl_your_finances_values(context):
         context.helperfunc.find_by_xpath(
             f"//span[contains(text(),'{label_format}')]/../input"
         ).send_keys(value)
-
-
-@step("I have created a case to edit in hours")
-def step_imp_get_case_to_edit(context):
-    # save the case id to context to use later for editing
-    context.case_to_be_edited = context.case_id
-
-
-@step("I select to 'Create a case' for editing")
-def step_impl_create_case(context):
-    # wrap click() to avoid StaleElementException
-    context.helperfunc.click_button(By.ID, "create_case")
-    # need to do this differently as we don't want to alter case_reference that is set in "I select to 'Create a case'"
-    context.case_to_be_edited = context.helperfunc.find_by_css_selector(
-        "h1.CaseBar-caseNum a"
-    ).text
