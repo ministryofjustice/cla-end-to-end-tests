@@ -28,7 +28,7 @@ Scenario: Specialist Provider Accepts a case
   And I am taken to the "specialist provider" case details page
   And I select 'Accept' in the case details page
   And I can see a 'Case accepted successfully' message
-  When I return to the "specialist provider" cases dashboard page
+  When I return to the specialist provider cases dashboard page
   And I select the Accepted tab
   Then I can see my accepted case reference number
 

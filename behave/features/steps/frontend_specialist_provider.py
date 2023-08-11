@@ -18,6 +18,8 @@ from features.steps.common_steps import (
     compare_client_details_with_backend,
     wait_until_page_is_loaded,
     green_checkmark_appears_on_tab,
+    search_and_select_case,
+    click_on_hyperlink_and_get_href,
 )
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -73,13 +75,17 @@ def step_impl_select_case_to_edit(context):
     select_a_case(context, case_reference, check_only_unaccepted_cases)
 
 
-# @Todo: Replace previous step by a tests referring to a case made by a "specialist_provider" and another by a "test_operator". These should be referred inside the "select_a_case" function.
-# @step("I select a case to edit from the "{specify_user}" dashboard")
-# def step_impl_select_case_to_edit(context):
-#     case_reference_for_test_operator = context.case_to_be_edited_by_test_operator
-#     case_reference_for_specialist_provider = context.case_to_be_edited_by_specialist_provider
-#     check_only_unaccepted_cases = False
-#     select_a_case(context, case_reference_for_test_operator, case_reference_for_specialist_provider, check_only_unaccepted_cases)
+@step("I search for the case")
+def step_impl_search_case(context):
+    context.case_id = context.helperfunc.find_by_css_selector(".CaseBar-caseNum a").text
+    context.case_to_be_edited = context.case_id
+    search_and_select_case(context, context.case_to_be_edited)
+
+
+@step("I select a case for the operator to edit from the dashboard")
+def step_impl_select_case_for_operator_to_edit(context):
+    case_reference = context.case_to_be_edited
+    click_on_hyperlink_and_get_href(context, case_reference)
 
 
 @step("I select a case to reject from the dashboard")
@@ -98,7 +104,6 @@ def step_impl_select_case_to_split(context):
     select_a_case(context, case_reference, check_only_unaccepted_cases)
 
 
-# @Todo: Replace the "case_reference" by "case_reference_for_test_operator" and "case_reference_for_specialist_provider"
 def select_a_case(context, case_reference, check_only_unaccepted_cases):
     table = context.helperfunc.find_by_css_selector(".ListTable")
     unaccepted_check = "unaccepted" if check_only_unaccepted_cases else ""
@@ -184,7 +189,7 @@ def step_impl_case_accepted(context):
     assert flash_message is not None
 
 
-@step('I return to the "{specify_user}" cases dashboard page')
+@step("I return to the specialist provider cases dashboard page")
 def step_impl_return_to_dashboard(context):
     # click on the 'back to cases' link
     back_to_cases = context.helperfunc.find_by_xpath(
@@ -591,14 +596,3 @@ def step_impl_create_case(context):
     context.case_to_be_edited = context.helperfunc.find_by_css_selector(
         "h1.CaseBar-caseNum a"
     ).text
-
-
-# @Todo: Replace the previous step by :
-# @step("I select 'Create a case' to edit for a "{specify_user}"")
-# def step_impl_create_case(context):
-#     # wrap click() to avoid StaleElementException
-#     context.helperfunc.click_button(By.ID, "create_case")
-#     # need to do this differently as we don't want to alter case_reference that is set in "I select to 'Create a case'"
-#     context.case_to_be_edited = context.helperfunc.find_by_css_selector(
-#         "h1.CaseBar-caseNum a"
-#     ).text
