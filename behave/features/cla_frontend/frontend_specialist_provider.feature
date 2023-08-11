@@ -9,7 +9,7 @@ Background: Log In Provider
 Scenario: Specialist Provider Selects a case
   Given I am on the specialist provider cases dashboard page
   And there is a case available
-  And I select a case to accept from the dashboard
+  And I select a "CLA_SPECIALIST_CASE_TO_ACCEPT" case from the dashboard
   And I am taken to the "specialist provider" case details page
   And I can view the client details
   | details     |
@@ -24,7 +24,7 @@ Scenario: Specialist Provider Selects a case
 Scenario: Specialist Provider Accepts a case
   Given I am on the specialist provider cases dashboard page
   And there is a case available
-  And I select a case to accept from the dashboard
+  And I select a "CLA_SPECIALIST_CASE_TO_ACCEPT" case from the dashboard
   And I am taken to the "specialist provider" case details page
   And I select 'Accept' in the case details page
   And I can see a 'Case accepted successfully' message
@@ -98,7 +98,7 @@ Scenario: Specialist Provider Accepts a case and Selects Legal Help Form
 @specialist-provider-reject-case
 Scenario: Specialist Provider rejects a case
   Given I am on the specialist provider cases dashboard page
-  And I select a case to reject from the dashboard
+  And I select a "CLA_SPECIALIST_CASE_TO_REJECT" case from the dashboard
   And I am taken to the "specialist provider" case details page
   And I select 'Reject' in the case details page
   Then the reject modal appears on screen
@@ -112,7 +112,7 @@ Scenario: Specialist Provider rejects a case
 @specialist-provider-split-case
 Scenario: Specialist Provider rejects a case
   Given I am on the specialist provider cases dashboard page
-  And I select a case to split from the dashboard
+  And I select a "CLA_SPECIALIST_CASE_TO_SPLIT" case from the dashboard
   And I am taken to the "specialist provider" case details page
   And I select 'Split' in the case details page
   Then the split case modal appears on screen
@@ -143,3 +143,30 @@ Scenario: Specialist Provider upload a csv
   And I select the 'Upload' button
   And I check that there are no errors in the csv upload page
   Then I can see the file listed in the uploaded files table
+
+  @specialist-provider-edit-case
+  Scenario: Specialist Provider Edits a case
+    Given I am on the specialist provider cases dashboard page
+    And I select a "CLA_SPECIALIST_CASE_TO_EDIT" case from the dashboard
+    And I am taken to the "specialist provider" case details page
+    And I select Finances
+    And I move onto Finances inner-tab
+    And I <answer> to Finances <question>
+      | question                                             | answer |
+      | How much was in your bank account/building           | 500    |
+      | Do you have any investments, shares or ISAs?         | 0.00   |
+      | Do you have any valuable items worth over £500 each? | 0.00   |
+      | Do you have any money owed to you?                   | 0.00   |
+    When I select Save assessment
+    And I am given a message 'The means test has been saved. The current result is eligible for Legal Aid'
+    And I return to the specialist provider cases dashboard page
+    And I select a "CLA_SPECIALIST_CASE_TO_EDIT" case from the dashboard
+    And I am taken to the "specialist provider" case details page
+    And I select Finances
+    And I move onto Finances inner-tab
+    Then I can see on Finances inner-tab <question> that the <answer> remain updated
+      | question                                             | answer |
+      | How much was in your bank account/building           | 500    |
+      | Do you have any investments, shares or ISAs?         | 0.00   |
+      | Do you have any valuable items worth over £500 each? | 0.00   |
+      | Do you have any money owed to you?                   | 0.00   |

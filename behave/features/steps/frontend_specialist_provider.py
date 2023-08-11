@@ -62,25 +62,12 @@ def step_impl_apply_filter_on_homepage(context):
     context.helperfunc.click_button(By.NAME, "assign-manually")
 
 
-@step("I select a case to accept from the dashboard")
-def step_select_special_provider_case(context):
-    case_reference = CLA_SPECIALIST_CASE_TO_ACCEPT
-    check_only_unaccepted_cases = True
-    select_a_case(context, case_reference, check_only_unaccepted_cases)
-
-
-@step("I select a case to edit from the dashboard")
-def step_impl_select_case_to_edit(context):
-    case_reference = context.case_to_be_edited
-    # Case doesn't need to accepted, can reject any case.
-    check_only_unaccepted_cases = False
-    select_a_case(context, case_reference, check_only_unaccepted_cases)
-
-
 @step('I select a "{case}" case from the dashboard')
 def step_impl_select_case_from_specialist_dashboard(context, case):
     case_reference = get_case_reference(case)
     check_only_unaccepted_cases = False
+    if case == "CLA_SPECIALIST_CASE_TO_ACCEPT":
+        check_only_unaccepted_cases = True
     select_a_case(context, case_reference, check_only_unaccepted_cases)
 
 
@@ -98,22 +85,6 @@ def get_case_reference(case):
 def step_impl_search_and_select_case(context):
     search_and_select_case(context, CLA_OPERATOR_CASE_TO_EDIT)
     click_on_hyperlink_and_get_href(context, CLA_OPERATOR_CASE_TO_EDIT)
-
-
-@step("I select a case to reject from the dashboard")
-def step_impl_select_case_to_reject(context):
-    case_reference = CLA_SPECIALIST_CASE_TO_REJECT
-    # Case doesn't need to accepted, can reject any case.
-    check_only_unaccepted_cases = False
-    select_a_case(context, case_reference, check_only_unaccepted_cases)
-
-
-@step("I select a case to split from the dashboard")
-def step_impl_select_case_to_split(context):
-    case_reference = CLA_SPECIALIST_CASE_TO_SPLIT
-    # Case doesn't need to accepted, can reject any case.
-    check_only_unaccepted_cases = False
-    select_a_case(context, case_reference, check_only_unaccepted_cases)
 
 
 def select_a_case(context, case_reference, check_only_unaccepted_cases):
