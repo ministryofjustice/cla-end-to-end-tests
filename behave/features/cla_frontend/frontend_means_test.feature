@@ -31,9 +31,9 @@ Feature: Means test assessment
   @means_test_operator_edit_case
   Scenario: Successful means test assessment resulting in operator being able to edit a case
     Given I search for and select a CLA_OPERATOR_CASE_TO_EDIT case
-    When I select Finances
+    And I select Finances
     And I move onto Finances inner-tab
-    And I <answer> to Finances <question>
+    When I <answer> to Finances <question>
       | question                                             | answer |
       | How much was in your bank account/building           | 0.00   |
       | Do you have any investments, shares or ISAs?         | 300.00 |
@@ -42,9 +42,9 @@ Feature: Means test assessment
     And I select Save assessment
     And I remain in the "Finances" tab
     And I search for and select a CLA_OPERATOR_CASE_TO_EDIT case
-    When I select Finances
+    And I select Finances
     And I move onto Finances inner-tab
-    And I can see on Finances inner-tab <question> that the <answer> remain updated
+    Then I can see on Finances inner-tab <question> that the <answer> remain updated
       | question                                             | answer |
       | How much was in your bank account/building           | 0.00     |
       | Do you have any investments, shares or ISAs?         | 300.00   |
