@@ -31,8 +31,7 @@ Feature: Means test assessment
   @means_test_operator_edit_case
   Scenario: Successful means test assessment resulting in operator being able to edit a case
 #    @Todo: Replace the following test by : And I select 'Create a case' to edit for a "test operator"
-    Given I select a case to edit from the dashboard
-#    Given I select to 'Create a case' for editing
+    Given I select to 'Create a case' for editing
     Then I enter the case notes "I am creating this case to edit it"
     And I complete the users details with EDIT details
     When I have created a valid discrimination scope
