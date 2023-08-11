@@ -8,6 +8,7 @@ from helper.constants import (
     LOREM_IPSUM_STRING,
     CLA_SPECIALIST_REJECTION_OUTCOME_CODES,
     CLA_SPECIALIST_CASE_TO_SPLIT,
+    CLA_SPECIALIST_CASE_TO_EDIT,
     CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS,
     CASE_SPLIT_TEXT,
     CLA_SPECIALIST_CSV_UPLOAD_PATH,
@@ -74,6 +75,23 @@ def step_impl_select_case_to_edit(context):
     # Case doesn't need to accepted, can reject any case.
     check_only_unaccepted_cases = False
     select_a_case(context, case_reference, check_only_unaccepted_cases)
+
+
+@step('I select a "{case}" case from the dashboard')
+def step_impl_select_case_from_specialist_dashboard(context, case):
+    case_reference = get_case_reference(case)
+    check_only_unaccepted_cases = False
+    select_a_case(context, case_reference, check_only_unaccepted_cases)
+
+
+def get_case_reference(case):
+    case_dict = {
+        "CLA_SPECIALIST_CASE_TO_EDIT": CLA_SPECIALIST_CASE_TO_EDIT,
+        "CLA_SPECIALIST_CASE_TO_ACCEPT": CLA_SPECIALIST_CASE_TO_ACCEPT,
+        "CLA_SPECIALIST_CASE_TO_REJECT": CLA_SPECIALIST_CASE_TO_REJECT,
+        "CLA_SPECIALIST_CASE_TO_SPLIT": CLA_SPECIALIST_CASE_TO_SPLIT,
+    }
+    return case_dict.get(case, None)
 
 
 @step("I search for and select a CLA_OPERATOR_CASE_TO_EDIT case")
