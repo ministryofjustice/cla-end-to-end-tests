@@ -30,13 +30,7 @@ Feature: Means test assessment
 
   @means_test_operator_edit_case
   Scenario: Successful means test assessment resulting in operator being able to edit a case
-#    @Todo: Replace the following test by : And I select 'Create a case' to edit for a "test operator"
-    Given I select to 'Create a case' for editing
-    Then I enter the case notes "I am creating this case to edit it"
-    And I complete the users details with EDIT details
-    When I have created a valid discrimination scope
-    And I am on the Diversity tab having answered the finances questions
-    Then I select 'Prefer not say' for all diversity questions
+    Given I search for and select a CLA_OPERATOR_CASE_TO_EDIT case
     When I select Finances
     And I move onto Finances inner-tab
     And I <answer> to Finances <question>
@@ -47,8 +41,7 @@ Feature: Means test assessment
       | Do you have any money owed to you?                   | 0.00   |
     And I select Save assessment
     And I remain in the "Finances" tab
-    And I search for the case
-    And I select a case for the operator to edit from the dashboard
+    And I search for and select a CLA_OPERATOR_CASE_TO_EDIT case
     When I select Finances
     And I move onto Finances inner-tab
     And I can see on Finances inner-tab <question> that the <answer> remain updated

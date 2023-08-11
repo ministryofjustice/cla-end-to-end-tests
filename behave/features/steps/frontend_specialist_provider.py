@@ -13,6 +13,7 @@ from helper.constants import (
     CLA_SPECIALIST_CSV_UPLOAD_PATH,
     CLA_SPECIALIST_CSV_UPLOAD_PATH_ERRORS,
     CLA_FRONTEND_CSV_URL,
+    CLA_OPERATOR_CASE_TO_EDIT,
 )
 from features.steps.common_steps import (
     compare_client_details_with_backend,
@@ -75,17 +76,10 @@ def step_impl_select_case_to_edit(context):
     select_a_case(context, case_reference, check_only_unaccepted_cases)
 
 
-@step("I search for the case")
-def step_impl_search_case(context):
-    context.case_id = context.helperfunc.find_by_css_selector(".CaseBar-caseNum a").text
-    context.case_to_be_edited = context.case_id
-    search_and_select_case(context, context.case_to_be_edited)
-
-
-@step("I select a case for the operator to edit from the dashboard")
-def step_impl_select_case_for_operator_to_edit(context):
-    case_reference = context.case_to_be_edited
-    click_on_hyperlink_and_get_href(context, case_reference)
+@step("I search for and select a CLA_OPERATOR_CASE_TO_EDIT case")
+def step_impl_search_and_select_case(context):
+    search_and_select_case(context, CLA_OPERATOR_CASE_TO_EDIT)
+    click_on_hyperlink_and_get_href(context, CLA_OPERATOR_CASE_TO_EDIT)
 
 
 @step("I select a case to reject from the dashboard")
