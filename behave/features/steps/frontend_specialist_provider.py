@@ -8,16 +8,20 @@ from helper.constants import (
     LOREM_IPSUM_STRING,
     CLA_SPECIALIST_REJECTION_OUTCOME_CODES,
     CLA_SPECIALIST_CASE_TO_SPLIT,
+    CLA_SPECIALIST_CASE_TO_EDIT,
     CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS,
     CASE_SPLIT_TEXT,
     CLA_SPECIALIST_CSV_UPLOAD_PATH,
     CLA_SPECIALIST_CSV_UPLOAD_PATH_ERRORS,
     CLA_FRONTEND_CSV_URL,
+    CLA_OPERATOR_CASE_TO_EDIT,
 )
 from features.steps.common_steps import (
     compare_client_details_with_backend,
     wait_until_page_is_loaded,
     green_checkmark_appears_on_tab,
+    search_and_select_case,
+    click_on_hyperlink_and_get_href,
 )
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -53,31 +57,33 @@ def step_impl_view_client_details(context):
     compare_client_details_with_backend(context, case_id, client_section)
 
 
-@step("I select a case to accept from the dashboard")
-def step_select_special_provider_case(context):
-    case_reference = CLA_SPECIALIST_CASE_TO_ACCEPT
-    check_only_unaccepted_cases = True
-    select_a_case(context, case_reference, check_only_unaccepted_cases)
-
-
-@step("I select a case to reject from the dashboard")
-def step_impl_select_case_to_reject(context):
-    case_reference = CLA_SPECIALIST_CASE_TO_REJECT
-    # Case doesn't need to accepted, can reject any case.
+@step('I select a "{case}" case from the dashboard')
+def step_impl_select_case_from_specialist_dashboard(context, case):
+    case_reference = get_case_reference(case)
     check_only_unaccepted_cases = False
+    if case == "CLA_SPECIALIST_CASE_TO_ACCEPT":
+        check_only_unaccepted_cases = True
     select_a_case(context, case_reference, check_only_unaccepted_cases)
 
 
-@step("I select a case to split from the dashboard")
-def step_impl_select_case_to_split(context):
-    case_reference = CLA_SPECIALIST_CASE_TO_SPLIT
-    # Case doesn't need to accepted, can reject any case.
-    check_only_unaccepted_cases = False
-    select_a_case(context, case_reference, check_only_unaccepted_cases)
+def get_case_reference(case):
+    case_dict = {
+        "CLA_SPECIALIST_CASE_TO_EDIT": CLA_SPECIALIST_CASE_TO_EDIT,
+        "CLA_SPECIALIST_CASE_TO_ACCEPT": CLA_SPECIALIST_CASE_TO_ACCEPT,
+        "CLA_SPECIALIST_CASE_TO_REJECT": CLA_SPECIALIST_CASE_TO_REJECT,
+        "CLA_SPECIALIST_CASE_TO_SPLIT": CLA_SPECIALIST_CASE_TO_SPLIT,
+    }
+    return case_dict.get(case, None)
+
+
+@step("I search for and select a CLA_OPERATOR_CASE_TO_EDIT case")
+def step_impl_search_and_select_case(context):
+    search_and_select_case(context, CLA_OPERATOR_CASE_TO_EDIT)
+    click_on_hyperlink_and_get_href(context, CLA_OPERATOR_CASE_TO_EDIT)
 
 
 def select_a_case(context, case_reference, check_only_unaccepted_cases):
-    table = context.helperfunc.driver().find_element_by_css_selector(".ListTable")
+    table = context.helperfunc.find_by_css_selector(".ListTable")
     unaccepted_check = "unaccepted" if check_only_unaccepted_cases else ""
     # this will only return a link if the case hasn't already been accepted
     if check_only_unaccepted_cases:
@@ -541,3 +547,14 @@ def step_impl_csv_error_details(context):
     # Loop through HTML li elements and make sure the list items contain text.
     for error_item in error_list:
         assert error_item.get_attribute("innerText") is not None
+
+
+@step("I can see on Finances inner-tab <question> that the <answer> remain updated")
+def step_impl_your_finances_values(context):
+    for row in context.table:
+        label = row["question"]
+        value = row["answer"]
+        label_format = label.ljust(len(label) + 1)
+        context.helperfunc.find_by_xpath(
+            f"//span[contains(text(),'{label_format}')]/../input"
+        ).send_keys(value)

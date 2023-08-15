@@ -10,6 +10,7 @@ from helper.constants import (
     CLA_FRONTEND_URL,
     ASSIGN_F2F_CASE,
     CLA_FRONTEND_OOH_URL,
+    CLA_SPECIALIST_PROVIDERS_NAME,
 )
 from selenium.webdriver.common.by import By
 from common_steps import (
@@ -126,7 +127,7 @@ def step_impl_select_diagnosis_category(context):
         form = context.helperfunc.find_by_name("diagnosis-form")
         return form is not None and form.is_displayed()
 
-    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait = WebDriverWait(context.helperfunc.driver(), MINIMUM_SLEEP_SECONDS)
     wait.until(wait_for_diagnosis_form)
 
     # work out which category to choose
@@ -285,7 +286,7 @@ def step_impl_discrimination_scope(context):
     )
 
 
-@step("I am on the Diversity tab")
+@step("I am on the Diversity tab having answered the finances questions")
 def step_impl_diversity_tab(context):
     def wait_until_finance_is_complete(*args):
         # this waits until all the finance questions have been answered
@@ -393,7 +394,7 @@ def step_impl_select_diversity_option(context):
     wait.until(wait_until_diversity_is_complete)
 
 
-@step("select the Assign tab")
+@step("I select the Assign tab")
 def step_impl_select_assign_tab(context):
     context.helperfunc.find_by_partial_link_text("Assign").click()
 
@@ -467,9 +468,21 @@ def step_impl_choose_provider(context):
     wait = WebDriverWait(context.helperfunc.driver(), 10)
     wait.until(wait_for_providers_to_load)
 
-    # Find matter type 2 wrapper and focus on it
-    form.find_elements(By.CSS_SELECTOR, 'strong[class="ng-binding"]')[1].click()
-
+    # Find CLA_SPECIALIST_PROVIDERS_NAME and click on it
+    # CLA_SPECIALIST_PROVIDERS_NAME may be the chosen provider
+    # if not then we need to select one from the list below
+    # if out of hours then there will be no "pre-selected provider"
+    selected_provider_name = None
+    if form.find_elements_by_css_selector(
+        "div.ContactBlock ContactBlock--grey clearfix"
+    ):
+        selected_provider_name = form.find_elements_by_css_selector(
+            "h2.ContactBlock-heading"
+        )[0].text
+    if not selected_provider_name == CLA_SPECIALIST_PROVIDERS_NAME:
+        form.find_element_by_xpath(
+            f""".//strong[@class='ng-binding'][text()='{CLA_SPECIALIST_PROVIDERS_NAME}']"""
+        ).click()
     headings = form.find_elements_by_css_selector("h2.ContactBlock-heading")
     context.provider_selected = headings[0].text
     assert len(headings) == 1

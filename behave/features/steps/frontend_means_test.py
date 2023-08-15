@@ -122,6 +122,9 @@ def step_impl_answer_finance_question(context):
         # Using ljust method to add space character
         context.helperfunc.find_by_xpath(
             f"//span[contains(text(),'{label_format}')]/../input"
+        ).clear()
+        context.helperfunc.find_by_xpath(
+            f"//span[contains(text(),'{label_format}')]/../input"
         ).send_keys(value)
 
 

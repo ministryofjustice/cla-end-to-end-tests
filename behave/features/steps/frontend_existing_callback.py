@@ -192,7 +192,6 @@ def step_impl_remove_callback(context):
     callback_wrapper_element = context.helperfunc.find_by_css_selector(
         "callback-status"
     )
-    print(callback_wrapper_element.get_attribute("innerHTML"))
     remove_btn_element = callback_wrapper_element.find_element_by_xpath(
         ".//a[text()='Remove callback']"
     )

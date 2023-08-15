@@ -15,9 +15,9 @@ Scenario: Attempt to assign a complete case out of hours
     And I enter the case notes "All is okay with this case"
     And I have created a user
     And I have created a valid discrimination scope
-    And I am on the Diversity tab
+    And I am on the Diversity tab having answered the finances questions
     When I select 'Prefer not say' for all diversity questions
-    And select the Assign tab
+    And I select the Assign tab
     When I select a category from Matter Type 1
     And I select a category from Matter Type 2
     And I choose a provider
