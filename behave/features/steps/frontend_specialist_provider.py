@@ -199,6 +199,8 @@ def step_impl_view_reference_number(context):
 @step("I am viewing a case that I have accepted as a specialist provider")
 def step_impl_view_accepted_case(context):
     case_reference = CLA_SPECIALIST_CASE_TO_ACCEPT
+    # reset the case context here as it is used in lots of places, need to make sure we have the one we want
+    context.selected_case_ref = case_reference
     login_url = f"{CLA_FRONTEND_URL}/provider/{case_reference}/diagnosis/"
     context.helperfunc.open(login_url)
 
