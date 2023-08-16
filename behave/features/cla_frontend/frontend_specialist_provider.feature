@@ -63,13 +63,13 @@ Scenario: Specialist Provider Accepts a case and Selects Legal Help Form
   | Outstanding Mortage                                      | £                  | £                   | £                |
   | Percentage Share                                         | %                  | %                   | %                |
   And The legal help form "Your Capital" section has the values
-  | field                                                    | subject matter     | your capital        | partners capital |
-  | Savings                                                  | £                  | £0.00               | £                |
-  | Investments                                              | £                  | £0.00               | £                |
-  | Valuable Items                                           | £                  | £0.00               | £                |
-  | Other Capital                                            | £                  | £0.00               | £                |
-  | Pensioner Capital Disregard                              | £0.00              | N/A                 | N/A              |
-  | TOTAL CAPITAL for Assessment Purposes                    | £0.00              | N/A                 | N/A              |
+  | field                                                    | subject matter     | your capital          | partners capital |
+  | Savings                                                  | £                  | £0.00                 | £                |
+  | Investments                                              | £                  | £300.00               | £                |
+  | Valuable Items                                           | £                  | £0.00                 | £                |
+  | Other Capital                                            | £                  | £0.00                 | £                |
+  | Pensioner Capital Disregard                              | £0.00              | N/A                   | N/A              |
+  | TOTAL CAPITAL for Assessment Purposes                    | £0.00              | N/A                   | N/A              |
   And The legal help form "Your Income" section has the values
   | field                                                    | your               | partner             |
   | Wages                                                    | £0.00              | £0.00               |
