@@ -72,14 +72,16 @@ def get_case_reference(case):
         "CLA_SPECIALIST_CASE_TO_ACCEPT": CLA_SPECIALIST_CASE_TO_ACCEPT,
         "CLA_SPECIALIST_CASE_TO_REJECT": CLA_SPECIALIST_CASE_TO_REJECT,
         "CLA_SPECIALIST_CASE_TO_SPLIT": CLA_SPECIALIST_CASE_TO_SPLIT,
+        "CLA_OPERATOR_CASE_TO_EDIT": CLA_OPERATOR_CASE_TO_EDIT,
     }
     return case_dict.get(case, None)
 
 
-@step("I search for and select a CLA_OPERATOR_CASE_TO_EDIT case")
-def step_impl_search_and_select_case(context):
+@step('I search for and select a "{case}" case')
+def step_impl_search_and_select_case(context, case):
     # search_and_select_case sets context.selected_case_ref to CLA_OPERATOR_CASE_TO_EDIT
-    search_and_select_case(context, CLA_OPERATOR_CASE_TO_EDIT)
+    case_ref = get_case_reference(case)
+    search_and_select_case(context, case_ref)
 
 
 def select_a_case(context, case_reference, check_only_unaccepted_cases):
@@ -557,6 +559,10 @@ def step_impl_your_finances_values(context):
         label = row["question"]
         value = row["answer"]
         label_format = label.ljust(len(label) + 1)
+        print(value)
+        print(context.helperfunc.find_by_xpath(
+            f"//span[contains(text(),'{label_format}')]/../input"
+        ).get_attribute("value"))
         assert value == context.helperfunc.find_by_xpath(
             f"//span[contains(text(),'{label_format}')]/../input"
         ).get_attribute("value")

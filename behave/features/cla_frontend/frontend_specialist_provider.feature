@@ -152,20 +152,20 @@ Scenario: Specialist Provider upload a csv
     And I select Finances
     And I move onto Finances inner-tab
     And I <answer> to Finances <question>
-      | question                                             | answer |
-      | How much was in your bank account/building           | 500    |
-      | Do you have any investments, shares or ISAs?         | 0.00   |
-      | Do you have any valuable items worth over £500 each? | 0.00   |
-      | Do you have any money owed to you?                   | 0.00   |
+      | question                                                                                      | answer |
+      | How much was in your bank account/building society before your last payment went in?          | 500    |
+      | Do you have any investments, shares or ISAs?                                                  | 0      |
+      | Do you have any valuable items worth over £500 each?                                          | 0      |
+      | Do you have any money owed to you?                                                            | 0      |
     When I select Save assessment
     And I am given a message 'The means test has been saved. The current result is eligible for Legal Aid'
     And I return to the specialist provider cases dashboard page
-    And I search for and select a CLA_SPECIALIST_CASE_TO_EDIT case
+    And I search for and select a "CLA_SPECIALIST_CASE_TO_EDIT" case
     And I select Finances
     And I move onto Finances inner-tab
     Then I can see on Finances inner-tab <question> that the <answer> remain updated
-      | question                                             | answer |
-      | How much was in your bank account/building           | 500    |
-      | Do you have any investments, shares or ISAs?         | 0.00   |
-      | Do you have any valuable items worth over £500 each? | 0.00   |
-      | Do you have any money owed to you?                   | 0.00   |
+      | question                                                                                      | answer |
+      | How much was in your bank account/building society before your last payment went in?          | 500    |
+      | Do you have any investments, shares or ISAs?                                                  | 0      |
+      | Do you have any valuable items worth over £500 each?                                          | 0      |
+      | Do you have any money owed to you?                                                            | 0      |

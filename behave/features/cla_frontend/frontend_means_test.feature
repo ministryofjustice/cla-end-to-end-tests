@@ -30,26 +30,26 @@ Feature: Means test assessment
 
   @means_test_operator_edit_case
   Scenario: Successful means test assessment resulting in operator being able to edit a case
-    Given I search for and select a CLA_OPERATOR_CASE_TO_EDIT case
+    Given I search for and select a "CLA_OPERATOR_CASE_TO_EDIT" case
     And I select Finances
     And I move onto Finances inner-tab
     When I <answer> to Finances <question>
-      | question                                             | answer |
-      | How much was in your bank account/building           | 0.00   |
-      | Do you have any investments, shares or ISAs?         | 300.00 |
-      | Do you have any valuable items worth over £500 each? | 0.00   |
-      | Do you have any money owed to you?                   | 0.00   |
+      | question                                                                                        | answer |
+      | How much was in your bank account/building society before your last payment went in?            | 0      |
+      | Do you have any investments, shares or ISAs?                                                    | 300    |
+      | Do you have any valuable items worth over £500 each?                                            | 0      |
+      | Do you have any money owed to you?                                                              | 0      |
     And I select Save assessment
     And I remain in the "Finances" tab
-    And I search for and select a CLA_OPERATOR_CASE_TO_EDIT case
+    And I search for and select a "CLA_OPERATOR_CASE_TO_EDIT" case
     And I select Finances
     And I move onto Finances inner-tab
     Then I can see on Finances inner-tab <question> that the <answer> remain updated
-      | question                                             | answer |
-      | How much was in your bank account/building           | 0.00     |
-      | Do you have any investments, shares or ISAs?         | 300.00   |
-      | Do you have any valuable items worth over £500 each? | 0.00   |
-      | Do you have any money owed to you?                   | 0.00   |
+      | question                                                                                     | answer   |
+      | How much was in your bank account/building society before your last payment went in?         | 0        |
+      | Do you have any investments, shares or ISAs?                                                 | 300      |
+      | Do you have any valuable items worth over £500 each?                                         | 0        |
+      | Do you have any money owed to you?                                                           | 0        |
 
 
   @means_test_high_savings
