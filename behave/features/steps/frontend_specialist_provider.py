@@ -80,7 +80,6 @@ def get_case_reference(case):
 def step_impl_search_and_select_case(context):
     # search_and_select_case sets context.selected_case_ref to CLA_OPERATOR_CASE_TO_EDIT
     search_and_select_case(context, CLA_OPERATOR_CASE_TO_EDIT)
-    click_on_hyperlink_and_get_href(context, CLA_OPERATOR_CASE_TO_EDIT)
 
 
 def select_a_case(context, case_reference, check_only_unaccepted_cases):
