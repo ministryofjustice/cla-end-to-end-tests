@@ -21,7 +21,6 @@ from features.steps.common_steps import (
     wait_until_page_is_loaded,
     green_checkmark_appears_on_tab,
     search_and_select_case,
-    click_on_hyperlink_and_get_href,
 )
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -560,9 +559,11 @@ def step_impl_your_finances_values(context):
         value = row["answer"]
         label_format = label.ljust(len(label) + 1)
         print(value)
-        print(context.helperfunc.find_by_xpath(
-            f"//span[contains(text(),'{label_format}')]/../input"
-        ).get_attribute("value"))
+        print(
+            context.helperfunc.find_by_xpath(
+                f"//span[contains(text(),'{label_format}')]/../input"
+            ).get_attribute("value")
+        )
         assert value == context.helperfunc.find_by_xpath(
             f"//span[contains(text(),'{label_format}')]/../input"
         ).get_attribute("value")
