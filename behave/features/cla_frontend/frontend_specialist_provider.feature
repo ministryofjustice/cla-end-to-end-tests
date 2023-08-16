@@ -160,8 +160,7 @@ Scenario: Specialist Provider upload a csv
     When I select Save assessment
     And I am given a message 'The means test has been saved. The current result is eligible for Legal Aid'
     And I return to the specialist provider cases dashboard page
-    And I select a "CLA_SPECIALIST_CASE_TO_EDIT" case from the dashboard
-    And I am taken to the "specialist provider" case details page
+    And I search for and select a CLA_SPECIALIST_CASE_TO_EDIT case
     And I select Finances
     And I move onto Finances inner-tab
     Then I can see on Finances inner-tab <question> that the <answer> remain updated

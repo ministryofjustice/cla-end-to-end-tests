@@ -78,6 +78,7 @@ def get_case_reference(case):
 
 @step("I search for and select a CLA_OPERATOR_CASE_TO_EDIT case")
 def step_impl_search_and_select_case(context):
+    # search_and_select_case sets context.selected_case_ref to CLA_OPERATOR_CASE_TO_EDIT
     search_and_select_case(context, CLA_OPERATOR_CASE_TO_EDIT)
     click_on_hyperlink_and_get_href(context, CLA_OPERATOR_CASE_TO_EDIT)
 
@@ -557,6 +558,6 @@ def step_impl_your_finances_values(context):
         label = row["question"]
         value = row["answer"]
         label_format = label.ljust(len(label) + 1)
-        context.helperfunc.find_by_xpath(
+        assert value == context.helperfunc.find_by_xpath(
             f"//span[contains(text(),'{label_format}')]/../input"
-        ).send_keys(value)
+        ).get_attribute("value")
