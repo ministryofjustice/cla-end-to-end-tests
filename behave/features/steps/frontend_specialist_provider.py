@@ -558,12 +558,6 @@ def step_impl_your_finances_values(context):
         label = row["question"]
         value = row["answer"]
         label_format = label.ljust(len(label) + 1)
-        print(value)
-        print(
-            context.helperfunc.find_by_xpath(
-                f"//span[contains(text(),'{label_format}')]/../input"
-            ).get_attribute("value")
-        )
         assert value == context.helperfunc.find_by_xpath(
             f"//span[contains(text(),'{label_format}')]/../input"
         ).get_attribute("value")
