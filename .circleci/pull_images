@@ -1,0 +1,5 @@
+#!/bin/bash
+DOCKER_COMPOSE_SERVICE_NAME=$1
+cd behave
+aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
+docker-compose pull $DOCKER_COMPOSE_SERVICE_NAME
