@@ -1,0 +1,7 @@
+#!/bin/sh -eu
+
+if [ "$CIRCLE_BRANCH" == "master" ]; then
+  export TARGET_TAGS="latest"
+else
+  export TARGET_TAGS=$CIRCLE_SHA1
+fi
