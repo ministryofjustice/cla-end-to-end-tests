@@ -21,7 +21,6 @@ from features.steps.common_steps import (
     wait_until_page_is_loaded,
     green_checkmark_appears_on_tab,
     search_and_select_case,
-    click_on_hyperlink_and_get_href,
 )
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -72,14 +71,16 @@ def get_case_reference(case):
         "CLA_SPECIALIST_CASE_TO_ACCEPT": CLA_SPECIALIST_CASE_TO_ACCEPT,
         "CLA_SPECIALIST_CASE_TO_REJECT": CLA_SPECIALIST_CASE_TO_REJECT,
         "CLA_SPECIALIST_CASE_TO_SPLIT": CLA_SPECIALIST_CASE_TO_SPLIT,
+        "CLA_OPERATOR_CASE_TO_EDIT": CLA_OPERATOR_CASE_TO_EDIT,
     }
     return case_dict.get(case, None)
 
 
-@step("I search for and select a CLA_OPERATOR_CASE_TO_EDIT case")
-def step_impl_search_and_select_case(context):
-    search_and_select_case(context, CLA_OPERATOR_CASE_TO_EDIT)
-    click_on_hyperlink_and_get_href(context, CLA_OPERATOR_CASE_TO_EDIT)
+@step('I search for and select a "{case}" case')
+def step_impl_search_and_select_case(context, case):
+    # search_and_select_case sets context.selected_case_ref to CLA_OPERATOR_CASE_TO_EDIT
+    case_ref = get_case_reference(case)
+    search_and_select_case(context, case_ref)
 
 
 def select_a_case(context, case_reference, check_only_unaccepted_cases):
@@ -199,6 +200,8 @@ def step_impl_view_reference_number(context):
 @step("I am viewing a case that I have accepted as a specialist provider")
 def step_impl_view_accepted_case(context):
     case_reference = CLA_SPECIALIST_CASE_TO_ACCEPT
+    # reset the case context here as it is used in lots of places, need to make sure we have the one we want
+    context.selected_case_ref = case_reference
     login_url = f"{CLA_FRONTEND_URL}/provider/{case_reference}/diagnosis/"
     context.helperfunc.open(login_url)
 
@@ -555,6 +558,6 @@ def step_impl_your_finances_values(context):
         label = row["question"]
         value = row["answer"]
         label_format = label.ljust(len(label) + 1)
-        context.helperfunc.find_by_xpath(
+        assert value == context.helperfunc.find_by_xpath(
             f"//span[contains(text(),'{label_format}')]/../input"
-        ).send_keys(value)
+        ).get_attribute("value")
