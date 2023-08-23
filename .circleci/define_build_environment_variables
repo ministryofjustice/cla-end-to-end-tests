@@ -1,7 +1,8 @@
 #!/bin/sh -eu
 
+safe_git_branch=${CIRCLE_BRANCH//\//-}
 if [ "$CIRCLE_BRANCH" == "master" ]; then
-  export TARGET_TAGS="latest"
+  export TARGET_TAGS="$safe_git_branch,latest"
 else
-  export TARGET_TAGS=$CIRCLE_SHA1
+  export TARGET_TAGS="$safe_git_branch,$CIRCLE_SHA1"
 fi
