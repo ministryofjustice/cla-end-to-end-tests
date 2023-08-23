@@ -1,24 +1,55 @@
 version: 2.1
 description: The end-to-end test suite for use in CLA app pipelines
+orbs:
+  aws-cli: circleci/aws-cli@4.0.0
+  aws-ecr: circleci/aws-ecr@8.2.1 # this orb doesn't support OIDC v2, so we use aws-cli to authenticate
 
 commands:
   behave:
     description: Run the CLA apps in a docker cluster and run the Behave test suite against them
     steps:
       - setup_remote_docker
+#       Pull public image
+      - aws-cli/setup:
+          role_arn: $CLA_PUBLIC_ECR_ROLE_TO_ASSUME # this will use the env var
+          region: $ECR_REGION
+      - run: |
+          ./.circleci/pull_images clapublic
+        
+
+      # Pull cla_backend image
+      - aws-cli/setup:
+          role_arn: $CLA_BACKEND_ECR_ROLE_TO_ASSUME
+          region: $ECR_REGION
+      - run: |
+          ./.circleci/pull_images clabackend
+
+#       Pull cla_frontend image
+      - aws-cli/setup:
+          role_arn: $CLA_FRONTEND_ECR_ROLE_TO_ASSUME
+          region: $ECR_REGION
+      - run: |
+          ./.circleci/pull_images clafrontend
+
+#       Pull socket_server image
+      - aws-cli/setup:
+          role_arn: $SOCKET_SERVER_ECR_ROLE_TO_ASSUME
+          region: $ECR_REGION
+      - run: |
+          ./.circleci/pull_images clasocketserver
+
+      # Pull fala image
+      - aws-cli/setup:
+          role_arn: $FALA_ECR_ROLE_TO_ASSUME
+          region: $ECR_REGION
+      - run: |
+          ./.circleci/pull_images fala
+
       - run:
-          name: Authenticate with awscli
+          name: Build / Check services are up
           command: |
-            login="$(aws ecr get-login --region eu-west-2 --no-include-email)"
-            ${login}
-      - run:
-          name: Build / pull Docker images
-          command: |
-            docker-compose pull
+            cd behave
             docker-compose build
-      - run:
-          name: Check services are up
-          command: |
             docker-compose run start_applications
             docker-compose exec clabackend bin/create_db.sh
       - run:
