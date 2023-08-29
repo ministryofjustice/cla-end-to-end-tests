@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
-  aws-ecr: circleci/aws-ecr@7.3.0
+  aws-cli: circleci/aws-cli@4.0.0
+  aws-ecr: circleci/aws-ecr@8.2.1 # this orb doesn't support OIDC v2, so we use aws-cli to authenticate
   orb-tools: circleci/orb-tools@10.1.0
 
 jobs:
@@ -15,25 +16,48 @@ jobs:
           command: |
             pip install pre-commit==2.17.0
             pre-commit run --all-files
+
+#       Pull public image
+      - aws-cli/setup:
+          role_arn: $CLA_PUBLIC_ECR_ROLE_TO_ASSUME # this will use the env var
+          region: $ECR_REGION
+      - run: |
+          ./.circleci/pull_images clapublic
+        
+
+      # Pull cla_backend image
+      - aws-cli/setup:
+          role_arn: $CLA_BACKEND_ECR_ROLE_TO_ASSUME
+          region: $ECR_REGION
+      - run: |
+          ./.circleci/pull_images clabackend
+
+#       Pull cla_frontend image
+      - aws-cli/setup:
+          role_arn: $CLA_FRONTEND_ECR_ROLE_TO_ASSUME
+          region: $ECR_REGION
+      - run: |
+          ./.circleci/pull_images clafrontend
+
+#       Pull socket_server image
+      - aws-cli/setup:
+          role_arn: $SOCKET_SERVER_ECR_ROLE_TO_ASSUME
+          region: $ECR_REGION
+      - run: |
+          ./.circleci/pull_images clasocketserver
+
+      # Pull fala image
+      - aws-cli/setup:
+          role_arn: $FALA_ECR_ROLE_TO_ASSUME
+          region: $ECR_REGION
+      - run: |
+          ./.circleci/pull_images fala
+
       - run:
-          name: Install compatible docker-compose
-          command: pip install docker-compose==1.27.4
-      - run:
-          name: Authenticate with awscli
-          command: |
-            pip install awscli
-            login="$(aws ecr get-login --region eu-west-2 --no-include-email)"
-            ${login}
-      - run:
-          name: Build / pull Docker images
+          name: Build / Check services are up
           command: |
             cd behave
-            docker-compose pull
             docker-compose build
-      - run:
-          name: Check services are up
-          command: |
-            cd behave
             docker-compose run start_applications
             docker-compose exec clabackend bin/create_db.sh
       - run:
@@ -55,18 +79,6 @@ jobs:
 workflows:
   build:
     jobs:
-      - aws-ecr/build-and-push-image:
-          name: Build and push
-          repo: "${AWS_RESOURCE_NAME_PREFIX}"
-          tag: "${CIRCLE_SHA1}"
-      - aws-ecr/build-and-push-image:
-          name: Build and push latest tag
-          repo: "${AWS_RESOURCE_NAME_PREFIX}"
-          tag: "latest"
-          filters:
-            branches:
-              only:
-                - main
       - orb-tools/publish-dev:
           name: publish_dev_orb
           attach-workspace: false
