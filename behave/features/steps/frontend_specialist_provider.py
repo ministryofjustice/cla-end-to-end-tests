@@ -159,6 +159,31 @@ def step_impl_select_value(context, value):
     context.helperfunc.click_button(By.XPATH, xpath)
 
 
+@step("I accept the case and open the Legal Help Form")
+def step_impl_select_case_and_legal_help_form(context):
+    # If same case is being used to test different outcomes after being accepted.
+    try:
+        # By using find_element_by_xpath, NoSuchElementException can be raised if not found.
+        context.case_details = context.helperfunc.find_by_xpath("//*[@id='wrapper']")
+        accept_button = context.case_details.find_element_by_xpath(
+            f"//button[@name='" f"{CLA_SPECIALIST_CASE_BANNER_BUTTONS['Accept']}']"
+        )
+        accept_button.click()
+    except NoSuchElementException:
+        context.case_details = context.helperfunc.find_by_xpath("//*[@id='wrapper']")
+        legal_help_form = context.case_details.find_element_by_xpath(
+            "//a[contains(text(), 'Legal help form')]"
+        )
+        legal_help_form.click()
+
+
+@step('I select the "{value}" tab on the specialist provider case page')
+def step_impl_finance_tab_specialist_provider(context, value):
+    # Another way to select the pages tabs as HTML is different on specialist provider case page.
+    xpath = f"//a[contains(text(), '{value}')]"
+    context.helperfunc.click_button(By.XPATH, xpath)
+
+
 @step("I can see a 'Case accepted successfully' message")
 def step_impl_case_accepted(context):
     # wait for the flash message to appear.

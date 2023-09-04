@@ -169,3 +169,15 @@ Scenario: Specialist Provider upload a csv
       | Do you have any investments, shares or ISAs?                                                  | 0      |
       | Do you have any valuable items worth over £500 each?                                          | 0      |
       | Do you have any money owed to you?                                                            | 0      |
+
+
+@legal_help_form_above_18_no_follow_up_questions
+Scenario: No to under 17 question appears in the Legal Help Form
+  Given I am on the specialist provider cases dashboard page
+  And I select a "CLA_SPECIALIST_CASE_TO_EDIT" case from the dashboard
+  Then I am taken to the "specialist provider" case details page
+  And I select the "Finances" tab on the specialist provider case page
+  And I am not aged 17 or under
+  And I select Save assessment
+  When I accept the case and open the Legal Help Form
+  Then I am taken to the cases Legal Help Form
