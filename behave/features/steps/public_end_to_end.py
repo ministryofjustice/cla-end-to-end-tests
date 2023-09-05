@@ -6,36 +6,9 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 
 
-@step('I am on the "{homepage_title}" website page')
-def step_impl_homepage_title(context, homepage_title):
-    homepage_title_xpath = context.helperfunc.find_by_xpath("//main/div[2]/h1")
-    assert homepage_title_xpath == homepage_title
-
-
-@step('I should be on the general diagnosis page "{main_diagnosis_page_title}"')
-def step_impl_main_diagnosis_title(context, main_diagnosis_page_title):
-    main_diagnosis_page_title_xpath = context.helperfunc.find_by_xpath(
-        "//main/div[2]/fieldset/legend/h1"
-    )
-    assert main_diagnosis_page_title_xpath == main_diagnosis_page_title
-
-
-@step('I select the "{section_name}" section')
-def step_impl_select_section_name(context, section_name):
-    context.helperfunc.click_button(By.LINK_TEXT, section_name)
-
-
-@step('I should be on the "{diagnosis_title}" page')
-def step_impl_diagnosis_title(context, diagnosis_title):
-    diagnosis_title_xpath = context.helperfunc.By.CLASS_NAME(".govuk-exit-this-page")
-    assert diagnosis_title_xpath == diagnosis_title
-
-
 @step('I click on the "Exit this page" button')
 def step_impl_click_exit_page(context):
-    context.helperfunc.find_by_xpath(
-        '//html/body/div[3][@class="govuk-exit-this-page"]'
-    )
+    context.helperfunc.click_button(By.CLASS_NAME, ".govuk-exit-this-page")
 
 
 @step('I press the "esc" key on the keyboard')
