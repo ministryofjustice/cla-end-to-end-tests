@@ -8,22 +8,19 @@ from selenium.webdriver.common.keys import Keys
 
 @step('I click on the "Exit this page" button')
 def step_impl_click_exit_page(context):
-    context.helperfunc.click_button(By.CLASS_NAME, ".govuk-exit-this-page")
+    context.helperfunc.click_button(By.CLASS_NAME, "govuk-exit-this-page")
 
 
 @step('I press the "esc" key on the keyboard')
 def step_impl_press_esc_key(context):
-    context.helperfunc.find_element_by_class_name(".govuk-exit-this-page")
+    context.helperfunc.find_element_by_class_name("govuk-exit-this-page")
     ActionChains(webdriver).send_keys(Keys.ESCAPE).perform()
 
 
-@step("I am diverted to the BBC website")
-def step_impl_diversion_link(context, link_text):
-    assert (
-        context.helperfunc.find_by_link_text(link_text) is not None
-    ), f"Could not find link: {link_text}"
+@step('I am diverted to the BBC website "{website}"')
+def step_impl_diversion_link(context, website):
+    href_link = context.helperfunc.find_by_xpath(
+        "/html/body/div/div/div/a"
+    ).get_attribute("href")
 
-    link_href = context.helperfunc.find_by_link_text(link_text).get_attribute("href")
-    context.helperfunc.click_button(By.LINK_TEXT, link_text)
-
-    return link_href
+    assert href_link == f"{website}"

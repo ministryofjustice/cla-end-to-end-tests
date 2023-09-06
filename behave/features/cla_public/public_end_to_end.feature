@@ -11,13 +11,13 @@ Feature:
     When I select the category <category>
       | category       |
       | Domestic abuse |
-    Then I am taken to the "Choose the option that best describes your personal situation" page located on "/scope/diagnosis/n43n3"
+    And I am taken to the "Choose the option that best describes your personal situation" page located on "/scope/diagnosis/n43n3"
     Then I click on the "Exit this page" button
-    And I am diverted to the BBC website
+    And I am diverted to the BBC website "https://www.bbc.co.uk/weather"
 
   @exit-behaviour-keypress
   Scenario: Describes how to exit from the domestic abuse section and the website safely when pressing the escape key
-    When I select the category <category>'
+    When I select the category <category>
       | category       |
       | Domestic abuse |
     Then I am taken to the "Choose the option that best describes your personal situation" page located on "/scope/diagnosis/n43n3"

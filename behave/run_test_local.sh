@@ -1,18 +1,18 @@
 #!/bin/bash
 # Exit immediately if there is an error
 set -e
-
+DOCKER_FILES="-f docker-compose.yml -f docker-compose.local.yml"
 export DOCKER_BUILDKIT=0
 function start_applications {
-  docker-compose -f docker-compose.yml run start_applications
+  docker-compose $DOCKER_FILES run start_applications
 }
 
 function run_migrations {
-  docker-compose exec clabackend bin/create_db.sh
+  docker-compose $DOCKER_FILES exec clabackend bin/create_db.sh
 }
 
 function run_tests {
-  docker-compose up --build cla-end-to-end
+  docker-compose $DOCKER_FILES up --build cla-end-to-end
 }
 
 
@@ -65,4 +65,3 @@ if [ "$DIFF_IMAGE" != "" ]; then
     # Do the database diff
     docker-compose run --entrypoint "python3 /behave_local/helper/yapgdd/main.py" cla-end-to-end
 fi
-
