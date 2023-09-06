@@ -181,3 +181,61 @@ Scenario: No to under 17 question appears in the Legal Help Form
   And I select Save assessment
   When I accept the case and open the Legal Help Form
   Then I am taken to the cases Legal Help Form
+  And <question> is visible with value <answer> in the form
+  | question                                  | answer |
+  | Are you aged 17 or under?                 | No     |
+
+
+@legal_help_form_under_18_receives_money_regularly
+Scenario: Yes for under 18 and regular payments does not receive follow up question
+  Given I am on the specialist provider cases dashboard page
+  And I select a "CLA_SPECIALIST_CASE_TO_EDIT" case from the dashboard
+  Then I am taken to the "specialist provider" case details page
+  And I select the "Finances" tab on the specialist provider case page
+  When I am aged 17 or under
+  And I do receive money on a regular basis
+  And I select Save assessment
+  When I accept the case and open the Legal Help Form
+  Then I am taken to the cases Legal Help Form
+  And <question> is visible with value <answer> in the form
+    | question                                      | answer |
+    | Are you aged 17 or under?                     | Yes    |
+    | Do you receive any money on a regular basis?  | Yes    |
+
+
+@legal_help_form_under_18_has_valuables
+Scenario: Yes to under 18 with valuables over 2500 proceeds to fill means testing
+  Given I am on the specialist provider cases dashboard page
+  And I select a "CLA_SPECIALIST_CASE_TO_EDIT" case from the dashboard
+  Then I am taken to the "specialist provider" case details page
+  And I select the "Finances" tab on the specialist provider case page
+  When I am aged 17 or under
+  And I do not receive money on a regular basis
+  And I do have savings, items of value or investments totalling £2500 or more
+  And I select Save assessment
+  When I accept the case and open the Legal Help Form
+  And I am taken to the cases Legal Help Form
+  Then <question> is visible with value <answer> in the form
+    | question                                                                         | answer |
+    | Are you aged 17 or under?                                                        | Yes    |
+    | Do you receive any money on a regular basis?                                     | No     |
+    | Do you have any savings, items of value or investments totalling £2500 or more?  | Yes    |
+
+
+@legal_help_form_under_18_passported
+Scenario: Person aged under 18 is passported is visible on legal help form
+  Given I am on the specialist provider cases dashboard page
+  And I select a "CLA_SPECIALIST_CASE_TO_EDIT" case from the dashboard
+  Then I am taken to the "specialist provider" case details page
+  And I select the "Finances" tab on the specialist provider case page
+  When I am aged 17 or under
+  And I do not receive money on a regular basis
+  And I do not have savings, items of value or investments totalling £2500 or more
+  And I select Save assessment
+  When I accept the case and open the Legal Help Form
+  Then I am taken to the cases Legal Help Form
+  And <question> is visible with value <answer> in the form
+    | question                                                                         | answer |
+    | Are you aged 17 or under?                                                        | Yes    |
+    | Do you receive any money on a regular basis?                                     | No     |
+    | Do you have any savings, items of value or investments totalling £2500 or more?  | No     |
