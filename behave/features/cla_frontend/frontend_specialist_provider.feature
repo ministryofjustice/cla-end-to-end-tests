@@ -144,31 +144,31 @@ Scenario: Specialist Provider upload a csv
   And I check that there are no errors in the csv upload page
   Then I can see the file listed in the uploaded files table
 
-  @specialist-provider-edit-case
-  Scenario: Specialist Provider Edits a case
-    Given I am on the specialist provider cases dashboard page
-    And I select a "CLA_SPECIALIST_CASE_TO_EDIT" case from the dashboard
-    And I am taken to the "specialist provider" case details page
-    And I select Finances
-    And I move onto Finances inner-tab
-    And I <answer> to Finances <question>
-      | question                                                                                      | answer |
-      | How much was in your bank account/building society before your last payment went in?          | 500    |
-      | Do you have any investments, shares or ISAs?                                                  | 0      |
-      | Do you have any valuable items worth over £500 each?                                          | 0      |
-      | Do you have any money owed to you?                                                            | 0      |
-    When I select Save assessment
-    And I am given a message 'The means test has been saved. The current result is eligible for Legal Aid'
-    And I return to the specialist provider cases dashboard page
-    And I search for and select a "CLA_SPECIALIST_CASE_TO_EDIT" case
-    And I select Finances
-    And I move onto Finances inner-tab
-    Then I can see on Finances inner-tab <question> that the <answer> remain updated
-      | question                                                                                      | answer |
-      | How much was in your bank account/building society before your last payment went in?          | 500    |
-      | Do you have any investments, shares or ISAs?                                                  | 0      |
-      | Do you have any valuable items worth over £500 each?                                          | 0      |
-      | Do you have any money owed to you?                                                            | 0      |
+@specialist-provider-edit-case
+Scenario: Specialist Provider Edits a case
+  Given I am on the specialist provider cases dashboard page
+  And I select a "CLA_SPECIALIST_CASE_TO_EDIT" case from the dashboard
+  And I am taken to the "specialist provider" case details page
+  And I select Finances
+  And I move onto Finances inner-tab
+  And I <answer> to Finances <question>
+    | question                                                                                      | answer |
+    | How much was in your bank account/building society before your last payment went in?          | 500    |
+    | Do you have any investments, shares or ISAs?                                                  | 0      |
+    | Do you have any valuable items worth over £500 each?                                          | 0      |
+    | Do you have any money owed to you?                                                            | 0      |
+  When I select Save assessment
+  And I am given a message 'The means test has been saved. The current result is eligible for Legal Aid'
+  And I return to the specialist provider cases dashboard page
+  And I search for and select a "CLA_SPECIALIST_CASE_TO_EDIT" case
+  And I select Finances
+  And I move onto Finances inner-tab
+  Then I can see on Finances inner-tab <question> that the <answer> remain updated
+    | question                                                                                      | answer |
+    | How much was in your bank account/building society before your last payment went in?          | 500    |
+    | Do you have any investments, shares or ISAs?                                                  | 0      |
+    | Do you have any valuable items worth over £500 each?                                          | 0      |
+    | Do you have any money owed to you?                                                            | 0      |
 
 
 @legal_help_form_above_18_no_follow_up_questions

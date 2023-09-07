@@ -162,6 +162,7 @@ def step_impl_select_value(context, value):
 @step("I accept the case and open the Legal Help Form")
 def step_impl_select_case_and_legal_help_form(context):
     # If same case is being used to test different outcomes after being accepted.
+    # Then ignore the accept button is missing and just go to the legal help form.
     try:
         # By using find_element_by_xpath, NoSuchElementException can be raised if not found.
         context.case_details = context.helperfunc.find_by_xpath("//*[@id='wrapper']")
@@ -169,12 +170,14 @@ def step_impl_select_case_and_legal_help_form(context):
             f"//button[@name='" f"{CLA_SPECIALIST_CASE_BANNER_BUTTONS['Accept']}']"
         )
         accept_button.click()
+        find_help_form_link(context)
     except NoSuchElementException:
-        context.case_details = context.helperfunc.find_by_xpath("//*[@id='wrapper']")
-        legal_help_form = context.case_details.find_element_by_xpath(
-            "//a[contains(text(), 'Legal help form')]"
-        )
-        legal_help_form.click()
+        find_help_form_link(context)
+
+
+def find_help_form_link(context):
+    xpath = "//a[contains(text(), 'Legal help form')]"
+    context.helperfunc.click_button(By.XPATH, xpath)
 
 
 @step('I select the "{value}" tab on the specialist provider case page')

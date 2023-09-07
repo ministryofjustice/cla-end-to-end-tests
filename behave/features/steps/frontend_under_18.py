@@ -2,6 +2,7 @@ from behave import step
 from features.steps.common_steps import (
     assert_element_does_not_appear,
     assert_header_on_page,
+    wait_until_page_is_loaded,
 )
 from helper.constants import CLA_SPECIALIST_CASE_TO_EDIT
 from selenium.common.exceptions import NoSuchElementException
@@ -22,10 +23,15 @@ def step_impl_under_18_no_follow_up_questions_fail(context):
 
 @step("I am taken to the cases Legal Help Form")
 def step__on_legal_help_form(context):
+    # Refresh the page as Legal Help Form holds old session data
+    # and the page needs refreshing to bring in new changes (Selenium issue)
+    context.helperfunc.refresh()
+    legal_help_form_path = context.helperfunc.get_current_path()
+    wait_until_page_is_loaded(legal_help_form_path, context)
     assert (
-        context.helperfunc.get_current_path()
+        legal_help_form_path
         == f"/provider/case/{CLA_SPECIALIST_CASE_TO_EDIT}/legal_help_form/"
-    )
+    ), f"incorrect path, page path is {legal_help_form_path}"
     assert_header_on_page("Legal Help", context)
 
 
@@ -34,9 +40,13 @@ def step_impl_under_eighteen_table_and_values_checks(context):
     for row in context.table:
         question = row["question"]
         answer = row["answer"]
+
+        # Find page wrapper to allow better xpath
+        context.legal_help_form = context.helperfunc.find_by_xpath("//*[@id='wrapper']")
+
         # Yes or no is visible as a value in the input field on the Legal Help Form.
         # Find header to ensure finances is visible
-        context.legal_help_form = context.helperfunc.find_by_xpath(
+        context.legal_help_form.find_element_by_xpath(
             "//h2[contains(text(), 'Your Finances')]"
         )
 
@@ -48,7 +58,9 @@ def step_impl_under_eighteen_table_and_values_checks(context):
         input_value = context.legal_help_form.find_element_by_xpath(
             table_title + "/../td/input"
         )
-        assert input_value.get_attribute("value") == answer
+        assert (
+            input_value.get_attribute("value") == answer
+        ), f"{answer} was not found for {question}"
 
 
 @step("<question> is not visible in the form")
