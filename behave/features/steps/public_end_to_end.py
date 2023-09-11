@@ -29,7 +29,9 @@ def step_impl_keypress_multiple_times(context, keypress, amount_of_time):
 
 @step('I am diverted to the BBC website "{website}"')
 def step_impl_diversion_link(context, website):
-    # bbc_address = context.helperfunc.find_by_xpath("/html/body/div/div/div/a").get_attribute("href")
-    # assert bbc_address == website
+    href_bbc_address = context.helperfunc.find_by_xpath(
+        "/html/body/div/div/div/a"
+    ).get_attribute("href")
+    assert href_bbc_address == website
 
     return context.helperfunc.get_current_path() == website
