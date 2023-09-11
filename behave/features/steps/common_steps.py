@@ -299,8 +299,9 @@ def make_dir(dir):
 def check_accessibility(context, step_name):
     # Sleep prevents Axe exceptions.
     # If no logs for Axe, Axe is called too fast when trying to inject javascript.
-    time.sleep(MINIMUM_SLEEP_SECONDS)
+    wait = WebDriverWait(context.helperfunc.driver(), MINIMUM_SLEEP_SECONDS)
     axe = Axe(context.helperfunc.driver())
+    wait.until(axe)
     axe.inject()
     results = axe.run()
     if len(results["violations"]) > 0:
