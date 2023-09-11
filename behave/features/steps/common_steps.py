@@ -10,6 +10,7 @@ from helper.constants import (
     CLA_FRONTEND_URL,
     USERS,
     USER_HTML_TAGS,
+    MINIMUM_SLEEP_SECONDS
 )
 from selenium.webdriver.common.by import By
 from axe_selenium_python import Axe
@@ -298,7 +299,7 @@ def make_dir(dir):
 def check_accessibility(context, step_name):
     # Sleep prevents Axe exceptions.
     # If no logs for Axe, Axe is called too fast when trying to inject javascript.
-    time.sleep(0.6)
+    time.sleep(MINIMUM_SLEEP_SECONDS)
     axe = Axe(context.helperfunc.driver())
     axe.inject()
     results = axe.run()
