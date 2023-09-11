@@ -1,5 +1,4 @@
 import re
-import time
 import os
 import json
 from behave import step
@@ -10,7 +9,7 @@ from helper.constants import (
     CLA_FRONTEND_URL,
     USERS,
     USER_HTML_TAGS,
-    MINIMUM_SLEEP_SECONDS
+    MINIMUM_SLEEP_SECONDS,
 )
 from selenium.webdriver.common.by import By
 from axe_selenium_python import Axe
