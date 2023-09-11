@@ -11,4 +11,9 @@ services:
   clabackend:
     build: https://github.com/ministryofjustice/cla_backend.git#master
   clapublic:
+    platform: linux/amd64
     build: https://github.com/ministryofjustice/cla_public.git#master
+  clasocketserver:
+    build: https://github.com/ministryofjustice/cla_frontend.git#master:cla_socketserver
+  fala:
+    build: https://github.com/ministryofjustice/fala.git#master
