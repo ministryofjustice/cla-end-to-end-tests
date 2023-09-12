@@ -27,6 +27,11 @@ fala feature files:
 
 ## How to run tests
 
+If you are working on an M1 machine, please add the below to your behave/.env file
+
+'ALPINE_BASE_IMAGE='arm64v8/alpine:3.15'
+NODE_BASE_IMAGE='amd64/node:10''
+
 To run all tests, execute in main behave directory (/behave_local if bashed into Docker container):
 
 `behave`
