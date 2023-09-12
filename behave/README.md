@@ -27,7 +27,7 @@ fala feature files:
 
 ## How to run tests
 
-If you are working on an M1 machine, please add the below to your behave/.env file
+If you are working on an M1 machine, please add the below to your behave/.env file. There is an example file at .env.m1.example that you can rename to .env to avoid doing this.
 
 'ALPINE_BASE_IMAGE='arm64v8/alpine:3.15'
 NODE_BASE_IMAGE='amd64/node:10''
