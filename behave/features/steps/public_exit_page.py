@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 
-from helper.constants import BBC_WEBSITE
+from helper.constants import BBC_WEBSITE, BBC_INTERNATIONAL_WEBSITE
 
 
 @step('The "Exit this page" button is on the page and I click it')
@@ -34,5 +34,4 @@ def step_impl_keypress_multiple_times(context, keypress, amount_of_time):
 
 @step("I am diverted to the BBC website")
 def step_impl_diversion_link(context):
-    print(context.helperfunc.get_url())
-    assert context.helperfunc.get_url() == BBC_WEBSITE
+    assert context.helperfunc.get_url() == BBC_INTERNATIONAL_WEBSITE
