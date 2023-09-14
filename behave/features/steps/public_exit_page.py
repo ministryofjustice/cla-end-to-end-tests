@@ -34,4 +34,5 @@ def step_impl_keypress_multiple_times(context, keypress, amount_of_time):
 
 @step("I am diverted to the BBC website")
 def step_impl_diversion_link(context):
-    assert context.helperfunc.get_url() == BBC_INTERNATIONAL_WEBSITE
+    # Depending on where in the world the test is executed you will either be directed to bbc.co.uk or bbc.com
+    assert context.helperfunc.get_url() in [BBC_WEBSITE, BBC_INTERNATIONAL_WEBSITE]
