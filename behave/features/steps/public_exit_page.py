@@ -10,7 +10,7 @@ from helper.constants import BBC_WEBSITE
 @step('The "Exit this page" button is on the page and I click it')
 def step_impl_click_exit_page(context):
     href_bbc_address = context.helperfunc.find_by_xpath(
-        "//main/div/div/a[contains(text(), 'Exit this page')]"
+        "//main/div/a[contains(text(), 'Exit this page')]"
     ).get_attribute("href")
 
     assert href_bbc_address == BBC_WEBSITE
@@ -34,4 +34,6 @@ def step_impl_keypress_multiple_times(context, keypress, amount_of_time):
 
 @step("I am diverted to the BBC website")
 def step_impl_diversion_link(context):
-    assert context.helperfunc.get_url() == BBC_WEBSITE
+    assert (
+        context.helperfunc.get_url() == BBC_WEBSITE
+    ), f"Url is {context.helperfunc.get_url()}, expected {BBC_WEBSITE}"
