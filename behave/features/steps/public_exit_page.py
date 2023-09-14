@@ -10,7 +10,7 @@ from helper.constants import BBC_WEBSITE
 @step('The "Exit this page" button is on the page and I click it')
 def step_impl_click_exit_page(context):
     href_bbc_address = context.helperfunc.find_by_xpath(
-        "//main/div/div/a[contains(text(), 'Exit this page')]"
+        "//main/div[1]/a[contains(text(), 'Exit this page')]"
     ).get_attribute("href")
 
     assert href_bbc_address == BBC_WEBSITE
