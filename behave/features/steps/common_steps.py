@@ -1,4 +1,5 @@
 import re
+import time
 import os
 import json
 from behave import step
@@ -9,7 +10,6 @@ from helper.constants import (
     CLA_FRONTEND_URL,
     USERS,
     USER_HTML_TAGS,
-    MINIMUM_SLEEP_SECONDS,
 )
 from selenium.webdriver.common.by import By
 from axe_selenium_python import Axe
@@ -298,9 +298,8 @@ def make_dir(dir):
 def check_accessibility(context, step_name):
     # Sleep prevents Axe exceptions.
     # If no logs for Axe, Axe is called too fast when trying to inject javascript.
-    wait = WebDriverWait(context.helperfunc.driver(), MINIMUM_SLEEP_SECONDS)
+    time.sleep(0.6)
     axe = Axe(context.helperfunc.driver())
-    wait.until(axe)
     axe.inject()
     results = axe.run()
     if len(results["violations"]) > 0:
