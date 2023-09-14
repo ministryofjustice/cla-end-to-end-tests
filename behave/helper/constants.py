@@ -215,4 +215,4 @@ MINIMUM_SLEEP_SECONDS = 2
 
 FALA_HEADER = "Find a legal aid adviser or family mediator"
 ERROR_TITLE = "There is a problem"
-BBC_WEBSITE = "https://www.bbc.co.uk/weather"
+BBC_WEBSITE = "https://www.bbc.com/weather"
