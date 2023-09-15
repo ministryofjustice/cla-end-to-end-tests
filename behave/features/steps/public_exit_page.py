@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 
-from helper.constants import BBC_WEBSITE
+from helper.constants import BBC_WEBSITE, BBC_INTERNATIONAL_WEBSITE
 
 
 @step('The "Exit this page" button is on the page and I click it')
@@ -34,6 +34,8 @@ def step_impl_keypress_multiple_times(context, keypress, amount_of_time):
 
 @step("I am diverted to the BBC website")
 def step_impl_diversion_link(context):
-    assert (
-        context.helperfunc.get_url() == BBC_WEBSITE
-    ), f"Url is {context.helperfunc.get_url()}, expected {BBC_WEBSITE}"
+    # Depending on where in the world the test is executed you will either be directed to bbc.co.uk or bbc.com
+    assert context.helperfunc.get_url() in [
+        BBC_WEBSITE,
+        BBC_INTERNATIONAL_WEBSITE,
+    ], f"Url is {context.helperfunc.get_url()}, expected {BBC_WEBSITE}"
