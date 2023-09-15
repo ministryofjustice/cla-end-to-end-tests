@@ -38,4 +38,4 @@ def step_impl_diversion_link(context):
     assert context.helperfunc.get_url() in [
         BBC_WEBSITE,
         BBC_INTERNATIONAL_WEBSITE,
-    ], f"Url is {context.helperfunc.get_url()}, expected {BBC_WEBSITE}"
+    ], f"Url is {context.helperfunc.get_url()}"
