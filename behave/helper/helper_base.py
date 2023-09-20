@@ -88,6 +88,10 @@ class HelperFunc(object):
             EC.visibility_of_element_located((By.LINK_TEXT, text))
         )
 
+    def refresh(self):
+        # Refresh the page you're on.
+        return self._driver.refresh()
+
     def find_by_partial_link_text(self, text):
         return self._driver_wait.until(
             EC.visibility_of_element_located((By.PARTIAL_LINK_TEXT, text))
