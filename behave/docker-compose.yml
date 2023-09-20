@@ -59,7 +59,7 @@ services:
       resources:
         limits:
           memory: 2gb
-    image: selenium/standalone-chrome:latest
+    image: ${SELENIUM_IMAGE:-selenium/standalone-chrome:latest}
     user: root
     hostname: chrome
     ports:
