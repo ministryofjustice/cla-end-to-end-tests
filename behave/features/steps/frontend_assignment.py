@@ -160,8 +160,18 @@ def step_impl_select_diagnosis_category(context):
 
 @step('I get an "{scope}" decision')
 def step_impl_scope_decision(context, scope):
-    text = context.helperfunc.find_by_name("diagnosis-form").text
-    assert scope in text
+    summary_block_content = context.helperfunc.find_many_by_class(
+        "SummaryBlock-content"
+    )
+
+    summary_text = []
+
+    for element in summary_block_content:
+        summary_text.append(element.text)
+
+    assert (
+        scope in summary_text
+    ), f"The diagnosis form contained the following text: {summary_text}, but did not find: {scope}"
 
 
 @step('select the "{button_text}" button')
