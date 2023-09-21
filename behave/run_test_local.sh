@@ -1,10 +1,10 @@
 #!/bin/bash
 # Exit immediately if there is an error
 set -e
-
+export DOCKER_FILES="-f docker-compose.yml -f docker-compose.local.yml"
 export DOCKER_BUILDKIT=0
 function start_applications {
-  docker-compose -f docker-compose.yml run start_applications
+  docker-compose $DOCKER_FILES run start_applications
 }
 
 function run_migrations {
@@ -33,7 +33,7 @@ while [ -n "$1" ]; do # while loop starts
 	shift
 done
 
-docker-compose down
+docker-compose $DOCKER_FILES down
 start_applications
 run_migrations
 run_tests
