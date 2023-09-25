@@ -12,6 +12,7 @@ services:
       -wait tcp://fala:8000
       -wait tcp://seleniumchrome:4444
       -wait tcp://clabackendooh:8000
+      -wait tcp://clabackendsecurity:8000
       -wait tcp://clafrontendooh:8000
       -wait-retry-interval 10s
       -timeout 180s
@@ -24,6 +25,7 @@ services:
       - fala
       - prev_db
       - clabackendooh
+      - clabackendsecurity
       - clafrontendooh
 
   cla-end-to-end:
@@ -187,6 +189,19 @@ services:
       EDUCATION_END_TIME_HR: 2
       DISCRIMINATION_START_TIME_HR: 1
       DISCRIMINATION_END_TIME_HR: 2
+
+  clabackendsecurity:
+    <<: *clabackend
+    ports:
+      - "8019:8000"
+    depends_on:
+      - clabackend
+    container_name:
+      clabackendsecurity
+    environment:
+      <<: *clabackendenvironment
+      SESSION_SECURITY_WARN_AFTER: 5
+      SESSION_SECURITY_EXPIRE_AFTER: 10
 
   clapublic:
     image: ${CLA_PUBLIC_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_public:master}
