@@ -11,20 +11,14 @@ Scenario: After a set period of time, CLA Backend should timeout from inactivity
     And I wait for the page to timeout
     Then I am logged out
 
-@security @sessionend
-Scenario: Confirm that the session ends on browser close
-    Given I close the browser
-    And I open a new CHS browser
-    Then I am logged out
-
-    
-@security @inactivity @passiveurl
-Scenario: Confirm that the session timesout on passive urls
+@security @inactivity @passive-url
+Scenario: Confirm that the session times out on passive urls
     Given I am on a passive URL
     And The session warning is not visible
-    And And I wait for the session warning
+    And I wait for the session warning
     And I wait for the page to timeout
     Then I am logged out
 
-
-
+@security @session-end
+Scenario: Confirm that the session ends on browser close
+    Then I have a session cookie that has no expiry

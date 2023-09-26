@@ -4,9 +4,7 @@ import logging
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-from helper.constants import (
-    CLA_BACKEND_SECURITY_URL,
-)
+from helper.constants import CLA_BACKEND_SECURITY_URL
 
 
 @step("The session warning is not visible")
@@ -43,16 +41,14 @@ def step_impl_logged_out(context):
     )
 
 
-@step("I close the browser")
-def step_impl_close_browser(context):
-    context.helperfunc.close()
-
-
-@step("I open a new CHS browser")
-def step_impl_open_chs_browser(context):
-    context.helperfunc.open(CLA_BACKEND_SECURITY_URL)
+@step("I have a session cookie that has no expiry")
+def step_impl_get_session_cookies(context):
+    cookie_list = context.helperfunc.get_cookie("sessionid")
+    assert "expiry" not in cookie_list
 
 
 @step("I am on a passive URL")
 def step_impl_open_passive_url(context):
-    context.helperfunc.open(CLA_BACKEND_SECURITY_URL & "/reports/mi-cb1-extract/")
+    context.helperfunc.open(
+        f"{CLA_BACKEND_SECURITY_URL}" + "/admin/reports/mi-cb1-extract/"
+    )
