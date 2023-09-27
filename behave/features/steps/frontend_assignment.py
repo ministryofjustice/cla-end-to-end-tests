@@ -160,18 +160,16 @@ def step_impl_select_diagnosis_category(context):
 
 @step('I get an "{scope}" decision')
 def step_impl_scope_decision(context, scope):
-    summary_block_content = context.helperfunc.find_many_by_class(
-        "SummaryBlock-content"
-    )
 
-    summary_text = []
+    scope_xpath = "//main/div[2]/div/div/div[3]/div/div[2]/div/div/form/section/div[5]/p"
 
-    for element in summary_block_content:
-        summary_text.append(element.text)
+    scope_decision = context.helperfunc.find_by_xpath(scope_xpath)
 
+    print(type(scope_decision))
+    print(scope_decision)
     assert (
-        scope in summary_text
-    ), f"The diagnosis form contained the following text: {summary_text}, but did not find: {scope}"
+        scope in scope_decision.text
+    ), f"The diagnosis form contained the following text: {scope_decision.text}, but did not find: {scope}"
 
 
 @step('select the "{button_text}" button')
