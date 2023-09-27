@@ -160,8 +160,9 @@ def step_impl_select_diagnosis_category(context):
 
 @step('I get an "{scope}" decision')
 def step_impl_scope_decision(context, scope):
-
-    scope_xpath = "//main/div[2]/div/div/div[3]/div/div[2]/div/div/form/section/div[5]/p"
+    scope_xpath = (
+        "//main/div[2]/div/div/div[3]/div/div[2]/div/div/form/section/div[5]/p"
+    )
 
     scope_decision = context.helperfunc.find_by_xpath(scope_xpath)
 
