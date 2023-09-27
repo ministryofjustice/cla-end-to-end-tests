@@ -21,6 +21,7 @@ from common_steps import (
 )
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import TimeoutException
 from features.steps.common_steps import green_checkmark_appears_on_tab
 
 
@@ -160,18 +161,21 @@ def step_impl_select_diagnosis_category(context):
 
 @step('I get an "{scope}" decision')
 def step_impl_scope_decision(context, scope):
-    summary_block_content = context.helperfunc.find_many_by_class(
-        "SummaryBlock-content"
-    )
+    scope_xpath = f"//p[contains(text(), '{scope}')]"
 
-    summary_text = []
-
-    for element in summary_block_content:
-        summary_text.append(element.text)
+    try:
+        scope_decision = context.helperfunc.find_by_xpath(scope_xpath)
+    except TimeoutException:
+        print("The scope element could not be found")
+        assert False
+    else:
+        print(type(scope_decision))
+        print(scope_decision)
+        print(scope_decision.text)
 
     assert (
-        scope in summary_text
-    ), f"The diagnosis form contained the following text: {summary_text}, but did not find: {scope}"
+        scope in scope_decision.text
+    ), f"The diagnosis form contained the following text: {scope_decision.text}, but did not find: {scope}"
 
 
 @step('select the "{button_text}" button')
