@@ -169,10 +169,11 @@ def step_impl_scope_decision(context, scope):
         scope_decision = context.helperfunc.find_by_xpath(scope_xpath)
     except TimeoutException:
         print("The scope element could not be found")
+        assert False
+    else:
         print(type(scope_decision))
         print(scope_decision)
         print(scope_decision.text)
-        assert False
 
     assert (
         scope in scope_decision.text
