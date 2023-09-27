@@ -8,6 +8,7 @@ DATABASE_SNAPSHOT_ENABLED = (
 )
 DATA_DIRECTORY = os.environ.get("DATA_DIRECTORY", "./data")
 CLA_BACKEND_URL = os.environ.get("CLA_E2E_BACKEND_URL")
+CLA_BACKEND_SECURITY_URL = "http://clabackendsecurity:8000"
 CLA_FRONTEND_URL = os.environ.get("CLA_E2E_FRONTEND_URL")
 CLA_FRONTEND_OOH_URL = "http://clafrontendooh:8000"
 CLA_FRONTEND_CSV_URL = "/provider/csvupload/"
@@ -58,6 +59,13 @@ USERS = {
         "username": "cla_admin",
         "password": "cla_admin",
         "login_url": f"{CLA_BACKEND_URL}/admin/login",
+        "user_type": "OPERATOR",
+        "application": "BACKEND",
+    },
+    "FOX_ADMIN_SECURITY_USER": {
+        "username": "cla_admin",
+        "password": "cla_admin",
+        "login_url": f"{CLA_BACKEND_SECURITY_URL}/admin/login",
         "user_type": "OPERATOR",
         "application": "BACKEND",
     },
