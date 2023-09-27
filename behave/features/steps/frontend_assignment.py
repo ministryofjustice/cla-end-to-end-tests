@@ -21,6 +21,7 @@ from common_steps import (
 )
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import TimeoutException
 from features.steps.common_steps import green_checkmark_appears_on_tab
 
 
@@ -166,7 +167,7 @@ def step_impl_scope_decision(context, scope):
 
     try:
         scope_decision = context.helperfunc.find_by_xpath(scope_xpath)
-    except TimeoutError:
+    except TimeoutException:
         print("The scope element could not be found")
         print(type(scope_decision))
         print(scope_decision)
