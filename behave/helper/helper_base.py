@@ -36,6 +36,12 @@ class HelperFunc(object):
     def close(self):
         self._driver.quit()
 
+    def get_cookie(self, cookie):
+        return self._driver.get_cookie(cookie)
+
+    def get_cookies(self):
+        return self._driver.get_cookies()
+
     # Get the date set in the init method
     # if needed, create a set method to override the date set in init
     def get_date_now(self):
