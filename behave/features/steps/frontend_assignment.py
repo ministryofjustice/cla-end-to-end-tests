@@ -168,6 +168,7 @@ def step_impl_scope_decision(context, scope):
 
     print(type(scope_decision))
     print(scope_decision)
+    print(scope_decision.text)
     assert (
         scope in scope_decision.text
     ), f"The diagnosis form contained the following text: {scope_decision.text}, but did not find: {scope}"
