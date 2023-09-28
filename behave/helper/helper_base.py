@@ -67,7 +67,7 @@ class HelperFunc(object):
 
     def javascript_wait_for_ready_state(self):
         WebDriverWait(self._driver, 10).until(
-            self._driver.execute_script("return document.readyState")
+            self._driver.execute_script("return (document.readyState === 'complete');"), "Page ready state is not complete"
         )
 
     def find_by_css_selector(self, css):
