@@ -1,7 +1,6 @@
 import re
 import os
 import json
-import time
 from behave import step
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
@@ -298,8 +297,7 @@ def make_dir(dir):
 def check_accessibility(context, step_name):
     # Sleep prevents Axe exceptions.
     # If no logs for Axe, Axe is called too fast when trying to inject javascript.
-    #context.helperfunc.javascript_wait_for_ready_state()
-    time.sleep(600)
+    context.helperfunc.javascript_wait_for_ready_state()
     axe = Axe(context.helperfunc.driver())
     axe.inject()
     results = axe.run()
