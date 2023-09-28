@@ -65,6 +65,11 @@ class HelperFunc(object):
             EC.visibility_of_all_elements_located((By.XPATH, xpath))
         )
 
+    def javascript_wait_for_ready_state(self):
+        WebDriverWait(self._driver, 10).until(
+            self._driver.execute_script("return document.readyState")
+        )
+
     def find_by_css_selector(self, css):
         return self._driver_wait.until(
             EC.visibility_of_element_located((By.CSS_SELECTOR, css))

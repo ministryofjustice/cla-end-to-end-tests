@@ -1,5 +1,4 @@
 import re
-import time
 import os
 import json
 from behave import step
@@ -298,7 +297,7 @@ def make_dir(dir):
 def check_accessibility(context, step_name):
     # Sleep prevents Axe exceptions.
     # If no logs for Axe, Axe is called too fast when trying to inject javascript.
-    time.sleep(0.6)
+    context.helperfunc.javascript_wait_for_ready_state()
     axe = Axe(context.helperfunc.driver())
     axe.inject()
     results = axe.run()
