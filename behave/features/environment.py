@@ -94,7 +94,6 @@ def after_scenario(context, scenario):
     if not context.a11y_approved:
         logging.error("ACCESSIBILITY ISSUES FOUND, CHECK ARTIFACTS FOR INFORMATION")
     if scenario.status == "failed":
-
         if DATABASE_SNAPSHOT_ENABLED:
             restore_to_last_snapshot()
 
