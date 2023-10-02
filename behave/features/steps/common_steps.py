@@ -3,6 +3,7 @@ import os
 import json
 from behave import step
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from helper.constants import (
     CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK,
@@ -149,7 +150,7 @@ def step_click_continue(context):
         if confirmation_text_element is not None:
             assert confirmation_text_element.text.startswith("There is a problem")
             raise AssertionError("There is a problem with submitting the form")
-    except NoSuchElementException:
+    except (NoSuchElementException, TimeoutException):
         # this will error because we actually moved off the page which is actually what we want
         pass
 
