@@ -144,7 +144,7 @@ def step_click_continue(context):
     # check for 'there is a problem'
     try:
         confirmation_text_element = (
-            context.helperfunc.driver().find_element_by_css_selector(
+            context.helperfunc.find_by_css_selector(
                 ".govuk-error-summary"
             )
         )
@@ -295,7 +295,6 @@ def make_dir(dir):
 
 
 def check_accessibility(context, step_name):
-    # Sleep prevents Axe exceptions.
     # If no logs for Axe, Axe is called too fast when trying to inject javascript.
     context.helperfunc.javascript_wait_for_ready_state()
     axe = Axe(context.helperfunc.driver())
