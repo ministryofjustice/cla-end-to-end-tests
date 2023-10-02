@@ -143,10 +143,8 @@ def step_click_continue(context):
     # did the form get submitted correctly?
     # check for 'there is a problem'
     try:
-        confirmation_text_element = (
-            context.helperfunc.find_by_css_selector(
-                ".govuk-error-summary"
-            )
+        confirmation_text_element = context.helperfunc.find_by_css_selector(
+            ".govuk-error-summary"
         )
         if confirmation_text_element is not None:
             assert confirmation_text_element.text.startswith("There is a problem")
