@@ -27,6 +27,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support import expected_conditions as EC
 
 
 @step("I am on the specialist provider cases dashboard page")
@@ -540,20 +542,25 @@ def step_impl_select_upload(context):
 
 @step("I check that there are no errors in the csv upload page")
 def step_impl_no_csv_errors(context):
-    context.csv_page = context.helperfunc.find_by_xpath("//*[@id='wrapper']")
     # This error block will appear in an HTML li attribute. This appears when you've uploaded
     # a CSV file with the same date as a previous CSV file. Located at the top of the page
-    error_notice = context.csv_page.find_elements_by_css_selector(".Notice--closeable")
+    try:
+        WebDriverWait(context.helperfunc.driver(), 5).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, ".Notice--closeable"))
+        )
+        assert False, "Errors were found in the CSV Upload page notice."
+    except TimeoutException:
+        pass
+
     # If you upload a CSV file that has problems with some of its rows, a dynamic HTML element
     # appears in the DOM with a list of the following errors for the user to address.
-    error_header = context.csv_page.find_elements_by_css_selector(".ErrorSummary-list")
-
-    if error_notice:
-        for error in error_notice:
-            assert False, f"Error occurred: {error.get_attribute('innerHTML')}"
-    elif error_header:
-        for error in error_header:
-            assert False, f"Error occurred: {error.get_attribute('innerHTML')}"
+    try:
+        WebDriverWait(context.helperfunc.driver(), 5).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, ".ErrorSummary-list"))
+        )
+        assert False, "Errors were found in the CSV Upload page header."
+    except TimeoutException:
+        pass
 
 
 @step("I can see the file listed in the uploaded files table")
