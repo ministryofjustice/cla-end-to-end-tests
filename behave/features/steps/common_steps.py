@@ -1,9 +1,9 @@
 import re
-import time
 import os
 import json
 from behave import step
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from helper.constants import (
     CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK,
@@ -144,15 +144,13 @@ def step_click_continue(context):
     # did the form get submitted correctly?
     # check for 'there is a problem'
     try:
-        confirmation_text_element = (
-            context.helperfunc.driver().find_element_by_css_selector(
-                ".govuk-error-summary"
-            )
+        confirmation_text_element = context.helperfunc.find_by_css_selector(
+            ".govuk-error-summary"
         )
         if confirmation_text_element is not None:
             assert confirmation_text_element.text.startswith("There is a problem")
             raise AssertionError("There is a problem with submitting the form")
-    except NoSuchElementException:
+    except (NoSuchElementException, TimeoutException):
         # this will error because we actually moved off the page which is actually what we want
         pass
 
@@ -296,9 +294,8 @@ def make_dir(dir):
 
 
 def check_accessibility(context, step_name):
-    # Sleep prevents Axe exceptions.
     # If no logs for Axe, Axe is called too fast when trying to inject javascript.
-    time.sleep(0.6)
+    context.helperfunc.javascript_wait_for_ready_state()
     axe = Axe(context.helperfunc.driver())
     axe.inject()
     results = axe.run()
