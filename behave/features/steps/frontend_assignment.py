@@ -166,16 +166,11 @@ def step_impl_scope_decision(context, scope):
     try:
         scope_decision = context.helperfunc.find_by_xpath(scope_xpath)
     except TimeoutException:
-        print("The scope element could not be found")
-        assert False
-    else:
-        print(type(scope_decision))
-        print(scope_decision)
-        print(scope_decision.text)
+        assert False, f"The scope element could not be found with xpath: {scope_xpath}"
 
     assert (
         scope in scope_decision.text
-    ), f"The diagnosis form contained the following text: {scope_decision.text}, but did not find: {scope}"
+    ), f"The scope_decision element : {scope_decision}, was found, and contained the following text: {scope_decision.text}.\n But was looking to find: {scope}"
 
 
 @step('select the "{button_text}" button')
