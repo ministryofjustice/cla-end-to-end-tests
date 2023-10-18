@@ -55,7 +55,6 @@ def step_impl_income_max_complete(context):
 
 @step("The <dropdown> contains the correct <value>")
 def step_impl_dropdown_value(context):
-    print("here")
     for row in context.table:
         label = row["dropdown"]
         value = row["value"]
@@ -63,3 +62,37 @@ def step_impl_dropdown_value(context):
             context.helperfunc.find_by_xpath(f"//span[text()='{label}']/../../select")
         )
         assert select.first_selected_option.text == value
+
+
+@step("I am on the income tab which i complete with incorrect values")
+def step_impl_income_incorrect_value(context):
+    context.execute_steps(
+        """
+    Then I move onto Income inner-tab
+    And I am not self employed
+    And I <answer> to Income <question>
+    | question                                                        | answer  |
+    | What did you earn before tax? (Check your most recent payslips) | a       |
+    | How much tax do you pay?                                        | a       |
+    | How much National Insurance do you pay?                         | a       |
+    | Self employed drawings (Before Tax)                             | a       |
+    | Benefits                                                        | a       |
+    | Tax credits                                                     | a       |
+    | Child Benefit (for household)                                   | a       |
+    | Maintenance received                                            | a       |
+    | Pension income                                                  | a       |
+    | Other income                                                    | a       |
+    And I have 0 dependants aged 16 and over
+    And I have 0 dependants aged 15 and under
+    """
+    )
+
+
+@step("The <dropdown> contains no values")
+def step_impl_dropdown_no_value(context):
+    for row in context.table:
+        label = row["dropdown"]
+        select = Select(
+            context.helperfunc.find_by_xpath(f"//span[text()='{label}']/../../select")
+        )
+        assert len(select.first_selected_option.text) == 0
