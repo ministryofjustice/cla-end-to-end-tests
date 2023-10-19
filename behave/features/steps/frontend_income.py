@@ -1,5 +1,5 @@
 from behave import step
-from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.ui import Select
 
 
 @step("I am on the financial page which i complete up to finances")
@@ -62,37 +62,25 @@ def step_impl_dropdown_value(context):
             context.helperfunc.find_by_xpath(f"//span[text()='{label}']/../../select")
         )
         assert select.first_selected_option.text == value
+    context.helperfunc.scroll_to_top()
 
 
-@step("I am on the income tab which i complete with incorrect values")
-def step_impl_income_incorrect_value(context):
-    context.execute_steps(
-        """
-    Then I move onto Income inner-tab
-    And I am not self employed
-    And I <answer> to Income <question>
-    | question                                                        | answer  |
-    | What did you earn before tax? (Check your most recent payslips) | a       |
-    | How much tax do you pay?                                        | a       |
-    | How much National Insurance do you pay?                         | a       |
-    | Self employed drawings (Before Tax)                             | a       |
-    | Benefits                                                        | a       |
-    | Tax credits                                                     | a       |
-    | Child Benefit (for household)                                   | a       |
-    | Maintenance received                                            | a       |
-    | Pension income                                                  | a       |
-    | Other income                                                    | a       |
-    And I have 0 dependants aged 16 and over
-    And I have 0 dependants aged 15 and under
-    """
-    )
+@step("I refresh the page")
+def step_save_report_and_refresh(context):
+    context.helperfunc.refresh()
 
 
-@step("The <dropdown> contains no values")
-def step_impl_dropdown_no_value(context):
+@step("I assert that the <question> still have the correct <value> and <dropdown>")
+def step_assert_income_field_values(context):
     for row in context.table:
-        label = row["dropdown"]
+        label = row["question"]
+        value = row["value"]
+        dropdown = row["dropdown"]
         select = Select(
             context.helperfunc.find_by_xpath(f"//span[text()='{label}']/../../select")
         )
-        assert len(select.first_selected_option.text) == 0
+        currentvalue = context.helperfunc.find_by_xpath(
+            f"//span[text()='{label}']/../../input"
+        ).get_attribute("value")
+        assert select.first_selected_option.text == dropdown
+        assert currentvalue == value

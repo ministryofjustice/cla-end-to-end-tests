@@ -23,23 +23,17 @@ Scenario: Ensure that the dropdowns appear on income
     | Maintenance received                                            | per month   |
     | Pension income                                                  | per month   |
     | Other income                                                    | per month   |
-
-@income_limit_dropdown_fail
-Scenario: Ensure that the dropdowns appear on income
-    Given I select to 'Create a case'
-    And I have created a user
-    And I have created a valid discrimination scope
-    And I am on the financial page which i complete up to finances
-    And I am on the income tab which i complete with incorrect values
-    Then The <dropdown> contains no values
-    | dropdown                                                        |
-    | What did you earn before tax? (Check your most recent payslips) |
-    | How much tax do you pay?                                        |
-    | How much National Insurance do you pay?                         |
-    | Self employed drawings (Before Tax)                             |
-    | Benefits                                                        |
-    | Tax credits                                                     |
-    | Child Benefit (for household)                                   |
-    | Maintenance received                                            |
-    | Pension income                                                  |
-    | Other income                                                    |
+    And I select Save assessment
+    And I refresh the page
+    Then I assert that the <question> still have the correct <value> and <dropdown>
+    | question                                                        | value         | dropdown    |
+    | What did you earn before tax? (Check your most recent payslips) | 99999999.99   | per month   |
+    | How much tax do you pay?                                        | 99999999.99   | per month   |
+    | How much National Insurance do you pay?                         | 99999999.99   | per month   |
+    | Self employed drawings (Before Tax)                             | 99999999.99   | per month   |
+    | Benefits                                                        | 99999999.99   | per month   |
+    | Tax credits                                                     | 99999999.99   | per month   |
+    | Child Benefit (for household)                                   | 99999999.99   | per month   |
+    | Maintenance received                                            | 99999999.99   | per month   |
+    | Pension income                                                  | 99999999.99   | per month   |
+    | Other income                                                    | 99999999.99   | per month   |
