@@ -18,6 +18,7 @@ from common_steps import (
     switch_to_new_tab,
     select_value_from_list,
     search_and_select_case,
+    get_node_from_option_name,
 )
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import StaleElementReferenceException
@@ -581,16 +582,25 @@ def step_impl_assign_f2f(context):
 
 @step('I select the "{option}" option and click next')
 def step_impl_select_radio_button_option_by_value(context, option):
-    value = ""
-    if option == "Family":
-        value = "n97"
-    if option == "Special Guardianship Order":
-        value = "n410"
-    if option == "parent":
-        value = "n411"
-    if option == "other person":
-        value = "n412"
+
+    value = get_node_from_option_name(option)
+
     context.helperfunc.click_button(
         By.CSS_SELECTOR, f"input[type='radio'][value='{value}']"
     )
     context.helperfunc.click_button(By.NAME, "diagnosis-next")
+
+
+@step('the help text for "{option}" is: "{help_text}')
+def step_impl_check_help_text_exists(context, option, help_text):
+    node = get_node_from_option_name(option)
+
+    if node is None:
+        assert False, f"Node for {option} could not be found"
+
+        # Gets the element of the associated radio button, finds it's parent's parent
+        # and drills down to it's associated help button.
+    help_text_container = context.helperfunc.find_by_xpath(
+        f"//input[@value='{node}']/../../details/div"
+    )
+    assert help_text_container.text == help_text

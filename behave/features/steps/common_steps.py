@@ -362,3 +362,42 @@ def assert_element_does_not_appear(context, name):
     )
     question = name.replace("_", " ")
     assert len(radio_button_element) == 0, f"Expected {question} question to be hidden"
+
+
+def get_node_from_option_name(name: str) -> str:
+    """
+    Takes in a name and returns the corresponding angular node ID.
+    Param: name - str
+    Return: node_id - str or None, if not found
+    """
+    name = name.lower()
+    option_node_map = {
+        "family": "n97",
+        "special guardianship order": "n410",
+        "parent": "n411",
+        "other person": "n412",
+        "immigration and asylum": "n186",
+        "any other matter - immigration": "n187",  # Incase "any other matter" appears twice, specify the category.
+        "client was referred to CLA by a provider": "NODE NUMBER PLEASE",
+        "client came to CLA through any other route": "NODE NUMBER PLEASE",
+        "refer the client to the alternative list": "NODE NUMBER PLEASE",
+        "refer the client to fala": "NODE NUMBER PLEASE",
+    }
+    if name in option_node_map.keys():
+        return option_node_map[name]
+    return None
+
+
+@step("I click the help button on to the {option} option")
+def step_impl_click_help_button(context, option: str):
+    node = get_node_from_option_name(option)
+
+    if node is None:
+        assert False, f"Node for {option} could not be found"
+
+    # Gets the element of the associated radio button, finds it's parent's parent
+    # and drills down to it's associated help button.
+    help_button_element = context.helperfunc.find_by_xpath(
+        f"//input[@value='{node}']/../../details/summary"
+    )
+    help_button_element.click()
