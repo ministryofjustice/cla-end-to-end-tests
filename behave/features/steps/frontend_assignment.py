@@ -604,5 +604,4 @@ def step_impl_check_help_text_exists(context, option):
         f"//input[@value='{node}']/../../details/div"
     )
 
-    print(help_text_container.text)
     assert help_text_container.text == context.text
