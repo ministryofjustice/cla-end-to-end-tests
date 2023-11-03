@@ -598,8 +598,8 @@ def step_impl_check_help_text_exists(context, option):
     if node is None:
         assert False, f"Node for {option} could not be found"
 
-        # Gets the element of the associated radio button, finds it's parent's parent
-        # and drills down to it's associated help button.
+    # Gets the element of the associated radio button, finds it's parent's parent
+    # and drills down to it's associated help button.
     help_text_container = context.helperfunc.find_by_xpath(
         f"//input[@value='{node}']/../../details/div"
     )
