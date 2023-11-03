@@ -591,8 +591,8 @@ def step_impl_select_radio_button_option_by_value(context, option):
     context.helperfunc.click_button(By.NAME, "diagnosis-next")
 
 
-@step('the help text for "{option}" is: "{help_text}')
-def step_impl_check_help_text_exists(context, option, help_text):
+@step('the help text for "{option}" is')
+def step_impl_check_help_text_exists(context, option):
     node = get_node_from_option_name(option)
 
     if node is None:
@@ -603,4 +603,6 @@ def step_impl_check_help_text_exists(context, option, help_text):
     help_text_container = context.helperfunc.find_by_xpath(
         f"//input[@value='{node}']/../../details/div"
     )
-    assert help_text_container.text == help_text
+
+    print(help_text_container.text)
+    assert help_text_container.text == context.text

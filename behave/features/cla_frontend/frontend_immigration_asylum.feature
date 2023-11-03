@@ -21,18 +21,17 @@ Feature: - Check additional question under the ‘immigration and asylum’ scop
     When I select the "Immigration and asylum" option and click next
     And I select the "any other matter - immigration" option and click next
     And I select the "client came to CLA through any other route" option and click next
-    And I select the "Refer the client to FALA" option and click next
+    And I select the "Refer the client to the Non CLA Disclaimer" option and click next
     Then I get an "OUTOFSCOPE" decision
 
-  @referred_through_any_other_route
+  @south_west_england_help_text
   Scenario: Check South West England help text appears
     Given I select to 'Create a case'
     And I select ‘Create Scope Diagnosis'
     When I select the "Immigration and asylum" option and click next
     And I select the "any other matter - immigration" option and click next
-    And I click the help button on to the "any other matter - immigration" option
-    Then the help text for "any other matter - immigration" is:
+    And I click the help button on the "client was referred to CLA by a provider" option
+    Then the help text for "client was referred to CLA by a provider" is
     """
-    South West of England consists of the counties of Cornwall (including the Isles of Scilly),
-     Dorset, Devon, Gloucestershire, Somerset and Wiltshire
+    South West of England consists of the counties of Cornwall (including the Isles of Scilly), Dorset, Devon, Gloucestershire, Somerset and Wiltshire
     """

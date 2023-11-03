@@ -378,17 +378,17 @@ def get_node_from_option_name(name: str) -> str:
         "other person": "n412",
         "immigration and asylum": "n186",
         "any other matter - immigration": "n187",  # Incase "any other matter" appears twice, specify the category.
-        "client was referred to CLA by a provider": "NODE NUMBER PLEASE",
-        "client came to CLA through any other route": "NODE NUMBER PLEASE",
-        "refer the client to the alternative list": "NODE NUMBER PLEASE",
-        "refer the client to fala": "NODE NUMBER PLEASE",
+        "client was referred to cla by a provider": "n190",
+        "client came to cla through any other route": "n188",
+        "refer the client to the alternative list": "n351",
+        "refer the client to the non cla disclaimer": "n302",
     }
     if name in option_node_map.keys():
         return option_node_map[name]
     return None
 
 
-@step("I click the help button on to the {option} option")
+@step('I click the help button on the "{option}" option')
 def step_impl_click_help_button(context, option: str):
     node = get_node_from_option_name(option)
 
