@@ -9,7 +9,7 @@ services:
   clafrontend:
     build: https://github.com/ministryofjustice/cla_frontend.git#59c90f65a4c1bdd4e9e9eca78cbe7e1130dfabd0
   clabackend:
-    build: https://github.com/ministryofjustice/cla_backend.git#1787d0f8acc60c497182dfd1d977d111c5e920f1
+    build: https://github.com/ministryofjustice/cla_backend.git#ded2e016ddfd21197aa3291188ac4a5d36ac0da0
   clapublic:
     build: 
       context: https://github.com/ministryofjustice/cla_public.git#15d5775fde286eea9bbfeeaf184d915bc20f853b
