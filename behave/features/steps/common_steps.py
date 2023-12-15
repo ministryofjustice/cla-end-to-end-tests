@@ -161,6 +161,15 @@ def step_check_page(context, page, header):
     assert_header_on_page(header, context)
 
 
+@step("I save the reference number")
+def step_save_reference_number(context):
+    reference_number = context.helperfunc.find_by_xpath(
+        '//div[@class="govuk-panel__body"]/strong'
+    )
+    context.reference_number = reference_number.text.strip()
+    assert reference_number is not None
+
+
 @step('I am taken to the "{header}" page for the case located at "{sub_page}"')
 def step_impl_taken_to_page(context, sub_page, header):
     # can't use the above step because there is a case reference in the url

@@ -45,3 +45,6 @@ Scenario: contact us journey, saying 'Yes' for CLA to announce who's calling
   And I select 'Yes' to announce call options
   And I select 'Submit details'
   Then I am taken to the "We will call you back" page located on "/result/confirmation"
+  And I save the reference number
+  When I am logged in as "CHS_GENERAL_USER"
+  When I search for a case using my saved reference number
