@@ -35,7 +35,7 @@ Scenario: contact us journey, selecting 'call someone else instead of me' option
 
 
 # Ticket (LGA-2798, LGA-2799)
-@cla-contact-us-yes-announce-cla-call @a11y-check
+@cla-contact-us-announce-cla-call @a11y-check
 Scenario: contact us journey, saying 'Yes' for CLA to announce who's calling
   Given I am on the Contact Civil Legal Advice page
   When I enter a name in the 'Your full name' field
@@ -48,3 +48,42 @@ Scenario: contact us journey, saying 'Yes' for CLA to announce who's calling
   And I save the reference number
   When I am logged in as "CHS_GENERAL_USER"
   When I search for a case using my saved reference number
+
+
+@cla-contact-us-announce-cla-call @a11y-check
+Scenario: contact us journey, saying 'No' for CLA to announce who's calling
+  Given I am on the Contact Civil Legal Advice page
+  When I enter a name in the 'Your full name' field
+  And I select the contact option 'Call me back'
+  And I enter my phone number
+  And I select the next available "callback" time slot
+  And I select 'No' to announce call options
+  And I select 'Submit details'
+  Then I am taken to the "We will call you back" page located on "/result/confirmation"
+  And I save the reference number
+  And I am logged in as "CHS_GENERAL_USER"
+  And I search for a case using my saved reference number
+
+
+@cla-contact-us-announce-cla-call @a11y-check
+Scenario: contact us journey, selecting 'I will call CLA'
+  Given I am on the Contact Civil Legal Advice page
+  When I enter a name in the 'Your full name' field
+  And I select the contact option 'I’ll call CLA'
+  And I select 'Submit details'
+  Then I am taken to the "We will call you back" page located on "/result/confirmation"
+  And I save the reference number
+  And I am logged in as "CHS_GENERAL_USER"
+  And I search for a case using my saved reference number
+
+
+@cla-contact-us-announce-cla-call @a11y-check
+Scenario: contact us journey, selecting 'Call someone else instead of me'
+  Given I am on the Contact Civil Legal Advice page
+  When I enter a name in the 'Your full name' field
+  And I select the contact option 'Call someone else instead of me'
+  And I select 'Submit details'
+  Then I am taken to the "We will call you back" page located on "/result/confirmation"
+  And I save the reference number
+  And I am logged in as "CHS_GENERAL_USER"
+  And I search for a case using my saved reference number
