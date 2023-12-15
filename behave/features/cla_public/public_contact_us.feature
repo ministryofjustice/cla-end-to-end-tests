@@ -34,13 +34,12 @@ Scenario: contact us journey, selecting 'call someone else instead of me' option
   Then I am taken to the "We will call you back" page located on "/result/confirmation"
 
 
-# Ticket (LGA-2798)
+# Ticket (LGA-2798, LGA-2799)
 @cla-contact-us-yes-announce-cla-call @a11y-check
 Scenario: contact us journey, saying 'Yes' for CLA to announce who's calling
   Given I am on the Contact Civil Legal Advice page
   When I enter a name in the 'Your full name' field
   And I select the contact option 'Call me back'
-  And I enter my full name
   And I enter my phone number
   And I select the next available "callback" time slot
   And I select 'Yes' to announce call options

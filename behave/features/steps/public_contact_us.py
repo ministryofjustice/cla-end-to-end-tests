@@ -3,7 +3,7 @@ from helper.constants import (
     ClA_CONTACT_US_USER,
     CLA_CONTACT_US_USER_PERSON_TO_CALL,
     CLA_NUMBER,
-    CONTACT_US_OPTIONS,
+    ClA_CONTACT_US_OPTIONS,
 )
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import (
@@ -74,7 +74,7 @@ def step_impl_contact_cla_page(context):
 def step_impl_select_call_someone_else(context, option):
     radio_option = ""
 
-    for key, value in CONTACT_US_OPTIONS.items():
+    for key, value in ClA_CONTACT_US_OPTIONS.items():
         if key in option:
             radio_option = value
             break
@@ -94,7 +94,7 @@ def step_impl_select_next_available_time_slot(context, option):
     def is_call_today_option_visible(*args):
         try:
             context.callback_form.find_element_by_xpath(
-                '//input[@value="today"]' '[@id="thirdparty-time-specific_day-0"]'
+                f"//input[@value='today'][@id='{option}-time-specific_day-0']"
             )
             return True
         except NoSuchElementException:
@@ -103,7 +103,7 @@ def step_impl_select_next_available_time_slot(context, option):
     context.callback_form = context.helperfunc.find_by_xpath("//form")
     if is_call_today_option_visible() is True:
         call_today = context.callback_form.find_element_by_xpath(
-            '//input[@value="today"]' '[@id="thirdparty-time-specific_day-0"]'
+            f"//input[@value='today'][@id='{option}-time-specific_day-0']"
         )
         call_today.click()
         assert call_today.get_attribute("value") == "today"
@@ -112,7 +112,7 @@ def step_impl_select_next_available_time_slot(context, option):
         )
     else:
         specific_day = context.callback_form.find_element_by_xpath(
-            '//input[@value="specific_day"]' '[@id="thirdparty-time-specific_day-1"]'
+            f"//input[@value='specific_day'][@id='{option}-time-specific_day-1']"
         )
         specific_day.click()
         assert specific_day.get_attribute("value") == "specific_day"
@@ -138,18 +138,6 @@ def step_impl_enter_name(context):
     callback_form = context.helperfunc.find_by_xpath("//form")
     full_name_input = callback_form.find_element_by_xpath(
         "//input[@id='thirdparty-full_name'][@name='thirdparty-full_name']"
-    )
-    full_name_input.send_keys(value)
-    assert full_name_input.get_attribute("value") == value
-
-
-# call me back input field
-@step("I enter my full name")
-def step_impl_my_full_enter_name(context):
-    value = CLA_CONTACT_US_USER_PERSON_TO_CALL
-    callback_form = context.helperfunc.find_by_xpath("//form")
-    full_name_input = callback_form.find_element_by_xpath(
-        "//input[@id='callback-full_name'][@name='callback-full_name']"
     )
     full_name_input.send_keys(value)
     assert full_name_input.get_attribute("value") == value
