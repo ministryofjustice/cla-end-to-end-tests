@@ -225,3 +225,9 @@ FALA_HEADER = "Find a legal aid adviser or family mediator"
 ERROR_TITLE = "There is a problem"
 BBC_WEBSITE = "https://www.bbc.co.uk/weather"
 BBC_INTERNATIONAL_WEBSITE = "https://www.bbc.com/weather"
+
+ClA_CONTACT_US_OPTIONS = {
+    "I will call you": "call",
+    "Call me back": "callback",
+    "Call someone else instead of me": "thirdparty",
+}

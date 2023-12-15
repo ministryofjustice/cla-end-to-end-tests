@@ -33,17 +33,6 @@ def step_impl_enter_details(context):
         )
 
 
-@step("I select the contact option 'I’ll call CLA'")
-def step_impl_select_contact_option(context):
-    context.callback_form = context.helperfunc.find_by_xpath("//form")
-    callback_element = context.callback_form.find_element_by_xpath(
-        '//input[@value="call"]'
-    )
-    assert callback_element is not None
-    callback_element.click()
-    assert callback_element.get_attribute("value") == "call"
-
-
 @step("I should be shown the CLA number")
 def step_impl_cla_number_shown(context):
     confirmation_text_element = context.helperfunc.find_by_css_selector(

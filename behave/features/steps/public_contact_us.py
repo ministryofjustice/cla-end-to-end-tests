@@ -3,6 +3,7 @@ from helper.constants import (
     ClA_CONTACT_US_USER,
     CLA_CONTACT_US_USER_PERSON_TO_CALL,
     CLA_NUMBER,
+    CONTACT_US_OPTIONS,
 )
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import (
@@ -69,16 +70,23 @@ def step_impl_contact_cla_page(context):
     )
 
 
-@step("I select the contact option 'Call someone else instead of me'")
-def step_impl_select_call_someone_else(context):
+@step("I select the contact option '{option}'")
+def step_impl_select_call_someone_else(context, option):
+    radio_option = ""
+
+    for key, value in CONTACT_US_OPTIONS.items():
+        if key in option:
+            radio_option = value
+            break
+
     # input can not be found without first finding form
     context.callback_form = context.helperfunc.find_by_xpath("//form")
     callback_element = context.callback_form.find_element_by_xpath(
-        '//input[@value="thirdparty"]'
+        f'//input[@value="{radio_option}"]'
     )
     assert callback_element is not None
     callback_element.click()
-    assert callback_element.get_attribute("value") == "thirdparty"
+    assert callback_element.get_attribute("value") == f"{radio_option}"
 
 
 @step('I select the next available "{option}" time slot')
@@ -135,6 +143,18 @@ def step_impl_enter_name(context):
     assert full_name_input.get_attribute("value") == value
 
 
+# call me back input field
+@step("I enter my full name")
+def step_impl_my_full_enter_name(context):
+    value = CLA_CONTACT_US_USER_PERSON_TO_CALL
+    callback_form = context.helperfunc.find_by_xpath("//form")
+    full_name_input = callback_form.find_element_by_xpath(
+        "//input[@id='callback-full_name'][@name='callback-full_name']"
+    )
+    full_name_input.send_keys(value)
+    assert full_name_input.get_attribute("value") == value
+
+
 # call someone else instead of me phone number input field
 @step("I enter the phone number of the person to call back")
 def step_impl_enter_phone_number(context):
@@ -142,6 +162,18 @@ def step_impl_enter_phone_number(context):
     callback_form = context.helperfunc.find_by_xpath("//form")
     full_name_input = callback_form.find_element_by_xpath(
         "//input[@id='thirdparty-contact_number']"
+    )
+    full_name_input.send_keys(value)
+    assert full_name_input.get_attribute("value") == value
+
+
+# the users phone number
+@step("I enter my phone number")
+def step_impl_enter_my_phone_number(context):
+    value = CLA_NUMBER
+    callback_form = context.helperfunc.find_by_xpath("//form")
+    full_name_input = callback_form.find_element_by_xpath(
+        "//input[@id='callback-contact_number']"
     )
     full_name_input.send_keys(value)
     assert full_name_input.get_attribute("value") == value
@@ -160,3 +192,14 @@ def step_impl_select_relationship_option(context, option):
         select.select_by_visible_text(option)
     except StaleElementReferenceException:
         assert False, f"Could find {option} in 'Relationship to you select' options"
+
+
+@step("I select '{option}' to announce call options")
+def step_impl_select_announce_call_option(context, option):
+    value_option = "true" if option == "Yes" else "false"
+    context.callback_form = context.helperfunc.find_by_xpath("//form")
+    announce_call_radio = context.callback_form.find_element_by_xpath(
+        f'//input[@value="{value_option}"]' '[@id="callback-announce_call_from_cla-0"]'
+    )
+    announce_call_radio.click()
+    assert announce_call_radio.get_attribute("value") == f"{value_option}"
