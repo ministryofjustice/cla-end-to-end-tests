@@ -78,7 +78,7 @@ services:
       SITE_HOSTNAME: clasocketserver
 
   clafrontend: &clafrontend
-    image: ${CLA_FRONTEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend:master}
+    image: ${CLA_FRONTEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend:59c90f65a4c1bdd4e9e9eca78cbe7e1130dfabd0}
     ports:
       - "8011:8000"
     depends_on:
@@ -144,7 +144,7 @@ services:
       - ./data:/data
 
   clabackend: &clabackend
-    image: ${CLA_BACKEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:master}
+    image: ${CLA_BACKEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:1787d0f8acc60c497182dfd1d977d111c5e920f1}
     ports:
       - "8010:8000"
     depends_on:
@@ -204,7 +204,7 @@ services:
       SESSION_SECURITY_EXPIRE_AFTER: 10
 
   clapublic:
-    image: ${CLA_PUBLIC_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_public:master}
+    image: ${CLA_PUBLIC_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_public:8bc0c217aa5a6c9f166792df9ae5388a66636d76}
     ports:
       - "8012:8000"
     environment:

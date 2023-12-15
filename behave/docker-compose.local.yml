@@ -7,12 +7,12 @@ services:
     stdin_open: true # docker run -i
     tty: true        # docker run -t
   clafrontend:
-    build: https://github.com/ministryofjustice/cla_frontend.git#master
+    build: https://github.com/ministryofjustice/cla_frontend.git#59c90f65a4c1bdd4e9e9eca78cbe7e1130dfabd0
   clabackend:
-    build: https://github.com/ministryofjustice/cla_backend.git#master
+    build: https://github.com/ministryofjustice/cla_backend.git#1787d0f8acc60c497182dfd1d977d111c5e920f1
   clapublic:
     build: 
-      context: https://github.com/ministryofjustice/cla_public.git#master
+      context: https://github.com/ministryofjustice/cla_public.git#15d5775fde286eea9bbfeeaf184d915bc20f853b
       args:
         NODE_BASE_IMAGE: ${NODE_BASE_IMAGE:-node:10}
         ALPINE_BASE_IMAGE: ${ALPINE_BASE_IMAGE:-alpine:3.15}
