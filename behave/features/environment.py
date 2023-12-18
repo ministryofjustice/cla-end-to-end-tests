@@ -8,16 +8,12 @@ from behave.log_capture import capture
 from helper.constants import (
     BROWSER,
     DATA_DIRECTORY,
-    A11Y_TAG,
     DATABASE_SNAPSHOT_ENABLED,
 )
 
 from helper.helper_web import get_browser
 from features.steps.common_steps import (
-    check_accessibility,
     make_dir,
-    get_tag,
-    filter_accessibility_report,
 )
 
 
