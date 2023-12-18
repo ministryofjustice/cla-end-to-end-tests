@@ -48,7 +48,7 @@ Scenario: contact us journey, saying 'Yes' for CLA to announce who's calling
   And I save the reference number
   When I am logged in as "CHS_GENERAL_USER"
   When I search for and select a case using my saved reference number
-  Then The 'do not announce the call is from CLA' warning is not present"
+  Then the 'do not announce the call is from CLA' warning is not present
 
 
 @cla-contact-us-announce-cla-call @a11y-check
@@ -64,23 +64,23 @@ Scenario: contact us journey, saying 'No' for CLA to announce who's calling
   And I save the reference number
   And I am logged in as "CHS_GENERAL_USER"
   And I search for and select a case using my saved reference number
-  Then The 'do not announce the call is from CLA' warning is present"
+  Then the 'do not announce the call is from CLA' warning is present
 
 
-@cla-contact-us-announce-cla-call @a11y-check
+@cla-contact-us-announce-cla-call-1 @a11y-check
 Scenario: contact us journey, selecting 'I will call CLA'
   Given I am on the Contact Civil Legal Advice page
   When I enter a name in the 'Your full name' field
-  And I select the contact option 'I’ll call CLA'
+  And I select the contact option 'I will call you'
   And I select 'Submit details'
-  Then I am taken to the "We will call you back" page located on "/result/confirmation"
+  Then I am taken to the "Your details have been submitted" page located on "/result/confirmation"
   And I save the reference number
   And I am logged in as "CHS_GENERAL_USER"
   And I search for and select a case using my saved reference number
-  Then The 'do not announce the call is from CLA' warning is not present"
+  Then the 'do not announce the call is from CLA' warning is not present
 
 
-@cla-contact-us-announce-cla-call @a11y-check
+@cla-contact-us-announce-cla-call-2 @a11y-check
 Scenario: contact us journey, selecting 'Call someone else instead of me'
   Given I am on the Contact Civil Legal Advice page
   When I enter a name in the 'Your full name' field
@@ -90,4 +90,4 @@ Scenario: contact us journey, selecting 'Call someone else instead of me'
   And I save the reference number
   And I am logged in as "CHS_GENERAL_USER"
   And I search for and select a case using my saved reference number
-  Then The 'do not announce the call is from CLA' warning is not present"
+  Then the 'do not announce the call is from CLA' warning is not present
