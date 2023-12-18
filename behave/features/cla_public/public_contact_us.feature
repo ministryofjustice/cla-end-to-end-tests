@@ -47,7 +47,7 @@ Scenario: contact us journey, saying 'Yes' for CLA to announce who's calling
   Then I am taken to the "We will call you back" page located on "/result/confirmation"
   And I save the reference number
   When I am logged in as "CHS_GENERAL_USER"
-  When I search for a case using my saved reference number
+  When I search for and select a case using my saved reference number
 
 
 @cla-contact-us-announce-cla-call @a11y-check
@@ -62,7 +62,7 @@ Scenario: contact us journey, saying 'No' for CLA to announce who's calling
   Then I am taken to the "We will call you back" page located on "/result/confirmation"
   And I save the reference number
   And I am logged in as "CHS_GENERAL_USER"
-  And I search for a case using my saved reference number
+  And I search for and select a case using my saved reference number
 
 
 @cla-contact-us-announce-cla-call @a11y-check
@@ -74,7 +74,7 @@ Scenario: contact us journey, selecting 'I will call CLA'
   Then I am taken to the "We will call you back" page located on "/result/confirmation"
   And I save the reference number
   And I am logged in as "CHS_GENERAL_USER"
-  And I search for a case using my saved reference number
+  And I search for and select a case using my saved reference number
 
 
 @cla-contact-us-announce-cla-call @a11y-check
@@ -86,4 +86,4 @@ Scenario: contact us journey, selecting 'Call someone else instead of me'
   Then I am taken to the "We will call you back" page located on "/result/confirmation"
   And I save the reference number
   And I am logged in as "CHS_GENERAL_USER"
-  And I search for a case using my saved reference number
+  And I search for and select a case using my saved reference number

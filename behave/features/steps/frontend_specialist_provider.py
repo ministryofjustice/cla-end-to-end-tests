@@ -85,7 +85,7 @@ def step_impl_search_and_select_case(context, case):
     search_and_select_case(context, case_ref)
 
 
-@step("I search for a case using my saved reference number")
+@step("I search for and select a case using my saved reference number")
 def step_impl_search_and_select_saved_case(context):
     # This test is dependent on `I save the reference number` step in order to work
     search_and_select_case(context, context.reference_number)
