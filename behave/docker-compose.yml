@@ -78,7 +78,7 @@ services:
       SITE_HOSTNAME: clasocketserver
 
   clafrontend: &clafrontend
-    image: ${CLA_FRONTEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend:59c90f65a4c1bdd4e9e9eca78cbe7e1130dfabd0}
+    image: ${CLA_FRONTEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend:c85bb3368f353cdb6ee3661b90b6096eb3547122}
     ports:
       - "8011:8000"
     depends_on:

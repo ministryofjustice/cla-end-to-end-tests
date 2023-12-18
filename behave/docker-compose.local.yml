@@ -7,7 +7,7 @@ services:
     stdin_open: true # docker run -i
     tty: true        # docker run -t
   clafrontend:
-    build: https://github.com/ministryofjustice/cla_frontend.git#59c90f65a4c1bdd4e9e9eca78cbe7e1130dfabd0
+    build: https://github.com/ministryofjustice/cla_frontend.git#c85bb3368f353cdb6ee3661b90b6096eb3547122
   clabackend:
     build: https://github.com/ministryofjustice/cla_backend.git#ded2e016ddfd21197aa3291188ac4a5d36ac0da0
   clapublic:

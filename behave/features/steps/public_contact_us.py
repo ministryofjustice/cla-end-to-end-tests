@@ -184,10 +184,9 @@ def step_impl_select_relationship_option(context, option):
 
 @step("I select '{option}' to announce call options")
 def step_impl_select_announce_call_option(context, option):
-    value_option = "true" if option == "Yes" else "false"
+    value_option = "0" if option == "Yes" else "1"
     context.callback_form = context.helperfunc.find_by_xpath("//form")
     announce_call_radio = context.callback_form.find_element_by_xpath(
-        f'//input[@value="{value_option}"]' '[@id="callback-announce_call_from_cla-0"]'
+        f'//*[@id="callback-announce_call_from_cla-{value_option}"]'
     )
     announce_call_radio.click()
-    assert announce_call_radio.get_attribute("value") == f"{value_option}"
