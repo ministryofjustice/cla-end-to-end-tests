@@ -67,7 +67,7 @@ Scenario: contact us journey, saying 'No' for CLA to announce who's calling
   Then the 'do not announce the call is from CLA' warning is present
 
 
-@cla-contact-us-announce-cla-call-1 @a11y-check
+@cla-contact-us-announce-cla-call @a11y-check
 Scenario: contact us journey, selecting 'I will call CLA'
   Given I am on the Contact Civil Legal Advice page
   When I enter a name in the 'Your full name' field
@@ -80,7 +80,7 @@ Scenario: contact us journey, selecting 'I will call CLA'
   Then the 'do not announce the call is from CLA' warning is not present
 
 
-@cla-contact-us-announce-cla-call-2 @a11y-check
+@cla-contact-us-announce-cla-call @a11y-check
 Scenario: contact us journey, selecting 'Call someone else instead of me'
   Given I am on the Contact Civil Legal Advice page
   When I enter a name in the 'Your full name' field
