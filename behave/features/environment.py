@@ -111,7 +111,7 @@ def after_scenario(context, scenario):
 def after_all(context):
     if context.config.userdata["a11y"]:
         filter_accessibility_report(context)
-        context.helperfunc.close()
+    context.helperfunc.close()
 
 
 def after_step(context, step):
