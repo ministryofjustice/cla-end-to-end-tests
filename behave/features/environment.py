@@ -8,12 +8,16 @@ from behave.log_capture import capture
 from helper.constants import (
     BROWSER,
     DATA_DIRECTORY,
+    A11Y_TAG,
     DATABASE_SNAPSHOT_ENABLED,
 )
 
 from helper.helper_web import get_browser
 from features.steps.common_steps import (
+    check_accessibility,
     make_dir,
+    get_tag,
+    filter_accessibility_report,
 )
 
 
@@ -104,14 +108,14 @@ def after_scenario(context, scenario):
     context.helperfunc.delete_cookies()
 
 
-# def after_all(context):
-#     if context.config.userdata["a11y"]:
-#         filter_accessibility_report(context)
-#     context.helperfunc.close()
+def after_all(context):
+    if context.config.userdata["a11y"]:
+        filter_accessibility_report(context)
+        context.helperfunc.close()
 
 
-# def after_step(context, step):
-#     # command to run: behave -D a11y=true -t @a11y-check
-#     if context.config.userdata["a11y"] and get_tag(context.tags, A11Y_TAG):
-#         # Returns False if a11y issues are found
-#         context.a11y_approved = check_accessibility(context, step.name)
+def after_step(context, step):
+    # command to run: behave -D a11y=true -t @a11y-check
+    if context.config.userdata["a11y"] and get_tag(context.tags, A11Y_TAG):
+        # Returns False if a11y issues are found
+        context.a11y_approved = check_accessibility(context, step.name)
