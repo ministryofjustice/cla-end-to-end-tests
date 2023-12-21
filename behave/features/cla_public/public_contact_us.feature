@@ -16,7 +16,7 @@ Scenario: contact us journey to contact civil legal advice page / form
     And I click 'continue to contact CLA'
     And I am taken to the "Contact Civil Legal Advice" page located on "/contact"
     Then I enter a name in the 'Your full name' field
-    And I select the contact option 'I’ll call CLA'
+    And I select the contact option 'I will call you'
     And I select 'Submit details'
     Then I am taken to the "Your details have been submitted" page located on "/result/confirmation"
 
@@ -68,7 +68,7 @@ Scenario: contact us journey, saying 'No' for CLA to announce who's calling
 
 
 @cla-contact-us-announce-cla-call @a11y-check
-Scenario: contact us journey, selecting 'I will call CLA'
+Scenario: contact us journey, selecting 'I will call you'
   Given I am on the Contact Civil Legal Advice page
   When I enter a name in the 'Your full name' field
   And I select the contact option 'I will call you'
