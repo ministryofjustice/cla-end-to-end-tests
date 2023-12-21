@@ -14,6 +14,7 @@ Scenario: Complete callback form asking for callback
   And I enter my phone number for the callback
   And I select "Call on another day"
   And I select an available day and time
+  And I select 'Yes' to announce call options
   # # All steps that are clicking continue written in identical format so can reuse code
   And I click continue
   Then I am taken to the "We will call you back" page located on "/result/confirmation"
