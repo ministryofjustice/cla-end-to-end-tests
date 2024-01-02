@@ -79,10 +79,6 @@ jobs:
 workflows:
   build:
     jobs:
-    - view-token:
-        name: view-token
-        context:
-        - laa-cla-orbs-token
     - orb-tools/publish-dev:
         name: publish_dev_orb
         attach-workspace: false
