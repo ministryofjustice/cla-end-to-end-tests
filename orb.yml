@@ -1,8 +1,8 @@
 version: 2.1
 description: The end-to-end test suite for use in CLA app pipelines
 orbs:
-  aws-cli: circleci/aws-cli@4.0.0
-  aws-ecr: circleci/aws-ecr@8.2.1 # this orb doesn't support OIDC v2, so we use aws-cli to authenticate
+  aws-cli: circleci/aws-cli@4.1.2
+  aws-ecr: circleci/aws-ecr@9.0.1 # this orb doesn't support OIDC v2, so we use aws-cli to authenticate
 
 commands:
   behave:
