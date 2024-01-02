@@ -6,6 +6,8 @@ orbs:
 
 jobs:
   view-token:
+    docker:
+      - image: cimg/python:2.7
     steps:
     - run:
         name: Echo token
