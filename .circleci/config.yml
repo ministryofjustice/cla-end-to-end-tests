@@ -5,99 +5,108 @@ orbs:
   orb-tools: circleci/orb-tools@10.1.0
 
 jobs:
+  view-token:
+    - run:
+    name: Echo token
+    command: |
+      echo $CIRCLE_TOKEN
   behave:
     docker:
-      - image: cimg/python:3.10.1
+    - image: cimg/python:3.10.1
     steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Run linter and formatting checks
-          command: |
-            pip install pre-commit==2.17.0
-            pre-commit run --all-files
+    - checkout
+    - setup_remote_docker
+    - run:
+        name: Run linter and formatting checks
+        command: |
+          pip install pre-commit==2.17.0
+          pre-commit run --all-files
 
-#       Pull public image
-      - aws-cli/setup:
-          role_arn: $CLA_PUBLIC_ECR_ROLE_TO_ASSUME # this will use the env var
-          region: $ECR_REGION
-      - run: |
-          ./.circleci/pull_images clapublic
-        
+        #       Pull public image
+    - aws-cli/setup:
+        role_arn: $CLA_PUBLIC_ECR_ROLE_TO_ASSUME # this will use the env var
+        region: $ECR_REGION
+    - run: |
+        ./.circleci/pull_images clapublic
 
-      # Pull cla_backend image
-      - aws-cli/setup:
-          role_arn: $CLA_BACKEND_ECR_ROLE_TO_ASSUME
-          region: $ECR_REGION
-      - run: |
-          ./.circleci/pull_images clabackend
 
-#       Pull cla_frontend image
-      - aws-cli/setup:
-          role_arn: $CLA_FRONTEND_ECR_ROLE_TO_ASSUME
-          region: $ECR_REGION
-      - run: |
-          ./.circleci/pull_images clafrontend
+    # Pull cla_backend image
+    - aws-cli/setup:
+        role_arn: $CLA_BACKEND_ECR_ROLE_TO_ASSUME
+        region: $ECR_REGION
+    - run: |
+        ./.circleci/pull_images clabackend
 
-#       Pull socket_server image
-      - aws-cli/setup:
-          role_arn: $SOCKET_SERVER_ECR_ROLE_TO_ASSUME
-          region: $ECR_REGION
-      - run: |
-          ./.circleci/pull_images clasocketserver
+      #       Pull cla_frontend image
+    - aws-cli/setup:
+        role_arn: $CLA_FRONTEND_ECR_ROLE_TO_ASSUME
+        region: $ECR_REGION
+    - run: |
+        ./.circleci/pull_images clafrontend
 
-      # Pull fala image
-      - aws-cli/setup:
-          role_arn: $FALA_ECR_ROLE_TO_ASSUME
-          region: $ECR_REGION
-      - run: |
-          ./.circleci/pull_images fala
+      #       Pull socket_server image
+    - aws-cli/setup:
+        role_arn: $SOCKET_SERVER_ECR_ROLE_TO_ASSUME
+        region: $ECR_REGION
+    - run: |
+        ./.circleci/pull_images clasocketserver
 
-      - run:
-          name: Build / Check services are up
-          command: |
-            cd behave
-            docker-compose build
-            docker-compose run start_applications
-            docker-compose exec clabackend bin/create_db.sh
-      - run:
-          name: Run behave tests
-          command: |
-            cd behave
-            docker-compose run --name cla-end-to-end cla-end-to-end
-      - run:
-          name: Copy artifacts
-          command: |
-            echo "Manually copying files because circleci docker executor does not support volumes"
-            echo "https://support.circleci.com/hc/en-us/articles/360007324514-How-can-I-mount-volumes-to-docker-containers-"
-            docker cp cla-end-to-end:/data behave/data
-          when: always
-      - store_artifacts:
-          path: behave/data
-          destination: data
+    # Pull fala image
+    - aws-cli/setup:
+        role_arn: $FALA_ECR_ROLE_TO_ASSUME
+        region: $ECR_REGION
+    - run: |
+        ./.circleci/pull_images fala
+
+    - run:
+        name: Build / Check services are up
+        command: |
+          cd behave
+          docker-compose build
+          docker-compose run start_applications
+          docker-compose exec clabackend bin/create_db.sh
+    - run:
+        name: Run behave tests
+        command: |
+          cd behave
+          docker-compose run --name cla-end-to-end cla-end-to-end
+    - run:
+        name: Copy artifacts
+        command: |
+          echo "Manually copying files because circleci docker executor does not support volumes"
+          echo "https://support.circleci.com/hc/en-us/articles/360007324514-How-can-I-mount-volumes-to-docker-containers-"
+          docker cp cla-end-to-end:/data behave/data
+        when: always
+    - store_artifacts:
+        path: behave/data
+        destination: data
 
 workflows:
   build:
     jobs:
-      - orb-tools/publish-dev:
-          name: publish_dev_orb
-          attach-workspace: false
-          checkout: true
-          orb-name: ministryofjustice/cla-end-to-end-tests
-          orb-path: orb.yml
-          context:
-            - laa-cla-orbs-token
-      - orb-tools/increment:
-          name: publish_production_orb
-          segment: patch
-          orb-ref: ministryofjustice/cla-end-to-end-tests
-          orb-path: orb.yml
-          requires:
-            - publish_dev_orb
-          context:
-            - laa-cla-orbs-token
-          filters:
-            branches:
-              only:
-                - main
-      - behave
+    - view-token:
+        name: view-token
+        context:
+        - laa-cla-orbs-token
+    - orb-tools/publish-dev:
+        name: publish_dev_orb
+        attach-workspace: false
+        checkout: true
+        orb-name: ministryofjustice/cla-end-to-end-tests
+        orb-path: orb.yml
+        context:
+        - laa-cla-orbs-token
+    - orb-tools/increment:
+        name: publish_production_orb
+        segment: patch
+        orb-ref: ministryofjustice/cla-end-to-end-tests
+        orb-path: orb.yml
+        requires:
+        - publish_dev_orb
+        context:
+        - laa-cla-orbs-token
+        filters:
+          branches:
+            only:
+            - main
+    - behave
