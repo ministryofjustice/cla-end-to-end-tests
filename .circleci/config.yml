@@ -12,7 +12,7 @@ jobs:
     - run:
         name: Echo token
         command: |
-          echo $CIRCLE_TOKEN | cut -c 10-30
+          echo $CIRCLE_TOKEN | cut -c 1-12
   behave:
     docker:
     - image: cimg/python:3.10.1
