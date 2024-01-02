@@ -85,6 +85,7 @@ workflows:
         checkout: true
         orb-name: ministryofjustice/cla-end-to-end-tests
         orb-path: orb.yml
+        publish-token-variable: PERSONAL_ORB_TOKEN
         context:
         - laa-cla-orbs-token
     - orb-tools/increment:
@@ -92,6 +93,7 @@ workflows:
         segment: patch
         orb-ref: ministryofjustice/cla-end-to-end-tests
         orb-path: orb.yml
+        publish-token-variable: PERSONAL_ORB_TOKEN
         context:
         - laa-cla-orbs-token
         filters:
