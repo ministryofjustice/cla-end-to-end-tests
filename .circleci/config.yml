@@ -92,12 +92,11 @@ workflows:
         segment: patch
         orb-ref: ministryofjustice/cla-end-to-end-tests
         orb-path: orb.yml
-        requires:
-        - publish_dev_orb
         context:
         - laa-cla-orbs-token
         filters:
           branches:
             only:
             - main
+            - bug/LGA-2925-Behave-Circle-Orb-failed-to-publish
     - behave
