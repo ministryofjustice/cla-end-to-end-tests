@@ -6,10 +6,11 @@ orbs:
 
 jobs:
   view-token:
+    steps:
     - run:
-    name: Echo token
-    command: |
-      echo $CIRCLE_TOKEN
+        name: Echo token
+        command: |
+          echo $CIRCLE_TOKEN
   behave:
     docker:
     - image: cimg/python:3.10.1
