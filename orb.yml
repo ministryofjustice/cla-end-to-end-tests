@@ -28,7 +28,7 @@ commands:
       # Pull cla_backend image
       - aws-cli/setup:
           role_arn: $CLA_BACKEND_ECR_ROLE_TO_ASSUME
-          region: ECR_REGION
+          region: $ECR_REGION
       - run: |
           cd $E2E_WORKING_DIRECTORY
           ./.circleci/pull_images clabackend
@@ -36,7 +36,7 @@ commands:
       # Pull cla_frontend image
       - aws-cli/setup:
           role_arn: $CLA_FRONTEND_ECR_ROLE_TO_ASSUME
-          region: ECR_REGION
+          region: $ECR_REGION
       - run: |
           cd $E2E_WORKING_DIRECTORY
           ./.circleci/pull_images clafrontend
@@ -44,7 +44,7 @@ commands:
        # Pull socket_server image
       - aws-cli/setup:
           role_arn: $SOCKET_SERVER_ECR_ROLE_TO_ASSUME
-          region: ECR_REGION
+          region: $ECR_REGION
       - run: |
           cd $E2E_WORKING_DIRECTORY
           ./.circleci/pull_images clasocketserver
@@ -52,7 +52,7 @@ commands:
       # Pull fala image
       - aws-cli/setup:
           role_arn: $FALA_ECR_ROLE_TO_ASSUME
-          region: ECR_REGION
+          region: $ECR_REGION
       - run: |
           cd $E2E_WORKING_DIRECTORY
           ./.circleci/pull_images fala
