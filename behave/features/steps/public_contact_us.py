@@ -3,6 +3,7 @@ from helper.constants import (
     ClA_CONTACT_US_USER,
     CLA_CONTACT_US_USER_PERSON_TO_CALL,
     CLA_NUMBER,
+    ClA_CONTACT_US_OPTIONS,
 )
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import (
@@ -69,16 +70,23 @@ def step_impl_contact_cla_page(context):
     )
 
 
-@step("I select the contact option 'Call someone else instead of me'")
-def step_impl_select_call_someone_else(context):
+@step("I select the contact option '{option}'")
+def step_impl_select_call_someone_else(context, option):
+    radio_option = ""
+
+    for key, value in ClA_CONTACT_US_OPTIONS.items():
+        if key in option:
+            radio_option = value
+            break
+
     # input can not be found without first finding form
     context.callback_form = context.helperfunc.find_by_xpath("//form")
     callback_element = context.callback_form.find_element_by_xpath(
-        '//input[@value="thirdparty"]'
+        f'//input[@value="{radio_option}"]'
     )
     assert callback_element is not None
     callback_element.click()
-    assert callback_element.get_attribute("value") == "thirdparty"
+    assert callback_element.get_attribute("value") == f"{radio_option}"
 
 
 @step('I select the next available "{option}" time slot')
@@ -86,7 +94,7 @@ def step_impl_select_next_available_time_slot(context, option):
     def is_call_today_option_visible(*args):
         try:
             context.callback_form.find_element_by_xpath(
-                '//input[@value="today"]' '[@id="thirdparty-time-specific_day-0"]'
+                f"//input[@value='today'][@id='{option}-time-specific_day-0']"
             )
             return True
         except NoSuchElementException:
@@ -95,7 +103,7 @@ def step_impl_select_next_available_time_slot(context, option):
     context.callback_form = context.helperfunc.find_by_xpath("//form")
     if is_call_today_option_visible() is True:
         call_today = context.callback_form.find_element_by_xpath(
-            '//input[@value="today"]' '[@id="thirdparty-time-specific_day-0"]'
+            f"//input[@value='today'][@id='{option}-time-specific_day-0']"
         )
         call_today.click()
         assert call_today.get_attribute("value") == "today"
@@ -104,7 +112,7 @@ def step_impl_select_next_available_time_slot(context, option):
         )
     else:
         specific_day = context.callback_form.find_element_by_xpath(
-            '//input[@value="specific_day"]' '[@id="thirdparty-time-specific_day-1"]'
+            f"//input[@value='specific_day'][@id='{option}-time-specific_day-1']"
         )
         specific_day.click()
         assert specific_day.get_attribute("value") == "specific_day"
@@ -147,6 +155,18 @@ def step_impl_enter_phone_number(context):
     assert full_name_input.get_attribute("value") == value
 
 
+# the users phone number
+@step("I enter my phone number")
+def step_impl_enter_my_phone_number(context):
+    value = CLA_NUMBER
+    callback_form = context.helperfunc.find_by_xpath("//form")
+    full_name_input = callback_form.find_element_by_xpath(
+        "//input[@id='callback-contact_number']"
+    )
+    full_name_input.send_keys(value)
+    assert full_name_input.get_attribute("value") == value
+
+
 @step("I select \"{option}\" from the 'Relationship to you' drop down options")
 def step_impl_select_relationship_option(context, option):
     context.callback_form = context.helperfunc.find_by_xpath("//form")
@@ -160,3 +180,13 @@ def step_impl_select_relationship_option(context, option):
         select.select_by_visible_text(option)
     except StaleElementReferenceException:
         assert False, f"Could find {option} in 'Relationship to you select' options"
+
+
+@step("I select '{option}' to announce call options")
+def step_impl_select_announce_call_option(context, option):
+    value_option = "0" if option == "Yes" else "1"
+    context.callback_form = context.helperfunc.find_by_xpath("//form")
+    announce_call_radio = context.callback_form.find_element_by_xpath(
+        f'//*[@id="callback-announce_call_from_cla-{value_option}"]'
+    )
+    announce_call_radio.click()
