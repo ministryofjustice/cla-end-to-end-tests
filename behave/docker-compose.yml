@@ -106,6 +106,7 @@ services:
       CSRF_COOKIE_SECURE: "False"
       CSRF_COOKIE_SAMESITE: "False"
       SESSION_COOKIE_SAMESITE: "False"
+      SESSION_COOKIE_HTTPONLY: "False"
 
 
   clafrontendooh:
