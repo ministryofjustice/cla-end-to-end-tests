@@ -3,7 +3,7 @@
 # Simple wrapper for executing behave within Docker.
 
 export A11Y=${A11Y_ENABLED:-false}
-echo "saying that A11Y is $A11Y"
+echo "A11Y is $A11Y"
 
 TAGS=""
 # Run only FALA tagged tests
