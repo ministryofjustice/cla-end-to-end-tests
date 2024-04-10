@@ -5,6 +5,9 @@ This readme assumes that the working directory is that of this document, which i
 root of this repository: the root of this repository now provides a means to deliver and use the
 functionality in this directory.
 
+Usage: To use a new set of tests from this repo, the target repo must set E2E_BRANCH=<branch name of this repo>
+otherwise the 'main' branch of this repo will be used.
+
 ## Test file structure.
 
 Each feature file is seperated out into their own directory to help make it easier to organise each services test.
