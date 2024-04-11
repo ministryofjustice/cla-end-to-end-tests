@@ -95,7 +95,7 @@ def step_impl_apply_filter_on_homepage(context):
 )
 def step_impl_apply_filter_on_result_page(context, location, filter_label):
     location_format = location.replace(" ", "+")
-    expected_url = f"{CLA_FALA_URL}/?postcode={location_format}&name=&categories={filter_label}&filter="
+    expected_url = f"{CLA_FALA_URL}/search?postcode={location_format}&name=&categories={filter_label}&filter="
     expected_title = FALA_HEADER
 
     assert_result_page(context, expected_url, expected_title)
@@ -119,7 +119,7 @@ def step_impl_result_page_with_location_organisation_provided(
     organisation_format = organisation.replace(" ", "+")
     location_format = location.replace(" ", "+")
     expected_url = (
-        f"{CLA_FALA_URL}/?postcode={location_format}&name={organisation_format}&search="
+        f"{CLA_FALA_URL}/search?postcode={location_format}&name={organisation_format}&search="
     )
     expected_title = FALA_HEADER
 
