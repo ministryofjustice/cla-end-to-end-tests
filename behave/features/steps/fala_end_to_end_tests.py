@@ -71,7 +71,7 @@ def step_impl_search_clicked(context):
 @step('I am taken to the page corresponding to "{location}" result')
 def step_impl_result_page_with_location_only(context, location):
     expected_url = (
-        f"{CLA_FALA_URL}/?postcode={location.replace(' ', '+')}&name=&search="
+        f"{CLA_FALA_URL}/search?postcode={location.replace(' ', '+')}&name=&search="
     )
     expected_title = FALA_HEADER
 
