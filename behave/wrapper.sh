@@ -13,10 +13,6 @@ then
 fi
 echo "TAGS is $TAGS"
 
-#
-# execute behave with flags
-#
-
 exec behave "-D a11y=$A11Y" $TAGS
 # Clean up downloads
 rm -rf data/downloads/*

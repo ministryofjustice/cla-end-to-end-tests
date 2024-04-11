@@ -62,7 +62,7 @@ commands:
           name: Check services are up
           command: |
             cd $E2E_WORKING_DIRECTORY/behave
-            docker-compose build start_applications
+            docker-compose build
             docker-compose run start_applications
             docker-compose exec clabackend bin/create_db.sh
       - run:
@@ -70,8 +70,6 @@ commands:
           command: |
             cd $E2E_WORKING_DIRECTORY/behave
             docker-compose run --name cla-end-to-end cla-end-to-end
-          environment:
-            FALA_TESTS_ONLY: $FALA_TESTS_ONLY
       - run:
           name: Copy artifacts
           command: |
