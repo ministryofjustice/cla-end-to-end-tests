@@ -9,6 +9,12 @@ functionality in this directory.
 
 Each feature file is seperated out into their own directory to help make it easier to organise each services test.
 
+## Testing branches in Circleci
+
+When you need to test a targeted branch in CircleCi, you will need to add
+`echo "export E2E_BRANCH= >> $BASH_ENV` within your targeted branch projects CircleCi config.
+This will need to be applied under your projects CircleCi config `behave` values.
+
 Cla_backend feature files:
 
 `behave > features > cla_backend`

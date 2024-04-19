@@ -23,8 +23,8 @@ commands:
           role_arn: $CLA_PUBLIC_ECR_ROLE_TO_ASSUME
           region: ECR_REGION
       - run: |
-          cd $E2E_WORKING_DIRECTORY
-          ./.circleci/pull_images clapublic
+           cd $E2E_WORKING_DIRECTORY
+           ./.circleci/pull_images clapublic
 
       # Pull cla_backend image
       - aws-cli/setup:
