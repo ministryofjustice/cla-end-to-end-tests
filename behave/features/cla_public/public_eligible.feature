@@ -73,7 +73,7 @@ Scenario: Complete in scope housing check
   And I click continue
   And I am taken to the "Review your answers" page located on "/review"
   And I click Confirm
-  And I am taken to the "You’re unlikely to get legal aid" page located on "/result/refer/housing"
+  And I am taken to the "You might qualify for free legal advice" page located on "/result/hlpas"
 
 # Out of scope means tests
 @cla-out-of-scope-family-divorce, @a11y-check
