@@ -10,6 +10,7 @@ services:
       -wait tcp://clabackend:8000
       -wait tcp://clapublic:8000
       -wait tcp://fala:8000
+      -wait tcp://fala_db:5432
       -wait tcp://seleniumchrome:4444
       -wait tcp://clabackendooh:8000
       -wait tcp://clabackendsecurity:8000
@@ -23,6 +24,7 @@ services:
       - seleniumchrome
       - clasocketserver
       - fala
+      - fala_db
       - prev_db
       - clabackendooh
       - clabackendsecurity
@@ -250,7 +252,7 @@ services:
   fala_db:
     image: postgres:16.3
     ports:
-      - 5440:5432
+      - "5440:5432"
     container_name:
       fala_backend_db
     volumes:
