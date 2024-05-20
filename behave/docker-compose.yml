@@ -10,7 +10,6 @@ services:
       -wait tcp://clabackend:8000
       -wait tcp://clapublic:8000
       -wait tcp://fala:8000
-      -wait tcp://fala_db:5432
       -wait tcp://seleniumchrome:4444
       -wait tcp://clabackendooh:8000
       -wait tcp://clabackendsecurity:8000
@@ -253,12 +252,13 @@ services:
     image: postgres:16.3
     ports:
       - "5440:5432"
-    container_name:
-      fala_backend_db
-    volumes:
-      - ~/apps/postgres:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: fala_db
-
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGPASSWORD: postgres
+      PGUSER: postgres
+      PGDATABASE: fala_db
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
