@@ -247,6 +247,8 @@ services:
       SECRET_KEY: CHANGE_ME
       LAALAA_API_HOST: https://laa-legal-adviser-api-staging.apps.live-1.cloud-platform.service.justice.gov.uk
       CLA_ENV: dev
+      DB_PORT: "5440"
+      DB_HOST: "fala_db"
 
   fala_db:
     image: postgres:16.3
