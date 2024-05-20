@@ -9,7 +9,7 @@ services:
       -wait tcp://clasocketserver:8005
       -wait tcp://clabackend:8000
       -wait tcp://clapublic:8000
-      -wait tcp://fala:8000
+      -wait tcp://fala2:8000
       -wait tcp://seleniumchrome:4444
       -wait tcp://clabackendooh:8000
       -wait tcp://clabackendsecurity:8000
@@ -22,7 +22,7 @@ services:
       - clabackend
       - seleniumchrome
       - clasocketserver
-      - fala
+      - fala2
       - prev_db
       - clabackendooh
       - clabackendsecurity
@@ -237,12 +237,12 @@ services:
     depends_on:
       - clabackend
 
-  fala:
+  fala2:
     image: ${FALA_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/fala:master}
     ports:
       - "8013:8000"
     environment:
-      HOST_NAME: "fala"
+      HOST_NAME: "fala2"
       SECRET_KEY: CHANGE_ME
       LAALAA_API_HOST: https://laa-legal-adviser-api-staging.apps.live-1.cloud-platform.service.justice.gov.uk
       CLA_ENV: dev
