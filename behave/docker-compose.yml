@@ -262,5 +262,3 @@ services:
       PGPASSWORD: postgres
       PGUSER: postgres
       PGDATABASE: fala_db
-    volumes:
-      - ~/apps/postgres:/var/lib/postgresql/data
