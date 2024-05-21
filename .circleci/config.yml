@@ -51,7 +51,7 @@ jobs:
           role_arn: $FALA_ECR_ROLE_TO_ASSUME
           region: $ECR_REGION
       - run: |
-          ./.circleci/pull_images fala
+          ./.circleci/pull_images fala2
 
       - run:
           name: Build / Check services are up
