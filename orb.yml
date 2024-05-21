@@ -56,7 +56,7 @@ commands:
           region: ECR_REGION
       - run: |
           cd $E2E_WORKING_DIRECTORY
-          ./.circleci/pull_images fala2
+          ./.circleci/pull_images fala
 
       - run:
           name: Check services are up
