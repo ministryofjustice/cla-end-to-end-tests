@@ -77,6 +77,9 @@ class HelperFunc(object):
             EC.visibility_of_element_located((By.CSS_SELECTOR, css))
         )
 
+    def find_by_css_selector_without_wait(self, css):
+        return self._driver.find_element(By.CSS_SELECTOR, css)
+
     def find_by_name(self, name):
         return self._driver_wait.until(
             EC.visibility_of_element_located((By.NAME, name))
