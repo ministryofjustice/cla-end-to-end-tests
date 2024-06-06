@@ -80,9 +80,11 @@ def step_impl_result_page_with_location_only(context, location):
 
 @step('I browse through the filter categories and select "{filter_label}"')
 def step_impl_checkbox_filter_clicked(context, filter_label):
-    context.helperfunc.click_button(
-        By.CSS_SELECTOR, f"input[type='checkbox'][value='{filter_label}']"
-    )
+    checkbox_id = context.helperfunc.find_by_css_selector_without_wait(
+        f"input[type='checkbox'][value='{filter_label}']"
+    ).get_attribute("id")
+    # click the label for the checkbox rather than the checkbox itself
+    context.helperfunc.find_by_css_selector(f"label[for='{checkbox_id}']").click()
 
 
 @step('I select the "Apply filter" button')
