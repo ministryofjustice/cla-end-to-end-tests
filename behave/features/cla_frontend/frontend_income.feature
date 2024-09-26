@@ -44,4 +44,4 @@ Scenario: Ensure that the property disputed error appears
     And I have created a user
     And I have created a valid debt case
     And I add a disputed property and Save
-    Then A "Please select whether the property is disputed" error is returned
+    Then The error "Please select whether the property is disputed" is returned
