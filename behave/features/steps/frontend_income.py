@@ -84,3 +84,28 @@ def step_assert_income_field_values(context):
         ).get_attribute("value")
         assert select.first_selected_option.text == dropdown
         assert currentvalue == value
+
+@step("I have created a valid debt case")
+def step_impl_debt_scope(context):
+    context.execute_steps(
+        """
+        When I select ‘Create Scope Diagnosis'
+        And I select the diagnosis <category> and click next <number> times
+        | category                                                                                                                                                           | number |
+        | Debt and housing - loss of home                                                                                                                                    | 1      |
+        | Home owner, and the nature of the debt means they are at immediate risk of losing their home (Includes shared ownership if the client is living in the property)   | 1      |
+        | The mortgage lender is seeking or has sought a court order to recover the property (due to mortgage arrears)                                                       | 1      |
+        | A warrant of possession has been received by client                                                                                                                | 1      |
+        Then I get an "INSCOPE" decision
+        And select the "Create financial assessment" button
+    """
+    )
+
+@step("I add a disputed property and Save")
+def step_impl_check_property_disp(context):
+    context.execute_steps(
+        """
+        When I move onto Finances inner-tab
+        And I select Save assessment
+    """
+    )
