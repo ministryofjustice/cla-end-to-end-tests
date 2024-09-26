@@ -85,6 +85,7 @@ def step_assert_income_field_values(context):
         assert select.first_selected_option.text == dropdown
         assert currentvalue == value
 
+
 @step("I have created a valid debt case")
 def step_impl_debt_scope(context):
     context.execute_steps(
@@ -101,6 +102,7 @@ def step_impl_debt_scope(context):
     """
     )
 
+
 @step("I add a disputed property and Save")
 def step_impl_check_property_disp(context):
     context.execute_steps(
@@ -110,11 +112,10 @@ def step_impl_check_property_disp(context):
     """
     )
 
+
 @step('The error "{message}" is returned')
 def step_impl_prop_disputed_found_error_returned(context, message):
-    error_message = context.helperfunc.find_by_css_selector(
-        ".Error-message"
-    )
+    error_message = context.helperfunc.find_by_css_selector(".Error-message")
 
     assert error_message is not None
     assert error_message.text == message, f"actual error message is {error_message}"
