@@ -103,15 +103,14 @@ def step_impl_debt_scope(context):
     )
 
 
-@step("I add a disputed property and Save")
+@step("I add a disputed property")
 def step_impl_check_property_disp(context):
     context.execute_steps(
         """
         When I move onto Finances inner-tab
-        And I select Save assessment
+        and I am on the 'Add Property' tab on the dashboard
     """
     )
-
 
 @step('The error "{message}" is returned')
 def step_impl_prop_disputed_found_error_returned(context, message):
