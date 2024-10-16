@@ -106,7 +106,7 @@ def step_impl_debt_scope(context):
 
 @step("I click add property")
 def step_impl_check_property_disp(context):
-    context.helperfunc.click_button(By.LINK_TEXT, "Add Property")
+    context.helperfunc.click_button(By.LINK_TEXT, "Add property")
 
 
 @step('The error "{message}" is returned')
