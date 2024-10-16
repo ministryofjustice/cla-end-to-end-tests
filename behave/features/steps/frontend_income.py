@@ -112,6 +112,12 @@ def step_impl_click_property(context):
 @step("The errors for property are shown")
 def step_impl_prop_error_returned(context, message):
     error_message = context.helperfunc.find_many_by_class("Error-message")
-
+    error_messages = [
+        "Enter the value of the property",
+        "Enter how much is left to pay on the mortgage",
+        "Select if the property is disputed",
+        "Select if this is the main property",
+        "Enter what percentage of the property the client owns",
+    ]
     for message in error_message:
-        assert message is not None
+        assert message.text in error_messages
