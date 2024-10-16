@@ -1,5 +1,6 @@
 from behave import step
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.by import By
 
 
 @step("I am on the financial page which i complete up to finances")
@@ -103,14 +104,9 @@ def step_impl_debt_scope(context):
     )
 
 
-@step("I add a disputed property")
+@step("I click add property")
 def step_impl_check_property_disp(context):
-    context.execute_steps(
-        """
-        When I move onto Finances inner-tab
-        and I am on the 'Add Property' tab on the dashboard
-    """
-    )
+    context.helperfunc.click_button(By.LINK_TEXT, "Add Property")
 
 
 @step('The error "{message}" is returned')
