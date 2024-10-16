@@ -110,7 +110,7 @@ def step_impl_click_property(context):
 
 
 @step("The errors for property are shown")
-def step_impl_prop_error_returned(context, message):
+def step_impl_prop_error_returned(context):
     error_message = context.helperfunc.find_many_by_class("Error-message")
     error_messages = [
         "Enter the value of the property",
