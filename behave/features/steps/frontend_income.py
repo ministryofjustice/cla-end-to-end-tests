@@ -112,6 +112,7 @@ def step_impl_check_property_disp(context):
     """
     )
 
+
 @step('The error "{message}" is returned')
 def step_impl_prop_disputed_found_error_returned(context, message):
     error_message = context.helperfunc.find_by_css_selector(".Error-message")
