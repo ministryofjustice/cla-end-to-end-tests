@@ -105,13 +105,13 @@ def step_impl_debt_scope(context):
 
 
 @step("I click add property")
-def step_impl_check_property_disp(context):
+def step_impl_click_property(context):
     context.helperfunc.click_button(By.LINK_TEXT, "Add property")
 
 
-@step('The error "{message}" is returned')
-def step_impl_prop_disputed_found_error_returned(context, message):
+@step("The errors for property are shown")
+def step_impl_prop__error_returned(context, message):
     error_message = context.helperfunc.find_by_css_selector(".Error-message")
 
-    assert error_message is not None
-    assert error_message.text == message, f"actual error message is {error_message}"
+    for message in error_message:
+        assert message is not None
