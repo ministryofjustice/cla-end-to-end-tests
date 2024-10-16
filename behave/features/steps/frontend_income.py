@@ -110,8 +110,8 @@ def step_impl_click_property(context):
 
 
 @step("The errors for property are shown")
-def step_impl_prop__error_returned(context, message):
-    error_message = context.helperfunc.find_by_css_selector(".Error-message")
+def step_impl_prop_error_returned(context, message):
+    error_message = context.helperfunc.find_many_by_class("Error-message")
 
     for message in error_message:
         assert message is not None
