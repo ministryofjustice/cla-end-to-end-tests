@@ -37,3 +37,13 @@ Scenario: Ensure that the dropdowns appear on income
     | Maintenance received                                            | 99999999.99   | per month   |
     | Pension income                                                  | 99999999.99   | per month   |
     | Other income                                                    | 99999999.99   | per month   |
+
+@property_disputed_error
+Scenario: Ensure that the property disputed error appears
+    Given I select to 'Create a case'
+    And I have created a user
+    And I have created a valid debt case
+    And I move onto Finances inner-tab
+    And I click add property
+    And I select Save assessment
+    Then The errors for property are shown

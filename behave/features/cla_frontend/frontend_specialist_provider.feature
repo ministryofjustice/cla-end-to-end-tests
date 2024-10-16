@@ -133,16 +133,17 @@ Scenario: Specialist Provider rejects a case
 @specialist-provider-upload-csv-errors
 Scenario: Specialist Provider upload a csv
   Given I am on the CSV upload page
-  When I select 'Choose file' and upload an invalid csv file
-  Then I select the month and year for the uploaded csv file
-  And I select the 'Upload' button
-  And I am given details of the errors in each line of the csv file
-  # Upload a valid csv file again straight after an error upload
+  # Upload a valid csv file
   When I select 'Choose file' and upload an valid csv file
   Then I select the month and year for the uploaded csv file
   And I select the 'Upload' button
   And I check that there are no errors in the csv upload page
   Then I can see the file listed in the uploaded files table
+  # Upload a error file after no errors
+  When I select 'Choose file' and upload an invalid csv file
+  Then I select the month and year for the uploaded csv file
+  And I select the 'Upload' button
+  And I am given details of the errors in each line of the csv file
 
 @specialist-provider-edit-case
 Scenario: Specialist Provider Edits a case
