@@ -43,5 +43,6 @@ Scenario: Ensure that the property disputed error appears
     Given I select to 'Create a case'
     And I have created a user
     And I have created a valid debt case
-    And I add a disputed property
+    And I move onto Finances inner-tab
+    And I click 'Add Property'
     Then The error "Please select whether the property is disputed" is returned
