@@ -27,10 +27,6 @@ Cla_public feature files:
 
 `behave > features > cla_public`
 
-fala feature files:
-
-`behave > features > fala`
-
 ## How to run tests
 
 If you are working on an M1 machine, please add the below to your behave/.env file. There is an example file at .env.m1.example that you can rename to .env to avoid doing this.
