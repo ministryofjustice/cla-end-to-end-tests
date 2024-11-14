@@ -49,15 +49,6 @@ commands:
       - run: |
           cd $E2E_WORKING_DIRECTORY
           ./.circleci/pull_images clasocketserver
-
-      # Pull fala image
-      - aws-cli/setup:
-          role_arn: $FALA_ECR_ROLE_TO_ASSUME
-          region: ECR_REGION
-      - run: |
-          cd $E2E_WORKING_DIRECTORY
-          ./.circleci/pull_images fala
-
       - run:
           name: Check services are up
           command: |

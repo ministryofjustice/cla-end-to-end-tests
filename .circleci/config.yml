@@ -46,13 +46,6 @@ jobs:
       - run: |
           ./.circleci/pull_images clasocketserver
 
-      # Pull fala image
-      - aws-cli/setup:
-          role_arn: $FALA_ECR_ROLE_TO_ASSUME
-          region: $ECR_REGION
-      - run: |
-          ./.circleci/pull_images fala
-
       - run:
           name: Build / Check services are up
           command: |
