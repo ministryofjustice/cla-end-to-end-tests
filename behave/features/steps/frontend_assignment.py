@@ -332,6 +332,7 @@ def step_impl_diversity_tab(context):
     """
     )
 
+    context.helperfunc.scroll_to_top()
     wait = WebDriverWait(context.helperfunc.driver(), 10)
     wait.until(wait_until_finance_is_complete)
     context.helperfunc.find_by_partial_link_text("Diversity").click()
