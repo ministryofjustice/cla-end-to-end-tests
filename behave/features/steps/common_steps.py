@@ -293,7 +293,15 @@ def step_impl_call_center_dashboard(context):
 @step("I select to 'Create a case'")
 def step_impl_create_case(context):
     # wrap click() to avoid StaleElementException
-    context.helperfunc.click_button(By.ID, "create_case")
+    retries = 5
+    for attempt in range(retries):
+        try:
+            element = context.helperfunc.find_by_id("create_case")
+            element.click()
+            return
+        except StaleElementReferenceException:
+            if attempt == retries - 1:
+                raise
     context.case_reference = context.helperfunc.find_by_css_selector(
         "h1.CaseBar-caseNum a"
     ).text
