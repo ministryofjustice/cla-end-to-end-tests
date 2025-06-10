@@ -14,6 +14,8 @@ from helper.constants import (
 from selenium.webdriver.common.by import By
 from axe_selenium_python import Axe
 
+from selenium.common.exceptions import StaleElementReferenceException
+
 
 def remove_prefix(text, prefix):
     return text[len(prefix) :] if text.startswith(prefix) else text
@@ -255,7 +257,15 @@ def search_and_select_case(context, case_reference):
     search_bar.send_keys(case_reference)
     search_submit = context.helperfunc.find_by_class("CaseSearch-submit")
     search_submit.click()
-    context.helperfunc.click_button(By.LINK_TEXT, case_reference)
+    retries = 5
+    for attempt in range(retries):
+        try:
+            element = context.helperfunc.find_by_link_text(case_reference)
+            element.click()
+            return
+        except StaleElementReferenceException:
+            if attempt == retries - 1:
+                raise
 
 
 @step("the message '{message}' appears on the case details page")

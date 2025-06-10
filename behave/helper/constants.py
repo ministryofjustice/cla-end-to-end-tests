@@ -13,7 +13,6 @@ CLA_FRONTEND_URL = os.environ.get("CLA_E2E_FRONTEND_URL")
 CLA_FRONTEND_OOH_URL = "http://clafrontendooh:8000"
 CLA_FRONTEND_CSV_URL = "/provider/csvupload/"
 CLA_PUBLIC_URL = os.environ.get("CLA_E2E_PUBLIC_URL")
-CLA_FALA_URL = os.environ.get("CLA_E2E_FALA_URL")
 SELENIUM_WEB_DRIVER_URL = os.environ.get("CLA_E2E_SELENIUM_WEB_DRIVER_URL")
 MINIMUM_WAIT_UNTIL_TIME = 10
 CLA_NUMBER = "0345 345 4 345"
@@ -221,7 +220,6 @@ CLA_CONTACT_US_USER_PERSON_TO_CALL = "Elena Fisher"
 
 MINIMUM_SLEEP_SECONDS = 2
 
-FALA_HEADER = "Find a legal aid adviser or family mediator"
 ERROR_TITLE = "There is a problem"
 BBC_WEBSITE = "https://www.bbc.co.uk/weather"
 BBC_INTERNATIONAL_WEBSITE = "https://www.bbc.com/weather"

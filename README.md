@@ -1,5 +1,5 @@
 # cla-end-to-end-tests
-This is the behave end to end test suite which covers the CLA applications for the laa-cla-fala team.
+This is the behave end-to-end test suite which covers the CLA applications for the laa-cla-fala team.
 This repository defines a Circlei CI orb and a docker image alongside the `behave` test suite itself,
 allowing portability to the CI pipelines of the other applications.
 
@@ -15,7 +15,7 @@ of the `ministryofjustice` organisation, which you should be from github.
 ```
 circleci orb publish orb.yml ministryofjustice/cla-end-to-end-tests@dev:first
 ```
-To incorporate orb publishing into the CI pipeline in future, we may want to use the `circleci/orb-tools` orb
+To incorporate orb publishing into the CI pipeline in the future, we may want to use the `circleci/orb-tools` orb
 
 ### Job and command
 The orb exposes a `behave` job and a `behave` command. The command should not need to be used directly:
