@@ -12,7 +12,6 @@ CLA_BACKEND_SECURITY_URL = "http://clabackendsecurity:8000"
 CLA_FRONTEND_URL = os.environ.get("CLA_E2E_FRONTEND_URL")
 CLA_FRONTEND_OOH_URL = "http://clafrontendooh:8000"
 CLA_FRONTEND_CSV_URL = "/provider/csvupload/"
-CLA_PUBLIC_URL = os.environ.get("CLA_E2E_PUBLIC_URL")
 SELENIUM_WEB_DRIVER_URL = os.environ.get("CLA_E2E_SELENIUM_WEB_DRIVER_URL")
 MINIMUM_WAIT_UNTIL_TIME = 10
 CLA_NUMBER = "0345 345 4 345"

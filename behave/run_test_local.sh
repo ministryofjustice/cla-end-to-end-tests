@@ -1,18 +1,18 @@
-#!/bin/bash
+#!/usr/bin/env sh
 # Exit immediately if there is an error
 set -e
 export DOCKER_FILES="-f docker-compose.yml -f docker-compose.local.yml"
 export DOCKER_BUILDKIT=0
 function start_applications {
-  docker-compose $DOCKER_FILES run start_applications
+  docker compose $DOCKER_FILES run start_applications
 }
 
 function run_migrations {
-  docker-compose exec clabackend bin/create_db.sh
+  docker compose exec clabackend bin/create_db.sh
 }
 
 function run_tests {
-  docker-compose up --build cla-end-to-end
+  docker compose up --build cla-end-to-end
 }
 
 
@@ -33,14 +33,14 @@ while [ -n "$1" ]; do # while loop starts
 	shift
 done
 
-docker-compose $DOCKER_FILES down
+docker compose $DOCKER_FILES down
 start_applications
 run_migrations
 run_tests
 
 if [ "$DIFF_IMAGE" != "" ]; then
     # Take snapshot of the current database
-    docker-compose exec db pg_dump cla_backend \
+    docker compose exec db pg_dump cla_backend \
       --clean \
       --blobs \
       --format=custom \
@@ -50,11 +50,11 @@ if [ "$DIFF_IMAGE" != "" ]; then
     # disable exiting on error temporarily
     set +e
     # Restore snapshot to second database service
-    docker-compose exec prev_db pg_restore --clean --dbname=cla_backend /data/cla_backend.main.backup
+    docker compose exec prev_db pg_restore --clean --dbname=cla_backend /data/cla_backend.main.backup
     set -e
 
     # reset the database and backend
-    docker-compose rm -fsv db clabackend
+    docker compose rm -fsv db clabackend
     export CLA_BACKEND_IMAGE=$DIFF_IMAGE
     start_applications
 
@@ -63,5 +63,5 @@ if [ "$DIFF_IMAGE" != "" ]; then
     run_tests
 
     # Do the database diff
-    docker-compose run --entrypoint "python3 /behave_local/helper/yapgdd/main.py" cla-end-to-end
+    docker compose run --entrypoint "python3 /behave_local/helper/yapgdd/main.py" cla-end-to-end
 fi

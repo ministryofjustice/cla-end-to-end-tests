@@ -8,7 +8,6 @@ services:
       -wait tcp://clafrontend:8000
       -wait tcp://clasocketserver:8005
       -wait tcp://clabackend:8000
-      -wait tcp://clapublic:8000
       -wait tcp://seleniumchrome:4444
       -wait tcp://clabackendooh:8000
       -wait tcp://clabackendsecurity:8000
@@ -16,7 +15,6 @@ services:
       -wait-retry-interval 10s
       -timeout 180s
     depends_on:
-      - clapublic
       - clafrontend
       - clabackend
       - seleniumchrome
@@ -38,7 +36,6 @@ services:
       BROWSER: chrome
       USING_CHROME_DRIVER: "False"
       DATA_DIRECTORY: /data
-      CLA_E2E_PUBLIC_URL: ${CLA_E2E_PUBLIC_URL:-http://clapublic:8000}
       CLA_E2E_BACKEND_URL: ${CLA_E2E_BACKEND_URL:-http://clabackend:8000}
       CLA_E2E_FRONTEND_URL: ${CLA_E2E_FRONTEND_URL:-http://clafrontend:8000}
       CLA_E2E_SELENIUM_WEB_DRIVER_URL: ${CLA_E2E_SELENIUM_WEB_DRIVER_URL:-http://seleniumchrome:4444/wd/hub}
@@ -205,30 +202,3 @@ services:
       <<: *clabackendenvironment
       SESSION_SECURITY_WARN_AFTER: 5
       SESSION_SECURITY_EXPIRE_AFTER: 10
-
-  clapublic:
-    image: ${CLA_PUBLIC_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_public:master}
-    ports:
-      - "8012:8000"
-    environment:
-      HOST_NAME: "clapublic"
-      SECRET_KEY: CHANGE_ME
-      BACKEND_BASE_URI: http://clabackend:8000
-      CLA_ENV: dev
-      ZENDESK_API_USERNAME: ""
-      ZENDESK_API_TOKEN: ""
-      SMTP_HOST: ""
-      SMTP_USER: ""
-      SMTP_PASSWORD: ""
-      RAVEN_CONFIG_DSN: ""
-      RAVEN_CONFIG_SITE: ""
-      SENTRY_DSN: ${SENTRY_DSN:-}
-      LAALAA_API_HOST: https://laa-legal-adviser-api-staging.apps.live-1.cloud-platform.service.justice.gov.uk
-      MOJ_GA_ID: "UA-XXXXXXXX-X1"
-      GDS_GA_ID: "UA-XXXXXXXX-X2"
-      GOOGLE_MAPS_API_KEY: AIzaSyBVsZmfkiRFNNMJnPraN_8sBW3Dj-BFFNs
-      OS_PLACES_API_KEY: ${OS_PLACES_API_KEY:-CHANGE_ME}
-      GOVUK_NOTIFY_API_KEY: ${GOVUK_NOTIFY_API_KEY:-}
-      TESTING: "True"
-    depends_on:
-      - clabackend
