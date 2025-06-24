@@ -141,6 +141,9 @@ class HelperFunc(object):
 
     def click_button(self, selector_type, selector):
         wait = WebDriverWait(
-            self._driver, 10, ignored_exceptions=StaleElementReferenceException
+            self._driver, 10, ignored_exceptions=(StaleElementReferenceException,)
         )
-        wait.until(EC.element_to_be_clickable((selector_type, selector))).click()
+        wait.until(EC.element_to_be_clickable((selector_type, selector)))
+
+        # Re-fetch the element to ensure it's fresh.
+        self._driver.find_element(selector_type, selector).click()
