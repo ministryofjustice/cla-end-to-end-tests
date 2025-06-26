@@ -12,10 +12,8 @@ CLA_BACKEND_SECURITY_URL = "http://clabackendsecurity:8000"
 CLA_FRONTEND_URL = os.environ.get("CLA_E2E_FRONTEND_URL")
 CLA_FRONTEND_OOH_URL = "http://clafrontendooh:8000"
 CLA_FRONTEND_CSV_URL = "/provider/csvupload/"
-CLA_PUBLIC_URL = os.environ.get("CLA_E2E_PUBLIC_URL")
 SELENIUM_WEB_DRIVER_URL = os.environ.get("CLA_E2E_SELENIUM_WEB_DRIVER_URL")
 MINIMUM_WAIT_UNTIL_TIME = 10
-CLA_NUMBER = "0345 345 4 345"
 A11Y_TAG = "a11y-check"
 CALL_CENTRE_ZONE = {
     "client_id": os.environ.get("CALL_CENTRE_CLIENT_ID"),
@@ -155,12 +153,6 @@ CLA_MEANS_TEST_PERSONAL_DETAILS_FORM = {
         "form_element_value": "test@digital.justice.gov.uk",
     },
 }
-CLA_MEANS_TEST_CALL_BACK_NUMBER = {
-    "mobile_phone": {
-        "form_element_id": "callback-contact_number",
-        "form_element_value": "020 1234 67890",
-    }
-}
 
 MATTER_TYPE_1 = "QEMP - Employment"
 MATTER_TYPE_2 = "QDIS - Disability"
@@ -219,13 +211,3 @@ ClA_CONTACT_US_USER = "Nathan Drake"
 CLA_CONTACT_US_USER_PERSON_TO_CALL = "Elena Fisher"
 
 MINIMUM_SLEEP_SECONDS = 2
-
-ERROR_TITLE = "There is a problem"
-BBC_WEBSITE = "https://www.bbc.co.uk/weather"
-BBC_INTERNATIONAL_WEBSITE = "https://www.bbc.com/weather"
-
-ClA_CONTACT_US_OPTIONS = {
-    "I will call you": "call",
-    "Call me back": "callback",
-    "Call someone else instead of me": "thirdparty",
-}

@@ -17,14 +17,6 @@ jobs:
             pip install pre-commit==2.17.0
             pre-commit run --all-files
 
-#       Pull public image
-      - aws-cli/setup:
-          role_arn: $CLA_PUBLIC_ECR_ROLE_TO_ASSUME # this will use the env var
-          region: $ECR_REGION
-      - run: |
-          ./.circleci/pull_images clapublic
-        
-
       # Pull cla_backend image
       - aws-cli/setup:
           role_arn: $CLA_BACKEND_ECR_ROLE_TO_ASSUME
