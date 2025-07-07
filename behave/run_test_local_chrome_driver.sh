@@ -8,7 +8,6 @@ export CHROME_DRIVER_LOCATION="/Applications/Google Chrome.app/Contents/MacOS/Go
 # 127.0.0.1   clapublic
 export CLA_E2E_BACKEND_URL=http://clabackend:8010
 export CLA_E2E_FRONTEND_URL=http://clafrontend:8011
-export CLA_E2E_PUBLIC_URL=http://clapublic:8012
 export CLA_E2E_SELENIUM_WEB_DRIVER_URL=http://localhost:9515
 export CALL_CENTRE_CLIENT_ID=b4b9220ffcb11ebfdab1
 export CALL_CENTRE_SECRET_ID=2df71313bdd38a2e1b815015e1b14387e7681d41

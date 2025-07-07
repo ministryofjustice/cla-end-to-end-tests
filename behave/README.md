@@ -23,10 +23,6 @@ Cla_frontend feature files:
 
 `behave > features > cla_frontend`
 
-Cla_public feature files:
-
-`behave > features > cla_public`
-
 ## How to run tests
 
 If you are working on an M1 machine, please add the below to your behave/.env file. There is an example file at .env.m1.example that you can rename to .env to avoid doing this.
@@ -79,13 +75,11 @@ To run the tests locally just run this script for Apple Silicon users.
 
 Currently, `phantom.js` is used for unit testing in cla_frontend and does not support `arm64` which causes `uwsgi` to fail to start.
 
-`events.js` within `cla_public`, throws an unhandled error 'qemu-i386', this is because '/lib/ld-linux.so.2' directory does not exist in `arm64` platforms.
-
 Selenium Chrome also does not support `arm64`. In order to get it to work use this docker image: `seleniarm/standalone-chromium:4.0.0-beta-1-20210215`
 [seleniarm](https://github.com/SeleniumHQ/docker-selenium#experimental-mult-arch-aarch64armhfamd64-images)
 
-Within `behave/docker-compose.m1.yml`, changes have been made to allow `cla_frontend` and `cla_public` to build correctly. If the required platform architecture values. e.g. `platform: linux/arm64` are not set, the build fails.
-This is because both `cla_frontend` and `cla_public` have dependencies that fail unless the platform architecture is specified.
+Within `behave/docker-compose.m1.yml`, changes have been made to allow `cla_frontend` to build correctly. If the required platform architecture values. e.g. `platform: linux/arm64` are not set, the build fails.
+This is because `cla_frontend` has dependencies that fail unless the platform architecture is specified.
 
 **Side notes**
 
