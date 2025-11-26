@@ -1,5 +1,4 @@
-version: '3.9'
-
+version: "3.9"
 
 services:
   start_applications:
@@ -91,17 +90,17 @@ services:
       SOCKETIO_SERVICE_URL: clasocketserver:8005/socket.io/
       OS_PLACES_API_KEY: ${OS_PLACES_API_KEY:-CHANGE_ME}
       GA_ID: ${GA_ID:-CHANGE_ME}
-      GA_DOMAIN:  ${GA_DOMAIN:-localhost}
+      GA_DOMAIN: ${GA_DOMAIN:-localhost}
       SITE_HOSTNAME: clasocketserver
       STATIC_FILES_BACKEND: local
       ALLOWED_HOSTS: "*"
-      SESSION_COOKIE_SECURE: "False"
       SECURE_CONTENT_TYPE_NOSNIFF: "False"
       CSRF_COOKIE_SECURE: "False"
       CSRF_COOKIE_SAMESITE: "False"
+      SESSION_COOKIE_NAME: "sessionid"
+      SESSION_COOKIE_SECURE: "False"
       SESSION_COOKIE_SAMESITE: "False"
       SESSION_COOKIE_HTTPONLY: "False"
-
 
   clafrontendooh:
     <<: *clafrontend
@@ -179,8 +178,7 @@ services:
       - "8014:8000"
     depends_on:
       - clabackend
-    container_name:
-      clabackendooh
+    container_name: clabackendooh
     environment:
       <<: *clabackendenvironment
       NON_ROTA_START_TIME_HR: 1
@@ -196,8 +194,7 @@ services:
       - "8019:8000"
     depends_on:
       - clabackend
-    container_name:
-      clabackendsecurity
+    container_name: clabackendsecurity
     environment:
       <<: *clabackendenvironment
       SESSION_SECURITY_WARN_AFTER: 5
