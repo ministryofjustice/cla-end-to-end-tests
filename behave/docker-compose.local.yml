@@ -1,5 +1,3 @@
-version: '3.4'
-
 services:
   cla-end-to-end:
     volumes:
