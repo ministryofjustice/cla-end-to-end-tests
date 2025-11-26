@@ -95,10 +95,10 @@ services:
       SECURE_CONTENT_TYPE_NOSNIFF: "False"
       CSRF_COOKIE_SECURE: "False"
       CSRF_COOKIE_SAMESITE: "False"
-      SESSION_COOKIE_NAME: "sessionid"
+      SESSION_COOKIE_NAME: "SID"
       SESSION_COOKIE_SECURE: "False"
-      SESSION_COOKIE_SAMESITE: "False"
       SESSION_COOKIE_HTTPONLY: "False"
+      SESSION_COOKIE_SAMESITE: "Lax"
 
   clafrontendooh:
     <<: *clafrontend
