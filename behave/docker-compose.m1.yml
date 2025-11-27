@@ -4,4 +4,4 @@ services:
 
   clafrontend:
     platform: linux/arm64
-    build: https://github.com/ministryofjustice/cla_frontend.git#fix/LGA-3820-cla-ithc-session-cookie-mitigation
+    build: https://github.com/ministryofjustice/cla_frontend.git#master
