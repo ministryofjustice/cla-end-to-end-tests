@@ -94,10 +94,10 @@ services:
       ALLOWED_HOSTS: "*"
       SECURE_CONTENT_TYPE_NOSNIFF: "False"
       CSRF_COOKIE_SECURE: "False"
-      CSRF_COOKIE_SAMESITE: "False"
-      SESSION_COOKIE_NAME: "sessionid"
+      CSRF_COOKIE_SAMESITE: "None"
+      SESSION_COOKIE_NAME: "SID"
       SESSION_COOKIE_SECURE: "False"
-      SESSION_COOKIE_SAMESITE: "False"
+      SESSION_COOKIE_SAMESITE: "None"
       SESSION_COOKIE_HTTPONLY: "False"
 
   clafrontendooh:
