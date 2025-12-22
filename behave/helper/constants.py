@@ -24,29 +24,29 @@ CALL_CENTRE_ZONE = {
 }
 USERS = {
     "CHS_GENERAL_USER": {
-        "username": "test_operator",
-        "password": "test_operator",
+        "username": "cla_operator",
+        "password": "ZNIBSRGSt71GrYYDtgyk0PkCViJJIiRppM32YPYK",
         "login_url": f"{CLA_FRONTEND_URL}/auth/login/",
         "user_type": "OPERATOR",
         "application": "FRONTEND",
     },
     "CHS_GENERAL_USER_OOH": {
-        "username": "test_operator",
-        "password": "test_operator",
+        "username": "cla_operator",
+        "password": "ZNIBSRGSt71GrYYDtgyk0PkCViJJIiRppM32YPYK",
         "login_url": f"{CLA_FRONTEND_OOH_URL}/auth/login/",
         "user_type": "OPERATOR",
         "application": "FRONTEND",
     },
     "CHS_MANAGER_USER": {
-        "username": "test_operator_manager",
-        "password": "test_operator_manager",
+        "username": "cla_operator_manager",
+        "password": "vviIVittH01LNttIZ6Pe2V/J4Q1SSTvtsPXgo0b5",
         "login_url": f"{CLA_FRONTEND_URL}/auth/login/",
         "user_type": "OPERATOR",
         "application": "FRONTEND",
     },
     "TEST_SPECIALIST_PROVIDER": {
-        "username": "test_howells",
-        "password": "test_howells",
+        "username": "cla_howellscla_duncanlewis",
+        "password": "+YNG8Cgl4b+0t+xjm5gn4P42LEzg+0c6FTsp8aqA",
         "login_url": f"{CLA_FRONTEND_URL}/auth/login/",
         "user_type": "SPECIALIST_PROVIDER",
         "application": "FRONTEND",
