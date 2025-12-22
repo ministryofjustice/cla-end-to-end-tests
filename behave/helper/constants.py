@@ -24,14 +24,14 @@ CALL_CENTRE_ZONE = {
 }
 USERS = {
     "CHS_GENERAL_USER": {
-        "username": "cla_operator",
+        "username": "test_operator",
         "password": "ZNIBSRGSt71GrYYDtgyk0PkCViJJIiRppM32YPYK",
         "login_url": f"{CLA_FRONTEND_URL}/auth/login/",
         "user_type": "OPERATOR",
         "application": "FRONTEND",
     },
     "CHS_GENERAL_USER_OOH": {
-        "username": "cla_operator",
+        "username": "test_operator",
         "password": "ZNIBSRGSt71GrYYDtgyk0PkCViJJIiRppM32YPYK",
         "login_url": f"{CLA_FRONTEND_OOH_URL}/auth/login/",
         "user_type": "OPERATOR",
