@@ -88,7 +88,7 @@ USER_HTML_TAGS = {
     "FRONTEND": {"form_identifier": "login_frm"},
     "BACKEND": {"form_identifier": "login-form"},
 }
-CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO = "cla_staff"
+CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO = "test_staff"
 
 CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO_PK = 3
 
