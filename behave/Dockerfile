@@ -19,7 +19,7 @@ RUN apk add --no-cache \
       musl-dev \
       postgresql-client \
       python3-dev && \
-    pip3 install -U setuptools pip==18.1 wheel
+    pip3 install -U setuptools pip==21.3.1 wheel
 
 COPY requirements.txt requirements.txt
 RUN pip3 install -r ./requirements.txt
