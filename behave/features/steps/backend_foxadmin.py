@@ -145,7 +145,7 @@ def step_impl_user_details_saved(context):
     wait_until_page_is_loaded(page, context)
     assert_header_on_page("Select user to change", context)
     # check there is a message that says the user was changed successfully
-    link_text = 'The user "cla_staff" was changed successfully'
+    link_text = 'The user "test_staff" was changed successfully'
     xpath = f"//ul/li[@class='success'][contains(text(), '{link_text}')]"
     assert (
         len(context.helperfunc.find_many_by_xpath(xpath)) > 0
