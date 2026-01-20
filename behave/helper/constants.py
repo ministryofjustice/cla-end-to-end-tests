@@ -20,33 +20,33 @@ CALL_CENTRE_ZONE = {
     "client_secret": os.environ.get("CALL_CENTRE_SECRET_ID"),
     "grant_type": "password",
     "username": os.environ.get("CALL_CENTRE_TEST_USER"),
-    "password": os.environ.get("CALL_CENTRE_TEST_USER"),
+    "password": os.environ.get("CALL_CENTRE_TEST_PASSWORD"),
 }
 USERS = {
     "CHS_GENERAL_USER": {
-        "username": "test_operator",
-        "password": "test_operator",
+        "username": "cla_operator",
+        "password": "ZNIBSRGSt71GrYYDtgyk0PkCViJJIiRppM32YPYK",
         "login_url": f"{CLA_FRONTEND_URL}/auth/login/",
         "user_type": "OPERATOR",
         "application": "FRONTEND",
     },
     "CHS_GENERAL_USER_OOH": {
-        "username": "test_operator",
-        "password": "test_operator",
+        "username": "cla_operator",
+        "password": "ZNIBSRGSt71GrYYDtgyk0PkCViJJIiRppM32YPYK",
         "login_url": f"{CLA_FRONTEND_OOH_URL}/auth/login/",
         "user_type": "OPERATOR",
         "application": "FRONTEND",
     },
     "CHS_MANAGER_USER": {
-        "username": "test_operator_manager",
-        "password": "test_operator_manager",
+        "username": "cla_operator_manager",
+        "password": "vviIVittH01LNttIZ6Pe2V/J4Q1SSTvtsPXgo0b5",
         "login_url": f"{CLA_FRONTEND_URL}/auth/login/",
         "user_type": "OPERATOR",
         "application": "FRONTEND",
     },
     "TEST_SPECIALIST_PROVIDER": {
-        "username": "test_howells",
-        "password": "test_howells",
+        "username": "cla_dha",
+        "password": "hu8b/cGHHKMZMJYcRgJwkLAEa8Km72qPgPqP/uVX",
         "login_url": f"{CLA_FRONTEND_URL}/auth/login/",
         "user_type": "SPECIALIST_PROVIDER",
         "application": "FRONTEND",
@@ -88,7 +88,7 @@ USER_HTML_TAGS = {
     "FRONTEND": {"form_identifier": "login_frm"},
     "BACKEND": {"form_identifier": "login-form"},
 }
-CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO = "test_staff"
+CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO = "cla_staff"
 
 CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO_PK = 3
 
