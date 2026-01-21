@@ -10,7 +10,3 @@ Feature: Smoke test
   Scenario: Cla frontend check
     Given I go to the "cla frontend" status endpoint
     Then I am shown that the "cla frontend" service is ready
-
-  Scenario: Cla public check
-    Given I go to the "cla public" status endpoint
-    Then I am shown that the "cla public" service is ready

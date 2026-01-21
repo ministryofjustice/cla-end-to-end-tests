@@ -12,44 +12,41 @@ CLA_BACKEND_SECURITY_URL = "http://clabackendsecurity:8000"
 CLA_FRONTEND_URL = os.environ.get("CLA_E2E_FRONTEND_URL")
 CLA_FRONTEND_OOH_URL = "http://clafrontendooh:8000"
 CLA_FRONTEND_CSV_URL = "/provider/csvupload/"
-CLA_PUBLIC_URL = os.environ.get("CLA_E2E_PUBLIC_URL")
-CLA_FALA_URL = os.environ.get("CLA_E2E_FALA_URL")
 SELENIUM_WEB_DRIVER_URL = os.environ.get("CLA_E2E_SELENIUM_WEB_DRIVER_URL")
 MINIMUM_WAIT_UNTIL_TIME = 10
-CLA_NUMBER = "0345 345 4 345"
 A11Y_TAG = "a11y-check"
 CALL_CENTRE_ZONE = {
     "client_id": os.environ.get("CALL_CENTRE_CLIENT_ID"),
     "client_secret": os.environ.get("CALL_CENTRE_SECRET_ID"),
     "grant_type": "password",
     "username": os.environ.get("CALL_CENTRE_TEST_USER"),
-    "password": os.environ.get("CALL_CENTRE_TEST_USER"),
+    "password": os.environ.get("CALL_CENTRE_TEST_PASSWORD"),
 }
 USERS = {
     "CHS_GENERAL_USER": {
-        "username": "test_operator",
-        "password": "test_operator",
+        "username": "cla_operator",
+        "password": "ZNIBSRGSt71GrYYDtgyk0PkCViJJIiRppM32YPYK",
         "login_url": f"{CLA_FRONTEND_URL}/auth/login/",
         "user_type": "OPERATOR",
         "application": "FRONTEND",
     },
     "CHS_GENERAL_USER_OOH": {
-        "username": "test_operator",
-        "password": "test_operator",
+        "username": "cla_operator",
+        "password": "ZNIBSRGSt71GrYYDtgyk0PkCViJJIiRppM32YPYK",
         "login_url": f"{CLA_FRONTEND_OOH_URL}/auth/login/",
         "user_type": "OPERATOR",
         "application": "FRONTEND",
     },
     "CHS_MANAGER_USER": {
-        "username": "test_operator_manager",
-        "password": "test_operator_manager",
+        "username": "cla_operator_manager",
+        "password": "vviIVittH01LNttIZ6Pe2V/J4Q1SSTvtsPXgo0b5",
         "login_url": f"{CLA_FRONTEND_URL}/auth/login/",
         "user_type": "OPERATOR",
         "application": "FRONTEND",
     },
     "TEST_SPECIALIST_PROVIDER": {
-        "username": "test_howells",
-        "password": "test_howells",
+        "username": "cla_dha",
+        "password": "hu8b/cGHHKMZMJYcRgJwkLAEa8Km72qPgPqP/uVX",
         "login_url": f"{CLA_FRONTEND_URL}/auth/login/",
         "user_type": "SPECIALIST_PROVIDER",
         "application": "FRONTEND",
@@ -91,7 +88,7 @@ USER_HTML_TAGS = {
     "FRONTEND": {"form_identifier": "login_frm"},
     "BACKEND": {"form_identifier": "login-form"},
 }
-CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO = "test_staff"
+CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO = "cla_staff"
 
 CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO_PK = 3
 
@@ -156,12 +153,6 @@ CLA_MEANS_TEST_PERSONAL_DETAILS_FORM = {
         "form_element_value": "test@digital.justice.gov.uk",
     },
 }
-CLA_MEANS_TEST_CALL_BACK_NUMBER = {
-    "mobile_phone": {
-        "form_element_id": "callback-contact_number",
-        "form_element_value": "020 1234 67890",
-    }
-}
 
 MATTER_TYPE_1 = "QEMP - Employment"
 MATTER_TYPE_2 = "QDIS - Disability"
@@ -220,14 +211,3 @@ ClA_CONTACT_US_USER = "Nathan Drake"
 CLA_CONTACT_US_USER_PERSON_TO_CALL = "Elena Fisher"
 
 MINIMUM_SLEEP_SECONDS = 2
-
-FALA_HEADER = "Find a legal aid adviser or family mediator"
-ERROR_TITLE = "There is a problem"
-BBC_WEBSITE = "https://www.bbc.co.uk/weather"
-BBC_INTERNATIONAL_WEBSITE = "https://www.bbc.com/weather"
-
-ClA_CONTACT_US_OPTIONS = {
-    "I will call you": "call",
-    "Call me back": "callback",
-    "Call someone else instead of me": "thirdparty",
-}

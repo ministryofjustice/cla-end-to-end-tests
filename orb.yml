@@ -18,14 +18,6 @@ commands:
           echo "E2E_BRANCH is $E2E_BRANCH"
           git clone --single-branch --branch ${E2E_BRANCH:-main} git@github.com:ministryofjustice/cla-end-to-end-tests.git $E2E_WORKING_DIRECTORY
 
-      # Pull cla_public image
-      - aws-cli/setup:
-          role_arn: $CLA_PUBLIC_ECR_ROLE_TO_ASSUME
-          region: ECR_REGION
-      - run: |
-           cd $E2E_WORKING_DIRECTORY
-           ./.circleci/pull_images clapublic
-
       # Pull cla_backend image
       - aws-cli/setup:
           role_arn: $CLA_BACKEND_ECR_ROLE_TO_ASSUME
@@ -49,15 +41,6 @@ commands:
       - run: |
           cd $E2E_WORKING_DIRECTORY
           ./.circleci/pull_images clasocketserver
-
-      # Pull fala image
-      - aws-cli/setup:
-          role_arn: $FALA_ECR_ROLE_TO_ASSUME
-          region: ECR_REGION
-      - run: |
-          cd $E2E_WORKING_DIRECTORY
-          ./.circleci/pull_images fala
-
       - run:
           name: Check services are up
           command: |

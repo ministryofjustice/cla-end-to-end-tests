@@ -14,16 +14,8 @@ jobs:
       - run:
           name: Run linter and formatting checks
           command: |
-            pip install pre-commit==2.17.0
+            pip install pre-commit
             pre-commit run --all-files
-
-#       Pull public image
-      - aws-cli/setup:
-          role_arn: $CLA_PUBLIC_ECR_ROLE_TO_ASSUME # this will use the env var
-          region: $ECR_REGION
-      - run: |
-          ./.circleci/pull_images clapublic
-        
 
       # Pull cla_backend image
       - aws-cli/setup:
@@ -45,13 +37,6 @@ jobs:
           region: $ECR_REGION
       - run: |
           ./.circleci/pull_images clasocketserver
-
-      # Pull fala image
-      - aws-cli/setup:
-          role_arn: $FALA_ECR_ROLE_TO_ASSUME
-          region: $ECR_REGION
-      - run: |
-          ./.circleci/pull_images fala
 
       - run:
           name: Build / Check services are up

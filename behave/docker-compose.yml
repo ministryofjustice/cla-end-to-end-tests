@@ -1,6 +1,3 @@
-version: '3.9'
-
-
 services:
   start_applications:
     image: jwilder/dockerize
@@ -8,8 +5,6 @@ services:
       -wait tcp://clafrontend:8000
       -wait tcp://clasocketserver:8005
       -wait tcp://clabackend:8000
-      -wait tcp://clapublic:8000
-      -wait tcp://fala:8000
       -wait tcp://seleniumchrome:4444
       -wait tcp://clabackendooh:8000
       -wait tcp://clabackendsecurity:8000
@@ -17,12 +12,10 @@ services:
       -wait-retry-interval 10s
       -timeout 180s
     depends_on:
-      - clapublic
       - clafrontend
       - clabackend
       - seleniumchrome
       - clasocketserver
-      - fala
       - prev_db
       - clabackendooh
       - clabackendsecurity
@@ -40,18 +33,16 @@ services:
       BROWSER: chrome
       USING_CHROME_DRIVER: "False"
       DATA_DIRECTORY: /data
-      CLA_E2E_PUBLIC_URL: ${CLA_E2E_PUBLIC_URL:-http://clapublic:8000}
       CLA_E2E_BACKEND_URL: ${CLA_E2E_BACKEND_URL:-http://clabackend:8000}
       CLA_E2E_FRONTEND_URL: ${CLA_E2E_FRONTEND_URL:-http://clafrontend:8000}
-      CLA_E2E_FALA_URL: ${CLA_E2E_FALA_URL:-http://fala:8000}
       CLA_E2E_SELENIUM_WEB_DRIVER_URL: ${CLA_E2E_SELENIUM_WEB_DRIVER_URL:-http://seleniumchrome:4444/wd/hub}
       CALL_CENTRE_CLIENT_ID: b4b9220ffcb11ebfdab1
       CALL_CENTRE_SECRET_ID: 2df71313bdd38a2e1b815015e1b14387e7681d41
-      CALL_CENTRE_TEST_USER: test_operator
+      CALL_CENTRE_TEST_USER: cla_operator
+      CALL_CENTRE_TEST_PASSWORD: ZNIBSRGSt71GrYYDtgyk0PkCViJJIiRppM32YPYK
       CLA_PROVIDER_CLIENT_ID: 59657ed22d980251cdd3
       CLA_PROVIDER_SECRET_ID: 0494287c65bdf61d29f0eeed467ec8e090f0d80f
       DATABASE_SNAPSHOT_ENABLED: ${DATABASE_SNAPSHOT_ENABLED:-false}
-      FALA_TESTS_ONLY: ${FALA_TESTS_ONLY:-false}
       PGPASSWORD: postgres
       PGUSER: postgres
       PGHOST: db
@@ -98,17 +89,17 @@ services:
       SOCKETIO_SERVICE_URL: clasocketserver:8005/socket.io/
       OS_PLACES_API_KEY: ${OS_PLACES_API_KEY:-CHANGE_ME}
       GA_ID: ${GA_ID:-CHANGE_ME}
-      GA_DOMAIN:  ${GA_DOMAIN:-localhost}
+      GA_DOMAIN: ${GA_DOMAIN:-localhost}
       SITE_HOSTNAME: clasocketserver
       STATIC_FILES_BACKEND: local
       ALLOWED_HOSTS: "*"
-      SESSION_COOKIE_SECURE: "False"
       SECURE_CONTENT_TYPE_NOSNIFF: "False"
       CSRF_COOKIE_SECURE: "False"
-      CSRF_COOKIE_SAMESITE: "False"
-      SESSION_COOKIE_SAMESITE: "False"
+      CSRF_COOKIE_SAMESITE: "None"
+      SESSION_COOKIE_NAME: "SID"
+      SESSION_COOKIE_SECURE: "False"
+      SESSION_COOKIE_SAMESITE: "None"
       SESSION_COOKIE_HTTPONLY: "False"
-
 
   clafrontendooh:
     <<: *clafrontend
@@ -186,8 +177,7 @@ services:
       - "8014:8000"
     depends_on:
       - clabackend
-    container_name:
-      clabackendooh
+    container_name: clabackendooh
     environment:
       <<: *clabackendenvironment
       NON_ROTA_START_TIME_HR: 1
@@ -203,67 +193,8 @@ services:
       - "8019:8000"
     depends_on:
       - clabackend
-    container_name:
-      clabackendsecurity
+    container_name: clabackendsecurity
     environment:
       <<: *clabackendenvironment
       SESSION_SECURITY_WARN_AFTER: 5
       SESSION_SECURITY_EXPIRE_AFTER: 10
-
-  clapublic:
-    image: ${CLA_PUBLIC_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_public:master}
-    ports:
-      - "8012:8000"
-    environment:
-      HOST_NAME: "clapublic"
-      SECRET_KEY: CHANGE_ME
-      BACKEND_BASE_URI: http://clabackend:8000
-      CLA_ENV: dev
-      ZENDESK_API_USERNAME: ""
-      ZENDESK_API_TOKEN: ""
-      SMTP_HOST: ""
-      SMTP_USER: ""
-      SMTP_PASSWORD: ""
-      RAVEN_CONFIG_DSN: ""
-      RAVEN_CONFIG_SITE: ""
-      SENTRY_DSN: ${SENTRY_DSN:-}
-      LAALAA_API_HOST: https://laa-legal-adviser-api-staging.apps.live-1.cloud-platform.service.justice.gov.uk
-      MOJ_GA_ID: "UA-XXXXXXXX-X1"
-      GDS_GA_ID: "UA-XXXXXXXX-X2"
-      GOOGLE_MAPS_API_KEY: AIzaSyBVsZmfkiRFNNMJnPraN_8sBW3Dj-BFFNs
-      OS_PLACES_API_KEY: ${OS_PLACES_API_KEY:-CHANGE_ME}
-      GOVUK_NOTIFY_API_KEY: ${GOVUK_NOTIFY_API_KEY:-}
-      TESTING: "True"
-    depends_on:
-      - clabackend
-
-  fala:
-    image: ${FALA_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/fala:master}
-    ports:
-      - "8013:8000"
-    environment:
-      HOST_NAME: "fala"
-      SECRET_KEY: CHANGE_ME
-      LAALAA_API_HOST: https://laa-legal-adviser-api-staging.apps.live-1.cloud-platform.service.justice.gov.uk
-      CLA_ENV: dev
-      DB_PORT: 5440
-      DB_HOST: fala_db
-      DB_NAME: fala_db
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-    depends_on:
-      - fala_db
-
-  fala_db:
-    image: postgres:16.3
-    ports:
-      - "5440:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: fala_db
-    healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
-      interval: 10s
-      timeout: 3s
-      retries: 3
