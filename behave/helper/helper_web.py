@@ -20,5 +20,7 @@ def get_browser(browser, download_directory):
         chrome_options.add_experimental_option("prefs", prefs)
 
         return HelperFunc(
-            webdriver.Remote(command_executor=SELENIUM_WEB_DRIVER_URL, options=chrome_options)
+            webdriver.Remote(
+                command_executor=SELENIUM_WEB_DRIVER_URL, options=chrome_options
+            )
         )
