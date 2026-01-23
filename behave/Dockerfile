@@ -2,7 +2,6 @@ FROM python:3.10-alpine
 
 RUN apk add --no-cache \
       bash \
-      py3-pip \
       tzdata \
       gettext
 
@@ -17,12 +16,13 @@ RUN apk add --no-cache \
       postgresql-dev \
       gcc \
       musl-dev \
-      postgresql-client \
-      python3-dev && \
-    pip3 install -U setuptools pip==18.1 wheel
+      postgresql-client
+
+
+RUN python -m pip install --upgrade pip setuptools wheel
 
 COPY requirements.txt requirements.txt
-RUN pip3 install -r ./requirements.txt
+RUN python -m pip install -r ./requirements.txt
 
 RUN mkdir /behave
 WORKDIR /behave
