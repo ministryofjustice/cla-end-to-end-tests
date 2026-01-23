@@ -1,5 +1,5 @@
 behave==1.2.6
-parse==1.19.0
+parse==1.20.2
 parse-type==0.5.2
 selenium==3.141.0
 six==1.16.0
