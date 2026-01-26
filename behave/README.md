@@ -83,7 +83,7 @@ Selenium Chrome also does not support `arm64`. In order to get it to work use th
 Within `behave/docker-compose.m1.yml`, changes have been made to allow `cla_frontend` to build correctly. If the required platform architecture values. e.g. `platform: linux/arm64` are not set, the build fails.
 This is because `cla_frontend` has dependencies that fail unless the platform architecture is specified.
 
-**Side notes**
+Side notes
 
 `cla_backend` does not require a platform architecture value change, as `cla_backend` builds and runs successfully on an `arm64` machine.
 
@@ -93,7 +93,7 @@ If you want to see the tests running in your hosts machines Chrome browser and s
 running in their containers then do the following.
 You need to make sure that you have a version of chromedriver that matches your version of chrome.
 
-```
+```bash
 brew install chromedriver
 python3 -m pip install -r requirements.txt
 chromedriver # take note of the port listed. Will stay running in the foreground
@@ -101,7 +101,7 @@ chromedriver # take note of the port listed. Will stay running in the foreground
 
 ### Running the tests
 
-```
+```bash
 # Run all the tests
 ./run_test_local_chrome_driver.sh
 
@@ -129,7 +129,7 @@ Reports are generated at the end of a single test or whole run test run.
 
 To lint with Black and flake8, install pre-commit hooks:
 
-```
+```bash
 virtualenv -p python3 env --prompt=\(cla_e2e\)
 . env/bin/activate
 pip3 install -r requirements.txt
@@ -138,7 +138,7 @@ pre-commit install
 
 To run them manually:
 
-```
+```bash
 pre-commit run --all-files
 ```
 
@@ -147,10 +147,10 @@ pre-commit run --all-files
 This involves running the end-to-end tests twice, once using images defined in the docker-compose.yml and again using
 a given backend image.
 
-For example to run a diff between the resulting database of end-to-end test using backend master and
+For example to run a diff between the resulting database of end-to-end test using backend main and
 the image of the django-upgrade branch which is django-upgrade.de199c9
 
-```
+```bash
 ./run_test_local.sh --diff-with-branch 754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:django-upgrade.de199c9
 ```
 
@@ -191,7 +191,7 @@ Repository uses [MoJ DevSecOps hooks](https://github.com/ministryofjustice/devse
 
 3. **Test**
 
-    To dry-run the hook
+   To dry-run the hook
 
    ```bash
    prek run

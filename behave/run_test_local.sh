@@ -23,7 +23,7 @@ while [ -n "$1" ]; do # while loop starts
 	  shift
 	  echo "Doing database diff"
 	  export DIFF_IMAGE=$1
-	  echo "Comparing master backend with $DIFF_IMAGE"
+	  echo "Comparing main backend with $DIFF_IMAGE"
 	  docker pull $DIFF_IMAGE
 	;;
 	--a11y)
