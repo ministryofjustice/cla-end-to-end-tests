@@ -65,12 +65,12 @@ services:
       - ./data:/data
 
   clasocketserver:
-    image: ${CLA_SOCKET_SERVER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend_socket_server:master}
+    image: ${CLA_SOCKET_SERVER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend_socket_server:main}
     environment:
       SITE_HOSTNAME: clasocketserver
 
   clafrontend: &clafrontend
-    image: ${CLA_FRONTEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend:master}
+    image: ${CLA_FRONTEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend:main}
     ports:
       - "8011:8000"
     depends_on:
@@ -142,7 +142,7 @@ services:
       - ./data:/data
 
   clabackend: &clabackend
-    image: ${CLA_BACKEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:master}
+    image: ${CLA_BACKEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_backend:main}
     ports:
       - "8010:8000"
     depends_on:
