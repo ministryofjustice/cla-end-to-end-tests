@@ -2,7 +2,7 @@ behave==1.2.6
 parse==1.19.0
 parse-type==0.5.2
 selenium==3.141.0
-six==1.16.0
+six==1.17.0
 urllib3==1.26.6
 requests==2.26.0
 pre-commit==2.17.0
