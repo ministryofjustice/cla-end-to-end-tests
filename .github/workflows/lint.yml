@@ -51,9 +51,9 @@ jobs:
       - name: Black
         shell: bash
         working-directory: ./
-        run: python -m pre-commit run --all-files black
+        run: pre-commit run --all-files black
 
       - name: Flake8
         shell: bash
         working-directory: ./
-        run: python -m pre-commit run --all-files flake8
+        run: pre-commit run --all-files flake8
