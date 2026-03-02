@@ -36,17 +36,20 @@ jobs:
 
     name: Validate
     runs-on: ["ubuntu-latest"]
-    container:
-      image: python:3.10
 
     steps:
       - name: Repository
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
+      - name: Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version-file: "behave/.python-version"
+
       - name: Requirements
         shell: bash
         working-directory: ./
-        run: python -m pip install -r behave/requirements.txt
+        run: python -m pip install pre-commit
 
       - name: Black
         shell: bash
