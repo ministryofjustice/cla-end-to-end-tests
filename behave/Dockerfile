@@ -6,7 +6,9 @@ RUN apk add --no-cache \
       bash \
       py3-pip \
       tzdata \
-      gettext \
+      gettext
+
+RUN apk add --no-cache \
       build-base \
       curl \
       git \
@@ -20,17 +22,20 @@ RUN apk add --no-cache \
       python3-dev
 
 # Environment
-ENV PYTHON_VIRTUAL_ENV=/opt/venv
+ENV PYTHON_VIRTUAL_ENV=/venv
 RUN python3 -m venv $PYTHON_VIRTUAL_ENV
 ENV PATH="$PYTHON_VIRTUAL_ENV/bin:$PATH"
 
 # Install
 COPY requirements.txt .
-RUN pip install --no-cache-dir setuptools wheel && \
-      pip install --no-cache-dir -r ./requirements.txt
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+RUN pip install --no-cache-dir -r ./requirements.txt
 
 # Execute
+RUN mkdir /behave
 WORKDIR /behave
+
 COPY . .
-RUN chmod +x ./wrapper.sh
+
+ENV run_a11y=$a11y
 ENTRYPOINT ./wrapper.sh $run_a11y
