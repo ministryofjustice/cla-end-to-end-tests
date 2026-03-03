@@ -6,6 +6,14 @@ This readme assumes that the working directory is that of this document, which i
 root of this repository: the root of this repository now provides a means to deliver and use the
 functionality in this directory.
 
+## Generate requirements.txt
+
+Following CLI command will generate requirements with hashes
+
+```bash
+ pip-compile --generate-hashes requirements.in --output-file requirements.txt
+```
+
 ## Test file structure
 
 Each feature file is seperated out into their own directory to help make it easier to organise each services test.

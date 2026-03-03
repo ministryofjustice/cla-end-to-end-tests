@@ -1,24 +1,25 @@
-# GitHub Actions Workflow: Lint
+# GitHub Actions Workflow: Lint Checks
+# ====================================
+# Purpose: Validates code quality and style compliance on all pull requests
 #
-# Purpose: Runs linting checks on pull requests to ensure code quality and style compliance
-#
-# Trigger: Automatically runs on all pull requests across any branch
-#
-# Permissions:
-#   - Minimal permissions set (empty root level)
-#   - Job-level read access to repository contents only
-#
-# Environment:
-#   - Runs on Ubuntu latest
-#   - Uses Python 2.7.18 slim container image
+# Trigger: Executes on pull requests to any branch
 #
 # Jobs:
-#   lint:
-#     - Checks out the repository code
-#     - Installs linting dependencies from requirements-lint.txt
-#     - Runs Flake8 linter with exit-zero flag (reports issues without failing the workflow)
+#   - lint (Validate):
+#       Runner: ubuntu-latest
+#       Permissions: Read access to repository contents
 #
-# Output: Flake8 linting report for package
+#       Steps:
+#         1. Checkout repository code
+#         2. Setup Python environment using version specified in behave/.python-version
+#         3. Install pre-commit framework for managing git hooks
+#         4. Run Black code formatter check on all files
+#         5. Run Flake8 linter check on all files
+#
+# Tools Used:
+#   - Black: Python code formatter (style compliance)
+#   - Flake8: Python linter (code quality and style)
+#   - pre-commit: Git hook framework for running checks
 
 name: Lint
 run-name: Lint checks
