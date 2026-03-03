@@ -208,11 +208,9 @@ def step_on_case_details_page(context, type_of_user):
     else:
         # can use the function with the regex on test_steps
         # this will fail if this is for a specialist provider
-        context.execute_steps(
-            """
+        context.execute_steps("""
               Given I am taken to the 'case details' page
-           """
-        )
+           """)
 
 
 def select_value_from_list(context, label, value, op="equals"):

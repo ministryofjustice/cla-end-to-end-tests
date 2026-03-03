@@ -98,12 +98,10 @@ def step_impl_callback_booked(context):
 @step("I am viewing a callback slot")
 def step_impl_view_callback(context):
     # this is actually a composite of several of the steps in another scenario
-    context.execute_steps(
-        """
+    context.execute_steps("""
         Given that I am on cases callback page
         When I select a callback slot
-    """
-    )
+    """)
 
 
 @step("callback slot contains a case created on CLA Public")
