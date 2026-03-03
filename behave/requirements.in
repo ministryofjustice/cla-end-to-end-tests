@@ -1,14 +1,14 @@
 behave==1.3.3
 parse==1.21.1
 parse-type==0.6.6
-selenium==3.141.0
+selenium==4.41.0
 six==1.17.0
-urllib3==1.26.6
-requests==2.26.0
-pre-commit==2.17.0
+urllib3==2.6.3
+requests==2.32.5
+pre-commit==4.5.1
 axe-selenium-python==2.1.6
 #need to use cla_common to check the availability of slots for the creation of callbacks
-git+https://github.com/ministryofjustice/cla_common.git@0.3.25#egg=cla_common
+git+https://github.com/ministryofjustice/cla_common.git@0.3.18#egg=cla_common
 # Required for the database diffing
-psycopg2==2.9.5
+psycopg2==2.9.11
 tabulate==0.9.0

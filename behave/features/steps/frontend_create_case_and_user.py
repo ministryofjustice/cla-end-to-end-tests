@@ -18,11 +18,9 @@ def step_impl_search_client(context):
 
 @step("I am taken to search results that shows cases belonging to that client")
 def step_impl_search_results(context):
-    context.execute_steps(
-        """
+    context.execute_steps("""
         Given I am on the 'call centre dashboard' page
-    """
-    )
+    """)
     # now check and see if we have cases that are assigned to this user
     case_rows = context.helperfunc.driver().find_elements_by_xpath(
         '//div/table[@class="ListTable"]/tbody/tr'
@@ -44,8 +42,6 @@ def step_impl_select_name_hyperlink(context):
 @step("I select the button to create a case for the client originally searched for")
 def step_impl_create_case_button(context):
     # this button has the same id as when it just says 'create a case' so can use the original step
-    context.execute_steps(
-        """
+    context.execute_steps("""
         Given I select to 'Create a case'
-    """
-    )
+    """)

@@ -26,12 +26,10 @@ def set_income_input_field_by_label_for(context, label, value):
 
 @step("I am on the Finances tab with the ‘Details’ sub-tab preselected")
 def step_impl_finance_details_tabs(context):
-    context.execute_steps(
-        """
+    context.execute_steps("""
         Given I have created a valid discrimination scope
         Then I am taken to the "Finances" tab with the ‘Details’ sub-tab preselected
-    """
-    )
+    """)
 
 
 @step("I move onto {tab_name} inner-tab")
