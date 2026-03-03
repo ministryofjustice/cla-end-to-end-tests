@@ -145,7 +145,7 @@ charset-normalizer==3.4.4 \
     # via requests
 # WARNING: pip install will require the following package to be hashed.
 # Consider using a hashable URL like https://github.com/jazzband/pip-tools/archive/SOMECOMMIT.zip
-cla-common @ git+https://github.com/ministryofjustice/cla_common.git@0.3.18
+cla-common @ git+https://github.com/ministryofjustice/cla_common.git@0.3.25
     # via -r behave/requirements.in
 colorama==0.4.6 \
     --hash=sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44 \
