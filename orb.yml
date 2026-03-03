@@ -34,7 +34,7 @@ commands:
           cd $E2E_WORKING_DIRECTORY
           ./.circleci/pull_images clafrontend
 
-       # Pull socket_server image
+        # Pull socket_server image
       - aws-cli/setup:
           role_arn: $SOCKET_SERVER_ECR_ROLE_TO_ASSUME
           region: ECR_REGION

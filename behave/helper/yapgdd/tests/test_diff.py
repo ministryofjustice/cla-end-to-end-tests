@@ -92,7 +92,6 @@ class DiffTest(TestDatabases, unittest.TestCase):
         actual_diffs = {}
 
         def log_table_diff(table, diff):
-            nonlocal actual_diffs
             actual_diffs[table] = diff
 
         with patch.object(self.instance, "log_table_diff", log_table_diff):
