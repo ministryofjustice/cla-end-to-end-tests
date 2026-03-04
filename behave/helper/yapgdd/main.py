@@ -42,10 +42,8 @@ class Yapgdd:
         return connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
     def get_tables(self, cursor):
-        cursor.execute(
-            """SELECT table_name FROM information_schema.tables
-               WHERE table_schema = 'public'"""
-        )
+        cursor.execute("""SELECT table_name FROM information_schema.tables
+               WHERE table_schema = 'public'""")
         return [table[0] for table in cursor.fetchall()]
 
     def get_columns(self, cursor, table):

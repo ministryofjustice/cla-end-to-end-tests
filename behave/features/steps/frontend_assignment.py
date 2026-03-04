@@ -34,13 +34,11 @@ def step_impl_complete_user_details(context, user_choice):
         )
     except KeyError:
         context.personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM
-    context.execute_steps(
-        """
+    context.execute_steps("""
         When I select 'Create new user'
         And enter the client's personal details
         And I click the save button on the screen
-    """
-    )
+    """)
 
 
 @step("I navigate back to the call centre dashboard")
@@ -64,11 +62,9 @@ def step_impl_previous_choice(context, user_choice):
         )
     except KeyError:
         context.personal_details_form = CLA_FRONTEND_PERSONAL_DETAILS_FORM
-    context.execute_steps(
-        """
+    context.execute_steps("""
         Then I will see the users details
-    """
-    )
+    """)
 
 
 @step("I click on the Assign Alternative Help icon")
@@ -270,19 +266,16 @@ def step_impl_empty_case_notes(context):
 
 @step("I have created a user")
 def step_impl_created_user(context):
-    context.execute_steps(
-        """
+    context.execute_steps("""
         When I select 'Create new user'
         And enter the client's personal details
         And I click the save button on the screen
-    """
-    )
+    """)
 
 
 @step("I have created a valid discrimination scope")
 def step_impl_discrimination_scope(context):
-    context.execute_steps(
-        """
+    context.execute_steps("""
         When I select ‘Create Scope Diagnosis'
         And I select the diagnosis <category> and click next <number> times
         | category                                                | number |
@@ -292,8 +285,7 @@ def step_impl_discrimination_scope(context):
         | Work                                                    | 1      |
         Then I get an "INSCOPE" decision
         And select the "Create financial assessment" button
-    """
-    )
+    """)
 
 
 @step("I am on the Diversity tab having answered the finances questions")
@@ -308,8 +300,7 @@ def step_impl_diversity_tab(context):
         return green_checkmark_appears_on_tab(classes)
 
     # first need to complete the finances tab
-    context.execute_steps(
-        """
+    context.execute_steps("""
         Given I am taken to the "Finances" tab with the ‘Details’ sub-tab preselected
         And I do not have a partner
         And I am aged 60 or over
@@ -329,8 +320,7 @@ def step_impl_diversity_tab(context):
           | Do you have any money owed to you?                    | 0.00   |
         And I select Save assessment
         And the 'Diversity' and 'Assign' tabs become available
-    """
-    )
+    """)
 
     context.helperfunc.scroll_to_top()
     wait = WebDriverWait(context.helperfunc.driver(), 10)
@@ -562,12 +552,10 @@ def step_impl_alt_help(context):
     # The case used has been created for this test case.
     # we select and then go through to alternative help
     search_and_select_case(context, ASSIGN_F2F_CASE)
-    context.execute_steps(
-        """
+    context.execute_steps("""
         When I click on the Assign Alternative Help icon
         Then I am taken to the "Alternative help" page for the case located at "/alternative_help/"
-    """
-    )
+    """)
 
 
 @step("I can select the Assign F2F button")
