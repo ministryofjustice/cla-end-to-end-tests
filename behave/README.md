@@ -40,7 +40,7 @@ If you are working on an M1 machine, please add the below to your behave/.env fi
 NODE_BASE_IMAGE='amd64/node:10'
 SELENIUM_IMAGE='seleniarm/standalone-chromium:latest''
 
-To run all tests, execute in main behave directory (/behave_local if bashed into Docker container):
+To run all tests, execute in main behave directory (/behave if bashed into Docker container):
 
 `behave`
 
