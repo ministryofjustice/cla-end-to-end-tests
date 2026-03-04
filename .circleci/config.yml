@@ -43,7 +43,7 @@ jobs:
           name: Run behave tests
           command: |
             cd behave
-            docker-compose run --rm --name cla-end-to-end cla-end-to-end
+            docker-compose run --name cla-end-to-end cla-end-to-end
       - run:
           name: Copy artifacts
           command: |

@@ -26,7 +26,7 @@ services:
     build:
       context: .
     volumes:
-      - .:/behave
+      - .:/behave_local
       - ./data:/data
     environment:
       A11Y_ENABLED: ${A11Y_ENABLED:-false}
