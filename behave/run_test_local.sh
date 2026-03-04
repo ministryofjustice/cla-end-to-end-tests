@@ -63,5 +63,5 @@ if [ "$DIFF_IMAGE" != "" ]; then
     run_tests
 
     # Do the database diff
-    docker compose run --entrypoint "python3 /behave/helper/yapgdd/main.py" cla-end-to-end
+    docker compose run --entrypoint "python3 /behave_local/helper/yapgdd/main.py" cla-end-to-end
 fi
