@@ -128,3 +128,6 @@ websocket-client==1.9.0
     # via selenium
 wsproto==1.3.2
     # via trio-websocket
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools

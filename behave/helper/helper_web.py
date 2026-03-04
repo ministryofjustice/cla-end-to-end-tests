@@ -18,7 +18,6 @@ def get_browser(browser, download_directory):
         chrome_options.add_argument("--start-maximized")
         chrome_options.add_argument("--incognito")
         chrome_options.add_experimental_option("prefs", prefs)
-        capabilities = chrome_options.to_capabilities()
         return HelperFunc(
-            webdriver.Remote(SELENIUM_WEB_DRIVER_URL, desired_capabilities=capabilities)
+            webdriver.Remote(SELENIUM_WEB_DRIVER_URL, options=chrome_options)
         )

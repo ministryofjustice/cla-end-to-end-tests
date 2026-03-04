@@ -19,23 +19,23 @@ RUN apk add --no-cache \
       gcc \
       musl-dev \
       postgresql-client \
-      python3-dev
+      python3-dev \
+      py3-setuptools
 
 # Environment
 ENV PYTHON_VIRTUAL_ENV=/venv
 RUN python3 -m venv $PYTHON_VIRTUAL_ENV
+RUN . $PYTHON_VIRTUAL_ENV/bin/activate
+RUN $PYTHON_VIRTUAL_ENV/bin/pip install --no-cache-dir --upgrade pip "setuptools<70" wheel
+
 ENV PATH="$PYTHON_VIRTUAL_ENV/bin:$PATH"
 
-# Install
 COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip setuptools wheel
-RUN pip install --no-cache-dir -r ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Execute
 RUN mkdir /behave
 WORKDIR /behave
-
 COPY . .
-
 ENV run_a11y=$a11y
 ENTRYPOINT ./wrapper.sh $run_a11y
