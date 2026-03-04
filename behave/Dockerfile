@@ -1,13 +1,12 @@
-# Base
-FROM docker.io/alpine:3.23.3@sha256:25109184c71bdad752c8312a8623239686a9a2071e8825f20acb8f2198c3f659
+FROM alpine:3.9
 
-# Dependencies
 RUN apk add --no-cache \
       bash \
       py3-pip \
       tzdata \
       gettext
 
+# To install pip dependencies
 RUN apk add --no-cache \
       build-base \
       curl \
@@ -19,23 +18,17 @@ RUN apk add --no-cache \
       gcc \
       musl-dev \
       postgresql-client \
-      python3-dev \
-      py3-setuptools
+      python3-dev && \
+    pip3 install -U setuptools pip==18.1 wheel
 
-# Environment
-ENV PYTHON_VIRTUAL_ENV=/venv
-RUN python3 -m venv $PYTHON_VIRTUAL_ENV
-RUN . $PYTHON_VIRTUAL_ENV/bin/activate
-RUN $PYTHON_VIRTUAL_ENV/bin/pip install --no-cache-dir --upgrade pip "setuptools<70" wheel
+COPY requirements.txt requirements.txt
+RUN pip3 install -r ./requirements.txt
 
-ENV PATH="$PYTHON_VIRTUAL_ENV/bin:$PATH"
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Execute
 RUN mkdir /behave
 WORKDIR /behave
+
 COPY . .
-ENV run_a11y=$a11y
+
+ENV run_a11y $a11y
+
 ENTRYPOINT ./wrapper.sh $run_a11y
