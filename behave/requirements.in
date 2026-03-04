@@ -7,6 +7,7 @@ urllib3==2.6.3
 requests==2.32.5
 pre-commit==4.5.1
 axe-selenium-python==2.1.6
+setuptools>=65.5.0
 #need to use cla_common to check the availability of slots for the creation of callbacks
 git+https://github.com/ministryofjustice/cla_common.git@0.3.25#egg=cla_common
 # Required for the database diffing
