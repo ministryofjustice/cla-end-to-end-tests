@@ -19,7 +19,7 @@ RUN apk add --no-cache \
       musl-dev \
       postgresql-client \
       python3-dev && \
-    pip3 install -U setuptools pip==18.1 wheel
+    pip3 install -U setuptools pip wheel
 
 COPY requirements/requirements*.txt requirements/
 RUN pip3 install --no-cache-dir -r requirements/requirements-git.txt \
@@ -32,4 +32,4 @@ COPY . .
 
 ENV run_a11y $a11y
 
-ENTRYPOINT ./wrapper.sh $run_a11y
+# ENTRYPOINT ./wrapper.sh $run_a11y
