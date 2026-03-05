@@ -7,7 +7,7 @@ orbs:
 jobs:
   behave:
     docker:
-      - image: cimg/python:3.10.1
+      - image: cimg/python:3.14.3
     steps:
       - checkout
       - setup_remote_docker
