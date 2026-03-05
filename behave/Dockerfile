@@ -21,8 +21,9 @@ RUN apk add --no-cache \
       python3-dev && \
     pip3 install -U setuptools pip==18.1 wheel
 
-COPY requirements.txt requirements.txt
-RUN pip3 install -r ./requirements.txt
+COPY requirements/requirements*.txt requirements/
+RUN pip3 install --no-cache-dir -r requirements/requirements-git.txt \
+ && pip3 install --no-cache-dir -r requirements/requirements.txt
 
 RUN mkdir /behave
 WORKDIR /behave
