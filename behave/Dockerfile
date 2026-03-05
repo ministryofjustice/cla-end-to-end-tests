@@ -32,4 +32,4 @@ COPY . .
 
 ENV run_a11y $a11y
 
-# ENTRYPOINT ./wrapper.sh $run_a11y
+ENTRYPOINT ./wrapper.sh $run_a11y
