@@ -19,10 +19,14 @@ RUN apk add --no-cache \
       musl-dev \
       postgresql-client \
       python3-dev && \
-    pip3 install -U setuptools pip==18.1 wheel
+      pip3 install -U \
+      setuptools==59.6.0 \
+      pip==21.3.1 \
+      wheel==0.37.1
 
-COPY requirements.txt requirements.txt
-RUN pip3 install -r ./requirements.txt
+COPY requirements/requirements*.txt requirements/
+RUN pip3 install --no-cache-dir -r requirements/requirements-git.txt \
+ && pip3 install --no-cache-dir -r requirements/requirements.txt
 
 RUN mkdir /behave
 WORKDIR /behave
