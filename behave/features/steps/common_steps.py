@@ -130,14 +130,15 @@ def step_impl_logged_in_as(context, user):
         html_tag = None
     assert form is not None
     if USERS[user]["application"] == "FRONTEND":
-        # CHS uses a two-step login: submit username first, then password
+        # Assert this is a two-step login — password must not appear on the username form
+        assert form.find_elements_by_name("password") == [], "Expected two-step login but found password field on the username form"
+        # Step 1: submit username
         form.find_element_by_name("username").send_keys(USERS[user]["username"])
         form.find_element_by_xpath(submit_xpath).click()
+        # Step 2: wait for password form, inject username (required by PasswordForm but not rendered)
         context.helperfunc.find_by_name(
             USER_HTML_TAGS[USERS[user]["application"]]["form_identifier"]
         )
-        # PasswordForm requires username in POST but doesn't render the field —
-        # inject it as a hidden input before submitting
         context.helperfunc.driver().execute_script(
             """
             var form = document.querySelector('form[name="login_frm"]');
