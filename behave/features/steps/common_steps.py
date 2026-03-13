@@ -147,7 +147,7 @@ def step_impl_logged_in_as(context, user):
             input.value = arguments[0];
             form.appendChild(input);
             """,
-            USERS[user]["username"]
+            USERS[user]["username"],
         )
         context.helperfunc.find_by_name("password").send_keys(USERS[user]["password"])
         context.helperfunc.find_by_xpath(submit_xpath).click()
