@@ -131,7 +131,9 @@ def step_impl_logged_in_as(context, user):
     assert form is not None
     if USERS[user]["application"] == "FRONTEND":
         # Assert this is a two-step login — password must not appear on the username form
-        assert form.find_elements_by_name("password") == [], "Expected two-step login but found password field on the username form"
+        assert (
+            form.find_elements_by_name("password") == []
+        ), "Expected two-step login but found password field on the username form"
         # Step 1: submit username
         form.find_element_by_name("username").send_keys(USERS[user]["username"])
         form.find_element_by_xpath(submit_xpath).click()
