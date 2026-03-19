@@ -137,20 +137,9 @@ def step_impl_logged_in_as(context, user):
         # Step 1: submit username
         form.find_element_by_name("username").send_keys(USERS[user]["username"])
         form.find_element_by_xpath(submit_xpath).click()
-        # Step 2: wait for password form, inject username (required by PasswordForm but not rendered)
+        # Step 2: wait for password form and submit password
         context.helperfunc.find_by_name(
             USER_HTML_TAGS[USERS[user]["application"]]["form_identifier"]
-        )
-        context.helperfunc.driver().execute_script(
-            """
-            var form = document.querySelector('form[name="login_frm"]');
-            var input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'username';
-            input.value = arguments[0];
-            form.appendChild(input);
-            """,
-            USERS[user]["username"],
         )
         context.helperfunc.find_by_name("password").send_keys(USERS[user]["password"])
         context.helperfunc.find_by_xpath(submit_xpath).click()
