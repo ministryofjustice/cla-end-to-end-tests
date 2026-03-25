@@ -129,9 +129,24 @@ def step_impl_logged_in_as(context, user):
         submit_xpath = "//input[@type='submit']"
         html_tag = None
     assert form is not None
-    form.find_element_by_name("username").send_keys(USERS[user]["username"])
-    form.find_element_by_name("password").send_keys(USERS[user]["password"])
-    form.find_element_by_xpath(submit_xpath).click()
+    if USERS[user]["application"] == "FRONTEND":
+        # Assert this is a two-step login — password must not appear on the username form
+        assert (
+            form.find_elements_by_name("password") == []
+        ), "Expected two-step login but found password field on the username form"
+        # Step 1: submit username
+        form.find_element_by_name("username").send_keys(USERS[user]["username"])
+        form.find_element_by_xpath(submit_xpath).click()
+        # Step 2: wait for password form and submit password
+        context.helperfunc.find_by_name(
+            USER_HTML_TAGS[USERS[user]["application"]]["form_identifier"]
+        )
+        context.helperfunc.find_by_name("password").send_keys(USERS[user]["password"])
+        context.helperfunc.find_by_xpath(submit_xpath).click()
+    else:
+        form.find_element_by_name("username").send_keys(USERS[user]["username"])
+        form.find_element_by_name("password").send_keys(USERS[user]["password"])
+        form.find_element_by_xpath(submit_xpath).click()
     if html_tag is not None:
         element = context.helperfunc.find_by_xpath(html_tag)
         assert element is not None
