@@ -102,8 +102,13 @@ def step_impl_download_csv(context):
     # click on the link
     context.helperfunc.driver().find_element_by_xpath(xpath_a).click()
     wait = WebDriverWait(context.helperfunc.driver(), MINIMUM_WAIT_UNTIL_TIME)
-    str_error = f"No downloaded report for {file_name} in {context.download_dir}"
-    wait.until(WaitForReportToBeDownloaded(file_name), message=str_error)
+    try:
+        wait.until(WaitForReportToBeDownloaded(file_name))
+    except Exception:
+        actual_files = os.listdir(context.download_dir)
+        raise AssertionError(
+            f"No downloaded report for {file_name} in {context.download_dir}. Found: {actual_files}"
+        )
 
 
 @step("I select a non-staff user from the list")
