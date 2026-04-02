@@ -18,6 +18,10 @@ def get_browser(browser, download_directory):
         chrome_options.add_argument("--start-maximized")
         chrome_options.add_argument("--incognito")
         chrome_options.add_experimental_option("prefs", prefs)
-        return HelperFunc(
-            webdriver.Remote(SELENIUM_WEB_DRIVER_URL, options=chrome_options)
+        driver = webdriver.Remote(SELENIUM_WEB_DRIVER_URL, options=chrome_options)
+        # Selenium 4 + Grid requires CDP to enable downloads to a specific directory
+        driver.execute_cdp_cmd(
+            "Page.setDownloadBehavior",
+            {"behavior": "allow", "downloadPath": download_directory},
         )
+        return HelperFunc(driver)
