@@ -22,7 +22,7 @@ def step_impl_enter_date_range(context):
     date_from = (datetime.datetime.now() + datetime.timedelta(days=-1)).strftime(
         "%d/%m/%Y"
     )
-    date_to = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime(
+    date_to = (datetime.datetime.now() + datetime.timedelta(days=7)).strftime(
         "%d/%m/%Y"
     )
     context.helperfunc.find_by_name("date_from").send_keys(date_from)
