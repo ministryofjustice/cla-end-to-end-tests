@@ -22,7 +22,7 @@ def step_impl_enter_date_range(context):
     date_from = (datetime.datetime.now() + datetime.timedelta(days=-1)).strftime(
         "%d/%m/%Y"
     )
-    date_to = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime(
+    date_to = (datetime.datetime.now() + datetime.timedelta(days=7)).strftime(
         "%d/%m/%Y"
     )
     context.helperfunc.find_by_name("date_from").send_keys(date_from)
@@ -102,13 +102,8 @@ def step_impl_download_csv(context):
     # click on the link
     context.helperfunc.driver().find_element_by_xpath(xpath_a).click()
     wait = WebDriverWait(context.helperfunc.driver(), MINIMUM_WAIT_UNTIL_TIME)
-    try:
-        wait.until(WaitForReportToBeDownloaded(file_name))
-    except Exception:
-        actual_files = os.listdir(context.download_dir)
-        raise AssertionError(
-            f"No downloaded report for {file_name} in {context.download_dir}. Found: {actual_files}"
-        )
+    str_error = f"No downloaded report for {file_name} in {context.download_dir}"
+    wait.until(WaitForReportToBeDownloaded(file_name), message=str_error)
 
 
 @step("I select a non-staff user from the list")
