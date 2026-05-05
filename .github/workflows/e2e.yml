@@ -1,0 +1,81 @@
+name: e2e.yml
+on:
+  workflow_call:
+    inputs:
+      CLA_FRONTEND_IMAGE:
+        required: false
+        type: string
+      CLA_SOCKET_SERVER_IMAGE:
+        required: false
+        type: string
+      CLA_BACKEND_IMAGE:
+        required: false
+        type: string
+      CLA_FRONTEND_ECR_REGION:
+        required: true
+        type: string
+      CLA_BACKEND_ECR_REGION:
+        required: true
+        type: string
+      SOCKET_SERVER_ECR_REGION:
+        required: true
+        type: string
+
+    secrets:
+      CLA_FRONTEND_ECR_ROLE_TO_ASSUME:
+        required: true
+      CLA_BACKEND_ECR_ROLE_TO_ASSUME:
+        required: true
+      SOCKET_SERVER_ECR_ROLE_TO_ASSUME:
+        required: true
+
+jobs:
+  end-to-end-test:
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          repository: 'ministryofjustice/cla-end-to-end-tests'
+          path: "cla-end-to-end-tests"
+
+      - name:  Pull Cla BACKEND image
+        uses: ./cla-end-to-end-tests/.github/actions/pull-image
+        with:
+          ECR_ROLE_TO_ASSUME: ${{ secrets.CLA_BACKEND_ECR_ROLE_TO_ASSUME}}
+          ECR_REGION: ${{ inputs.CLA_BACKEND_ECR_REGION }}
+          SERVICE_NAME: clabackend
+          DOCKER_COMPOSE_FILE_PATH: ./cla-end-to-end-tests/behave/docker-compose.yml
+        env:
+          CLA_BACKEND_IMAGE: ${{ inputs.CLA_BACKEND_IMAGE }}
+
+      - name:  Pull Cla FRONTEND image
+        uses: ./cla-end-to-end-tests/.github/actions/pull-image
+        with:
+          ECR_ROLE_TO_ASSUME: ${{ secrets.CLA_FRONTEND_ECR_ROLE_TO_ASSUME}}
+          ECR_REGION: ${{ inputs.CLA_FRONTEND_ECR_REGION }}
+          SERVICE_NAME: clafrontend
+          DOCKER_COMPOSE_FILE_PATH: ./cla-end-to-end-tests/behave/docker-compose.yml
+        env:
+          CLA_FRONTEND_IMAGE: ${{ inputs.CLA_FRONTEND_IMAGE }}
+
+      - name:  Pull SOCKET SERVER image
+        uses: ./cla-end-to-end-tests/.github/actions/pull-image
+        with:
+          ECR_ROLE_TO_ASSUME: ${{ secrets.SOCKET_SERVER_ECR_ROLE_TO_ASSUME}}
+          ECR_REGION: ${{ inputs.SOCKET_SERVER_ECR_REGION }}
+          SERVICE_NAME: clasocketserver
+          DOCKER_COMPOSE_FILE_PATH: ./cla-end-to-end-tests/behave/docker-compose.yml
+        env:
+          CLA_SOCKET_SERVER_IMAGE: ${{ inputs.CLA_SOCKET_SERVER_IMAGE }}
+
+      - name: Check services are up
+        shell: bash
+        run: |
+          cd cla-end-to-end-tests/behave
+          docker compose build
+          docker compose run start_applications
+          docker compose exec clabackend bin/create_db.sh
