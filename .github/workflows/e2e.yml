@@ -43,7 +43,7 @@ jobs:
           path: "cla-end-to-end-tests"
 
       - name:  Pull Cla BACKEND image
-        uses: ./cla-end-to-end-tests/.github/actions/pull-image
+        uses: ministryofjustice/cla-end-to-end-tests/.github/actions/pull-image@feature/LGA-3852-migrate-end-to-end-test-to-github-actions
         with:
           ECR_ROLE_TO_ASSUME: ${{ secrets.CLA_BACKEND_ECR_ROLE_TO_ASSUME}}
           ECR_REGION: ${{ inputs.CLA_BACKEND_ECR_REGION }}
@@ -53,7 +53,7 @@ jobs:
           CLA_BACKEND_IMAGE: ${{ inputs.CLA_BACKEND_IMAGE }}
 
       - name:  Pull Cla FRONTEND image
-        uses: ./cla-end-to-end-tests/.github/actions/pull-image
+        uses: ministryofjustice/cla-end-to-end-tests/.github/actions/pull-image@feature/LGA-3852-migrate-end-to-end-test-to-github-actions
         with:
           ECR_ROLE_TO_ASSUME: ${{ secrets.CLA_FRONTEND_ECR_ROLE_TO_ASSUME}}
           ECR_REGION: ${{ inputs.CLA_FRONTEND_ECR_REGION }}
@@ -63,7 +63,7 @@ jobs:
           CLA_FRONTEND_IMAGE: ${{ inputs.CLA_FRONTEND_IMAGE }}
 
       - name:  Pull SOCKET SERVER image
-        uses: ./cla-end-to-end-tests/.github/actions/pull-image
+        uses: ministryofjustice/cla-end-to-end-tests/.github/actions/pull-image@feature/LGA-3852-migrate-end-to-end-test-to-github-actions
         with:
           ECR_ROLE_TO_ASSUME: ${{ secrets.SOCKET_SERVER_ECR_ROLE_TO_ASSUME}}
           ECR_REGION: ${{ inputs.SOCKET_SERVER_ECR_REGION }}
@@ -79,3 +79,9 @@ jobs:
           docker compose build
           docker compose run start_applications
           docker compose exec clabackend bin/create_db.sh
+
+      - name: Run end to end tests
+        shell: bash
+        run: |
+          cd cla-end-to-end-tests/behave
+          docker compose run --name cla-end-to-end cla-end-to-end
