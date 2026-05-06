@@ -58,7 +58,7 @@ jobs:
           fi
 
       - name:  Pull Cla BACKEND image
-        uses: ministryofjustice/cla-end-to-end-tests/.github/actions/pull-image@feature/LGA-3852-migrate-end-to-end-test-to-github-actions
+        uses: ministryofjustice/cla-end-to-end-tests/.github/actions/pull-image@main
         with:
           ECR_ROLE_TO_ASSUME: ${{ secrets.CLA_BACKEND_ECR_ROLE_TO_ASSUME}}
           ECR_REGION: ${{ inputs.CLA_BACKEND_ECR_REGION }}
@@ -66,7 +66,7 @@ jobs:
           DOCKER_COMPOSE_FILE_PATH: ./cla-end-to-end-tests/behave/docker-compose.yml
 
       - name:  Pull Cla FRONTEND image
-        uses: ministryofjustice/cla-end-to-end-tests/.github/actions/pull-image@feature/LGA-3852-migrate-end-to-end-test-to-github-actions
+        uses: ministryofjustice/cla-end-to-end-tests/.github/actions/pull-image@main
         with:
           ECR_ROLE_TO_ASSUME: ${{ secrets.CLA_FRONTEND_ECR_ROLE_TO_ASSUME}}
           ECR_REGION: ${{ inputs.CLA_FRONTEND_ECR_REGION }}
@@ -74,7 +74,7 @@ jobs:
           DOCKER_COMPOSE_FILE_PATH: ./cla-end-to-end-tests/behave/docker-compose.yml
 
       - name:  Pull SOCKET SERVER image
-        uses: ministryofjustice/cla-end-to-end-tests/.github/actions/pull-image@feature/LGA-3852-migrate-end-to-end-test-to-github-actions
+        uses: ministryofjustice/cla-end-to-end-tests/.github/actions/pull-image@main
         with:
           ECR_ROLE_TO_ASSUME: ${{ secrets.SOCKET_SERVER_ECR_ROLE_TO_ASSUME}}
           ECR_REGION: ${{ inputs.SOCKET_SERVER_ECR_REGION }}
