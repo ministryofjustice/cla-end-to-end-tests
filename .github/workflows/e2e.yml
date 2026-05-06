@@ -1,0 +1,110 @@
+name: End to end tests
+on:
+  workflow_call:
+    inputs:
+      CLA_FRONTEND_IMAGE:
+        required: false
+        type: string
+      CLA_SOCKET_SERVER_IMAGE:
+        required: false
+        type: string
+      CLA_BACKEND_IMAGE:
+        required: false
+        type: string
+      CLA_FRONTEND_ECR_REGION:
+        required: true
+        type: string
+      CLA_BACKEND_ECR_REGION:
+        required: true
+        type: string
+      SOCKET_SERVER_ECR_REGION:
+        required: true
+        type: string
+
+    secrets:
+      CLA_FRONTEND_ECR_ROLE_TO_ASSUME:
+        required: true
+      CLA_BACKEND_ECR_ROLE_TO_ASSUME:
+        required: true
+      SOCKET_SERVER_ECR_ROLE_TO_ASSUME:
+        required: true
+      ECR_REGISTRY_URL:
+        required: true
+
+jobs:
+  end-to-end-test:
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          repository: 'ministryofjustice/cla-end-to-end-tests'
+          path: "cla-end-to-end-tests"
+
+      - name: Set environment variables
+        shell: bash
+        run: |
+          if [ -n "${{ inputs.CLA_BACKEND_IMAGE }}" ]; then
+            echo "CLA_BACKEND_IMAGE=${{ secrets.ECR_REGISTRY_URL }}/${{ inputs.CLA_BACKEND_IMAGE }}" >> "$GITHUB_ENV"
+          fi
+          if [ -n "${{ inputs.CLA_FRONTEND_IMAGE }}" ]; then
+            echo "CLA_FRONTEND_IMAGE=${{ secrets.ECR_REGISTRY_URL }}/${{ inputs.CLA_FRONTEND_IMAGE }}" >> "$GITHUB_ENV"
+          fi
+          if [ -n "${{ inputs.CLA_SOCKET_SERVER_IMAGE }}" ]; then
+            echo "CLA_SOCKET_SERVER_IMAGE=${{ secrets.ECR_REGISTRY_URL }}/${{ inputs.CLA_SOCKET_SERVER_IMAGE }}" >> "$GITHUB_ENV"
+          fi
+
+      - name:  Pull Cla BACKEND image
+        uses: ministryofjustice/cla-end-to-end-tests/.github/actions/pull-image@feature/LGA-3852-migrate-end-to-end-test-to-github-actions
+        with:
+          ECR_ROLE_TO_ASSUME: ${{ secrets.CLA_BACKEND_ECR_ROLE_TO_ASSUME}}
+          ECR_REGION: ${{ inputs.CLA_BACKEND_ECR_REGION }}
+          SERVICE_NAME: clabackend
+          DOCKER_COMPOSE_FILE_PATH: ./cla-end-to-end-tests/behave/docker-compose.yml
+
+      - name:  Pull Cla FRONTEND image
+        uses: ministryofjustice/cla-end-to-end-tests/.github/actions/pull-image@feature/LGA-3852-migrate-end-to-end-test-to-github-actions
+        with:
+          ECR_ROLE_TO_ASSUME: ${{ secrets.CLA_FRONTEND_ECR_ROLE_TO_ASSUME}}
+          ECR_REGION: ${{ inputs.CLA_FRONTEND_ECR_REGION }}
+          SERVICE_NAME: clafrontend
+          DOCKER_COMPOSE_FILE_PATH: ./cla-end-to-end-tests/behave/docker-compose.yml
+
+      - name:  Pull SOCKET SERVER image
+        uses: ministryofjustice/cla-end-to-end-tests/.github/actions/pull-image@feature/LGA-3852-migrate-end-to-end-test-to-github-actions
+        with:
+          ECR_ROLE_TO_ASSUME: ${{ secrets.SOCKET_SERVER_ECR_ROLE_TO_ASSUME}}
+          ECR_REGION: ${{ inputs.SOCKET_SERVER_ECR_REGION }}
+          SERVICE_NAME: clasocketserver
+          DOCKER_COMPOSE_FILE_PATH: ./cla-end-to-end-tests/behave/docker-compose.yml
+
+      - name: Check services are up
+        shell: bash
+        run: |
+          cd cla-end-to-end-tests/behave
+          docker compose build
+          docker compose run start_applications
+          docker compose exec clabackend bin/create_db.sh
+
+      - name: Run end to end tests
+        id: run-test-step
+        shell: bash
+        run: |
+          # continue on error
+          set +e
+          cd cla-end-to-end-tests/behave
+          docker compose run --name cla-end-to-end cla-end-to-end
+          test_exit_code=$?
+          docker cp cla-end-to-end:/data /tmp/end-to-end-data
+          exit $test_exit_code
+
+      - name: Upload Artifacts
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a #v7.0.1
+        with:
+          name: test-results
+          path: /tmp/end-to-end-data
+          retention-days: 30
