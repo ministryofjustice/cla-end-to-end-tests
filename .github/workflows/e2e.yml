@@ -90,7 +90,21 @@ jobs:
           docker compose exec clabackend bin/create_db.sh
 
       - name: Run end to end tests
+        id: run-test-step
         shell: bash
         run: |
+          # continue on error
+          set +e
           cd cla-end-to-end-tests/behave
           docker compose run --name cla-end-to-end cla-end-to-end
+          test_exit_code=$?
+          docker cp cla-end-to-end:/data /tmp/end-to-end-data
+          exit $test_exit_code
+
+      - name: Upload Artifacts
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a #v7.0.1
+        with:
+          name: test-results
+          path: /tmp/end-to-end-data
+          retention-days: 30
