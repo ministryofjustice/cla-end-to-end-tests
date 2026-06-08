@@ -5,6 +5,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   run-tests:
@@ -23,6 +24,7 @@ jobs:
     if: ${{ always() }}
     uses: ministryofjustice/laa-reusable-github-actions/.github/workflows/sast.yml@a652d1076b05dd80d3ab619d263aac6ce526d70b
     permissions:
+      actions: read
       id-token: write
       contents: read
       security-events: write
