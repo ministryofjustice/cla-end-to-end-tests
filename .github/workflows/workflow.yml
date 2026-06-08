@@ -13,14 +13,14 @@ jobs:
       id-token: write
     uses: ./.github/workflows/e2e.yml
     with:
-      CLA_FRONTEND_ECR_REGION: ${{ vars.CLA_FRONTEND_ECR_REGION}}
-      CLA_BACKEND_ECR_REGION: ${{ vars.CLA_BACKEND_ECR_REGION}}
-      SOCKET_SERVER_ECR_REGION: ${{ vars.SOCKET_SERVER_ECR_REGION }}
+      CLA_FRONTEND_ECR_REGION: "${{ vars.CLA_FRONTEND_ECR_REGION }}"
+      CLA_BACKEND_ECR_REGION: "${{ vars.CLA_BACKEND_ECR_REGION }}"
+      SOCKET_SERVER_ECR_REGION: "${{ vars.SOCKET_SERVER_ECR_REGION }}"
     secrets: inherit
 
   snyk-code-scan:
     name: Snyk Code Scan
-    if: always()
+    if: ${{ always() }}
     uses: ministryofjustice/laa-reusable-github-actions/.github/workflows/sast.yml@a652d1076b05dd80d3ab619d263aac6ce526d70b
     permissions:
       id-token: write
