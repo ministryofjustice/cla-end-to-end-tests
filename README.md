@@ -4,68 +4,45 @@
 
 ## 📋 Overview
 
-This is the Behave end-to-end test suite which covers the CLA applications for the laa-cla-fala team.
-This repository defines a CircleCI orb and a Docker image alongside the `behave` test suite itself,
-allowing portability to the CI pipelines of the other applications.
+This is the Behave end-to-end test suite which covers the CLA applications for the Changes to Client Access to Legal Advice (CALA) team.
+This repository defines a GitHub Action reusable workflow `e2e.yml` alongside the `behave` test suite itself,
+allowing portability to the CI pipelines of other applications.
 
-## ⚙️ CircleCI Orb
+## ⚙️ GHA Reusable workflow
 
-The orb is defined as a single `orb.yml` file and is currently published manually to a dev tag.
-Once we have credentials from the Operations Engineering team, we will be able to publish production
-releases of the orb, which we will do from CircleCI.
+Using GitHub Actions, we have the reusable workflow `e2e.yml` which it can be used across any of our services.
+To do so, you add this step in your pipeline `uses: ministryofjustice/cla-end-to-end-tests/.github/workflows/e2e.yml@main`
 
-### 📦 Publishing the Orb
+### 🔧 What it does
 
-To publish the dev orb, you need to have the `CircleCI CLI` installed and set up, and to be a member
-of the `ministryofjustice` organisation, which you should be from GitHub.
-
-```bash
-circleci orb publish orb.yml ministryofjustice/cla-end-to-end-tests@dev:first
-```
-
-To incorporate orb publishing into the CI pipeline in the future, we may want to use the `circleci/orb-tools` orb.
-
-### 🔧 Job and Command
-
-The orb exposes a `behave` job and a `behave` command. The command should not need to be used directly:
-the job simply runs this command on a suitable executor (using the Docker image built from this repository).
+The workflow pulls the latest images of the repos that are being tested (cla_frontend, cla_frontend_socketserver, cla_backend),
+and runs the tests defined in this repo. 
 
 ### 💡 Example Usage
 
-The `config.yml` of an application using the orb may look something like this:
+The `e2e.yml` of an application using the workflow may look something like this:
 
 ```yaml
-version: 2.1
-orbs:
-  cla-end-to-end-tests: ministryofjustice/cla-end-to-end-tests@dev:first
-
-workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - test
-      - build:
-          requires:
-            - test
-      - cla-end-to-end-tests/behave:
-          requires:
-            - build
-          pre-steps:
-            - checkout:
-                path: cla_backend
-            - run:
-                command: |
-                  cd cla_backend
-                  source .circleci/define_build_environment_variables testing
-                  echo "export CLA_BACKEND_IMAGE=$ECR_DEPLOY_IMAGE" >> $BASH_ENV
-                  echo "Setting CLA Backend image $ECR_DEPLOY_IMAGE"
+  end-to-end-tests:
+    needs: [build-and-push]
+    permissions:
+      contents: read
+      id-token: write
+    uses: ministryofjustice/cla-end-to-end-tests/.github/workflows/e2e.yml@main
+    with:
+      CLA_FRONTEND_IMAGE: "${{ vars.CLA_FRONTEND_ECR_REPOSITORY }}:${{ needs.build-and-push.outputs.image_tag }}"
+      CLA_FRONTEND_ECR_REGION: ${{ vars.CLA_FRONTEND_ECR_REGION}}
+      CLA_BACKEND_ECR_REGION: ${{ vars.CLA_BACKEND_ECR_REGION}}
+      SOCKET_SERVER_ECR_REGION: ${{ vars.SOCKET_SERVER_ECR_REGION }}
+    secrets:
+      CLA_FRONTEND_ECR_ROLE_TO_ASSUME: ${{ secrets.CLA_FRONTEND_ECR_ROLE_TO_ASSUME }}
+      CLA_BACKEND_ECR_ROLE_TO_ASSUME: ${{ secrets.CLA_BACKEND_ECR_ROLE_TO_ASSUME }}
+      SOCKET_SERVER_ECR_ROLE_TO_ASSUME: ${{ secrets.SOCKET_SERVER_ECR_ROLE_TO_ASSUME }}
+      ECR_REGISTRY_URL: ${{ secrets.ECR_REGISTRY_URL }}
 ```
 
-In this example, a command is run in the `pre-steps` stage in order to set an environment variable in the `$BASH_ENV`,
-allowing the pipeline to specify that the test suite uses the newly-built application image rather than
-the default.
+In this example from cla_frontend, you can see the action requires the [build-and-push] action first in order to set 
+an environment variable in the `CLA_FRONTEND_IMAGE`, allowing the pipeline to specify that the test suite uses the newly-built
+application image rather than the default.
 
-## 🐳 Docker Image
 
-This repository builds a Docker image that is then used as the executor for the `behave` CircleCI job.
-You are unlikely to need to use the image directly elsewhere.
