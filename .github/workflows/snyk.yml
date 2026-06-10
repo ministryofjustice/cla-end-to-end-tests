@@ -12,6 +12,7 @@ jobs:
       actions: read
       contents: read
       security-events: write
+      id-token: write  
 
     steps:
       - name: Checkout repository
@@ -33,12 +34,15 @@ jobs:
       - name: Install Snyk CLI
         uses: snyk/actions/setup@9adf32b1121593767fc3c057af55b55db032dc04
 
-      - name: Authenticate to Snyk
-        env:
-          SNYK_CLIENT_ID: ${{ secrets.SNYK_CLIENT_ID }}
-          SNYK_CLIENT_SECRET: ${{ secrets.SNYK_CLIENT_SECRET }}
-        run: |
-          snyk auth
+      - name: Obtain short-lived Snyk token
+        id: snyk-auth
+        uses: ministryofjustice/laa-reusable-github-actions/.github/actions/snyk-auth@6db001458db30ae747d9eb8eb25707ce52b359bc
+        with:
+          client_id: ${{ secrets.SNYK_CLIENT_ID }}
+          client_secret: ${{ secrets.SNYK_CLIENT_SECRET }}
+
+      - name: Set Snyk token
+        run: echo "SNYK_TOKEN=${{ steps.snyk-auth.outputs.token }}" >> $GITHUB_ENV
 
       - name: Scan container image
         env:
