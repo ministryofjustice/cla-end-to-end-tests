@@ -22,7 +22,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t "${{ steps.meta.outputs.image_uri }}" -f behave/Dockerfile .
+          docker build -t "${{ steps.meta.outputs.image_uri }}" -f behave/Dockerfile behave
 
   snyk-container-scan:
     name: Snyk Container Scan
