@@ -46,8 +46,9 @@ jobs:
 
       - name: Scan container image
         env:
-          IMAGE_URI: ${{ steps.meta.outputs.image_uri }}
-          MINIMUM_THRESHOLD: high
+            SNYK_OAUTH_TOKEN: ${{ steps.snyk-auth.outputs.token }}
+            IMAGE_URI: ${{ steps.meta.outputs.image_uri }}
+            MINIMUM_THRESHOLD: high
         run: |
           mkdir -p sarif
 
