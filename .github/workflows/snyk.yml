@@ -20,12 +20,9 @@ jobs:
           IMAGE_URI=end-to-end-test:${GITHUB_SHA}
           echo "image_uri=$IMAGE_URI" >> $GITHUB_OUTPUT
 
-       - name: Build Docker image
+      - name: Build Docker image
         run: |
-            docker build \
-            -t "${{ steps.meta.outputs.image_uri }}" \
-            -f behave/Dockerfile \
-            behave
+          docker build -t "${{ steps.meta.outputs.image_uri }}" -f behave/Dockerfile
 
   snyk-container-scan:
     name: Snyk Container Scan
