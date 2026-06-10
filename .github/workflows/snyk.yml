@@ -17,7 +17,7 @@ jobs:
       - name: Generate image URI
         id: meta
         run: |
-          IMAGE_URI=end-to-end-test:${GITHUB_SHA}
+          IMAGE_URI="end-to-end-test"
           echo "image_uri=$IMAGE_URI" >> $GITHUB_OUTPUT
 
       - name: Build Docker image
