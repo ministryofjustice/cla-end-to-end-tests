@@ -41,9 +41,6 @@ jobs:
           client_id: ${{ secrets.SNYK_CLIENT_ID }}
           client_secret: ${{ secrets.SNYK_CLIENT_SECRET }}
 
-      - name: Set Snyk token
-        run: echo "SNYK_TOKEN=${{ steps.snyk-auth.outputs.token }}" >> $GITHUB_ENV
-
       - name: Scan container image
         env:
             SNYK_OAUTH_TOKEN: ${{ steps.snyk-auth.outputs.token }}
