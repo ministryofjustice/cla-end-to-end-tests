@@ -1,0 +1,43 @@
+name: Build and run Snyk scan on Docker Image
+on:
+  pull_request:
+
+jobs:
+  build-image:
+    name: Build End-to-End Test Image
+    runs-on: ubuntu-latest
+
+    outputs:
+      image_uri: ${{ steps.meta.outputs.image_uri }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+
+      - name: Generate image URI
+        id: meta
+        run: |
+          IMAGE_URI=end-to-end-test:${GITHUB_SHA}
+          echo "image_uri=$IMAGE_URI" >> $GITHUB_OUTPUT
+
+      - name: Build Docker image
+        run: |
+          docker build -t "${{ steps.meta.outputs.image_uri }}" .
+
+  snyk-container-scan:
+    name: Snyk Container Scan
+    needs: build-image
+
+    uses: ministryofjustice/laa-reusable-github-actions/.github/workflows/sast.yml@a652d1076b05dd80d3ab619d263aac6ce526d70b
+    with:
+      image_uri: ${{ needs.build-image.outputs.image_uri }}
+
+    permissions:
+      actions: read
+      id-token: write
+      contents: read
+      security-events: write
+
+    secrets:
+      SNYK_CLIENT_ID: ${{ secrets.SNYK_CLIENT_ID }}
+      SNYK_CLIENT_SECRET: ${{ secrets.SNYK_CLIENT_SECRET }}
