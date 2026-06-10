@@ -12,7 +12,7 @@ jobs:
       actions: read
       contents: read
       security-events: write
-      id-token: write  
+      id-token: write
 
     steps:
       - name: Checkout repository
@@ -47,14 +47,16 @@ jobs:
       - name: Scan container image
         env:
           IMAGE_URI: ${{ steps.meta.outputs.image_uri }}
+          MINIMUM_THRESHOLD: high
         run: |
           mkdir -p sarif
 
           snyk container test "$IMAGE_URI" \
-            --severity-threshold=high \
+            --severity-threshold=$MINIMUM_THRESHOLD \
             --sarif-file-output=sarif/snyk.sarif
 
       - name: Upload SARIF results
+        if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: sarif/snyk.sarif
