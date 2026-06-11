@@ -5,6 +5,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   run-tests:
@@ -13,7 +14,7 @@ jobs:
       id-token: write
     uses: ./.github/workflows/e2e.yml
     with:
-      CLA_FRONTEND_ECR_REGION: ${{ vars.CLA_FRONTEND_ECR_REGION}}
-      CLA_BACKEND_ECR_REGION: ${{ vars.CLA_BACKEND_ECR_REGION}}
-      SOCKET_SERVER_ECR_REGION: ${{ vars.SOCKET_SERVER_ECR_REGION }}
+      CLA_FRONTEND_ECR_REGION: "${{ vars.CLA_FRONTEND_ECR_REGION }}"
+      CLA_BACKEND_ECR_REGION: "${{ vars.CLA_BACKEND_ECR_REGION }}"
+      SOCKET_SERVER_ECR_REGION: "${{ vars.SOCKET_SERVER_ECR_REGION }}"
     secrets: inherit
