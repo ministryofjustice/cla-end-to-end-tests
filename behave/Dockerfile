@@ -24,7 +24,8 @@ RUN apk add --no-cache \
 
 COPY requirements/requirements*.txt requirements/
 RUN pip3 install --no-cache-dir -r requirements/requirements-git.txt \
- && pip3 install --no-cache-dir -r requirements/requirements.txt
+ && pip3 install --no-cache-dir -r requirements/requirements.txt \
+ && pip3 install -U setuptools==82.0.1
 
 RUN mkdir /behave
 WORKDIR /behave
