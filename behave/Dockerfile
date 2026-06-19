@@ -1,8 +1,7 @@
-FROM alpine:3.9
+FROM python:3.10-alpine
 
 RUN apk add --no-cache \
       bash \
-      py3-pip \
       tzdata \
       gettext
 
@@ -17,12 +16,11 @@ RUN apk add --no-cache \
       postgresql-dev \
       gcc \
       musl-dev \
-      postgresql-client \
-      python3-dev && \
+      postgresql-client && \
       pip3 install -U \
-      setuptools==59.6.0 \
-      pip==21.3.1 \
-      wheel==0.37.1
+      setuptools \
+      pip \
+      wheel
 
 COPY requirements/requirements*.txt requirements/
 RUN pip3 install --no-cache-dir -r requirements/requirements-git.txt \

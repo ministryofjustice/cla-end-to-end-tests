@@ -9,6 +9,3 @@ pre-commit==2.21.0
 axe-selenium-python==2.1.6
 psycopg2==2.9.5
 tabulate==0.8.10
-
-virtualenv<20.16
-importlib-resources<5.3
