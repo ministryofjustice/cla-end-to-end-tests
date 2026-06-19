@@ -1,9 +1,6 @@
-FROM python:3.10-slim-bookworm
+FROM python:3.10-slim-bookworm AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      bash \
-      tzdata \
-      gettext \
       build-essential \
       curl \
       git \
@@ -11,14 +8,29 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       libxslt-dev \
       libpq-dev \
       gcc \
-      postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install -U setuptools==82.0.1 pip wheel
+RUN pip3 install -U setuptools==70.0.0 pip wheel
 
 COPY requirements/requirements*.txt requirements/
 RUN pip3 install --no-cache-dir -r requirements/requirements-git.txt \
  && pip3 install --no-cache-dir -r requirements/requirements.txt
+
+
+FROM python:3.10-slim-bookworm
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      bash \
+      tzdata \
+      gettext \
+      libpq5 \
+      postgresql-client \
+      zlib1g \
+    && apt-get upgrade -y \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
 
 RUN mkdir /behave
 WORKDIR /behave

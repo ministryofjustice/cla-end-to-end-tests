@@ -207,8 +207,8 @@ def step_impl_select_alt_help_org(context, organisation):
         '//form[@name="alternative_help"]'
     )
     # This will only find the first search result which is fine because we are searching for a specific organisation
-    parent_wrapper = search_results_form.find_element(By.XPATH, 
-        './/input[@name="selected_providers"]/ancestor::div[1]'
+    parent_wrapper = search_results_form.find_element(
+        By.XPATH, './/input[@name="selected_providers"]/ancestor::div[1]'
     )
     assert (
         parent_wrapper.find_element(By.CSS_SELECTOR, ".FormRow-label strong").text
@@ -474,15 +474,16 @@ def step_impl_choose_provider(context):
     # if not then we need to select one from the list below
     # if out of hours then there will be no "pre-selected provider"
     selected_provider_name = None
-    if form.find_elements(By.CSS_SELECTOR, 
-        "div.ContactBlock ContactBlock--grey clearfix"
+    if form.find_elements(
+        By.CSS_SELECTOR, "div.ContactBlock ContactBlock--grey clearfix"
     ):
-        selected_provider_name = form.find_elements(By.CSS_SELECTOR, 
-            "h2.ContactBlock-heading"
+        selected_provider_name = form.find_elements(
+            By.CSS_SELECTOR, "h2.ContactBlock-heading"
         )[0].text
     if not selected_provider_name == CLA_SPECIALIST_PROVIDERS_NAME:
-        form.find_element(By.XPATH, 
-            f""".//strong[@class='ng-binding'][text()='{CLA_SPECIALIST_PROVIDERS_NAME}']"""
+        form.find_element(
+            By.XPATH,
+            f""".//strong[@class='ng-binding'][text()='{CLA_SPECIALIST_PROVIDERS_NAME}']""",
         ).click()
     headings = form.find_elements(By.CSS_SELECTOR, "h2.ContactBlock-heading")
     context.provider_selected = headings[0].text
@@ -518,8 +519,8 @@ def step_impl_case_removed_from_list(context):
 
     def wait_until_dashboard_page_is_loaded(*args):
         try:
-            table = context.helperfunc.driver().find_element(By.CSS_SELECTOR, 
-                ".ListTable"
+            table = context.helperfunc.driver().find_element(
+                By.CSS_SELECTOR, ".ListTable"
             )
             return context.case_id not in table.text
         except Exception:
@@ -536,8 +537,8 @@ def step_impl_case_removed_from_list_ooh(context):
 
     def wait_until_dashboard_page_is_loaded(*args):
         try:
-            table = context.helperfunc.driver().find_element(By.CSS_SELECTOR, 
-                ".ListTable"
+            table = context.helperfunc.driver().find_element(
+                By.CSS_SELECTOR, ".ListTable"
             )
             return context.case_id not in table.text
         except Exception:

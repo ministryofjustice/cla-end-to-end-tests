@@ -47,8 +47,8 @@ def step_impl_under_eighteen_table_and_values_checks(context):
 
         # Yes or no is visible as a value in the input field on the Legal Help Form.
         # Find header to ensure finances is visible
-        context.legal_help_form.find_element(By.XPATH, 
-            "//h2[contains(text(), 'Your Finances')]"
+        context.legal_help_form.find_element(
+            By.XPATH, "//h2[contains(text(), 'Your Finances')]"
         )
 
         # Find the question of the table row.
@@ -56,8 +56,8 @@ def step_impl_under_eighteen_table_and_values_checks(context):
         context.legal_help_form.find_element(By.XPATH, table_title)
 
         # Check input value of the question
-        input_value = context.legal_help_form.find_element(By.XPATH, 
-            table_title + "/../td/input"
+        input_value = context.legal_help_form.find_element(
+            By.XPATH, table_title + "/../td/input"
         )
         assert (
             input_value.get_attribute("value") == answer
@@ -73,8 +73,8 @@ def step_impl_under_eighteen_table_and_values_checks_not_visible(context):
             context.legal_help_form = context.helperfunc.find_by_xpath(
                 "//h2[contains(text(), 'Your Finances')]"
             )
-            context.legal_help_form.find_element(By.XPATH, 
-                f"//../table/tbody/tr/td[contains(text(), '{question}')]"
+            context.legal_help_form.find_element(
+                By.XPATH, f"//../table/tbody/tr/td[contains(text(), '{question}')]"
             )
             return False
         except NoSuchElementException:

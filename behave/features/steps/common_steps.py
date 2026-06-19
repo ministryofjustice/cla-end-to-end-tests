@@ -389,8 +389,8 @@ def assert_select_radio_button(context, optional, name):
 
 
 def assert_element_does_not_appear(context, name):
-    radio_button_element = context.helperfunc.driver().find_elements(By.XPATH, 
-        f"//input[@name='{name}']"
+    radio_button_element = context.helperfunc.driver().find_elements(
+        By.XPATH, f"//input[@name='{name}']"
     )
     question = name.replace("_", " ")
     assert len(radio_button_element) == 0, f"Expected {question} question to be hidden"
