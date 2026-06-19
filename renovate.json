@@ -1,5 +1,14 @@
 {
-    "extends": [
-        "github>ministryofjustice/devsecops-actions"
+  "extends": [
+    "github>ministryofjustice/devsecops-actions"
+  ],
+  "pip-compile": {
+    "managerFilePatterns": [
+      "behave/requirements/requirements\\.in",
+      "behave/requirements/requirements-git\\.in"
     ]
+  },
+  "pip_requirements": {
+    "enabled": false
+  }
 }
