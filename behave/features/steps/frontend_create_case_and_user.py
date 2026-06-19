@@ -22,7 +22,7 @@ def step_impl_search_results(context):
         Given I am on the 'call centre dashboard' page
     """)
     # now check and see if we have cases that are assigned to this user
-    case_rows = context.helperfunc.driver().find_elements_by_xpath(
+    case_rows = context.helperfunc.driver().find_elements(By.XPATH, 
         '//div/table[@class="ListTable"]/tbody/tr'
     )
     assert case_rows is not None and filter(

@@ -1,4 +1,5 @@
 from behave import step, use_step_matcher
+from selenium.webdriver.common.by import By
 from features.steps.common_steps import (
     green_checkmark_appears_on_tab,
     assert_select_radio_button,
@@ -82,14 +83,14 @@ def step_impl_means_test_result(context, optional):
 @step("I select the '(?P<optional>.*?)' button in the pop-up")
 def step_impl_popup_button(context, optional):
     modal = context.helperfunc.find_by_css_selector(".modal-dialog")
-    modal.find_element_by_xpath("//button[@type='submit']").click()
+    modal.find_element(By.XPATH, "//button[@type='submit']").click()
 
 
 @step("the green tick is (?P<optional>not )?present in the Finance tab")
 def step_impl_green_tick_present(context, optional):
     classes = (
         context.helperfunc.find_by_css_selector("ul.Tabs")
-        .find_element_by_link_text("Finances")
+        .find_element(By.LINK_TEXT, "Finances")
         .get_attribute("class")
     )
     if optional:
