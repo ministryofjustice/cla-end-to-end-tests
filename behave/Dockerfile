@@ -1,32 +1,34 @@
-FROM alpine:3.9
+FROM python:3.10-slim-bookworm AS builder
 
-RUN apk add --no-cache \
-      bash \
-      py3-pip \
-      tzdata \
-      gettext
-
-# To install pip dependencies
-RUN apk add --no-cache \
-      build-base \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      build-essential \
       curl \
       git \
       libxml2-dev \
       libxslt-dev \
-      linux-headers \
-      postgresql-dev \
+      libpq-dev \
       gcc \
-      musl-dev \
-      postgresql-client \
-      python3-dev && \
-      pip3 install -U \
-      setuptools==59.6.0 \
-      pip==21.3.1 \
-      wheel==0.37.1
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install -U setuptools==70.0.0 pip wheel
 
 COPY requirements/requirements*.txt requirements/
 RUN pip3 install --no-cache-dir -r requirements/requirements-git.txt \
  && pip3 install --no-cache-dir -r requirements/requirements.txt
+
+
+FROM python:3.10-slim-bookworm
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      bash \
+      tzdata \
+      gettext \
+      libpq5 \
+      postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
 
 RUN mkdir /behave
 WORKDIR /behave
