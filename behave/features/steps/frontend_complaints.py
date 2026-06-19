@@ -1,4 +1,5 @@
 from behave import step
+from selenium.webdriver.common.by import By
 from common_steps import click_on_hyperlink_and_get_href, assert_header_on_page
 
 
@@ -26,10 +27,7 @@ def step_impl_complaints_search(context, complaint_text):
 
 @step("I can select the complaint '{complaint_num}'")
 def step_impl_complaint_select(context, complaint_num):
-    assert (
-        context.helperfunc.find_by_link_text(complaint_num) is not None
-    ), "Complaint not found"
-    context.helperfunc.find_by_link_text(complaint_num).click()
+    context.helperfunc.click_button(By.LINK_TEXT, complaint_num)
 
 
 @step("I am on the complaint '{complaint_num}' detail page")
