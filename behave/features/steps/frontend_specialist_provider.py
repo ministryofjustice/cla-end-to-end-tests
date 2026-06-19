@@ -537,7 +537,7 @@ def step_impl_select_date_for_upload(context):
         assert False, f"Could not find {new_date} in select options"
 
 
-@step("I select the 'upload' button")
+@step("I select the 'Upload' button")
 def step_impl_select_upload(context):
     button = context.helperfunc.find_by_xpath(
         "//button[@type='submit'][text()='Upload']"
