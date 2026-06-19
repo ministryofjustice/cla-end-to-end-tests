@@ -1,32 +1,24 @@
-FROM python:3.10-alpine
+FROM python:3.10-slim
 
-RUN apk add --no-cache \
+RUN apt-get update && apt-get install -y --no-install-recommends \
       bash \
       tzdata \
-      gettext
-
-# To install pip dependencies
-RUN apk add --no-cache \
-      build-base \
+      gettext \
+      build-essential \
       curl \
       git \
       libxml2-dev \
       libxslt-dev \
-      linux-headers \
-      postgresql-dev \
+      libpq-dev \
       gcc \
-      musl-dev \
-      postgresql-client && \
-      pip3 install -U \
-      setuptools==82.0.1 \
-      pip \
-      wheel
+      postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install -U setuptools==82.0.1 pip wheel
 
 COPY requirements/requirements*.txt requirements/
 RUN pip3 install --no-cache-dir -r requirements/requirements-git.txt \
  && pip3 install --no-cache-dir -r requirements/requirements.txt
-
-RUN pip3 install setuptools==82.0.1
 
 RUN mkdir /behave
 WORKDIR /behave
