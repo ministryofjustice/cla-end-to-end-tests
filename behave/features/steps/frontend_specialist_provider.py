@@ -305,7 +305,7 @@ def assert_four_column_table(table, root_element):
             label_element is not None
         ), f"Could not find question on legal help form: {question}"
         parent_element = label_element.find_element(By.XPATH, "./..//ancestor::tr")
-        elements = parent_element.find_elements(By.TAG_NAME, "td input")
+        elements = parent_element.find_elements(By.CSS_SELECTOR, "td input")
 
         assert_cell(elements[0], question, row[COL_TWO_KEY])
         if len(row) > 2 and row[COL_THREE_KEY].lower() != "n/a":
