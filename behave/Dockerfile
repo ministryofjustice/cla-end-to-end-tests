@@ -18,7 +18,7 @@ RUN apk add --no-cache \
       musl-dev \
       postgresql-client && \
       pip3 install -U \
-      setuptools \
+      setuptools==82.0.1 \
       pip \
       wheel
 
