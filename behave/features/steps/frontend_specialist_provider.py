@@ -311,7 +311,7 @@ def assert_four_column_table(table, root_element):
             assert_cell(elements[2], question, row[COL_FOUR_KEY])
 
 
-@step("The legal help form Your details section has the values")
+@step("The legal help form Your Details section has the values")
 def step_impl_your_details_values(context):
     driver = context.helperfunc.driver()
     heading_element = driver.find_element_by_xpath("//h2[text()='Your Details']")
