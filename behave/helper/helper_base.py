@@ -140,10 +140,11 @@ class HelperFunc(object):
         return self.call_centre_backend.get_future_callbacks()
 
     def click_button(self, selector_type, selector):
-        wait = WebDriverWait(
-            self._driver, 10, ignored_exceptions=(StaleElementReferenceException,)
-        )
-        wait.until(EC.element_to_be_clickable((selector_type, selector)))
+        def attempt_click(driver):
+            try:
+                driver.find_element(selector_type, selector).click()
+                return True
+            except StaleElementReferenceException:
+                return False
 
-        # Re-fetch the element to ensure it's fresh.
-        self._driver.find_element(selector_type, selector).click()
+        WebDriverWait(self._driver, 10).until(attempt_click)
