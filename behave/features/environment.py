@@ -1,7 +1,12 @@
+import base64
 import os
 import time
 import logging
 import subprocess
+
+# base64.encodestring was removed in Python 3.9; selenium 3.x still uses it
+if not hasattr(base64, "encodestring"):
+    base64.encodestring = base64.encodebytes
 from behave.contrib.scenario_autoretry import patch_scenario_with_autoretry
 from behave.log_capture import capture
 

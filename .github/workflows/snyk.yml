@@ -1,11 +1,11 @@
-name: Build and run Snyk scan on Docker Image
+name: Snyk Container Security Scan
 
 on:
   pull_request:
 
 jobs:
   build-and-scan:
-    name: Build Image and Run Snyk Scan
+    name: Scan Docker image for vulnerabilities
     runs-on: ubuntu-latest
 
     permissions:
