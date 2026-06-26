@@ -5,7 +5,7 @@ parse-type==0.6.6
 selenium==3.141.0
 six==1.16.0
 urllib3==1.26.20
-requests==2.32.5
+requests==2.33.0
 pre-commit==2.21.0
 axe-selenium-python==2.1.6
 psycopg2==2.9.11
