@@ -9,10 +9,10 @@ certifi==2025.4.26
 charset-normalizer==2.0.12
     # via requests
 cla-common @ git+https://github.com/ministryofjustice/cla_common.git@0.3.25
-    # via -r requirements/requirements-git.in
+    # via -r requirements-git.in
 django-extended-choices==0.3.0
     # via cla-common
-idna==3.10
+idna==3.15
     # via requests
 python-dateutil==2.9.0.post0
     # via cla-common
