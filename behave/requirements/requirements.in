@@ -4,7 +4,7 @@ parse==1.21.1
 parse-type==0.6.6
 selenium==3.141.0
 six==1.16.0
-urllib3==1.26.20
+urllib3==2.7.0
 requests==2.33.0
 pre-commit==2.21.0
 axe-selenium-python==2.1.6
