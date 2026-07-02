@@ -180,8 +180,8 @@ def step_impl_call_has_started(context):
     ), "CALL_STARTED code not found in case logs"
     wrapper_element = context.helperfunc.find_by_css_selector(".CaseHistory")
     for case_log in case_logs:
-        note_element = wrapper_element.find_element(By.XPATH, 
-            f".//span[text()='{case_log['notes']}']"
+        note_element = wrapper_element.find_element(
+            By.XPATH, f".//span[text()='{case_log['notes']}']"
         )
         assert note_element is not None, f"Could not find case log: {case_log['notes']}"
 
@@ -191,8 +191,8 @@ def step_impl_remove_callback(context):
     callback_wrapper_element = context.helperfunc.find_by_css_selector(
         "callback-status"
     )
-    remove_btn_element = callback_wrapper_element.find_element(By.XPATH, 
-        ".//a[text()='Remove callback']"
+    remove_btn_element = callback_wrapper_element.find_element(
+        By.XPATH, ".//a[text()='Remove callback']"
     )
     assert remove_btn_element is not None, "Could not find  Remove callback button"
     remove_btn_element.click()
@@ -206,8 +206,8 @@ def step_impl_remove_callback(context):
     )
 
     def wait_until_callback_is_stopped(*args, **kwargs):
-        callback_stopped_element = case_history_wrapper_element.find_element(By.XPATH, 
-            ".//span[text()='Callback stopped']"
+        callback_stopped_element = case_history_wrapper_element.find_element(
+            By.XPATH, ".//span[text()='Callback stopped']"
         )
         if callback_stopped_element:
             return True

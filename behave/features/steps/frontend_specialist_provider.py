@@ -121,9 +121,9 @@ def step_impl_view_operator_case_details(context):
     case_history = context.helperfunc.find_by_class("CaseHistory")
     assert case_history is not None
     # check that there are operator comments
-    operator_comments = context.helperfunc.find_by_class(
-        "CommentBlock"
-    ).find_elements(By.XPATH, "./child::*")
+    operator_comments = context.helperfunc.find_by_class("CommentBlock").find_elements(
+        By.XPATH, "./child::*"
+    )
     # "operator said" is the second child and then there are case notes below that.
     assert len(operator_comments) >= 3
 
@@ -147,13 +147,13 @@ def step_impl_view_scope_assessment(context):
     )
     assert scope_description is not None
     # check that there is a category of law and that it is INSCOPE
-    scope_inscope = scope_description.find_elements(By.XPATH, 
-        './/div/p[text()="INSCOPE"]'
+    scope_inscope = scope_description.find_elements(
+        By.XPATH, './/div/p[text()="INSCOPE"]'
     )
     assert scope_inscope is not None
     # scope_descriptors = scope_description.find_element(By.XPATH, f'.//div/p')
-    scope_cat_of_law = scope_description.find_element(By.XPATH, 
-        './/div/p[starts-with(.,"Category of law")]'
+    scope_cat_of_law = scope_description.find_element(
+        By.XPATH, './/div/p[starts-with(.,"Category of law")]'
     )
     assert scope_cat_of_law is not None and len(scope_cat_of_law.text) > len(
         "Category of law:"
@@ -174,8 +174,9 @@ def step_impl_select_case_and_legal_help_form(context):
     try:
         # By using find_element_by_xpath, NoSuchElementException can be raised if not found.
         context.case_details = context.helperfunc.find_by_xpath("//*[@id='wrapper']")
-        accept_button = context.case_details.find_element(By.XPATH, 
-            f"//button[@name='" f"{CLA_SPECIALIST_CASE_BANNER_BUTTONS['Accept']}']"
+        accept_button = context.case_details.find_element(
+            By.XPATH,
+            f"//button[@name='" f"{CLA_SPECIALIST_CASE_BANNER_BUTTONS['Accept']}']",
         )
         accept_button.click()
         find_help_form_link(context)
@@ -245,8 +246,8 @@ def step_impl_view_accepted_case(context):
 @step("I select the Legal help form")
 def step_impl_select_legl_help(context):
     wrapper = context.helperfunc.find_by_css_selector(".CaseBar-actions")
-    legal_help_form_link = wrapper.find_element(By.XPATH, 
-        "//a[text()='Legal help form']"
+    legal_help_form_link = wrapper.find_element(
+        By.XPATH, "//a[text()='Legal help form']"
     )
     assert legal_help_form_link is not None, "Could not find legal help form link"
     legal_help_form_link.click()
@@ -254,8 +255,8 @@ def step_impl_select_legl_help(context):
 
 def assert_your_details(table, root_element):
     for row in table:
-        label_element = root_element.find_element(By.XPATH, 
-            f".//*[text()='{row['field']}']"
+        label_element = root_element.find_element(
+            By.XPATH, f".//*[text()='{row['field']}']"
         )
         assert (
             label_element is not None
@@ -297,7 +298,9 @@ def assert_four_column_table(table, root_element):
 
     for row in table:
         question = row[QUESTION_COL_KEY]
-        label_element = root_element.find_element(By.XPATH, f".//*[text()='{question}']")
+        label_element = root_element.find_element(
+            By.XPATH, f".//*[text()='{question}']"
+        )
         assert (
             label_element is not None
         ), f"Could not find question on legal help form: {question}"
@@ -334,10 +337,12 @@ def step_impl_income_values(context):
     driver = context.helperfunc.driver()
     heading_element = driver.find_element(By.XPATH, "//h2[text()='Your Income']")
     wrapper_element = heading_element.find_element(By.XPATH, "./..")
-    sub_heading_element = wrapper_element.find_element(By.XPATH, 
-        ".//*[text()='Less monthly allowances']"
+    sub_heading_element = wrapper_element.find_element(
+        By.XPATH, ".//*[text()='Less monthly allowances']"
     )
-    wrapper_element = sub_heading_element.find_element(By.XPATH, "./..//ancestor::table")
+    wrapper_element = sub_heading_element.find_element(
+        By.XPATH, "./..//ancestor::table"
+    )
     assert_four_column_table(context.table, wrapper_element)
 
 
@@ -393,8 +398,8 @@ def step_impl_split_case_modal(context):
 @step("I select a reject reason of '{reject_reason}'")
 def step_impl_select_reject_reason(context, reject_reason):
     context.modal = context.helperfunc.find_by_css_selector(".modal-dialog")
-    modal_input = context.modal.find_element(By.XPATH, 
-        f"//input[@value='{reject_reason}']"
+    modal_input = context.modal.find_element(
+        By.XPATH, f"//input[@value='{reject_reason}']"
     )
     assert modal_input is not None
     modal_input.click()
@@ -404,8 +409,8 @@ def step_impl_select_reject_reason(context, reject_reason):
 def step_impl_enter_reason(context):
     context.modal = context.helperfunc.find_by_css_selector(".modal-dialog")
     comment = LOREM_IPSUM_STRING
-    text_area = context.modal.find_element(By.XPATH, 
-        '//textarea[@name="outcomeNotes"][@placeholder="Notes"]'
+    text_area = context.modal.find_element(
+        By.XPATH, '//textarea[@name="outcomeNotes"][@placeholder="Notes"]'
     )
     text_area.send_keys(comment)
     assert text_area.get_attribute("value") == comment
@@ -428,13 +433,15 @@ def step_impl_new_case_dropdown(context):
     # Find the modal container
     context.modal = context.helperfunc.find_by_css_selector(".modal-dialog")
     # Inside modal find the form we want to focus on.
-    context.form = context.modal.find_element(By.XPATH, "//form[@name='split_case_frm']")
+    context.form = context.modal.find_element(
+        By.XPATH, "//form[@name='split_case_frm']"
+    )
     for row in context.table:
         label = row["label"]
         value = row["value"]
 
-        label_link = context.form.find_element(By.XPATH, 
-            f"//span[text()='{label}']/../../span/span/div/a"
+        label_link = context.form.find_element(
+            By.XPATH, f"//span[text()='{label}']/../../span/span/div/a"
         )
         # Clicking this link will automatically focus the input for us to type into
         label_link.click()
@@ -456,8 +463,10 @@ def step_impl_new_case_dropdown(context):
         list_item.click()
 
         # Once list item has been selected, check the anchor contains the correct value
-        label_value = context.form.find_element(By.XPATH, 
-            f"//span[text()='{label}']" f"/../../span/span/div/a/span[text()='{value}']"
+        label_value = context.form.find_element(
+            By.XPATH,
+            f"//span[text()='{label}']"
+            f"/../../span/span/div/a/span[text()='{value}']",
         )
         assert label_value.text == value
 
@@ -466,8 +475,8 @@ def step_impl_new_case_dropdown(context):
 def step_impl_enter_comment(context):
     context.modal = context.helperfunc.find_by_css_selector(".modal-dialog")
     comment = CASE_SPLIT_TEXT
-    text_area = context.modal.find_element(By.XPATH, 
-        '//textarea[@name="notes"][@placeholder="Enter comments"]'
+    text_area = context.modal.find_element(
+        By.XPATH, '//textarea[@name="notes"][@placeholder="Enter comments"]'
     )
     text_area.send_keys(comment)
     assert text_area.get_attribute("value") == comment
@@ -476,8 +485,9 @@ def step_impl_enter_comment(context):
 @step("I select '{value}' for the 'Assign' radio options")
 def step_impl_select_assign(context, value):
     context.modal = context.helperfunc.find_by_css_selector(".modal-dialog")
-    modal_input = context.modal.find_element(By.XPATH, 
-        f"//input[@value=" f"'{CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS[value]}']"
+    modal_input = context.modal.find_element(
+        By.XPATH,
+        f"//input[@value=" f"'{CLA_SPECIALIST_SPLIT_CASE_RADIO_OPTIONS[value]}']",
     )
     assert modal_input is not None
     modal_input.click()

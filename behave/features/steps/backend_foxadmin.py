@@ -188,7 +188,9 @@ def step_impl_new_operator_user_created(context):
     if (
         # are we still on the same page and there are no errors
         context.helperfunc.get_current_path() == "/admin/call_centre/operator/add/"
-        and context.helperfunc.driver().find_element(By.XPATH, "//p[@class='errornote']")
+        and context.helperfunc.driver().find_element(
+            By.XPATH, "//p[@class='errornote']"
+        )
         is not None
     ):
         assert False, "There are errors creating that user"
@@ -242,8 +244,8 @@ def step_impl_select_delete_user(context):
 
 @step("I am taken to the user's details page")
 def step_impl_user_details_page(context):
-    user_input = context.helperfunc.driver().find_element(By.XPATH, 
-        "//*[@id='id_username']"
+    user_input = context.helperfunc.driver().find_element(
+        By.XPATH, "//*[@id='id_username']"
     )
     assert (
         user_input.get_attribute("value") == USERS["NEWLY_CREATED_OPERATOR"]["username"]
@@ -254,13 +256,14 @@ def step_impl_user_details_page(context):
 @step("I am taken to the 'Are you sure page'")
 def step_impl_are_you_sure_page(context):
     # Cannot rely on checking page URL because PK could be different on each test run.
-    header = context.helperfunc.driver().find_element(By.XPATH, 
-        "//*[@id='content']/h1[text()='Are you sure?']"
+    header = context.helperfunc.driver().find_element(
+        By.XPATH, "//*[@id='content']/h1[text()='Are you sure?']"
     )
     assert header is not None
-    user_name = context.helperfunc.driver().find_element(By.XPATH, 
+    user_name = context.helperfunc.driver().find_element(
+        By.XPATH,
         f"//ul/li[text()='User: ']/a[text()='"
-        f"{USERS['NEWLY_CREATED_OPERATOR']['username']}']"
+        f"{USERS['NEWLY_CREATED_OPERATOR']['username']}']",
     )
     assert user_name is not None
 
