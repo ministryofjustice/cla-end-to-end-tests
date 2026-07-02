@@ -38,7 +38,7 @@ If you are working on an M1 machine, please add the below to your behave/.env fi
 
 'ALPINE_BASE_IMAGE='arm64v8/alpine:3.15'
 NODE_BASE_IMAGE='amd64/node:10'
-SELENIUM_IMAGE='selenium/standalone-chromium:149.0-2''
+SELENIUM_IMAGE='selenium/standalone-chromium:4.45.0-20260606''
 
 To run all tests, execute in main behave directory (/behave_local if bashed into Docker container):
 
@@ -85,7 +85,7 @@ To run the tests locally just run this script for Apple Silicon users.
 
 Currently, `phantom.js` is used for unit testing in cla_frontend and does not support `arm64` which causes `uwsgi` to fail to start.
 
-Google does not build Chrome for Linux/ARM, so `selenium/standalone-chrome` is AMD64-only. For arm64 use the official Chromium image: `selenium/standalone-chromium:149.0-2`
+Google does not build Chrome for Linux/ARM, so `selenium/standalone-chrome` is AMD64-only. For arm64 use the official Chromium image: `selenium/standalone-chromium:4.45.0-20260606`
 [Multi-arch support](https://github.com/SeleniumHQ/docker-selenium#experimental-mult-arch-aarch64armhfamd64-images) (the former `seleniarm` community fork was merged into the official Selenium project from tag 4.21.0)
 
 Within `behave/docker-compose.m1.yml`, changes have been made to allow `cla_frontend` to build correctly. If the required platform architecture values. e.g. `platform: linux/arm64` are not set, the build fails.

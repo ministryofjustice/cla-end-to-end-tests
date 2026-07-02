@@ -1,6 +1,6 @@
 services:
   seleniumchrome:
-    image: selenium/standalone-chromium:149.0-2
+    image: selenium/standalone-chromium:4.45.0-20260606
 
   clafrontend:
     platform: linux/arm64
