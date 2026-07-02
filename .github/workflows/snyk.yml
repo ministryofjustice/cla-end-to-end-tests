@@ -27,6 +27,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
+            --pull \
             -t "${{ steps.meta.outputs.image_uri }}" \
             -f behave/Dockerfile \
             behave
