@@ -36,7 +36,7 @@ def step_impl_select_export(context):
     xpath = "//div[@class='report-exports']/table/tbody/tr"
     # this will return an empty list if there is no table to be found
     context.how_many_reports_exist = len(
-        context.helperfunc.driver().find_elements_by_xpath(xpath)
+        context.helperfunc.driver().find_elements(By.XPATH, xpath)
     )
     context.helperfunc.click_button(By.NAME, "action")
 
@@ -53,13 +53,13 @@ def step_impl_report_processed(context):
 
         def __call__(self, driver):
             #  need an extra row in the table and for that row to have "CREATED" and the link
-            if len(context.helperfunc.driver().find_elements_by_xpath(xpath)) > 0:
+            if len(context.helperfunc.driver().find_elements(By.XPATH, xpath)) > 0:
                 return (
                     context.helperfunc.driver()
-                    .find_elements_by_xpath(xpath)[-1]
+                    .find_elements(By.XPATH, xpath)[-1]
                     .text.split(" ")[1]
                     == "CREATED"
-                    and len(context.helperfunc.driver().find_elements_by_xpath(xpath))
+                    and len(context.helperfunc.driver().find_elements(By.XPATH, xpath))
                     > self._existing_reports
                 )
             else:
@@ -92,15 +92,15 @@ def step_impl_download_csv(context):
 
     xpath = "//div[@class='report-exports']/table/tbody/tr"
     this_report = (
-        context.helperfunc.driver().find_elements_by_xpath(xpath)[-1].text.split(" ")
+        context.helperfunc.driver().find_elements(By.XPATH, xpath)[-1].text.split(" ")
     )
     href = this_report[2]
     xpath_a = f"{xpath}/td/a[@href='{href}']"
     file_name = (
-        context.helperfunc.driver().find_element_by_xpath(xpath_a).text.split("/")[-1]
+        context.helperfunc.driver().find_element(By.XPATH, xpath_a).text.split("/")[-1]
     )
     # click on the link
-    context.helperfunc.driver().find_element_by_xpath(xpath_a).click()
+    context.helperfunc.driver().find_element(By.XPATH, xpath_a).click()
     wait = WebDriverWait(context.helperfunc.driver(), MINIMUM_WAIT_UNTIL_TIME)
     str_error = f"No downloaded report for {file_name} in {context.download_dir}"
     wait.until(WaitForReportToBeDownloaded(file_name), message=str_error)
@@ -188,7 +188,7 @@ def step_impl_new_operator_user_created(context):
     if (
         # are we still on the same page and there are no errors
         context.helperfunc.get_current_path() == "/admin/call_centre/operator/add/"
-        and context.helperfunc.driver().find_element_by_xpath("//p[@class='errornote']")
+        and context.helperfunc.driver().find_element(By.XPATH, "//p[@class='errornote']")
         is not None
     ):
         assert False, "There are errors creating that user"
@@ -242,7 +242,7 @@ def step_impl_select_delete_user(context):
 
 @step("I am taken to the user's details page")
 def step_impl_user_details_page(context):
-    user_input = context.helperfunc.driver().find_element_by_xpath(
+    user_input = context.helperfunc.driver().find_element(By.XPATH, 
         "//*[@id='id_username']"
     )
     assert (
@@ -254,11 +254,11 @@ def step_impl_user_details_page(context):
 @step("I am taken to the 'Are you sure page'")
 def step_impl_are_you_sure_page(context):
     # Cannot rely on checking page URL because PK could be different on each test run.
-    header = context.helperfunc.driver().find_element_by_xpath(
+    header = context.helperfunc.driver().find_element(By.XPATH, 
         "//*[@id='content']/h1[text()='Are you sure?']"
     )
     assert header is not None
-    user_name = context.helperfunc.driver().find_element_by_xpath(
+    user_name = context.helperfunc.driver().find_element(By.XPATH, 
         f"//ul/li[text()='User: ']/a[text()='"
         f"{USERS['NEWLY_CREATED_OPERATOR']['username']}']"
     )
@@ -269,7 +269,7 @@ def step_impl_are_you_sure_page(context):
 def step_impl_confirm_user_deleted(context):
     xpath = f"//a[text()='{USERS['NEWLY_CREATED_OPERATOR']['username']}']"
     try:
-        context.helperfunc.driver().find_element_by_xpath(xpath)
+        context.helperfunc.driver().find_element(By.XPATH, xpath)
     except NoSuchElementException:
         pass
 

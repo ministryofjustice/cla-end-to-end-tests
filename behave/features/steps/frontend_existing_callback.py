@@ -5,6 +5,7 @@ from features.steps.common_steps import (
     compare_client_details_with_backend,
     assert_header_on_page,
 )
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import StaleElementReferenceException
 
@@ -91,7 +92,7 @@ def step_impl_select_callback_slot(context):
 def step_impl_callback_booked(context):
     # look for the cases displayed alongside the calendar
     list_cases = context.helperfunc.find_by_class("ListTable")
-    case_rows = list_cases.find_elements_by_xpath("//tbody/tr/td")
+    case_rows = list_cases.find_elements(By.XPATH, "//tbody/tr/td")
     assert case_rows is not None
 
 
@@ -134,7 +135,7 @@ def step_on_case_details_page(context):
     title_value = "Case source"
     xpath_string = f'//{element}[@title="{title_value}"]'
     assert (
-        client_section.find_element_by_xpath(xpath_string).text == "Web"
+        client_section.find_element(By.XPATH, xpath_string).text == "Web"
     ), "Case is not from WEB"
 
 
@@ -179,7 +180,7 @@ def step_impl_call_has_started(context):
     ), "CALL_STARTED code not found in case logs"
     wrapper_element = context.helperfunc.find_by_css_selector(".CaseHistory")
     for case_log in case_logs:
-        note_element = wrapper_element.find_element_by_xpath(
+        note_element = wrapper_element.find_element(By.XPATH, 
             f".//span[text()='{case_log['notes']}']"
         )
         assert note_element is not None, f"Could not find case log: {case_log['notes']}"
@@ -190,7 +191,7 @@ def step_impl_remove_callback(context):
     callback_wrapper_element = context.helperfunc.find_by_css_selector(
         "callback-status"
     )
-    remove_btn_element = callback_wrapper_element.find_element_by_xpath(
+    remove_btn_element = callback_wrapper_element.find_element(By.XPATH, 
         ".//a[text()='Remove callback']"
     )
     assert remove_btn_element is not None, "Could not find  Remove callback button"
@@ -205,7 +206,7 @@ def step_impl_remove_callback(context):
     )
 
     def wait_until_callback_is_stopped(*args, **kwargs):
-        callback_stopped_element = case_history_wrapper_element.find_element_by_xpath(
+        callback_stopped_element = case_history_wrapper_element.find_element(By.XPATH, 
             ".//span[text()='Callback stopped']"
         )
         if callback_stopped_element:

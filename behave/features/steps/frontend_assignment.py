@@ -199,7 +199,7 @@ def step_impl_select_alt_help_org(context, organisation):
     )
     search_input.clear()
     search_input.send_keys(name)
-    submit = search_input.find_element_by_xpath("following-sibling::*")
+    submit = search_input.find_element(By.XPATH, "following-sibling::*")
     submit.click()
     # Need to wait for a bit for the ajax event to complete before continuing to the next step
     time.sleep(MINIMUM_SLEEP_SECONDS)
@@ -207,14 +207,14 @@ def step_impl_select_alt_help_org(context, organisation):
         '//form[@name="alternative_help"]'
     )
     # This will only find the first search result which is fine because we are searching for a specific organisation
-    parent_wrapper = search_results_form.find_element_by_xpath(
+    parent_wrapper = search_results_form.find_element(By.XPATH, 
         './/input[@name="selected_providers"]/ancestor::div[1]'
     )
     assert (
-        parent_wrapper.find_element_by_css_selector(".FormRow-label strong").text
+        parent_wrapper.find_element(By.CSS_SELECTOR, ".FormRow-label strong").text
         == organisation
     )
-    parent_wrapper.find_element_by_css_selector("label.FormRow-label").click()
+    parent_wrapper.find_element(By.CSS_SELECTOR, "label.FormRow-label").click()
 
 
 @step('I enter "{comment}" in the Assignment comments box')
@@ -294,7 +294,7 @@ def step_impl_diversity_tab(context):
         # this waits until all the finance questions have been answered
         classes = (
             context.helperfunc.find_by_css_selector("ul.Tabs")
-            .find_element_by_link_text("Finances")
+            .find_element(By.LINK_TEXT, "Finances")
             .get_attribute("class")
         )
         return green_checkmark_appears_on_tab(classes)
@@ -424,7 +424,7 @@ def step_impl_matter_type1(context):
     # Find an element by text
     context.helperfunc.find_by_xpath(f"//*[text()='{MATTER_TYPE_1}']").click()
     assert (
-        element.find_element_by_css_selector("a .select2-chosen").text == MATTER_TYPE_1
+        element.find_element(By.CSS_SELECTOR, "a .select2-chosen").text == MATTER_TYPE_1
     )
 
 
@@ -437,7 +437,7 @@ def step_impl_matter_type2(context):
     # Find an element by text
     context.helperfunc.find_by_xpath(f"//*[text()='{MATTER_TYPE_2}']").click()
     assert (
-        element.find_element_by_css_selector("a .select2-chosen").text == MATTER_TYPE_2
+        element.find_element(By.CSS_SELECTOR, "a .select2-chosen").text == MATTER_TYPE_2
     )
 
 
@@ -447,13 +447,13 @@ def step_impl_one_provider(context):
 
     # Providers are loaded via ajax after clicking the assign tab
     def wait_for_assign_providers_to_load(*args):
-        return form.find_element_by_css_selector("div.ContactBlock") is not None
+        return form.find_element(By.CSS_SELECTOR, "div.ContactBlock") is not None
 
     wait = WebDriverWait(context.helperfunc.driver(), 10)
     wait.until(wait_for_assign_providers_to_load)
 
     # Find matter type 2 wrapper and focus on it
-    headings = form.find_elements_by_css_selector("h2.ContactBlock-heading")
+    headings = form.find_elements(By.CSS_SELECTOR, "h2.ContactBlock-heading")
     context.provider_selected = headings[0].text
     assert len(headings) == 1
 
@@ -464,7 +464,7 @@ def step_impl_choose_provider(context):
 
     # Providers are loaded via ajax after clicking the assign tab
     def wait_for_providers_to_load(*args):
-        return form.find_element_by_css_selector("div.FormRow") is not None
+        return form.find_element(By.CSS_SELECTOR, "div.FormRow") is not None
 
     wait = WebDriverWait(context.helperfunc.driver(), 10)
     wait.until(wait_for_providers_to_load)
@@ -474,17 +474,17 @@ def step_impl_choose_provider(context):
     # if not then we need to select one from the list below
     # if out of hours then there will be no "pre-selected provider"
     selected_provider_name = None
-    if form.find_elements_by_css_selector(
+    if form.find_elements(By.CSS_SELECTOR, 
         "div.ContactBlock ContactBlock--grey clearfix"
     ):
-        selected_provider_name = form.find_elements_by_css_selector(
+        selected_provider_name = form.find_elements(By.CSS_SELECTOR, 
             "h2.ContactBlock-heading"
         )[0].text
     if not selected_provider_name == CLA_SPECIALIST_PROVIDERS_NAME:
-        form.find_element_by_xpath(
+        form.find_element(By.XPATH, 
             f""".//strong[@class='ng-binding'][text()='{CLA_SPECIALIST_PROVIDERS_NAME}']"""
         ).click()
-    headings = form.find_elements_by_css_selector("h2.ContactBlock-heading")
+    headings = form.find_elements(By.CSS_SELECTOR, "h2.ContactBlock-heading")
     context.provider_selected = headings[0].text
     assert len(headings) == 1
 
@@ -518,7 +518,7 @@ def step_impl_case_removed_from_list(context):
 
     def wait_until_dashboard_page_is_loaded(*args):
         try:
-            table = context.helperfunc.driver().find_element_by_css_selector(
+            table = context.helperfunc.driver().find_element(By.CSS_SELECTOR, 
                 ".ListTable"
             )
             return context.case_id not in table.text
@@ -536,7 +536,7 @@ def step_impl_case_removed_from_list_ooh(context):
 
     def wait_until_dashboard_page_is_loaded(*args):
         try:
-            table = context.helperfunc.driver().find_element_by_css_selector(
+            table = context.helperfunc.driver().find_element(By.CSS_SELECTOR, 
                 ".ListTable"
             )
             return context.case_id not in table.text
@@ -563,7 +563,7 @@ def step_impl_assign_f2f(context):
     # This clicks the face to face link, which is hidden as a tab.
     page = context.helperfunc
     tabs = page.find_by_css_selector("ul.Tabs")
-    face_to_face_tab = tabs.find_element_by_link_text("Face to Face")
+    face_to_face_tab = tabs.find_element(By.LINK_TEXT, "Face to Face")
     page.driver().execute_script("arguments[0].click();", face_to_face_tab)
     # This clicks the actual assign F2F button.
     page.click_button(By.NAME, "assign-f2f")
