@@ -178,8 +178,13 @@ def step_impl_create_financial_assessment(context, button_text):
 @step('I am taken to the "{tab_name}" tab with the ‘Details’ sub-tab preselected')
 @step('I remain in the "{tab_name}" tab')
 def step_impl_finances_tab(context, tab_name):
-    selected_tab = context.helperfunc.find_by_css_selector(
-        "li[class='Tabs-tab is-active']"
+    def active_tab_contains_name(driver):
+        selected = driver.find_element(By.CSS_SELECTOR, "li.Tabs-tab.is-active")
+        return tab_name in selected.text
+
+    WebDriverWait(context.helperfunc.driver(), 10).until(active_tab_contains_name)
+    selected_tab = context.helperfunc.driver().find_element(
+        By.CSS_SELECTOR, "li.Tabs-tab.is-active"
     )
     assert tab_name in selected_tab.text
 

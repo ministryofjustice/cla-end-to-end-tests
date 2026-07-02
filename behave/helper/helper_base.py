@@ -49,7 +49,7 @@ class HelperFunc(object):
 
     # Takes screenshot, specifically it grabs the entire body of the page.
     def take_screenshot(self, scenario_file_path):
-        element = self._driver.find_element_by_tag_name("body")
+        element = self._driver.find_element(By.TAG_NAME, "body")
         element.screenshot(scenario_file_path)
 
     # Helper functions to find web elements, possibly will be in a different place
