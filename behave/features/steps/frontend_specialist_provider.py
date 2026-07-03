@@ -363,14 +363,14 @@ def assert_four_column_table(table, root_element):
 
         assert_cell(expanded_cells[0], question, row[COL_TWO_KEY])
         if len(row) > 2 and row[COL_THREE_KEY].lower() != "n/a":
-            assert len(expanded_cells) > 1, (
-                f"Expected partner/second column for question: {question}"
-            )
+            assert (
+                len(expanded_cells) > 1
+            ), f"Expected partner/second column for question: {question}"
             assert_cell(expanded_cells[1], question, row[COL_THREE_KEY])
         if len(row) > 3 and row[COL_FOUR_KEY].lower() != "n/a":
-            assert len(expanded_cells) > 2, (
-                f"Expected third value column for question: {question}"
-            )
+            assert (
+                len(expanded_cells) > 2
+            ), f"Expected third value column for question: {question}"
             assert_cell(expanded_cells[2], question, row[COL_FOUR_KEY])
 
 
