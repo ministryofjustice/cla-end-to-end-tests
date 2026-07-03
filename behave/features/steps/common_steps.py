@@ -16,8 +16,6 @@ from helper.constants import (
 from selenium.webdriver.common.by import By
 from axe_selenium_python import Axe
 
-from selenium.common.exceptions import StaleElementReferenceException
-
 
 def remove_prefix(text, prefix):
     return text[len(prefix) :] if text.startswith(prefix) else text
