@@ -16,17 +16,22 @@ from helper.constants import (
 from features.steps.common_steps import wait_until_page_is_loaded, assert_header_on_page
 
 
-def wait_for_download(download_dir, pattern, timeout=90, previous_files=None):
+def wait_for_download(download_dir, timeout=90, previous_files=None):
     end_time = time.time() + timeout
     download_path = Path(download_dir)
     existing_files = previous_files or set()
 
     while time.time() < end_time:
-        matches = [
-            path
-            for path in download_path.glob(pattern)
-            if path.name not in existing_files and not path.name.endswith(".crdownload")
-        ]
+        matches = []
+        for path in download_path.glob("*.csv"):
+            file_name = path.name.lower()
+            if path.name in existing_files:
+                continue
+            if file_name.endswith(".crdownload"):
+                continue
+            if not file_name.startswith("mi_cb1_extract"):
+                continue
+            matches.append(path)
         if matches:
             latest_file = max(matches, key=lambda path: path.stat().st_mtime)
             size_before = latest_file.stat().st_size
@@ -36,7 +41,9 @@ def wait_for_download(download_dir, pattern, timeout=90, previous_files=None):
                 return latest_file
         time.sleep(1)
 
-    raise AssertionError(f"No downloaded report matching {pattern} in {download_dir}")
+    raise AssertionError(
+        "No downloaded report matching prefix mi_cb1_extract in " f"{download_dir}"
+    )
 
 
 @step("I enter a date range")
@@ -111,7 +118,6 @@ def step_impl_download_csv(context):
     context.helperfunc.driver().find_element(By.XPATH, xpath_a).click()
     downloaded_file = wait_for_download(
         context.download_dir,
-        "mi_cb1_extract-*.csv",
         timeout=90,
         previous_files=existing_files,
     )

@@ -1,4 +1,5 @@
 from behave import step
+from selenium.common.exceptions import TimeoutException
 from common_steps import click_on_hyperlink_and_get_href, assert_header_on_page
 
 
@@ -9,12 +10,14 @@ def step_impl_complaints_tab(context, tab):
 
 @step("There are complaints available")
 def step_impl_complaints_cases(context):
-    assert (
-        context.helperfunc.find_by_xpath(
+    try:
+        complaint_row = context.helperfunc.find_by_xpath(
             "//table[contains(@class,'ListTable ng-scope')]/tbody/tr"
         )
-        is not None
-    ), "No Complaint Cases Available"
+    except TimeoutException:
+        complaint_row = None
+
+    assert complaint_row is not None, "No Complaint Cases Available"
 
 
 @step("I search for '{complaint_text}'")
@@ -26,10 +29,13 @@ def step_impl_complaints_search(context, complaint_text):
 
 @step("I can select the complaint '{complaint_num}'")
 def step_impl_complaint_select(context, complaint_num):
-    assert (
-        context.helperfunc.find_by_link_text(complaint_num) is not None
-    ), "Complaint not found"
-    context.helperfunc.find_by_link_text(complaint_num).click()
+    try:
+        complaint_link = context.helperfunc.find_by_link_text(complaint_num)
+    except TimeoutException:
+        complaint_link = None
+
+    assert complaint_link is not None, "Complaint not found"
+    complaint_link.click()
 
 
 @step("I am on the complaint '{complaint_num}' detail page")
