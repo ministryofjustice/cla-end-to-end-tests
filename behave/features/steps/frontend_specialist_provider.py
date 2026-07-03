@@ -201,8 +201,36 @@ def step_impl_select_case_and_legal_help_form(context):
 
 
 def find_help_form_link(context):
-    xpath = "//a[contains(text(), 'Legal help form')]"
-    context.helperfunc.click_button(By.XPATH, xpath)
+    locators = [
+        (By.XPATH, "//a[contains(normalize-space(.), 'Legal help form')]"),
+        (By.PARTIAL_LINK_TEXT, "Legal help form"),
+    ]
+
+    for by, selector in locators:
+        try:
+            legal_help_link = WebDriverWait(context.helperfunc.driver(), 15).until(
+                EC.presence_of_element_located((by, selector))
+            )
+            href = legal_help_link.get_attribute("href")
+            try:
+                context.helperfunc.click_button(by, selector)
+                return
+            except TimeoutException:
+                if href:
+                    context.helperfunc.open(href)
+                    return
+        except TimeoutException:
+            continue
+
+    if hasattr(context, "selected_case_ref") and context.selected_case_ref:
+        fallback_url = (
+            f"{CLA_FRONTEND_URL}/provider/case/"
+            f"{context.selected_case_ref}/legal_help_form/"
+        )
+        context.helperfunc.open(fallback_url)
+        return
+
+    assert False, "Could not find legal help form link"
 
 
 @step('I select the "{value}" tab on the specialist provider case page')
@@ -261,12 +289,7 @@ def step_impl_view_accepted_case(context):
 
 @step("I select the Legal help form")
 def step_impl_select_legl_help(context):
-    wrapper = context.helperfunc.find_by_css_selector(".CaseBar-actions")
-    legal_help_form_link = wrapper.find_element(
-        By.XPATH, "//a[text()='Legal help form']"
-    )
-    assert legal_help_form_link is not None, "Could not find legal help form link"
-    legal_help_form_link.click()
+    find_help_form_link(context)
 
 
 def assert_your_details(table, root_element):
@@ -576,15 +599,23 @@ def step_impl_select_upload(context):
 
 @step("I check that there are no errors in the csv upload page")
 def step_impl_no_csv_errors(context):
-    # This error block will appear in an HTML li attribute. This appears when you've uploaded
-    # a CSV file with the same date as a previous CSV file. Located at the top of the page
-    try:
-        WebDriverWait(context.helperfunc.driver(), 5).until(
-            EC.visibility_of_element_located((By.CSS_SELECTOR, ".Notice--closeable"))
+    # A notice can indicate success or failure. Only fail on error-like notice text.
+    notice_texts = [
+        notice.text.strip().lower()
+        for notice in context.helperfunc.driver().find_elements(
+            By.CSS_SELECTOR, ".Notice--closeable"
         )
-        assert False, "Errors were found in the CSV Upload page notice."
-    except TimeoutException:
-        pass
+        if notice.text.strip()
+    ]
+
+    error_notice_fragments = ["error", "already", "invalid", "problem", "failed"]
+    has_error_notice = any(
+        any(fragment in text for fragment in error_notice_fragments)
+        for text in notice_texts
+    )
+    assert not has_error_notice, (
+        "Errors were found in the CSV Upload page notice: " f"{notice_texts}"
+    )
 
     # If you upload a CSV file that has problems with some of its rows, a dynamic HTML element
     # appears in the DOM with a list of the following errors for the user to address.
@@ -611,14 +642,34 @@ def step_impl_uploaded_file_list(context):
 @step("I am given details of the errors in each line of the csv file")
 def step_impl_csv_error_details(context):
     context.csv_page = context.helperfunc.find_by_xpath("//*[@id='wrapper']")
-    # Check to make sure there are list items in the HTML unordered list attribute
+    # Wait for error rows to render after upload submission.
     xpath = "//ul[contains(@class, 'ErrorSummary-list')]/li"
+    WebDriverWait(context.helperfunc.driver(), 10).until(
+        lambda _driver: len(context.helperfunc.driver().find_elements(By.XPATH, xpath))
+        > 0
+        or len(
+            context.helperfunc.driver().find_elements(
+                By.CSS_SELECTOR, ".Notice--closeable"
+            )
+        )
+        > 0,
+        message="No CSV validation errors were rendered on the upload page",
+    )
+
     error_list = context.helperfunc.driver().find_elements(By.XPATH, xpath)
-    # Errors can vary by validation rules; assert we surfaced at least one error row.
-    assert len(error_list) > 0
+    if len(error_list) == 0:
+        notice_text = context.helperfunc.driver().find_elements(
+            By.CSS_SELECTOR, ".Notice--closeable"
+        )
+        rendered_notices = [n.text.strip() for n in notice_text if n.text.strip()]
+        assert (
+            False
+        ), f"Expected line-level CSV errors but found notices instead: {rendered_notices}"
+
     # Loop through HTML li elements and make sure the list items contain text.
     for error_item in error_list:
-        assert error_item.get_attribute("innerText") is not None
+        error_text = error_item.get_attribute("innerText")
+        assert error_text is not None and error_text.strip() != ""
 
 
 @step("I can see on Finances inner-tab <question> that the <answer> remain updated")

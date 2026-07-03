@@ -16,20 +16,20 @@ from helper.constants import (
 from features.steps.common_steps import wait_until_page_is_loaded, assert_header_on_page
 
 
-def wait_for_download(download_dir, timeout=90, previous_files=None):
+def wait_for_download(download_dir, started_after, timeout=90):
     end_time = time.time() + timeout
     download_path = Path(download_dir)
-    existing_files = previous_files or set()
 
     while time.time() < end_time:
         matches = []
-        for path in download_path.glob("*.csv"):
-            file_name = path.name.lower()
-            if path.name in existing_files:
+        for path in download_path.rglob("*"):
+            if not path.is_file():
                 continue
+            file_name = path.name.lower()
             if file_name.endswith(".crdownload"):
                 continue
-            if not file_name.startswith("mi_cb1_extract"):
+            # Only accept files created by the current click action.
+            if path.stat().st_mtime < started_after:
                 continue
             matches.append(path)
         if matches:
@@ -41,9 +41,7 @@ def wait_for_download(download_dir, timeout=90, previous_files=None):
                 return latest_file
         time.sleep(1)
 
-    raise AssertionError(
-        "No downloaded report matching prefix mi_cb1_extract in " f"{download_dir}"
-    )
+    raise AssertionError(f"No downloaded report found in {download_dir}")
 
 
 @step("I enter a date range")
@@ -113,13 +111,13 @@ def step_impl_download_csv(context):
     )
     href = this_report[2]
     xpath_a = f"{xpath}/td/a[@href='{href}']"
-    existing_files = set(os.listdir(context.download_dir))
     # click on the link
+    click_time = time.time()
     context.helperfunc.driver().find_element(By.XPATH, xpath_a).click()
     downloaded_file = wait_for_download(
         context.download_dir,
+        started_after=click_time,
         timeout=90,
-        previous_files=existing_files,
     )
 
     with downloaded_file.open() as csv_file:

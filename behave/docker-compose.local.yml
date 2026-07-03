@@ -9,4 +9,6 @@ services:
   clabackend:
     build: https://github.com/ministryofjustice/cla_backend.git#main
   clasocketserver:
-    build: https://github.com/ministryofjustice/cla_frontend.git#main:cla_socketserver
+    build:
+      context: https://github.com/ministryofjustice/cla_frontend.git#main
+      dockerfile: cla_socketserver/Dockerfile
