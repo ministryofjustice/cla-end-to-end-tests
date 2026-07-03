@@ -350,20 +350,28 @@ def assert_four_column_table(table, root_element):
             label_element is not None
         ), f"Could not find question on legal help form: {question}"
         parent_element = label_element.find_element(By.XPATH, "./ancestor::tr[1]")
-        elements = parent_element.find_elements(By.CSS_SELECTOR, "td")
-        assert len(elements) > 1, f"No value cells found for question: {question}"
+        cells = parent_element.find_elements(By.CSS_SELECTOR, "td")
+        assert len(cells) > 1, f"No value cells found for question: {question}"
 
-        assert_cell(elements[1], question, row[COL_TWO_KEY])
+        value_cells = cells[1:]
+        expanded_cells = []
+        for cell in value_cells:
+            colspan = int(cell.get_attribute("colspan") or 1)
+            expanded_cells.extend([cell] * colspan)
+
+        assert len(expanded_cells) > 0, f"No value cells found for question: {question}"
+
+        assert_cell(expanded_cells[0], question, row[COL_TWO_KEY])
         if len(row) > 2 and row[COL_THREE_KEY].lower() != "n/a":
-            assert len(elements) > 2, (
+            assert len(expanded_cells) > 1, (
                 f"Expected partner/second column for question: {question}"
             )
-            assert_cell(elements[2], question, row[COL_THREE_KEY])
+            assert_cell(expanded_cells[1], question, row[COL_THREE_KEY])
         if len(row) > 3 and row[COL_FOUR_KEY].lower() != "n/a":
-            assert len(elements) > 3, (
+            assert len(expanded_cells) > 2, (
                 f"Expected third value column for question: {question}"
             )
-            assert_cell(elements[3], question, row[COL_FOUR_KEY])
+            assert_cell(expanded_cells[2], question, row[COL_FOUR_KEY])
 
 
 @step("The legal help form Your Details section has the values")
