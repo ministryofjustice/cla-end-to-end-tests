@@ -36,9 +36,7 @@ def wait_for_download(download_dir, pattern, timeout=90, previous_files=None):
                 return latest_file
         time.sleep(1)
 
-    raise AssertionError(
-        f"No downloaded report matching {pattern} in {download_dir}"
-    )
+    raise AssertionError(f"No downloaded report matching {pattern} in {download_dir}")
 
 
 @step("I enter a date range")
@@ -121,16 +119,20 @@ def step_impl_download_csv(context):
     with downloaded_file.open() as csv_file:
         num_lines = sum(1 for _ in csv_file)
 
-    assert num_lines > 1, f"Downloaded report {downloaded_file.name} only contains a header"
+    assert (
+        num_lines > 1
+    ), f"Downloaded report {downloaded_file.name} only contains a header"
     context.downloaded_report_filename = downloaded_file.name
 
 
 @step("I select a non-staff user from the list")
 def step_impl_select_non_staff_user(context):
     # just click on a user that we know has non-staff status
-    context.execute_steps(f"""
+    context.execute_steps(
+        f"""
     Given I select the link "{CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO}"
-    """)
+    """
+    )
 
 
 @step("I am taken to the non-staff user's details page")
@@ -249,9 +251,11 @@ def step_impl_list_operators_page(context):
 @step("I select the newly created user from the list")
 def step_impl_select_new_user(context):
     # Click on newly created operator
-    context.execute_steps(f"""
+    context.execute_steps(
+        f"""
     Given I select the link "{USERS['NEWLY_CREATED_OPERATOR']['username']}"
-    """)
+    """
+    )
 
 
 @step("I select 'Delete' in the user's details page")
