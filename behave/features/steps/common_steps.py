@@ -3,8 +3,10 @@ import os
 import json
 from behave import step
 from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 from helper.constants import (
     CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK,
     CLA_FRONTEND_URL,
@@ -305,11 +307,24 @@ def step_impl_call_center_dashboard(context):
 
 @step("I select to 'Create a case'")
 def step_impl_create_case(context):
-    # wrap click() to avoid StaleElementException
-    context.helperfunc.click_button(By.ID, "create_case")
-    context.case_reference = context.helperfunc.find_by_css_selector(
-        "h1.CaseBar-caseNum a"
-    ).text
+    wait = WebDriverWait(context.helperfunc.driver(), 15)
+    locator = (By.ID, "create_case")
+
+    # Retry click in case of DOM refresh
+    for attempt in range(4):
+        try:
+            button = wait.until(EC.element_to_be_clickable(locator))
+            button.click()
+            break
+        except StaleElementReferenceException:
+            if attempt == 3:
+                raise
+
+    # Wait for destination page marker before reading case ref
+    case_ref_el = wait.until(
+        EC.visibility_of_element_located((By.CSS_SELECTOR, "h1.CaseBar-caseNum a"))
+    )
+    context.case_reference = case_ref_el.text
 
 
 def get_tag(context, find_tag):
