@@ -5,8 +5,7 @@ from selenium.webdriver.common.by import By
 
 @step("I am on the financial page which i complete up to finances")
 def step_impl_finance_complete(context):
-    context.execute_steps(
-        """
+    context.execute_steps("""
         Given I am taken to the "Finances" tab with the ‘Details’ sub-tab preselected
         And I am not aged 17 or under
         And I do not have a partner
@@ -26,14 +25,12 @@ def step_impl_finance_complete(context):
           | Do you have any valuable items worth over £500 each?  | 0.00   |
           | Do you have any money owed to you?                    | 0.00   |
         And I select Save assessment
-    """
-    )
+    """)
 
 
 @step("I am on the income tab which i complete with the maximum value")
 def step_impl_income_max_complete(context):
-    context.execute_steps(
-        """
+    context.execute_steps("""
     Then I move onto Income inner-tab
     And I am not self employed
     And I <answer> to Income <question>
@@ -50,8 +47,7 @@ def step_impl_income_max_complete(context):
     | Other income                                                    | 99999999.99   |
     And I have 0 dependants aged 16 and over
     And I have 0 dependants aged 15 and under
-    """
-    )
+    """)
 
 
 @step("The <dropdown> contains the correct <value>")
@@ -89,8 +85,7 @@ def step_assert_income_field_values(context):
 
 @step("I have created a valid debt case")
 def step_impl_debt_scope(context):
-    context.execute_steps(
-        """
+    context.execute_steps("""
         When I select ‘Create Scope Diagnosis'
         And I select the diagnosis <category> and click next <number> times
         | category                                                                                                                                                           | number |
@@ -100,8 +95,7 @@ def step_impl_debt_scope(context):
         | A warrant of possession has been received by client                                                                                                                | 1      |
         Then I get an "INSCOPE" decision
         And select the "Create financial assessment" button
-    """
-    )
+    """)
 
 
 @step("I click add property")
