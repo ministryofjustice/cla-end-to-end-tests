@@ -1,9 +1,11 @@
 from behave import step
-from selenium.webdriver.common.by import By
 import datetime
+import os
+import time
+from pathlib import Path
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
-import os
 from helper.constants import (
     MINIMUM_WAIT_UNTIL_TIME,
     CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO,
@@ -12,6 +14,31 @@ from helper.constants import (
     USERS,
 )
 from features.steps.common_steps import wait_until_page_is_loaded, assert_header_on_page
+
+
+def wait_for_download(download_dir, pattern, timeout=90, previous_files=None):
+    end_time = time.time() + timeout
+    download_path = Path(download_dir)
+    existing_files = previous_files or set()
+
+    while time.time() < end_time:
+        matches = [
+            path
+            for path in download_path.glob(pattern)
+            if path.name not in existing_files and not path.name.endswith(".crdownload")
+        ]
+        if matches:
+            latest_file = max(matches, key=lambda path: path.stat().st_mtime)
+            size_before = latest_file.stat().st_size
+            time.sleep(0.5)
+            size_after = latest_file.stat().st_size
+            if size_before == size_after and size_before > 0:
+                return latest_file
+        time.sleep(1)
+
+    raise AssertionError(
+        f"No downloaded report matching {pattern} in {download_dir}"
+    )
 
 
 @step("I enter a date range")
@@ -75,67 +102,27 @@ def step_impl_report_processed(context):
 
 @step("I download the .csv")
 def step_impl_download_csv(context):
-    # click on the link and download the csv, checking it has more than just a header
-    class WaitForReportToBeDownloaded:
-        def __init__(self, expected_name, previous_files):
-            self._expected_name = expected_name
-            self._previous_files = previous_files
-
-        def __call__(self, driver):
-            # In CI, the downloaded filename can differ from link text.
-            # Accept the expected filename or any newly-downloaded CSV.
-            current_files = set(os.listdir(context.download_dir))
-            candidate_files = []
-
-            if self._expected_name in current_files:
-                candidate_files.append(self._expected_name)
-
-            new_csv_files = [
-                name
-                for name in (current_files - self._previous_files)
-                if name.endswith(".csv")
-            ]
-            candidate_files.extend(new_csv_files)
-
-            if not candidate_files:
-                return False
-
-            # Prefer newest file when multiple CSVs are present.
-            candidate_files = sorted(
-                set(candidate_files),
-                key=lambda name: os.path.getmtime(
-                    os.path.join(context.download_dir, name)
-                ),
-                reverse=True,
-            )
-
-            for candidate_file in candidate_files:
-                download_file_path = os.path.join(context.download_dir, candidate_file)
-                with open(download_file_path) as f:
-                    num_lines = sum(1 for line in f)
-                if num_lines > 1:
-                    context.downloaded_report_filename = candidate_file
-                    return True
-
-            return False
-
     xpath = "//div[@class='report-exports']/table/tbody/tr"
     this_report = (
         context.helperfunc.driver().find_elements(By.XPATH, xpath)[-1].text.split(" ")
     )
     href = this_report[2]
     xpath_a = f"{xpath}/td/a[@href='{href}']"
-    file_name = (
-        context.helperfunc.driver().find_element(By.XPATH, xpath_a).text.split("/")[-1]
-    )
     existing_files = set(os.listdir(context.download_dir))
     # click on the link
     context.helperfunc.driver().find_element(By.XPATH, xpath_a).click()
-    wait = WebDriverWait(context.helperfunc.driver(), MINIMUM_WAIT_UNTIL_TIME)
-    str_error = f"No downloaded report for {file_name} in {context.download_dir}"
-    wait.until(
-        WaitForReportToBeDownloaded(file_name, existing_files), message=str_error
+    downloaded_file = wait_for_download(
+        context.download_dir,
+        "mi_cb1_extract-*.csv",
+        timeout=90,
+        previous_files=existing_files,
     )
+
+    with downloaded_file.open() as csv_file:
+        num_lines = sum(1 for _ in csv_file)
+
+    assert num_lines > 1, f"Downloaded report {downloaded_file.name} only contains a header"
+    context.downloaded_report_filename = downloaded_file.name
 
 
 @step("I select a non-staff user from the list")
