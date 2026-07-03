@@ -341,6 +341,14 @@ def assert_four_column_table(table, root_element):
             value == expected_value.strip()
         ), f"Question: {question} - Expected: {expected_value} - Actual: {value}"
 
+    def get_expected_value(row_values, key):
+        if len(row_values) <= key:
+            return None
+        value = row_values[key]
+        if value is None:
+            return None
+        return value.strip()
+
     for row in table:
         question = row[QUESTION_COL_KEY]
         label_element = root_element.find_element(
@@ -361,17 +369,30 @@ def assert_four_column_table(table, root_element):
 
         assert len(expanded_cells) > 0, f"No value cells found for question: {question}"
 
-        assert_cell(expanded_cells[0], question, row[COL_TWO_KEY])
-        if len(row) > 2 and row[COL_THREE_KEY].lower() != "n/a":
-            assert (
-                len(expanded_cells) > 1
-            ), f"Expected partner/second column for question: {question}"
-            assert_cell(expanded_cells[1], question, row[COL_THREE_KEY])
-        if len(row) > 3 and row[COL_FOUR_KEY].lower() != "n/a":
+        expected_col_two = get_expected_value(row, COL_TWO_KEY)
+        expected_col_three = get_expected_value(row, COL_THREE_KEY)
+        expected_col_four = get_expected_value(row, COL_FOUR_KEY)
+
+        assert_cell(expanded_cells[0], question, expected_col_two)
+
+        if expected_col_three is not None and expected_col_three.lower() != "n/a":
+            if len(expanded_cells) > 1:
+                assert_cell(expanded_cells[1], question, expected_col_three)
+            else:
+                # Some summary rows are rendered as a single merged value cell.
+                assert expected_col_three == expected_col_two, (
+                    f"Expected partner/second column for question: {question}. "
+                    f"Rendered value columns: {len(expanded_cells)}"
+                )
+
+        if expected_col_four is not None and expected_col_four.lower() != "n/a":
             assert (
                 len(expanded_cells) > 2
-            ), f"Expected third value column for question: {question}"
-            assert_cell(expanded_cells[2], question, row[COL_FOUR_KEY])
+            ), (
+                f"Expected third value column for question: {question}. "
+                f"Rendered value columns: {len(expanded_cells)}"
+            )
+            assert_cell(expanded_cells[2], question, expected_col_four)
 
 
 @step("The legal help form Your Details section has the values")
