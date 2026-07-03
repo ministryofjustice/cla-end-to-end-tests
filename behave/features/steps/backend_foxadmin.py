@@ -76,19 +76,48 @@ def step_impl_report_processed(context):
 @step("I download the .csv")
 def step_impl_download_csv(context):
     # click on the link and download the csv, checking it has more than just a header
-    class WaitForReportToBeDownloaded(object):
-        def __init__(self, name):
-            self._filename = name
+    class WaitForReportToBeDownloaded:
+        def __init__(self, expected_name, previous_files):
+            self._expected_name = expected_name
+            self._previous_files = previous_files
 
         def __call__(self, driver):
-            # find the file, open it and check that it has more than just the header
-            if self._filename in os.listdir(context.download_dir):
-                download_file_path = os.path.join(context.download_dir, self._filename)
+            # In CI, the downloaded filename can differ from link text.
+            # Accept the expected filename or any newly-downloaded CSV.
+            current_files = set(os.listdir(context.download_dir))
+            candidate_files = []
+
+            if self._expected_name in current_files:
+                candidate_files.append(self._expected_name)
+
+            new_csv_files = [
+                name
+                for name in (current_files - self._previous_files)
+                if name.endswith(".csv")
+            ]
+            candidate_files.extend(new_csv_files)
+
+            if not candidate_files:
+                return False
+
+            # Prefer newest file when multiple CSVs are present.
+            candidate_files = sorted(
+                set(candidate_files),
+                key=lambda name: os.path.getmtime(
+                    os.path.join(context.download_dir, name)
+                ),
+                reverse=True,
+            )
+
+            for candidate_file in candidate_files:
+                download_file_path = os.path.join(context.download_dir, candidate_file)
                 with open(download_file_path) as f:
                     num_lines = sum(1 for line in f)
-                return num_lines > 1
-            else:
-                return False
+                if num_lines > 1:
+                    context.downloaded_report_filename = candidate_file
+                    return True
+
+            return False
 
     xpath = "//div[@class='report-exports']/table/tbody/tr"
     this_report = (
@@ -99,11 +128,14 @@ def step_impl_download_csv(context):
     file_name = (
         context.helperfunc.driver().find_element(By.XPATH, xpath_a).text.split("/")[-1]
     )
+    existing_files = set(os.listdir(context.download_dir))
     # click on the link
     context.helperfunc.driver().find_element(By.XPATH, xpath_a).click()
     wait = WebDriverWait(context.helperfunc.driver(), MINIMUM_WAIT_UNTIL_TIME)
     str_error = f"No downloaded report for {file_name} in {context.download_dir}"
-    wait.until(WaitForReportToBeDownloaded(file_name), message=str_error)
+    wait.until(
+        WaitForReportToBeDownloaded(file_name, existing_files), message=str_error
+    )
 
 
 @step("I select a non-staff user from the list")
