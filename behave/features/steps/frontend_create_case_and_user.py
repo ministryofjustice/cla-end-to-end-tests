@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from behave import step
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.common.exceptions import StaleElementReferenceExce
+from selenium.common.exceptions import StaleElementReferenceException
 
 
 @step("I search for a client name with an existing case")
