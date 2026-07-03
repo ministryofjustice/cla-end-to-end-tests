@@ -386,9 +386,7 @@ def assert_four_column_table(table, root_element):
                 )
 
         if expected_col_four is not None and expected_col_four.lower() != "n/a":
-            assert (
-                len(expanded_cells) > 2
-            ), (
+            assert len(expanded_cells) > 2, (
                 f"Expected third value column for question: {question}. "
                 f"Rendered value columns: {len(expanded_cells)}"
             )
