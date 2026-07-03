@@ -321,28 +321,49 @@ def assert_four_column_table(table, root_element):
     COL_THREE_KEY = 2
     COL_FOUR_KEY = 3
 
-    def assert_cell(element, question, expected_value):
-        value = element.get_attribute("value")
+    def get_cell_value(cell_element):
+        # The legal help table can render values as inputs or plain text cells.
+        form_controls = cell_element.find_elements(
+            By.CSS_SELECTOR, "input, textarea, select"
+        )
+        if form_controls:
+            control = form_controls[0]
+            if control.tag_name.lower() == "select":
+                return Select(control).first_selected_option.text.strip()
+            value = control.get_attribute("value")
+            if value is not None:
+                return value.strip()
+        return cell_element.text.strip()
+
+    def assert_cell(cell_element, question, expected_value):
+        value = get_cell_value(cell_element)
         assert (
-            value == expected_value
+            value == expected_value.strip()
         ), f"Question: {question} - Expected: {expected_value} - Actual: {value}"
 
     for row in table:
         question = row[QUESTION_COL_KEY]
         label_element = root_element.find_element(
-            By.XPATH, f".//*[text()='{question}']"
+            By.XPATH, f".//*[normalize-space(text())='{question}']"
         )
         assert (
             label_element is not None
         ), f"Could not find question on legal help form: {question}"
-        parent_element = label_element.find_element(By.XPATH, "./..//ancestor::tr")
-        elements = parent_element.find_elements(By.TAG_NAME, "td input")
+        parent_element = label_element.find_element(By.XPATH, "./ancestor::tr[1]")
+        elements = parent_element.find_elements(By.CSS_SELECTOR, "td")
+        assert len(elements) > 1, f"No value cells found for question: {question}"
 
-        assert_cell(elements[0], question, row[COL_TWO_KEY])
+        assert_cell(elements[1], question, row[COL_TWO_KEY])
         if len(row) > 2 and row[COL_THREE_KEY].lower() != "n/a":
-            assert_cell(elements[1], question, row[COL_THREE_KEY])
+            assert len(elements) > 2, (
+                f"Expected partner/second column for question: {question}"
+            )
+            assert_cell(elements[2], question, row[COL_THREE_KEY])
         if len(row) > 3 and row[COL_FOUR_KEY].lower() != "n/a":
-            assert_cell(elements[2], question, row[COL_FOUR_KEY])
+            assert len(elements) > 3, (
+                f"Expected third value column for question: {question}"
+            )
+            assert_cell(elements[3], question, row[COL_FOUR_KEY])
 
 
 @step("The legal help form Your Details section has the values")

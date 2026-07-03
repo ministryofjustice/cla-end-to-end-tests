@@ -1,5 +1,6 @@
 from behave import step
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
+from selenium.webdriver.common.by import By
 from common_steps import click_on_hyperlink_and_get_href, assert_header_on_page
 
 
@@ -35,7 +36,14 @@ def step_impl_complaint_select(context, complaint_num):
         complaint_link = None
 
     assert complaint_link is not None, "Complaint not found"
-    complaint_link.click()
+    retries = 3
+    for attempt in range(retries):
+        try:
+            context.helperfunc.click_button(By.LINK_TEXT, complaint_num)
+            return
+        except StaleElementReferenceException:
+            if attempt == retries - 1:
+                raise
 
 
 @step("I am on the complaint '{complaint_num}' detail page")
