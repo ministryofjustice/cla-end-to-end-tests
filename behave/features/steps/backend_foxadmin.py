@@ -27,6 +27,12 @@ def wait_for_download(download_dir, started_after, timeout=90):
             file_name = path.name.lower()
             if file_name.endswith(".crdownload"):
                 continue
+            # Accept report-like downloads from standard CSV names or Chrome temp names.
+            if not (
+                file_name.endswith(".csv")
+                or file_name.startswith(".com.google.chrome.")
+            ):
+                continue
             # Only accept files created by the current click action.
             if path.stat().st_mtime < started_after:
                 continue
@@ -131,11 +137,9 @@ def step_impl_download_csv(context):
 @step("I select a non-staff user from the list")
 def step_impl_select_non_staff_user(context):
     # just click on a user that we know has non-staff status
-    context.execute_steps(
-        f"""
+    context.execute_steps(f"""
     Given I select the link "{CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO}"
-    """
-    )
+    """)
 
 
 @step("I am taken to the non-staff user's details page")
@@ -254,11 +258,9 @@ def step_impl_list_operators_page(context):
 @step("I select the newly created user from the list")
 def step_impl_select_new_user(context):
     # Click on newly created operator
-    context.execute_steps(
-        f"""
+    context.execute_steps(f"""
     Given I select the link "{USERS['NEWLY_CREATED_OPERATOR']['username']}"
-    """
-    )
+    """)
 
 
 @step("I select 'Delete' in the user's details page")

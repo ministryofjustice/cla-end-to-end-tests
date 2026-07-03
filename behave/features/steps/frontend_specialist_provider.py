@@ -222,14 +222,6 @@ def find_help_form_link(context):
         except TimeoutException:
             continue
 
-    if hasattr(context, "selected_case_ref") and context.selected_case_ref:
-        fallback_url = (
-            f"{CLA_FRONTEND_URL}/provider/case/"
-            f"{context.selected_case_ref}/legal_help_form/"
-        )
-        context.helperfunc.open(fallback_url)
-        return
-
     assert False, "Could not find legal help form link"
 
 
