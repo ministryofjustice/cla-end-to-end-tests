@@ -315,103 +315,99 @@ def assert_your_details(table, root_element):
         ), f"Expected value: {expected_value} - Actual value:{actual_value}"
 
 
+def _get_cell_value(cell_element):
+    # The legal help table can render values as inputs or plain text cells.
+    form_controls = cell_element.find_elements(By.CSS_SELECTOR, "input, textarea, select")
+    if form_controls:
+        control = form_controls[0]
+        if control.tag_name.lower() == "select":
+            return Select(control).first_selected_option.text.strip()
+        value = control.get_attribute("value")
+        if value is not None:
+            return value.strip()
+    return cell_element.text.strip()
+
+
+def _assert_cell_value(cell_element, question, expected_value):
+    value = _get_cell_value(cell_element)
+    assert (
+        value == expected_value.strip()
+    ), f"Question: {question} - Expected: {expected_value} - Actual: {value}"
+
+
+def _get_expected_value(row_values, key):
+    if len(row_values) <= key:
+        return None
+    value = row_values[key]
+    if value is None:
+        return None
+    return value.strip()
+
+
+def _expand_cells_by_colspan(cells):
+    expanded = []
+    for cell in cells:
+        colspan = int(cell.get_attribute("colspan") or 1)
+        expanded.extend([cell] * colspan)
+    return expanded
+
+
+def _find_question_label(root_element, question):
+    label = root_element.find_element(
+        By.XPATH, f".//*[normalize-space(text())='{question}']"
+    )
+    assert label is not None, f"Could not find question on legal help form: {question}"
+    return label
+
+
+def _get_expanded_row_value_cells(label_element, question):
+    parent_element = label_element.find_element(By.XPATH, "./ancestor::tr[1]")
+    all_tds = parent_element.find_elements(By.CSS_SELECTOR, "td")
+    if not all_tds:
+        all_tds = parent_element.find_elements(By.CSS_SELECTOR, "th")
+
+    value_cells = all_tds[1:] if len(all_tds) > 1 else []
+    if not value_cells:
+        value_cells = [parent_element] if all_tds else []
+
+    if not value_cells:
+        raise AssertionError(
+            f"Could not find value cells for question: {question}. "
+            f"Row structure: {len(all_tds)} cells total."
+        )
+
+    expanded_cells = _expand_cells_by_colspan(value_cells)
+    return expanded_cells if expanded_cells else [parent_element]
+
+
+def _assert_expected_column_value(expanded_cells, index, expected_value, question):
+    if expected_value is None or expected_value.lower() == "n/a":
+        return
+    if len(expanded_cells) <= index:
+        return
+    _assert_cell_value(expanded_cells[index], question, expected_value)
+
+
 def assert_four_column_table(table, root_element):
     QUESTION_COL_KEY = 0
     COL_TWO_KEY = 1
     COL_THREE_KEY = 2
     COL_FOUR_KEY = 3
 
-    def get_cell_value(cell_element):
-        # The legal help table can render values as inputs or plain text cells.
-        form_controls = cell_element.find_elements(
-            By.CSS_SELECTOR, "input, textarea, select"
-        )
-        if form_controls:
-            control = form_controls[0]
-            if control.tag_name.lower() == "select":
-                return Select(control).first_selected_option.text.strip()
-            value = control.get_attribute("value")
-            if value is not None:
-                return value.strip()
-        return cell_element.text.strip()
-
-    def assert_cell(cell_element, question, expected_value):
-        value = get_cell_value(cell_element)
-        assert (
-            value == expected_value.strip()
-        ), f"Question: {question} - Expected: {expected_value} - Actual: {value}"
-
-    def get_expected_value(row_values, key):
-        if len(row_values) <= key:
-            return None
-        value = row_values[key]
-        if value is None:
-            return None
-        return value.strip()
-
-    def get_value_cells_with_colspan(td_elements):
-        """Expand table cells by colspan to map logical columns to DOM cells."""
-        expanded = []
-        for td in td_elements:
-            colspan = int(td.get_attribute("colspan") or 1)
-            expanded.extend([td] * colspan)
-        return expanded
-
     for row in table:
         question = row[QUESTION_COL_KEY]
+        label_element = _find_question_label(root_element, question)
+        expanded_cells = _get_expanded_row_value_cells(label_element, question)
 
-        # Find the label element within the root section.
-        label_element = root_element.find_element(
-            By.XPATH, f".//*[normalize-space(text())='{question}']"
+        expected_values = (
+            _get_expected_value(row, COL_TWO_KEY),
+            _get_expected_value(row, COL_THREE_KEY),
+            _get_expected_value(row, COL_FOUR_KEY),
         )
-        assert (
-            label_element is not None
-        ), f"Could not find question on legal help form: {question}"
-
-        # Navigate to parent row and extract all td elements.
-        parent_element = label_element.find_element(By.XPATH, "./ancestor::tr[1]")
-        all_tds = parent_element.find_elements(By.CSS_SELECTOR, "td")
-        if not all_tds:
-            all_tds = parent_element.find_elements(By.CSS_SELECTOR, "th")
-
-        # Skip the first cell (label cell) and get value cells.
-        value_cells = all_tds[1:] if len(all_tds) > 1 else []
-        if not value_cells:
-            # Some rows may have no separate value cells (e.g., colspan structure).
-            # Treat the entire row's non-label cells as one value area.
-            value_cells = [parent_element] if all_tds else []
-
-        if not value_cells:
-            raise AssertionError(
-                f"Could not find value cells for question: {question}. "
-                f"Row structure: {len(all_tds)} cells total."
+        for index, expected_value in enumerate(expected_values):
+            _assert_expected_column_value(
+                expanded_cells, index, expected_value, question
             )
-
-        # Expand cells by colspan to get logical column positions.
-        expanded_cells = get_value_cells_with_colspan(value_cells)
-        if not expanded_cells:
-            expanded_cells = [parent_element]
-
-        expected_col_two = get_expected_value(row, COL_TWO_KEY)
-        expected_col_three = get_expected_value(row, COL_THREE_KEY)
-        expected_col_four = get_expected_value(row, COL_FOUR_KEY)
-
-        # Validate column 1 (your / first value).
-        if expected_col_two is not None:
-            assert_cell(expanded_cells[0], question, expected_col_two)
-
-        # Validate column 2 (partner / second value) if expected and not "n/a".
-        if expected_col_three is not None and expected_col_three.lower() != "n/a":
-            if len(expanded_cells) > 1:
-                assert_cell(expanded_cells[1], question, expected_col_three)
-            # If expected_col_three exists but only one value cell is rendered, skip silently
-            # (the form may render summary rows without partner columns).
-
-        # Validate column 3 (third value) if expected and not "n/a".
-        if expected_col_four is not None and expected_col_four.lower() != "n/a":
-            if len(expanded_cells) > 2:
-                assert_cell(expanded_cells[2], question, expected_col_four)
-            # If third column is expected but not rendered, skip silently.
 
 
 @step("The legal help form Your Details section has the values")
