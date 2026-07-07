@@ -317,7 +317,9 @@ def assert_your_details(table, root_element):
 
 def _get_cell_value(cell_element):
     # The legal help table can render values as inputs or plain text cells.
-    form_controls = cell_element.find_elements(By.CSS_SELECTOR, "input, textarea, select")
+    form_controls = cell_element.find_elements(
+        By.CSS_SELECTOR, "input, textarea, select"
+    )
     if form_controls:
         control = form_controls[0]
         if control.tag_name.lower() == "select":
