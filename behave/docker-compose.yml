@@ -53,7 +53,7 @@ services:
       resources:
         limits:
           memory: 2gb
-    image: ${SELENIUM_IMAGE:-selenium/standalone-chrome:4.0.0}
+    image: ${SELENIUM_IMAGE:-selenium/standalone-chrome:4.45.0-20260606}
 
     user: root
     hostname: chrome
@@ -113,7 +113,7 @@ services:
       BACKEND_BASE_URI: http://clabackendooh:8000
 
   db:
-    image: postgres:11.6-alpine
+    image: postgres:16-alpine
     ports:
       - "55793:5432"
     environment:
@@ -128,7 +128,7 @@ services:
       - ./data:/data
 
   prev_db:
-    image: postgres:11.6-alpine
+    image: postgres:16-alpine
     ports:
       - "55794:5432"
     environment:

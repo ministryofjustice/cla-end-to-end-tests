@@ -1,6 +1,9 @@
 from helper.constants import CLA_EXISTING_USER
 from selenium.webdriver.common.by import By
 from behave import step
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import StaleElementReferenceException
 
 
 @step("I search for a client name with an existing case")
@@ -22,8 +25,8 @@ def step_impl_search_results(context):
         Given I am on the 'call centre dashboard' page
     """)
     # now check and see if we have cases that are assigned to this user
-    case_rows = context.helperfunc.driver().find_elements_by_xpath(
-        '//div/table[@class="ListTable"]/tbody/tr'
+    case_rows = context.helperfunc.driver().find_elements(
+        By.XPATH, '//div/table[@class="ListTable"]/tbody/tr'
     )
     assert case_rows is not None and filter(
         lambda case_row: CLA_EXISTING_USER in case_row.text, case_rows
@@ -32,11 +35,17 @@ def step_impl_search_results(context):
 
 @step("I select the name hyperlink for an existing case")
 def step_impl_select_name_hyperlink(context):
-    # use the name hyperlink in the first row, we know there are cases because of previous steps
-    # often fails with stale element exception
+    wait = WebDriverWait(context.helperfunc.driver(), 15)
     x_path = '//div/table[@class="ListTable"]/tbody/tr/td/span/a'
-    assert context.helperfunc.find_by_xpath(x_path) is not None
-    context.helperfunc.click_button(By.XPATH, x_path)
+
+    for attempt in range(4):
+        try:
+            link = wait.until(EC.element_to_be_clickable((By.XPATH, x_path)))
+            link.click()
+            return
+        except StaleElementReferenceException:
+            if attempt == 3:
+                raise
 
 
 @step("I select the button to create a case for the client originally searched for")

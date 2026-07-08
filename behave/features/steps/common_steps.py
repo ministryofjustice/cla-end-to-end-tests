@@ -3,8 +3,10 @@ import os
 import json
 from behave import step
 from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 from helper.constants import (
     CLA_CASE_PERSONAL_DETAILS_BACKEND_CHECK,
     CLA_FRONTEND_URL,
@@ -13,8 +15,6 @@ from helper.constants import (
 )
 from selenium.webdriver.common.by import By
 from axe_selenium_python import Axe
-
-from selenium.common.exceptions import StaleElementReferenceException
 
 
 def remove_prefix(text, prefix):
@@ -98,7 +98,7 @@ def compare_client_details_with_backend(context, case_id, client_section):
             "backend_id"
         ]
         xpath_string = f'//{element}[@title="{title_value}"]'
-        displayed_value = client_section.find_element_by_xpath(xpath_string).text
+        displayed_value = client_section.find_element(By.XPATH, xpath_string).text
         backend_value = context.helperfunc.get_case_personal_details_from_backend(
             case_id
         )[backend_id]
@@ -132,11 +132,11 @@ def step_impl_logged_in_as(context, user):
     if USERS[user]["application"] == "FRONTEND":
         # Assert this is a two-step login — password must not appear on the username form
         assert (
-            form.find_elements_by_name("password") == []
+            form.find_elements(By.NAME, "password") == []
         ), "Expected two-step login but found password field on the username form"
         # Step 1: submit username
-        form.find_element_by_name("username").send_keys(USERS[user]["username"])
-        form.find_element_by_xpath(submit_xpath).click()
+        form.find_element(By.NAME, "username").send_keys(USERS[user]["username"])
+        form.find_element(By.XPATH, submit_xpath).click()
         # Step 2: wait for password form and submit password
         context.helperfunc.find_by_name(
             USER_HTML_TAGS[USERS[user]["application"]]["form_identifier"]
@@ -144,9 +144,9 @@ def step_impl_logged_in_as(context, user):
         context.helperfunc.find_by_name("password").send_keys(USERS[user]["password"])
         context.helperfunc.find_by_xpath(submit_xpath).click()
     else:
-        form.find_element_by_name("username").send_keys(USERS[user]["username"])
-        form.find_element_by_name("password").send_keys(USERS[user]["password"])
-        form.find_element_by_xpath(submit_xpath).click()
+        form.find_element(By.NAME, "username").send_keys(USERS[user]["username"])
+        form.find_element(By.NAME, "password").send_keys(USERS[user]["password"])
+        form.find_element(By.XPATH, submit_xpath).click()
     if html_tag is not None:
         element = context.helperfunc.find_by_xpath(html_tag)
         assert element is not None
@@ -241,7 +241,7 @@ def select_value_from_list(context, label, value, op="equals"):
 
     def wait_for_list_of_values(*args):
         try:
-            list_element.find_element_by_css_selector(".select2-highlighted")
+            list_element.find_element(By.CSS_SELECTOR, ".select2-highlighted")
             return True
         except NoSuchElementException:
             return False
@@ -252,7 +252,7 @@ def select_value_from_list(context, label, value, op="equals"):
         message=f"Could not find any matches for {value} in {label} list",
     )
 
-    list_item = list_element.find_element_by_css_selector(".select2-highlighted")
+    list_item = list_element.find_element(By.CSS_SELECTOR, ".select2-highlighted")
     if op.lower() == "startswith":
         assert list_item.text.startswith(
             value
@@ -305,11 +305,24 @@ def step_impl_call_center_dashboard(context):
 
 @step("I select to 'Create a case'")
 def step_impl_create_case(context):
-    # wrap click() to avoid StaleElementException
-    context.helperfunc.click_button(By.ID, "create_case")
-    context.case_reference = context.helperfunc.find_by_css_selector(
-        "h1.CaseBar-caseNum a"
-    ).text
+    wait = WebDriverWait(context.helperfunc.driver(), 15)
+    locator = (By.ID, "create_case")
+
+    # Retry click in case of DOM refresh
+    for attempt in range(4):
+        try:
+            button = wait.until(EC.element_to_be_clickable(locator))
+            button.click()
+            break
+        except StaleElementReferenceException:
+            if attempt == 3:
+                raise
+
+    # Wait for destination page marker before reading case ref
+    case_ref_el = wait.until(
+        EC.visibility_of_element_located((By.CSS_SELECTOR, "h1.CaseBar-caseNum a"))
+    )
+    context.case_reference = case_ref_el.text
 
 
 def get_tag(context, find_tag):
@@ -389,8 +402,8 @@ def assert_select_radio_button(context, optional, name):
 
 
 def assert_element_does_not_appear(context, name):
-    radio_button_element = context.helperfunc.driver().find_elements_by_xpath(
-        f"//input[@name='{name}']"
+    radio_button_element = context.helperfunc.driver().find_elements(
+        By.XPATH, f"//input[@name='{name}']"
     )
     question = name.replace("_", " ")
     assert len(radio_button_element) == 0, f"Expected {question} question to be hidden"
