@@ -480,7 +480,7 @@ def step_impl_choose_provider(context):
     # if out of hours then there will be no "pre-selected provider"
     selected_provider_name = None
     if form.find_elements(
-        By.CSS_SELECTOR, "div.ContactBlock ContactBlock--grey clearfix"
+        By.CSS_SELECTOR, "div.ContactBlock.ContactBlock--grey.clearfix"
     ):
         selected_provider_name = form.find_elements(
             By.CSS_SELECTOR, "h2.ContactBlock-heading"

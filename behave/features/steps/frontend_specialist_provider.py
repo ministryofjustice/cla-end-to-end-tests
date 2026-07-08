@@ -386,7 +386,10 @@ def _assert_expected_column_value(expanded_cells, index, expected_value, questio
     if expected_value is None or expected_value.lower() == "n/a":
         return
     if len(expanded_cells) <= index:
-        return
+        raise AssertionError(
+            f"Could not find value column {index + 1} for question '{question}'. "
+            f"Found {len(expanded_cells)} value cell(s)."
+        )
     _assert_cell_value(expanded_cells[index], question, expected_value)
 
 
