@@ -7,7 +7,6 @@ import subprocess
 # base64.encodestring was removed in Python 3.9; selenium 3.x still uses it
 if not hasattr(base64, "encodestring"):
     base64.encodestring = base64.encodebytes
-from behave.contrib.scenario_autoretry import patch_scenario_with_autoretry
 from behave.log_capture import capture
 
 from helper.constants import (
@@ -83,11 +82,6 @@ def take_snapshot():
     run_cmd(cmd)
 
 
-def before_feature(context, feature):
-    for scenario in feature.scenarios:
-        patch_scenario_with_autoretry(scenario, max_attempts=3)
-
-
 @capture
 def before_scenario(context, scenario):
     if DATABASE_SNAPSHOT_ENABLED:
@@ -114,9 +108,10 @@ def after_scenario(context, scenario):
 
 
 def after_all(context):
-    if context.config.userdata["a11y"]:
+    if context.config.userdata.get("a11y", False):
         filter_accessibility_report(context)
-    context.helperfunc.close()
+    if hasattr(context, "helperfunc"):
+        context.helperfunc.close()
 
 
 def after_step(context, step):

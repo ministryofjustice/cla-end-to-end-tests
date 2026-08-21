@@ -1,9 +1,10 @@
 from behave import step
-from selenium.webdriver.common.by import By
 import datetime
+import time
+from pathlib import Path
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
-import os
 from helper.constants import (
     MINIMUM_WAIT_UNTIL_TIME,
     CLA_BACKEND_USER_TO_ASSIGN_STATUS_TO,
@@ -12,6 +13,40 @@ from helper.constants import (
     USERS,
 )
 from features.steps.common_steps import wait_until_page_is_loaded, assert_header_on_page
+
+
+def wait_for_download(download_dir, started_after, timeout=90):
+    end_time = time.time() + timeout
+    download_path = Path(download_dir)
+
+    while time.time() < end_time:
+        matches = []
+        for path in download_path.rglob("*"):
+            if not path.is_file():
+                continue
+            file_name = path.name.lower()
+            if file_name.endswith(".crdownload"):
+                continue
+            # Accept report-like downloads from standard CSV names or Chrome temp names.
+            if not (
+                file_name.endswith(".csv")
+                or file_name.startswith(".com.google.chrome.")
+            ):
+                continue
+            # Only accept files created by the current click action.
+            if path.stat().st_mtime < started_after:
+                continue
+            matches.append(path)
+        if matches:
+            latest_file = max(matches, key=lambda path: path.stat().st_mtime)
+            size_before = latest_file.stat().st_size
+            time.sleep(0.5)
+            size_after = latest_file.stat().st_size
+            if size_before == size_after and size_before > 0:
+                return latest_file
+        time.sleep(1)
+
+    raise AssertionError(f"No downloaded report found in {download_dir}")
 
 
 @step("I enter a date range")
@@ -36,7 +71,7 @@ def step_impl_select_export(context):
     xpath = "//div[@class='report-exports']/table/tbody/tr"
     # this will return an empty list if there is no table to be found
     context.how_many_reports_exist = len(
-        context.helperfunc.driver().find_elements_by_xpath(xpath)
+        context.helperfunc.driver().find_elements(By.XPATH, xpath)
     )
     context.helperfunc.click_button(By.NAME, "action")
 
@@ -53,13 +88,13 @@ def step_impl_report_processed(context):
 
         def __call__(self, driver):
             #  need an extra row in the table and for that row to have "CREATED" and the link
-            if len(context.helperfunc.driver().find_elements_by_xpath(xpath)) > 0:
+            if len(context.helperfunc.driver().find_elements(By.XPATH, xpath)) > 0:
                 return (
                     context.helperfunc.driver()
-                    .find_elements_by_xpath(xpath)[-1]
+                    .find_elements(By.XPATH, xpath)[-1]
                     .text.split(" ")[1]
                     == "CREATED"
-                    and len(context.helperfunc.driver().find_elements_by_xpath(xpath))
+                    and len(context.helperfunc.driver().find_elements(By.XPATH, xpath))
                     > self._existing_reports
                 )
             else:
@@ -75,35 +110,28 @@ def step_impl_report_processed(context):
 
 @step("I download the .csv")
 def step_impl_download_csv(context):
-    # click on the link and download the csv, checking it has more than just a header
-    class WaitForReportToBeDownloaded(object):
-        def __init__(self, name):
-            self._filename = name
-
-        def __call__(self, driver):
-            # find the file, open it and check that it has more than just the header
-            if self._filename in os.listdir(context.download_dir):
-                download_file_path = os.path.join(context.download_dir, self._filename)
-                with open(download_file_path) as f:
-                    num_lines = sum(1 for line in f)
-                return num_lines > 1
-            else:
-                return False
-
     xpath = "//div[@class='report-exports']/table/tbody/tr"
     this_report = (
-        context.helperfunc.driver().find_elements_by_xpath(xpath)[-1].text.split(" ")
+        context.helperfunc.driver().find_elements(By.XPATH, xpath)[-1].text.split(" ")
     )
     href = this_report[2]
     xpath_a = f"{xpath}/td/a[@href='{href}']"
-    file_name = (
-        context.helperfunc.driver().find_element_by_xpath(xpath_a).text.split("/")[-1]
-    )
     # click on the link
-    context.helperfunc.driver().find_element_by_xpath(xpath_a).click()
-    wait = WebDriverWait(context.helperfunc.driver(), MINIMUM_WAIT_UNTIL_TIME)
-    str_error = f"No downloaded report for {file_name} in {context.download_dir}"
-    wait.until(WaitForReportToBeDownloaded(file_name), message=str_error)
+    click_time = time.time()
+    context.helperfunc.driver().find_element(By.XPATH, xpath_a).click()
+    downloaded_file = wait_for_download(
+        context.download_dir,
+        started_after=click_time,
+        timeout=90,
+    )
+
+    with downloaded_file.open() as csv_file:
+        num_lines = sum(1 for _ in csv_file)
+
+    assert (
+        num_lines > 1
+    ), f"Downloaded report {downloaded_file.name} only contains a header"
+    context.downloaded_report_filename = downloaded_file.name
 
 
 @step("I select a non-staff user from the list")
@@ -188,7 +216,9 @@ def step_impl_new_operator_user_created(context):
     if (
         # are we still on the same page and there are no errors
         context.helperfunc.get_current_path() == "/admin/call_centre/operator/add/"
-        and context.helperfunc.driver().find_element_by_xpath("//p[@class='errornote']")
+        and context.helperfunc.driver().find_element(
+            By.XPATH, "//p[@class='errornote']"
+        )
         is not None
     ):
         assert False, "There are errors creating that user"
@@ -242,8 +272,8 @@ def step_impl_select_delete_user(context):
 
 @step("I am taken to the user's details page")
 def step_impl_user_details_page(context):
-    user_input = context.helperfunc.driver().find_element_by_xpath(
-        "//*[@id='id_username']"
+    user_input = context.helperfunc.driver().find_element(
+        By.XPATH, "//*[@id='id_username']"
     )
     assert (
         user_input.get_attribute("value") == USERS["NEWLY_CREATED_OPERATOR"]["username"]
@@ -254,13 +284,14 @@ def step_impl_user_details_page(context):
 @step("I am taken to the 'Are you sure page'")
 def step_impl_are_you_sure_page(context):
     # Cannot rely on checking page URL because PK could be different on each test run.
-    header = context.helperfunc.driver().find_element_by_xpath(
-        "//*[@id='content']/h1[text()='Are you sure?']"
+    header = context.helperfunc.driver().find_element(
+        By.XPATH, "//*[@id='content']/h1[text()='Are you sure?']"
     )
     assert header is not None
-    user_name = context.helperfunc.driver().find_element_by_xpath(
+    user_name = context.helperfunc.driver().find_element(
+        By.XPATH,
         f"//ul/li[text()='User: ']/a[text()='"
-        f"{USERS['NEWLY_CREATED_OPERATOR']['username']}']"
+        f"{USERS['NEWLY_CREATED_OPERATOR']['username']}']",
     )
     assert user_name is not None
 
@@ -269,7 +300,7 @@ def step_impl_are_you_sure_page(context):
 def step_impl_confirm_user_deleted(context):
     xpath = f"//a[text()='{USERS['NEWLY_CREATED_OPERATOR']['username']}']"
     try:
-        context.helperfunc.driver().find_element_by_xpath(xpath)
+        context.helperfunc.driver().find_element(By.XPATH, xpath)
     except NoSuchElementException:
         pass
 

@@ -1,4 +1,4 @@
-FROM python:3.10-slim-bookworm AS builder
+FROM python:3.13-slim-bookworm AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
       build-essential \
@@ -17,7 +17,7 @@ RUN pip3 install --no-cache-dir -r requirements/requirements-git.txt \
  && pip3 install --no-cache-dir -r requirements/requirements.txt
 
 
-FROM python:3.10-slim-bookworm
+FROM python:3.13-slim-bookworm
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
       bash \
@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
+COPY --from=builder /usr/local/lib/python3.13/site-packages /usr/local/lib/python3.13/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 
 RUN mkdir /behave
@@ -35,6 +35,4 @@ WORKDIR /behave
 
 COPY . .
 
-ENV run_a11y $a11y
-
-ENTRYPOINT ./wrapper.sh $run_a11y
+ENTRYPOINT ["./wrapper.sh"]
