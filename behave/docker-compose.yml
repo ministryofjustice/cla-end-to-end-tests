@@ -3,6 +3,7 @@ services:
     image: jwilder/dockerize
     command: >
       -wait tcp://clafrontend:8000
+      -wait tcp://redis:6379
       -wait tcp://clasocketserver:8005
       -wait tcp://clabackend:8000
       -wait tcp://seleniumchrome:4444
@@ -13,6 +14,7 @@ services:
       -timeout 180s
     depends_on:
       - clafrontend
+      - redis
       - clabackend
       - seleniumchrome
       - clasocketserver
@@ -74,12 +76,14 @@ services:
     ports:
       - "8011:8000"
     depends_on:
+      - redis
       - clabackend
       - clasocketserver
     environment: &clafrontendenvironment
       ENV: local
       DEBUG: "True"
       SECRET_KEY: CHANGE_ME
+      ELASTICACHE_REDIS_URL: redis://redis:6379/0
       BACKEND_BASE_URI: http://clabackend:8000
       CALL_CENTRE_CLIENT_ID: b4b9220ffcb11ebfdab1
       CALL_CENTRE_SECRET_ID: 2df71313bdd38a2e1b815015e1b14387e7681d41
@@ -111,6 +115,9 @@ services:
     environment:
       <<: *clafrontendenvironment
       BACKEND_BASE_URI: http://clabackendooh:8000
+
+  redis:
+    image: redis:7-alpine
 
   db:
     image: postgres:11.6-alpine
