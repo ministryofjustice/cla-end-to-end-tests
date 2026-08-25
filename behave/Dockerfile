@@ -1,6 +1,6 @@
 FROM python:3.13-slim-bookworm AS builder
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get upgrade -y --no-install-recommends && apt-get install -y --no-install-recommends \
       build-essential \
       curl \
       git \
@@ -19,7 +19,7 @@ RUN pip3 install --no-cache-dir -r requirements/requirements-git.txt \
 
 FROM python:3.13-slim-bookworm
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get upgrade -y --no-install-recommends && apt-get install -y --no-install-recommends \
       bash \
       tzdata \
       gettext \
