@@ -1,4 +1,4 @@
-FROM python:3.13-slim-bookworm AS builder
+FROM python:3.13-slim-trixie AS builder
 
 RUN apt-get update && apt-get upgrade -y --no-install-recommends && apt-get install -y --no-install-recommends \
       build-essential \
@@ -17,7 +17,7 @@ RUN pip3 install --no-cache-dir -r requirements/requirements-git.txt \
  && pip3 install --no-cache-dir -r requirements/requirements.txt
 
 
-FROM python:3.13-slim-bookworm
+FROM python:3.13-slim-trixie
 
 RUN apt-get update && apt-get upgrade -y --no-install-recommends && apt-get install -y --no-install-recommends \
       bash \
