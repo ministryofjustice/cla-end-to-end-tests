@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Simple wrapper for executing behave within Docker.
 
