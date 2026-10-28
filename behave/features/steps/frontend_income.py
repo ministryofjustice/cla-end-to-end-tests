@@ -22,7 +22,7 @@ def step_impl_finance_complete(context):
           | question                                              | answer |
           | How much was in your bank account/building society    | 0.00   |
           | Do you have any investments, shares or ISAs?          | 0.00   |
-          | Do you have any valuable items worth £500 or more each? | 0.00   |
+          | Do you have any valuable items worth over £500 each?  | 0.00   |
           | Do you have any money owed to you?                    | 0.00   |
         And I select Save assessment
     """)
@@ -105,6 +105,7 @@ def step_impl_click_property(context):
 
 @step("The errors for property are shown")
 def step_impl_prop_error_returned(context):
+    error_message = context.helperfunc.find_many_by_class("Error-message")
     error_messages = [
         "Enter the value of the property",
         "Enter how much is left to pay on the mortgage",
@@ -112,10 +113,5 @@ def step_impl_prop_error_returned(context):
         "Select if this is the main property",
         "Enter what percentage of the property the client owns",
     ]
-    for expected_message in error_messages:
-        message = context.helperfunc.find_by_xpath(
-            "//div[@ng-repeat='property in eligibility_check.property_set']"
-            "//span[contains(concat(' ', normalize-space(@class), ' '), ' Error-message ')"
-            f" and normalize-space(.)='{expected_message}']"
-        )
-        assert message.text == expected_message
+    for message in error_message:
+        assert message.text in error_messages

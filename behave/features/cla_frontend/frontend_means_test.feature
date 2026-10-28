@@ -21,7 +21,7 @@ Feature: Means test assessment
       | question                                             | answer |
       | How much was in your bank account/building           | 0.00   |
       | Do you have any investments, shares or ISAs?         | 0.00   |
-      | Do you have any valuable items worth £500 or more each? | 0.00   |
+      | Do you have any valuable items worth over £500 each? | 0.00   |
       | Do you have any money owed to you?                   | 0.00   |
     And I select Save assessment
     Then I am given a message 'The means test has been saved. The current result is eligible for Legal Aid'
@@ -37,7 +37,7 @@ Feature: Means test assessment
       | question                                                                                        | answer |
       | How much was in your bank account/building society before your last payment went in?            | 0      |
       | Do you have any investments, shares or ISAs?                                                    | 300    |
-      | Do you have any valuable items worth £500 or more each?                                         | 0      |
+      | Do you have any valuable items worth over £500 each?                                            | 0      |
       | Do you have any money owed to you?                                                              | 0      |
     And I select Save assessment
     And I remain in the "Finances" tab
@@ -48,7 +48,7 @@ Feature: Means test assessment
       | question                                                                                     | answer   |
       | How much was in your bank account/building society before your last payment went in?         | 0        |
       | Do you have any investments, shares or ISAs?                                                 | 300      |
-      | Do you have any valuable items worth £500 or more each?                                      | 0        |
+      | Do you have any valuable items worth over £500 each?                                         | 0        |
       | Do you have any money owed to you?                                                           | 0        |
 
 
@@ -71,7 +71,7 @@ Feature: Means test assessment
       | question                                             | answer |
       | How much was in your bank account/building society   | 50000  |
       | Do you have any investments, shares or ISAs?         | 0.00   |
-      | Do you have any valuable items worth £500 or more each? | 0.00   |
+      | Do you have any valuable items worth over £500 each? | 0.00   |
       | Do you have any money owed to you?                   | 0.00   |
     Then I move onto Income inner-tab
     And I am not self employed
