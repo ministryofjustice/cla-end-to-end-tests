@@ -138,8 +138,9 @@ def step_impl_asset_amount_valid(context):
         "Asset validation error remained visible after entering a valid amount",
     )
     wait.until(
-        lambda driver: "ng-valid" in driver.find_element(
-            By.NAME, "you_asset_balance"
-        ).get_attribute("class").split(),
+        lambda driver: "ng-valid"
+        in driver.find_element(By.NAME, "you_asset_balance")
+        .get_attribute("class")
+        .split(),
         "Asset amount remained invalid after entering a valid amount",
     )
