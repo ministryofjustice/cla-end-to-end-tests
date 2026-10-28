@@ -47,3 +47,24 @@ Scenario: Ensure that the property disputed error appears
     And I click add property
     And I select Save assessment
     Then The errors for property are shown
+
+@asset_minimum_validation
+Scenario Outline: Show an error for assets below the minimum and clear it for a valid amount
+    Given I select to 'Create a case'
+    And I have created a user
+    And I have created a valid discrimination scope
+    And I am on the financial page which i complete up to finances
+    When I <answer> to Finances <question>
+      | question                                              | answer           |
+      | Do you have any valuable items worth £500 or more each? | <invalid_amount> |
+    Then the asset minimum validation error is shown
+    When I <answer> to Finances <question>
+      | question                                              | answer         |
+      | Do you have any valuable items worth £500 or more each? | <valid_amount> |
+    Then the asset amount is valid and its validation error is hidden
+
+    Examples:
+      | invalid_amount | valid_amount |
+      | 0.01           | 0.00         |
+      | 499.00         | 500.00       |
+      | 499.99         | 500.01       |
