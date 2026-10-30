@@ -321,7 +321,7 @@ def step_impl_diversity_tab(context):
           | question                                              | answer |
           | How much was in your bank account/building society    | 0.00   |
           | Do you have any investments, shares or ISAs?          | 0.00   |
-          | Do you have any valuable items worth over £500 each?  | 0.00   |
+          | Do you have any valuable items worth £500 or more each? | 0.00   |
           | Do you have any money owed to you?                    | 0.00   |
         And I select Save assessment
         And the 'Diversity' and 'Assign' tabs become available

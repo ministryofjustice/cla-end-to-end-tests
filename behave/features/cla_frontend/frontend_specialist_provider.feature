@@ -156,7 +156,7 @@ Scenario: Specialist Provider Edits a case
     | question                                                                                      | answer |
     | How much was in your bank account/building society before your last payment went in?          | 500    |
     | Do you have any investments, shares or ISAs?                                                  | 0      |
-    | Do you have any valuable items worth over £500 each?                                          | 0      |
+    | Do you have any valuable items worth £500 or more each?                                       | 0      |
     | Do you have any money owed to you?                                                            | 0      |
   When I select Save assessment
   And I am given a message 'The means test has been saved. The current result is eligible for Legal Aid'
@@ -168,7 +168,7 @@ Scenario: Specialist Provider Edits a case
     | question                                                                                      | answer |
     | How much was in your bank account/building society before your last payment went in?          | 500    |
     | Do you have any investments, shares or ISAs?                                                  | 0      |
-    | Do you have any valuable items worth over £500 each?                                          | 0      |
+    | Do you have any valuable items worth £500 or more each?                                       | 0      |
     | Do you have any money owed to you?                                                            | 0      |
 
 

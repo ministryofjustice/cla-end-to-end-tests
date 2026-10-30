@@ -1,5 +1,6 @@
 from behave import step
-from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.ui import Select, WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 
@@ -22,7 +23,7 @@ def step_impl_finance_complete(context):
           | question                                              | answer |
           | How much was in your bank account/building society    | 0.00   |
           | Do you have any investments, shares or ISAs?          | 0.00   |
-          | Do you have any valuable items worth over £500 each?  | 0.00   |
+          | Do you have any valuable items worth £500 or more each? | 0.00   |
           | Do you have any money owed to you?                    | 0.00   |
         And I select Save assessment
     """)
@@ -105,7 +106,6 @@ def step_impl_click_property(context):
 
 @step("The errors for property are shown")
 def step_impl_prop_error_returned(context):
-    error_message = context.helperfunc.find_many_by_class("Error-message")
     error_messages = [
         "Enter the value of the property",
         "Enter how much is left to pay on the mortgage",
@@ -113,5 +113,34 @@ def step_impl_prop_error_returned(context):
         "Select if this is the main property",
         "Enter what percentage of the property the client owns",
     ]
-    for message in error_message:
-        assert message.text in error_messages
+    for expected_message in error_messages:
+        message = context.helperfunc.find_by_xpath(
+            "//div[@ng-repeat='property in eligibility_check.property_set']"
+            "//span[contains(concat(' ', normalize-space(@class), ' '), ' Error-message ')"
+            f" and normalize-space(.)='{expected_message}']"
+        )
+        assert message.text == expected_message
+
+
+@step("the asset minimum validation error is shown")
+def step_impl_asset_minimum_error(context):
+    message = context.helperfunc.find_by_id("you_asset_balance_error")
+    assert message.text == (
+        "Enter a valid amount: £0 if there are no qualifying items, or £500 or more."
+    ), f"Unexpected asset validation message: {message.text}"
+
+
+@step("the asset amount is valid and its validation error is hidden")
+def step_impl_asset_amount_valid(context):
+    wait = WebDriverWait(context.helperfunc.driver(), 10)
+    wait.until(
+        EC.invisibility_of_element_located((By.ID, "you_asset_balance_error")),
+        "Asset validation error remained visible after entering a valid amount",
+    )
+    wait.until(
+        lambda driver: "ng-valid"
+        in driver.find_element(By.NAME, "you_asset_balance")
+        .get_attribute("class")
+        .split(),
+        "Asset amount remained invalid after entering a valid amount",
+    )
