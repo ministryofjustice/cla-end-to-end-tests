@@ -72,7 +72,7 @@ services:
       SITE_HOSTNAME: clasocketserver
 
   clafrontend: &clafrontend
-    image: ${CLA_FRONTEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend:branch-9d2d85a000d9646dc6e4c48a4170b206a5f18aed}
+    image: ${CLA_FRONTEND_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-get-access/cla_frontend:main}
     ports:
       - "8011:8000"
     depends_on:
@@ -105,6 +105,7 @@ services:
       SESSION_COOKIE_SAMESITE: "None"
       SESSION_COOKIE_HTTPONLY: "False"
       USE_LEGACY_AUTH: "True"
+      USERS_ALLOWED_LEGACY_ACCESS: "cla_operator,cla_operator_manager,cla_dha,cla_admin,elvis.presley"
 
   clafrontendooh:
     <<: *clafrontend
