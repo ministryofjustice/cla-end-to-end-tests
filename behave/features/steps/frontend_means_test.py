@@ -9,6 +9,40 @@ from selenium.webdriver.common.by import By
 from helper.constants import CLA_FRONTEND_PERSONAL_DETAILS_FORM
 
 
+def _xpath_literal(value):
+    if "'" not in value:
+        return f"'{value}'"
+    if '"' not in value:
+        return f'"{value}"'
+    parts = value.split("'")
+    return "concat(" + ', "\'", '.join([f"'{part}'" for part in parts]) + ")"
+
+
+def _find_finance_input_by_label(context, label):
+    label_literal = _xpath_literal(label.strip())
+    candidate_xpaths = [
+        f"//label[.//span[normalize-space(.)={label_literal}]]//input",
+        f"//span[normalize-space(.)={label_literal}]/ancestor::label[1]//input",
+        f"//span[contains(normalize-space(.), {label_literal})]/ancestor::label[1]//input",
+        f"//p[normalize-space(.)={label_literal}]/../label/input",
+    ]
+
+    def find_displayed_input(driver):
+        for xpath in candidate_xpaths:
+            for element in driver.find_elements(By.XPATH, xpath):
+                if element.is_displayed():
+                    return element
+        return None
+
+    input_field = WebDriverWait(context.helperfunc.driver(), 20).until(
+        find_displayed_input
+    )
+    context.helperfunc.driver().execute_script(
+        "arguments[0].scrollIntoView({block: 'center'});", input_field
+    )
+    return input_field
+
+
 def set_income_input_field_by_label(context, label, value):
     # income input fields under case details page as more HTML elements
     # to navigate through.
@@ -39,7 +73,11 @@ def step_impl_move_to_tab(context, tab_name):
     actions = ActionChains(page.driver())
     actions.move_to_element(page.find_by_xpath(xpath_scroll)).perform()
 
-    xpath = f"//ul[@id='pills-section-list']/li/a[text()='{tab_name}']"
+    xpath = f"//ul[@id='pills-section-list']" f"//li/a[normalize-space()='{tab_name}']"
+    active_tab_xpath = (
+        f"//ul[@id='pills-section-list']"
+        f"//li[contains(@class, 'is-active')]/a[normalize-space()='{tab_name}']"
+    )
 
     def is_tab_option_clickable(*args):
         try:
@@ -53,15 +91,17 @@ def step_impl_move_to_tab(context, tab_name):
     if is_tab_option_clickable() is False:
         context.helperfunc.scroll_to_top()
 
-    WebDriverWait(page.driver(), 10).until(
+    tab_link = WebDriverWait(page.driver(), 10).until(
         EC.element_to_be_clickable((By.XPATH, xpath))
-    ).click()
+    )
+    try:
+        tab_link.click()
+    except ElementClickInterceptedException:
+        context.helperfunc.driver().execute_script("arguments[0].click();", tab_link)
 
-    def wait_for_active_tab(*args):
-        return tab_name in context.helperfunc.find_by_class("Pills-pill.is-active").text
-
-    wait = WebDriverWait(context.helperfunc.driver(), 10)
-    wait.until(wait_for_active_tab)
+    WebDriverWait(context.helperfunc.driver(), 10).until(
+        EC.visibility_of_element_located((By.XPATH, active_tab_xpath))
+    )
 
 
 @step("I select Save assessment")
@@ -113,17 +153,10 @@ def step_impl_answer_finance_question(context):
     # Find input and insert value from answer
     for row in context.table:
         label = row["question"]
-        value = row["answer"]
-        label_format = label.ljust(len(label) + 1)
-        # Each question under the finances inner tab
-        # has a space character at the end of string
-        # Using ljust method to add space character
-        context.helperfunc.find_by_xpath(
-            f"//span[contains(text(),'{label_format}')]/../input"
-        ).clear()
-        context.helperfunc.find_by_xpath(
-            f"//span[contains(text(),'{label_format}')]/../input"
-        ).send_keys(value)
+        value = str(row["answer"])
+        input_field = _find_finance_input_by_label(context, label)
+        input_field.clear()
+        input_field.send_keys(value)
 
 
 @step("I <answer> to Expenses <question>")

@@ -105,6 +105,7 @@ services:
       SESSION_COOKIE_SAMESITE: "None"
       SESSION_COOKIE_HTTPONLY: "False"
       USE_LEGACY_AUTH: "True"
+      USERS_ALLOWED_LEGACY_ACCESS: "cla_operator,cla_operator_manager,cla_dha,cla_admin,elvis.presley"
 
   clafrontendooh:
     <<: *clafrontend
