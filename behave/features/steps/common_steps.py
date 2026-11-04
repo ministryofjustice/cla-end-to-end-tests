@@ -3,7 +3,11 @@ import os
 import json
 from behave import step
 from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
+from selenium.common.exceptions import (
+    TimeoutException,
+    StaleElementReferenceException,
+    ElementClickInterceptedException,
+)
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -397,7 +401,13 @@ def assert_select_radio_button(context, optional, name):
     radio_input = context.helperfunc.find_by_xpath(
         f"//input[@name='{name}'][@value='{state}']"
     )
-    radio_input.click()
+    context.helperfunc.driver().execute_script(
+        "arguments[0].scrollIntoView({block: 'center'});", radio_input
+    )
+    try:
+        radio_input.click()
+    except ElementClickInterceptedException:
+        context.helperfunc.driver().execute_script("arguments[0].click();", radio_input)
     assert radio_input.get_attribute("checked") == "true"
 
 
