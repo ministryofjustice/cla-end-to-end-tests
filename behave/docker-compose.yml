@@ -121,7 +121,7 @@ services:
     image: redis:7-alpine
 
   db:
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     ports:
       - "55793:5432"
     environment:
@@ -136,7 +136,7 @@ services:
       - ./data:/data
 
   prev_db:
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     ports:
       - "55794:5432"
     environment:
