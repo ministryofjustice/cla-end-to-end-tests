@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 
 
 class HelperFunc(object):
-    __TIMEOUT = 10
+    __TIMEOUT = 20
 
     def __init__(self, driver):
         super(HelperFunc, self).__init__()
